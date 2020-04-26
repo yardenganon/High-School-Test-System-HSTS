@@ -1,18 +1,17 @@
-package il.ac.haifa.cs.sweng.OCSFSimpleChat;
+package il.ac.haifa.cs.HSTS;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
-public class ChatClientCLI {
+public class HSTSClient {
 
 	private SimpleChatClient client;
 	private boolean isRunning;
 	private static final String SHELL_STRING = "Enter message (or exit to quit)> ";
 	private Thread loopThread;
 
-	public ChatClientCLI(SimpleChatClient client) {
+	public HSTSClient(SimpleChatClient client) {
 		this.client = client;
 		this.isRunning = false;
 	}

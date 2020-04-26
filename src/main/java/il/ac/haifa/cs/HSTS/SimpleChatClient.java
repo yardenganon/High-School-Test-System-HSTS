@@ -1,18 +1,18 @@
-package il.ac.haifa.cs.sweng.OCSFSimpleChat;
+package il.ac.haifa.cs.HSTS;
 
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import il.ac.haifa.cs.sweng.OCSFSimpleChat.ocsf.client.AbstractClient;
+import il.ac.haifa.cs.HSTS.ocsf.client.AbstractClient;
 
 public class SimpleChatClient extends AbstractClient {
 	private static final Logger LOGGER =
 			Logger.getLogger(SimpleChatClient.class.getName());
 	
-	private ChatClientCLI chatClientCLI;	
+	private HSTSClient hstsClient;
 	public SimpleChatClient(String host, int port) {
 		super(host, port);
-		this.chatClientCLI = new ChatClientCLI(this);
+		this.hstsClient = new HSTSClient(this);
 	}
 	
 	@Override
@@ -22,7 +22,7 @@ public class SimpleChatClient extends AbstractClient {
 		LOGGER.info("Connected to server.");
 		
 		try {
-			chatClientCLI.loop();
+			hstsClient.loop();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -30,13 +30,13 @@ public class SimpleChatClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		chatClientCLI.displayMessage(msg);
+		hstsClient.displayMessage(msg);
 	}
 	
 	@Override
 	protected void connectionClosed() {
 		// TODO Auto-generated method stub
 		super.connectionClosed();
-		chatClientCLI.closeConnection();
+		hstsClient.closeConnection();
 	}
 }

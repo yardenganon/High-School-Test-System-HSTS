@@ -80,7 +80,7 @@
         				<goal>java</goal>
         			</goals>
         			<configuration>
-        				<mainClass>il.ac.haifa.cs.sweng.OCSFSimpleChat.SimpleChatServer</mainClass>
+        				<mainClass>il.ac.haifa.cs.HSTS.HSTSServer</mainClass>
         			</configuration>
         		</execution>
         		<execution>
@@ -89,7 +89,7 @@
         				<goal>java</goal>
         			</goals>
         			<configuration>
-        				<mainClass>il.ac.haifa.cs.sweng.OCSFSimpleChat.ChatClientCLI</mainClass>
+        				<mainClass>il.ac.haifa.cs.HSTS.HSTSClient</mainClass>
         			</configuration>
         		</execution>
         	</executions>

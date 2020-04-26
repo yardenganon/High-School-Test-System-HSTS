@@ -1,4 +1,4 @@
-package il.ac.haifa.cs.sweng.OCSFSimpleChat;
+package il.ac.haifa.cs.HSTS;
 
 import static org.junit.Assert.assertTrue;
 

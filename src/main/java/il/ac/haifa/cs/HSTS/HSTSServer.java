@@ -1,13 +1,13 @@
-package il.ac.haifa.cs.sweng.OCSFSimpleChat;
+package il.ac.haifa.cs.HSTS;
 
 import java.io.IOException;
 
-import il.ac.haifa.cs.sweng.OCSFSimpleChat.ocsf.server.AbstractServer;
-import il.ac.haifa.cs.sweng.OCSFSimpleChat.ocsf.server.ConnectionToClient;
+import il.ac.haifa.cs.HSTS.ocsf.server.AbstractServer;
+import il.ac.haifa.cs.HSTS.ocsf.server.ConnectionToClient;
 
-public class SimpleChatServer extends AbstractServer {
+public class HSTSServer extends AbstractServer {
 
-	public SimpleChatServer(int port) {
+	public HSTSServer(int port) {
 		super(port);
 	}
 
@@ -21,7 +21,7 @@ public class SimpleChatServer extends AbstractServer {
 		if (args.length != 1) {
 			System.out.println("Required argument: <port>");
 		} else {
-			SimpleChatServer server = new SimpleChatServer(Integer.parseInt(args[0]));
+			HSTSServer server = new HSTSServer(Integer.parseInt(args[0]));
 			server.listen();
 		}
 	}

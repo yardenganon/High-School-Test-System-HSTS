@@ -2,11 +2,10 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com
 
-package il.ac.haifa.cs.sweng.OCSFSimpleChat.ocsf.client;
+package il.ac.haifa.cs.HSTS.ocsf.client;
 
 import java.util.*;
 import java.io.*;
-import java.net.*;
 
 /**
  * This class acts as a subclass of <code>AbstractClient</code>

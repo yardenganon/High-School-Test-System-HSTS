@@ -2,7 +2,7 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com
 
-package il.ac.haifa.cs.sweng.OCSFSimpleChat.ocsf.server;
+package il.ac.haifa.cs.HSTS.ocsf.server;
 
 /**
  * A message class used by the Observable layer of the OCSF in order to conserve
