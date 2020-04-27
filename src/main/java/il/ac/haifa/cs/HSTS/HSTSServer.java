@@ -13,8 +13,14 @@ public class HSTSServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
+		/* Here we have to write controller
+		 * Getting user details from login window, send back The object or msg
+		 * by "client.sendToClient("msg object");
+		 * Etc.....		*/
 		System.out.println("Received Message: " + msg.toString());
 		sendToAllClients(msg);
+
+
 	}
 	
 	public static void main(String[] args) throws IOException {

@@ -22,6 +22,11 @@ public class HSTSClientInterface {
 
 			@Override
 			public void run() {
+				/* Here we have to write Client logic (in while->try scope)
+				* Open login window interface, asking the user to write details.
+				* Then, send request to the server for obtaining User according to the details
+				* Etc.....		*/
+
 				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 				String message;
 				while (client.isConnected()) {
