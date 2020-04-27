@@ -1,79 +1,42 @@
 package il.ac.haifa.cs.HSTS;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.logging.Logger;
 
-public class HSTSClient {
+import il.ac.haifa.cs.HSTS.ocsf.client.AbstractClient;
 
-	private SimpleChatClient client;
-	private boolean isRunning;
-	private static final String SHELL_STRING = "Enter message (or exit to quit)> ";
-	private Thread loopThread;
-
-	public HSTSClient(SimpleChatClient client) {
-		this.client = client;
-		this.isRunning = false;
+public class HSTSClient extends AbstractClient {
+	private static final Logger LOGGER =
+			Logger.getLogger(HSTSClient.class.getName());
+	
+	private HSTSClientInterface hstsClientInterface;
+	public HSTSClient(String host, int port) {
+		super(host, port);
+		this.hstsClientInterface = new HSTSClientInterface(this);
 	}
-
-	public void loop() throws IOException {
-		loopThread = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-				String message;
-				while (client.isConnected()) {
-					System.out.print(SHELL_STRING);
-
-					try {
-						message = reader.readLine();
-						if (message.isBlank())
-							continue;
-
-						if (message.equalsIgnoreCase("exit")) {
-							System.out.println("Closing connection.");
-								client.closeConnection();
-						} else {
-							client.sendToServer(message);
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-				}
-			}
-		});
-
-		loopThread.start();
-		this.isRunning = true;
-
-	}
-
-	public void displayMessage(Object message) {
-		if (isRunning) {
-			System.out.print("(Interrupted)\n");
+	
+	@Override
+	protected void connectionEstablished() {
+		// TODO Auto-generated method stub
+		super.connectionEstablished();
+		LOGGER.info("Connected to server.");
+		
+		try {
+			hstsClientInterface.loop();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		System.out.println("Received message from server: " + message.toString());
-		if (isRunning)
-			System.out.print(SHELL_STRING);
 	}
 
-	public void closeConnection() {
-		System.out.println("Connection closed.");
-		System.exit(0);
+	@Override
+	protected void handleMessageFromServer(Object msg) {
+		hstsClientInterface.displayMessage(msg);
 	}
-
-	public static void main(String[] args) throws IOException {
-		if (args.length != 2) {
-			System.out.println("Required arguments: <host> <port>");
-		} else {
-			String host = args[0];
-			int port = Integer.parseInt(args[1]);
-
-			SimpleChatClient chatClient = new SimpleChatClient(host, port);
-			chatClient.openConnection();
-		}
+	
+	@Override
+	protected void connectionClosed() {
+		// TODO Auto-generated method stub
+		super.connectionClosed();
+		hstsClientInterface.closeConnection();
 	}
 }

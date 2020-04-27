@@ -89,7 +89,7 @@
         				<goal>java</goal>
         			</goals>
         			<configuration>
-        				<mainClass>il.ac.haifa.cs.HSTS.HSTSClient</mainClass>
+        				<mainClass>il.ac.haifa.cs.HSTS.HSTSClientInterface</mainClass>
         			</configuration>
         		</execution>
         	</executions>
