@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.HSTS;
 
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.SessionFactoryGlobal;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,48 +12,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-
-/* Run this file to create data in DB */
+/* Try to avoid using this file
+ Run this file to create data in DB manually */
 
 public class App {
 
     private static Session session;
 
-    private static SessionFactory getSessionFactory() throws HibernateException {
-        Configuration configuration = new Configuration();
-
-        // Add entities here
-        /*configuration.addAnnotatedClass(Question.class);
-        */
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties())
-                .build();
-
-        return configuration.buildSessionFactory(serviceRegistry);
-    }
-
     public static void main(String[] args) {
         try {
             Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-            SessionFactory sessionFactory = getSessionFactory();
-            session = sessionFactory.openSession();
-            session.beginTransaction();
+            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Insert data here */
-
-            session.flush();
-            session.getTransaction().commit(); // updating session
+            session = SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
-            if (session != null)
-                session.getTransaction().rollback();
-            System.err.println("An error occurred, changes have been rolled back.");
-            exception.printStackTrace();
+            session = SessionFactoryGlobal.exceptionCaught(session, exception);
         } finally {
-            if (session != null) {
-                session.close();
-                session.getSessionFactory().close();
-            }
+            SessionFactoryGlobal.closeSession(session);
         }
     }
 }

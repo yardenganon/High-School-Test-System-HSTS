@@ -10,6 +10,7 @@ public class HSTSClient extends AbstractClient {
 			Logger.getLogger(HSTSClient.class.getName());
 	
 	private HSTSClientInterface hstsClientInterface;
+
 	public HSTSClient(String host, int port) {
 		super(host, port);
 		this.hstsClientInterface = new HSTSClientInterface(this);
@@ -30,6 +31,7 @@ public class HSTSClient extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
+		// Client logic
 		hstsClientInterface.displayMessage(msg);
 	}
 	
