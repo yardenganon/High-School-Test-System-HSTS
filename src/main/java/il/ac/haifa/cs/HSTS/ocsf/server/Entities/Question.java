@@ -21,16 +21,8 @@ public class Question implements Serializable {
     String writer; // Will be User
 
     String subject;
+
     public Question() {}
-    public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer, String writer) {
-        this.question = question;
-        this.answer1 = answer1;
-        this.answer2 = answer2;
-        this.answer3 = answer3;
-        this.answer4 = answer4;
-        this.correctAnswer = correctAnswer;
-        this.writer = writer;
-    }
 
     public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer, String writer, String subject) {
         this.question = question;
