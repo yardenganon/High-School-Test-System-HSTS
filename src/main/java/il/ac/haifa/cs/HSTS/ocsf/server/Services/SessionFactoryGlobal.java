@@ -26,7 +26,7 @@ public class SessionFactoryGlobal {
         return configuration.buildSessionFactory(serviceRegistry);
     }
     public static Session openSessionAndTransaction(Session session) {
-        Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+        //Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         try {
             SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
             session = sessionFactory.openSession();

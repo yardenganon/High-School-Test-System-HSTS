@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -30,15 +31,25 @@ public class QuestionsRepository {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
             session.save(question);
-            session.flush();
-
-
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
+    }
+    public void updateQuestion(Question question) {
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Insert data here */
+            session.update(question);
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+
     }
     public List<Question> getQuestionsBySubject(String subject) {
         List<Question> results = null;
@@ -53,7 +64,6 @@ public class QuestionsRepository {
             Query query = session.createQuery(criteriaQuery);
             results = query.getResultList();
 
-
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
@@ -62,6 +72,28 @@ public class QuestionsRepository {
         }
         return results;
     }
+    public Question getQuestionById(int id) {
+        Question result = null;
+        try {
+           session =  SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Ask for data here */
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Question> criteriaQuery = builder.createQuery(Question.class);
+            Root<Question> root = criteriaQuery.from(Question.class);
+            criteriaQuery.select(root).where(builder.equal(root.get("id"),id));
+
+            Query query = session.createQuery(criteriaQuery);
+            result = (Question)query.getSingleResult();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return result;
+    }
+
     public static <T> List<T> getAll(Class<T> object) {
         TypedQuery<T> allQuery = null;
         try {

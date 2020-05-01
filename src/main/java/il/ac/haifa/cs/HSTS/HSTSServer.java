@@ -29,7 +29,8 @@ public class HSTSServer extends AbstractServer {
             commandFromClient.printCommandDetails();
 
             switch (commandFromClient.getController().toLowerCase()) {
-                case "questions": commandFromClient = questionsController.QuestionHandler(commandFromClient); break;
+                case "questions":
+                    commandFromClient = questionsController.QuestionHandler(commandFromClient); break;
                 // other cases
                 case "users" : break;
 

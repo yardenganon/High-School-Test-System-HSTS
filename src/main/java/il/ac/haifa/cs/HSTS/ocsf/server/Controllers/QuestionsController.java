@@ -21,8 +21,13 @@ public class QuestionsController {
         // CRUD - Create , Read , Update , Delete
         switch (command.getCommand()) {
             case "readbysubject" : command.setReturnedObject(questionsRepository.getQuestionsBySubject((String)command.getParameter(0)));break;
-            case "push" : questionsRepository.pushQuestion((Question)command.getParameter(0));break;
-            case "update" :
+            case "readbyid" :
+                Object i = command.getParameter(0);
+                int j = (Integer.parseInt(String.valueOf(i)));
+                Question q = questionsRepository.getQuestionById(j);
+                command.setReturnedObject(q);break;
+            case "push" : questionsRepository.pushQuestion((Question) command.getParameter(0));break;
+            case "update" : questionsRepository.updateQuestion((Question) command.getParameter(0)); break;
             case "delete" :
                 break;
             // cases

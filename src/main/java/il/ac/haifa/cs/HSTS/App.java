@@ -25,22 +25,27 @@ public class App {
     public static void main(String[] args) {
 
 //        QuestionsRepository questionsRepository = new QuestionsRepository();
+//        Question q = questionsRepository.getQuestionById(1);
+//        System.out.println(q);
+//        q.setAnswer(1,"g");
+//        questionsRepository.updateQuestion(q);
+//        Question q2 = questionsRepository.getQuestionById(1);
+//        System.out.println(q2);
+
 //        List<Question> list = questionsRepository.getQuestionsBySubject("Math");
 //        for (Question question : list)
 //            System.out.println(question.toString());
+        try {
+            Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-
-//        try {
-//            Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-//            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
-//            session = SessionFactoryGlobal.openSessionAndTransaction(session);
-//
-//            /* Insert data here */
-//            SessionFactoryGlobal.closeTransaction(session);
-//        } catch (Exception exception) {
-//            SessionFactoryGlobal.exceptionCaught(session, exception);
-//        } finally {
-//            SessionFactoryGlobal.closeSession(session);
-//        }
+            /* Insert data here */
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
     }
 }
