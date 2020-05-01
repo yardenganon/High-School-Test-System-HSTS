@@ -60,6 +60,7 @@ public class HSTSClientInterface {
                                 }else
                                     System.out.println("Invalid CLI command");
 
+
                             }
                             else if (tokens[0].toLowerCase().equals(("readbysubject"))) {
                                 command = new Command(tokens[0], tokens[1], tokens[2]);
