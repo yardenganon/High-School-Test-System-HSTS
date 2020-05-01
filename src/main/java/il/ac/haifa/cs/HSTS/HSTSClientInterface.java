@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.HSTS;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 
 import javax.swing.*;
@@ -15,6 +16,7 @@ import java.util.StringTokenizer;
 public class HSTSClientInterface {
 
     private HSTSClient client;
+    private CLIInterface cliInterface;
     private boolean isRunning;
     private static final String SHELL_STRING = "Enter command (or exit to help)> ";
     private Thread loopThread;
@@ -22,6 +24,7 @@ public class HSTSClientInterface {
     public HSTSClientInterface(HSTSClient client) {
         this.client = client;
         this.isRunning = false;
+        this.cliInterface = new CLIInterface(this);
     }
 
     public void loop() throws IOException {
@@ -39,47 +42,8 @@ public class HSTSClientInterface {
                 Command command;
                 while (client.isConnected()) {
                     System.out.print(SHELL_STRING);
-
-                    try {
-                        // Parsing message -> command
-                        message = reader.readLine();
-                        StringTokenizer stringTokenizer = new StringTokenizer(message);
-                        String[] tokens = new String[stringTokenizer.countTokens()];
-                        int i = 0;
-                        while (stringTokenizer.hasMoreTokens()) {
-                            tokens[i] = stringTokenizer.nextToken();
-                            i++;
-                        }
-                        // Check command
-                        if (i > 2) {
-                            if (tokens[0].toLowerCase().equals("push") && tokens[1].toLowerCase().equals("questions")) {
-                                if (i == 10) {
-                                    command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
-                                            , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), tokens[8], tokens[9]));
-                                    sendCommandToClient(command);
-                                }else
-                                    System.out.println("Invalid CLI command");
-
-
-                            }
-                            else if (tokens[0].toLowerCase().equals(("readbysubject"))) {
-                                command = new Command(tokens[0], tokens[1], tokens[2]);
-                                sendCommandToClient(command);
-                            }
-
-                        }
-                        else if (message.equalsIgnoreCase("help"))
-                            helpCLI();
-                        else if (message.equalsIgnoreCase("exit")) {
-                            System.out.println("Closing connection.");
-                            client.closeConnection();
-                        }
-                    }
-                catch(IOException e1){
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
-
+                    // Parser and CLI logic moved into new CLIInterface class
+                    cliInterface.CLIInterfaceLoop();
             }
         }
     });
@@ -88,7 +52,10 @@ public class HSTSClientInterface {
         this.isRunning =true;
 
 }
-
+    public void helpCLI() {
+        System.out.println("Enter [push] [questions] ['Question'] [Ans1] [Ans2] [Ans3] [Ans4] [Correct answer] [Writer]");
+        System.out.println("Enter [readBySubject] [questions] ['Subject']");
+    }
     public void sendCommandToClient(Command command)
     {
         try {
@@ -98,9 +65,9 @@ public class HSTSClientInterface {
             e.printStackTrace();
         }
     }
-    public void helpCLI() {
-        System.out.println("Enter [push] [questions] ['Question'] [Ans1] [Ans2] [Ans3] [Ans4] [Correct answer] [Writer]");
-        System.out.println("Enter [readBySubject] [questions] ['Subject']");
+
+    public HSTSClient getClient() {
+        return client;
     }
 
     // Was displayMessage function in SimpleChatCLI

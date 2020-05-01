@@ -94,7 +94,9 @@ public class Command implements Serializable {
         return parameters;
     }
     public Object getParameter(int i) {
-        return parameters[i];
+        if (i<this.parameters.length)
+            return parameters[i];
+        return null;
     }
 
     public void setParameters(Object[] parameters) {
