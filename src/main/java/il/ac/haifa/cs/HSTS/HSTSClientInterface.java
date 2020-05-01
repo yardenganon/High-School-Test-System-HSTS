@@ -52,10 +52,6 @@ public class HSTSClientInterface {
         this.isRunning =true;
 
 }
-    public void helpCLI() {
-        System.out.println("Enter [push] [questions] ['Question'] [Ans1] [Ans2] [Ans3] [Ans4] [Correct answer] [Writer]");
-        System.out.println("Enter [readBySubject] [questions] ['Subject']");
-    }
     public void sendCommandToClient(Command command)
     {
         try {

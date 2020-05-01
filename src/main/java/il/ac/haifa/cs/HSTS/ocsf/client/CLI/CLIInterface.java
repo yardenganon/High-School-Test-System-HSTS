@@ -52,6 +52,7 @@ public class CLIInterface {
 
                 } else if (tokens[0].toLowerCase().equals(("readbysubject"))) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
+
                     hstsClientInterface.sendCommandToClient(command);
                 }
 
@@ -68,5 +69,6 @@ public class CLIInterface {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 }
