@@ -14,6 +14,7 @@ public class HSTSServer extends AbstractServer {
     public HSTSServer(int port) {
         super(port);
         questionsController = new QuestionsController(new QuestionsRepository());
+        System.out.println("Server initiated");
     }
 
     @Override
@@ -24,19 +25,32 @@ public class HSTSServer extends AbstractServer {
          * Etc.....		*/
         if (msg != null) {
             Command commandFromClient = (Command) msg;
+            System.out.print("Command received from client ");
             commandFromClient.printCommandDetails();
-            switch (commandFromClient.getController()) {
+
+            switch (commandFromClient.getController().toLowerCase()) {
                 case "questions": commandFromClient = questionsController.QuestionHandler(commandFromClient); break;
                 // other cases
+                case "users" : break;
 
                 default:
-                    commandFromClient.setStatus("Controller not found");
-                    commandFromClient.setDateHandled(new Date());
+                    Command handled = commandFromClient;
+                    handled.setStatus("Controller not found");
+                    handled.setDateHandled(new Date());
+                    System.out.println("Sending command back to client - " + handled.toString()+"\n");
+                    try {
+                        client.sendToClient(handled);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
             }
             try {
-                // after handle command, send back the command to Client (update status, etc...)
+                // after handling command, send back the command to Client (update status, etc...)
+                commandFromClient.setDateHandled(new Date());
+                System.out.println("Sending command back to client - " + commandFromClient.toString()+"\n");
                 client.sendToClient(commandFromClient);
             } catch (IOException e) {
+                System.out.println("Command has not sent back to client\n");
                 e.printStackTrace();
             }
         }

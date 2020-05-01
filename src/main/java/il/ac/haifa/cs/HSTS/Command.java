@@ -1,5 +1,6 @@
 package il.ac.haifa.cs.HSTS;
 
+import javax.swing.text.StyledEditorKit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,15 +16,37 @@ public class Command implements Serializable {
     String status;
     Date dateCreated;
     Date dateHandled;
+    List<Object> returnedList;
+    Object returnedObject;
 
-    public Command(String controller ,String command, Object... parameters) {
-        this.controller = controller;
-        this.command = command;
+    public Command(String command , String controller , Object... parameters) {
+        this.controller = controller.toLowerCase();
+        this.command = command.toLowerCase();
         this.parameters = new Object[parameters.length];
         for (int i = 0; i < parameters.length; i++)
             this.parameters[i] = parameters[i];
         this.status = "Open";
         this.dateCreated = new Date();
+        this.returnedList = null;
+        this.returnedObject = null;
+    }
+    public Boolean isCommand(String controllerName , String commandPath) {
+        return (this.controller.toLowerCase().equals(controllerName) && this.command.toLowerCase().equals(commandPath));
+    }
+    public List<Object> getReturnedList() {
+        return returnedList;
+    }
+
+    public void setReturnedList(List<Object> returnedList) {
+        this.returnedList = returnedList;
+    }
+
+    public Object getReturnedObject() {
+        return returnedObject;
+    }
+
+    public void setReturnedObject(Object returnedObject) {
+        this.returnedObject = returnedObject;
     }
 
     public void notifySuccessfullyHandled() {this.status = "Success";}
@@ -78,8 +101,8 @@ public class Command implements Serializable {
         this.parameters = parameters;
     }
     public void printCommandDetails(){
-        System.out.println("Command Received- [Controller= " + (this.getController() +
-                ", Type= " + this.getCommand())+" ,Status= "+this.getStatus() +", Date = " + this.getDateCreated() +"]");
+        System.out.println("[Controller= " + (this.getController() +
+                ", Type= " + this.getCommand())+" ,Status= "+this.getStatus() +", Date = " + this.getDateCreated() +", Handled = " + this.getDateHandled() +"]");
     }
 
     @Override
@@ -89,6 +112,8 @@ public class Command implements Serializable {
                 ", status='" + status + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateHandled=" + dateHandled +
+                ", Params=" +parameters +
+                ", ReturnedObject=" +returnedObject.toString() +
                 '}';
     }
 }
