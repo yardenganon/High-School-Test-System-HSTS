@@ -21,6 +21,7 @@ public class CLIInterface {
         System.out.println("Enter [readBySubject] [questions] ['Subject']");
         System.out.println("Enter [readById] [questions] [id]");
         System.out.println("Enter [update] [questions] [*Question Object*]");
+        System.out.println("Enter [delete] [questions] [*Question Object*]");
     }
 
     public void CLIInterfaceLoop() {
@@ -59,6 +60,9 @@ public class CLIInterface {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
                     hstsClientInterface.sendCommandToClient(command);
                 } else if (tokens[0].toLowerCase().equals("update") && tokens[1].toLowerCase().equals("questions")) {
+                    command = new Command(tokens[0], tokens[1], tokens[2]);
+                    hstsClientInterface.sendCommandToClient(command);
+                } else if (tokens[0].toLowerCase().equals("delete") && tokens[1].toLowerCase().equals("questions")) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
                     hstsClientInterface.sendCommandToClient(command);
                 }

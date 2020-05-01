@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/* Try to avoid using this file
+/* Try to avoid using this test file
  Run this file to create data in DB manually */
 
 public class App {
@@ -25,12 +25,13 @@ public class App {
     public static void main(String[] args) {
 
 //        QuestionsRepository questionsRepository = new QuestionsRepository();
-//        Question q = questionsRepository.getQuestionById(1);
+//        Question q = questionsRepository.getQuestionById(2);
 //        System.out.println(q);
 //        q.setAnswer(1,"g");
 //        questionsRepository.updateQuestion(q);
-//        Question q2 = questionsRepository.getQuestionById(1);
+//        Question q2 = questionsRepository.getQuestionById(2);
 //        System.out.println(q2);
+//        questionsRepository.deleteQuestion(q2);
 
 //        List<Question> list = questionsRepository.getQuestionsBySubject("Math");
 //        for (Question question : list)
