@@ -72,6 +72,19 @@ public class QuestionsRepository {
         }
         return results;
     }
+    public void deleteQuestion(Question question) {
+        try {
+            session =  SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Ask for data here */
+            session.delete(question);
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+    }
     public Question getQuestionById(int id) {
         Question result = null;
         try {

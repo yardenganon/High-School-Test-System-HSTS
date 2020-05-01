@@ -25,11 +25,10 @@ public class QuestionsController {
                 Object i = command.getParameter(0);
                 int j = (Integer.parseInt(String.valueOf(i)));
                 Question q = questionsRepository.getQuestionById(j);
-                command.setReturnedObject(q);break;
+                command.setReturnedObject(q); break;
             case "push" : questionsRepository.pushQuestion((Question) command.getParameter(0));break;
             case "update" : questionsRepository.updateQuestion((Question) command.getParameter(0)); break;
-            case "delete" :
-                break;
+            case "delete" : questionsRepository.deleteQuestion((Question) command.getParameter(0)); break;
             // cases
             default : command.setStatus("Command invalid");
                 System.out.println("Command invalid: "+command.getCommand());
