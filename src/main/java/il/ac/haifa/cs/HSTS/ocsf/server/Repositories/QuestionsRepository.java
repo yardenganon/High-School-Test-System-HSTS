@@ -19,12 +19,6 @@ public class QuestionsRepository {
 
     private static Session session;
 
-    /* Methods that have to be added:
-     * getAllQuestionsBySubject -Read
-     * getQuestionById -Read
-     * deleteQuestionById -Delete
-     * updateQuestionById -Update */
-
     // Create
     public void pushQuestion(Question question) {
         try {
@@ -38,6 +32,7 @@ public class QuestionsRepository {
             SessionFactoryGlobal.closeSession(session);
         }
     }
+
     public void updateQuestion(Question question) {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -49,8 +44,8 @@ public class QuestionsRepository {
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
-
     }
+
     public List<Question> getQuestionsBySubject(String subject) {
         List<Question> results = null;
         try {
@@ -72,12 +67,12 @@ public class QuestionsRepository {
         }
         return results;
     }
+
     public void deleteQuestion(Question question) {
         try {
             session =  SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Ask for data here */
             session.delete(question);
-
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
@@ -85,6 +80,7 @@ public class QuestionsRepository {
             SessionFactoryGlobal.closeSession(session);
         }
     }
+
     public Question getQuestionById(int id) {
         Question result = null;
         try {
