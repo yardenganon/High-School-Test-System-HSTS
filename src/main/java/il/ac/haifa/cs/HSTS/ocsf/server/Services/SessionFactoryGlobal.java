@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SessionFactoryGlobal {
+
     public static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
 
@@ -25,6 +26,7 @@ public class SessionFactoryGlobal {
 
         return configuration.buildSessionFactory(serviceRegistry);
     }
+
     public static Session openSessionAndTransaction(Session session) {
         //Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         try {
@@ -39,6 +41,7 @@ public class SessionFactoryGlobal {
         }
         return session;
     }
+
     public static Session closeTransaction(Session session){
         try {
             session.flush();
@@ -56,6 +59,7 @@ public class SessionFactoryGlobal {
         }
         return session;
     }
+
     public static Session exceptionCaught(Session session, Exception exception) {
         if (session != null)
             session.getTransaction().rollback();
@@ -63,6 +67,7 @@ public class SessionFactoryGlobal {
         exception.printStackTrace();
         return session;
     }
+
     public static void closeSession(Session session) {
 
         try {

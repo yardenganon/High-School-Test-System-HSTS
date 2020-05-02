@@ -9,17 +9,13 @@ public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-
     String question;
     String answer1;
     String answer2;
     String answer3;
     String answer4;
-
     int correctAnswer;
-
     String writer; // Will be User
-
     String subject;
 
     public Question() {}
@@ -43,6 +39,7 @@ public class Question implements Serializable {
             case 4 : answer4 = answer; break;
         }
     }
+
     public String getAnswer(int num) {
         switch (num) {
             case 1 : return (answer1);

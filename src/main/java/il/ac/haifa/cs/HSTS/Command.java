@@ -30,9 +30,11 @@ public class Command implements Serializable {
         this.returnedList = null;
         this.returnedObject = null;
     }
+
     public Boolean isCommand(String controllerName , String commandPath) {
         return (this.controller.toLowerCase().equals(controllerName) && this.command.toLowerCase().equals(commandPath));
     }
+
     public List<Object> getReturnedList() {
         return returnedList;
     }
@@ -90,9 +92,11 @@ public class Command implements Serializable {
     public void setDateHandled(Date dateHandled) {
         this.dateHandled = dateHandled;
     }
+
     public Object[] getParameters() {
         return parameters;
     }
+
     public Object getParameter(int i) {
         if (i<this.parameters.length)
             return parameters[i];
@@ -102,6 +106,7 @@ public class Command implements Serializable {
     public void setParameters(Object[] parameters) {
         this.parameters = parameters;
     }
+
     public void printCommandDetails(){
         System.out.println("[Controller= " + (this.getController() +
                 ", Type= " + this.getCommand())+" ,Status= "+this.getStatus() +", Date = " + this.getDateCreated() +", Handled = " + this.getDateHandled() +"]");
