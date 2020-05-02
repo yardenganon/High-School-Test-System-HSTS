@@ -32,6 +32,14 @@ public class User {
         return password;
     }
 
+    public Date getDate_of_last_login() {
+        return date_of_last_login;
+    }
+
+    public void setDate_of_last_login(Date date_of_last_login) {
+        this.date_of_last_login = date_of_last_login;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
