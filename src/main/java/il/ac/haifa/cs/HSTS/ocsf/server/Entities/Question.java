@@ -9,6 +9,9 @@ public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @ManyToOne
+    Subject subject;
+    int questionCode;
     String question;
     String answer1;
     String answer2;
@@ -16,11 +19,11 @@ public class Question implements Serializable {
     String answer4;
     int correctAnswer;
     String writer; // Will be User
-    String subject;
 
     public Question() {}
 
-    public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer, String writer, String subject) {
+    public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer,
+                    String writer, Subject subject) {
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
@@ -49,15 +52,19 @@ public class Question implements Serializable {
         return answer4;
     }
 
+    public int get_question_number(){
+        return 10000 * this.subject.getSubjectCode() + this.questionCode;
+    }
+
     public int getId() {
         return id;
     }
 
-    public String getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
