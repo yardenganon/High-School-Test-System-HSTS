@@ -46,8 +46,8 @@ public class GUIInterface {
             if (i > 2) {
                 if (tokens[0].toLowerCase().equals("push") && tokens[1].toLowerCase().equals("questions")) {
                     if (i == 10) {
-                        command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
-                                , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), tokens[8], tokens[9]));
+                       // command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
+                            //    , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), tokens[8], tokens[9]));
                         hstsClientInterface.sendCommandToClient(command);
                     } else
                         System.out.println("Invalid CLI command");

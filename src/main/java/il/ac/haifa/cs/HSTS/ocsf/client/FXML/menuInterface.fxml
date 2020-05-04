@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.gluonhq.charm.glisten.control.Icon?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="663.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="910.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.menuInterface">
    <children>
       <VBox prefHeight="649.0" prefWidth="248.0" style="-fx-background-color: #808080;">
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #808080;">
+            <Pane prefHeight="226.0" prefWidth="248.0" style="-fx-background-color: #808080;">
                <children>
                   <ImageView fitHeight="73.0" fitWidth="88.0" layoutX="82.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -25,29 +32,56 @@
                         <Font name="Calibri Bold" size="20.0" />
                      </font>
                   </Label>
+                  <Label layoutX="24.0" layoutY="166.0" prefHeight="38.0" prefWidth="100.0" text="Hello teacher" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="logoutbtn" layoutX="145.0" layoutY="167.0" mnemonicParsing="false" onAction="#logout" prefHeight="36.0" prefWidth="70.0" style="-fx-background-color: #808080;" text="Logout">
+                     <font>
+                        <Font name="Calibri Bold" size="15.0" />
+                     </font>
+                  </Button>
                </children>
             </Pane>
-            <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
-               <font>
-                  <Font name="Calibri Bold" size="23.0" />
-               </font>
-            </Button>
-            <Button fx:id="loginBtn1" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
-               <font>
-                  <Font name="Calibri Bold" size="23.0" />
-               </font>
-            </Button>
-            <Button fx:id="loginBtn2" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
-               <font>
-                  <Font name="Calibri Bold" size="23.0" />
-               </font>
-            </Button>
-            <Button fx:id="loginBtn3" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
+            <Button fx:id="Showbtn" mnemonicParsing="false" onAction="#Show" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Show questions">
                <font>
                   <Font name="Calibri Bold" size="23.0" />
                </font>
             </Button>
          </children>
       </VBox>
+      <VBox layoutX="248.0" layoutY="66.0" prefHeight="582.0" prefWidth="662.0">
+         <children>
+            <GridPane fx:id="t" prefHeight="635.0" prefWidth="658.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="623.9999950408935" minHeight="10.0" prefHeight="588.5999908447266" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TableView fx:id="tablev" prefHeight="623.0" prefWidth="650.0" visible="false">
+                    <columns>
+                      <TableColumn prefWidth="49.60005187988281" text="id" />
+                      <TableColumn prefWidth="102.4000244140625" text="question" />
+                        <TableColumn prefWidth="75.20001220703125" text="answer1" />
+                        <TableColumn prefWidth="78.39996337890625" text="answer2" />
+                        <TableColumn prefWidth="73.60003662109375" text="answer3" />
+                        <TableColumn prefWidth="76.0" text="answer4" />
+                        <TableColumn prefWidth="105.599853515625" text="correct_answer" />
+                        <TableColumn prefWidth="103.2001953125" text="subject" />
+                    </columns>
+                  </TableView>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+      <TextField fx:id="searchTF" layoutX="299.0" layoutY="15.0" prefHeight="38.0" prefWidth="406.0" text="Search your question here" visible="false" />
+      <Button fx:id="searchbtn" layoutX="706.0" layoutY="16.0" minWidth="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="70.0" visible="false">
+         <graphic>
+            <Icon fx:id="searchicon" content="SEARCH" prefHeight="35.0" prefWidth="54.0" />
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>
