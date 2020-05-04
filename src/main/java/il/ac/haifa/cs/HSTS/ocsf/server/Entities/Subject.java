@@ -14,14 +14,17 @@ public class Subject implements Serializable {
     int subjectCode;
     String subjectName;
     @OneToMany
-    List<Question> subjectQuestions;
+    List<Question> questions;
+    @OneToMany
+    List<Course> courses;
     int numberOfQuestions;
+
 
     public Subject(){}
     public Subject(int subjectCode, String subjectName){
         this.subjectCode = subjectCode;
         this.subjectName = subjectName;
-        this.subjectQuestions = new ArrayList<Question>();
+        this.questions = new ArrayList<Question>();
         this.numberOfQuestions = 0;
     }
 
@@ -45,11 +48,11 @@ public class Subject implements Serializable {
         this.subjectName = subjectName;
     }
 
-    public List<Question> getSubjectQuestions() {
-        return subjectQuestions;
+    public List<Question> getQuestions() {
+        return questions;
     }
 
-    public void setSubjectQuestions(List<Question> subjectQuestions) {
-        this.subjectQuestions = subjectQuestions;
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

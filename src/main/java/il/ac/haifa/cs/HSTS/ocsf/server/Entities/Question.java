@@ -11,19 +11,18 @@ public class Question implements Serializable {
     int id;
     @ManyToOne
     Subject subject;
-    int questionCode;
     String question;
     String answer1;
     String answer2;
     String answer3;
     String answer4;
     int correctAnswer;
-    String writer; // Will be User
+    User writer; // Will be User
 
     public Question() {}
 
     public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer,
-                    String writer, Subject subject) {
+                    User writer, Subject subject) {
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
@@ -52,8 +51,12 @@ public class Question implements Serializable {
         return answer4;
     }
 
-    public int get_question_number(){
-        return 10000 * this.subject.getSubjectCode() + this.questionCode;
+    public User getWriter() {
+        return writer;
+    }
+
+    public void setWriter(User writer) {
+        this.writer = writer;
     }
 
     public int getId() {
@@ -84,13 +87,6 @@ public class Question implements Serializable {
         this.correctAnswer = correctAnswer;
     }
 
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
-    }
 
     @Override
     public String toString() {

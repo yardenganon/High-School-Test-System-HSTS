@@ -26,6 +26,10 @@ public class User {
 
     public User(){}
 
+    public Date getDate_of_signup() {
+        return date_of_signup;
+    }
+
     public String getPassword() {
         return password;
     }
