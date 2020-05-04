@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="663.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
+   <children>
+      <VBox prefHeight="649.0" prefWidth="248.0" style="-fx-background-color: #808080;">
+         <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #808080;">
+               <children>
+                  <ImageView fitHeight="73.0" fitWidth="88.0" layoutX="82.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../../../../../../OneDrive/Desktop/img_4436.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="42.0" layoutY="122.0" prefHeight="36.0" prefWidth="206.0" text="Lone Oak High School">
+                     <font>
+                        <Font name="Calibri Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="loginBtn" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
+               <font>
+                  <Font name="Calibri Bold" size="23.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginBtn1" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
+               <font>
+                  <Font name="Calibri Bold" size="23.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginBtn2" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
+               <font>
+                  <Font name="Calibri Bold" size="23.0" />
+               </font>
+            </Button>
+            <Button fx:id="loginBtn3" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Login">
+               <font>
+                  <Font name="Calibri Bold" size="23.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
