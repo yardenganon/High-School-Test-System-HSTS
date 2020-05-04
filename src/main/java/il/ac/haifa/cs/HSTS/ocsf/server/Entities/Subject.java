@@ -21,8 +21,7 @@ public class Subject implements Serializable {
 
 
     public Subject(){}
-    public Subject(int subjectCode, String subjectName){
-        this.subjectCode = subjectCode;
+    public Subject(String subjectName){
         this.subjectName = subjectName;
         this.questions = new ArrayList<Question>();
         this.numberOfQuestions = 0;

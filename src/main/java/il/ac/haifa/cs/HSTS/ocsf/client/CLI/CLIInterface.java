@@ -3,6 +3,8 @@ package il.ac.haifa.cs.HSTS.ocsf.client.CLI;
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +49,7 @@ public class CLIInterface {
                 if (tokens[0].toLowerCase().equals("push") && tokens[1].toLowerCase().equals("questions")) {
                     if (i == 10) {
                         command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
-                                , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), tokens[8], tokens[9]));
+                                , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), new User(),new Subject("Math")));
                         hstsClientInterface.sendCommandToClient(command);
                     } else
                         System.out.println("Invalid CLI command");
