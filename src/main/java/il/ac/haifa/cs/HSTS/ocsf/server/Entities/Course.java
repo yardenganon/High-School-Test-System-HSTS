@@ -1,14 +1,20 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Entities;
 
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Course {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    @ManyToOne
     Subject subject;
+    @ManyToOne
     Teacher teacher;
+    @ManyToMany
     List<Student> students;
 
     public Course(Subject subject, Teacher teacher) {

@@ -11,7 +11,7 @@ public class Subject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    int subjectCode;
+
     String subjectName;
     @OneToMany
     List<Question> questions;
@@ -31,14 +31,6 @@ public class Subject implements Serializable {
         return id;
     }
 
-    public int getSubjectCode() {
-        return subjectCode;
-    }
-
-    public void setSubjectcode(int subjectCode) {
-        this.subjectCode = subjectCode;
-    }
-
     public String getSubjectName() {
         return this.subjectName;
     }
@@ -53,5 +45,25 @@ public class Subject implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public int getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public void setNumberOfQuestions(int numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
     }
 }
