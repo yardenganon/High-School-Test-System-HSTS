@@ -20,7 +20,7 @@ public class loginInterface {
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
-
+    
     @FXML // fx:id="usernameTF"
     private TextField usernameTF; // Value injected by FXMLLoader
 
@@ -28,9 +28,11 @@ public class loginInterface {
     private TextField passwordTF; // Value injected by FXMLLoader
 
     @FXML
-    void login(ActionEvent event) {
-    	
+    void login(ActionEvent event) throws IOException{
+    	MainClass.setRoot("menuInterface");
     }
+    
+
 
 }
 

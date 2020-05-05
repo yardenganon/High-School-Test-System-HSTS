@@ -4,6 +4,8 @@
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import java.io.IOException;
+
 //import com.gluonhq.charm.glisten.control.Icon;
 
 import javafx.event.ActionEvent;
@@ -16,7 +18,7 @@ import javafx.scene.layout.GridPane;
 public class menuInterface {
 
     @FXML // fx:id="logoutbtn"
-    private Button logoutbtn; // Value injected by FXMLLoader
+    private Button logoutBtn; // Value injected by FXMLLoader
 
     @FXML // fx:id="Showbtn"
     private Button Showbtn; // Value injected by FXMLLoader
@@ -39,10 +41,10 @@ public class menuInterface {
     	searchTF.setVisible(true);
     	tablev.setVisible(true);
     }
-
+    
     @FXML
-    void logout(ActionEvent event) {
-
+    void logout(ActionEvent event) throws IOException{
+    	MainClass.setRoot("loginInterface");
     }
 
 }
