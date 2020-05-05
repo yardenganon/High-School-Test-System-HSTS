@@ -9,7 +9,8 @@ public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id")
     Subject subject;
     String question;
     String answer1;
@@ -17,12 +18,16 @@ public class Question implements Serializable {
     String answer3;
     String answer4;
     int correctAnswer;
-    User writer; // Will be User
 
-    public Question() {}
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id")
+    Teacher writer;
+
+    public Question() {
+    }
 
     public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer,
-                    User writer, Subject subject) {
+                    Teacher writer, Subject subject) {
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
@@ -35,18 +40,29 @@ public class Question implements Serializable {
 
     public void setAnswer(int num, String answer) {
         switch (num) {
-            case 1 : answer1 = answer; break;
-            case 2 : answer2 = answer; break;
-            case 3 : answer3 = answer; break;
-            case 4 : answer4 = answer; break;
+            case 1:
+                answer1 = answer;
+                break;
+            case 2:
+                answer2 = answer;
+                break;
+            case 3:
+                answer3 = answer;
+                break;
+            case 4:
+                answer4 = answer;
+                break;
         }
     }
 
     public String getAnswer(int num) {
         switch (num) {
-            case 1 : return (answer1);
-            case 2 : return (answer2);
-            case 3 : return (answer3);
+            case 1:
+                return (answer1);
+            case 2:
+                return (answer2);
+            case 3:
+                return (answer3);
         }
         return answer4;
     }
@@ -55,7 +71,7 @@ public class Question implements Serializable {
         return writer;
     }
 
-    public void setWriter(User writer) {
+    public void setWriter(Teacher writer) {
         this.writer = writer;
     }
 

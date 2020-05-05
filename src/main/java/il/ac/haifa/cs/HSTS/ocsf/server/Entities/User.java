@@ -1,8 +1,12 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import java.util.Date;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
     private String username;
     private String password;
@@ -28,6 +32,10 @@ public class User {
 
     public Date getDate_of_signup() {
         return date_of_signup;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
