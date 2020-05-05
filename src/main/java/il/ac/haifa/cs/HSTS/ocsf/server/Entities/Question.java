@@ -36,7 +36,13 @@ public class Question implements Serializable {
         this.correctAnswer = correctAnswer;
         this.writer = writer;
         this.subject = subject;
+
+        // making Bi-Directional bond
+        setWriter(writer);
+        setSubject(subject);
     }
+
+
 
     public void setAnswer(int num, String answer) {
         switch (num) {
@@ -73,6 +79,7 @@ public class Question implements Serializable {
 
     public void setWriter(Teacher writer) {
         this.writer = writer;
+        writer.addQuestion(this);
     }
 
     public int getId() {
@@ -85,6 +92,7 @@ public class Question implements Serializable {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+        subject.addQuestion(this);
     }
 
     public String getQuestion() {

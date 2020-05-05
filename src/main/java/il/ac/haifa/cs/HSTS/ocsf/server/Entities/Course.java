@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,20 +28,23 @@ public class Course {
 
 
     public Course(Subject subject, Teacher teacher) {
-        this.subject = subject;
-        this.teacher = teacher;
+        setSubject(subject);
+        setTeacher(teacher);
         this.students = new ArrayList<Student>();
     }
-    public void addStudent(Student student)
-    {
+
+
+    public void addStudent(Student student) {
         students.add(student);
     }
+
     public Subject getSubject() {
         return subject;
     }
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+        subject.addCourse(this);
     }
 
     public Teacher getTeacher() {
@@ -49,6 +53,7 @@ public class Course {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+        teacher.addCourse(this);
     }
 
     public List<Student> getStudents() {

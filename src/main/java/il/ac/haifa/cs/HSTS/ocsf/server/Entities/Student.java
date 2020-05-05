@@ -13,7 +13,7 @@ public class Student extends User {
     List<Course> courses;
 
     public Student(String username, String password, String email, String first_name, String last_name, String gender, String job) {
-        super(username, password, email, first_name, last_name, gender, job);
+        super(username, password, email, first_name, last_name, gender);
         this.courses = new ArrayList<Course>();
     }
     public void addCourse(Course course){
