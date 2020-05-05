@@ -1,22 +1,20 @@
 package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.FXML.GUIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
 
 // That was CLIChatClient
 public class HSTSClientInterface {
 
     private HSTSClient client;
     private CLIInterface cliInterface;
+    private GUIInterface guiInterface;
     private boolean isRunning;
     private static final String SHELL_STRING = "Enter command (or exit to help)> ";
     private Thread loopThread;
@@ -25,6 +23,7 @@ public class HSTSClientInterface {
         this.client = client;
         this.isRunning = false;
         this.cliInterface = new CLIInterface(this);
+        this.guiInterface = new GUIInterface(this);
     }
 
     public void loop() throws IOException {
@@ -44,6 +43,7 @@ public class HSTSClientInterface {
                     System.out.print(SHELL_STRING);
                     // Parser and CLI logic moved into new CLIInterface class
                     cliInterface.CLIInterfaceLoop();
+                    guiInterface.guiInterfaceLoop();
             }
         }
     });
