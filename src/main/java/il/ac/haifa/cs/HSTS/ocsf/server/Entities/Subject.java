@@ -12,12 +12,13 @@ public class Subject implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    String subjectName;
-    @OneToMany
-    List<Question> questions;
-    @OneToMany
-    List<Course> courses;
     int numberOfQuestions;
+    String subjectName;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    List<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    List<Course> courses;
 
 
     public Subject(){}
