@@ -1,8 +1,6 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Controllers;
 
 import il.ac.haifa.cs.HSTS.Command;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.UsersRepository;
 
 public class UsersController {
