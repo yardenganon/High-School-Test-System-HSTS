@@ -13,7 +13,8 @@ public class User {
     private Date date_of_signup;
     private Date date_of_last_login;
 
-    public User(String username, String password, String email, String first_name, String last_name, String gender, String job) {
+    public User(String username, String password, String email, String first_name, String last_name,
+                String gender, String job) {
         this.username = username;
         this.password = password;
         this.email = email;
