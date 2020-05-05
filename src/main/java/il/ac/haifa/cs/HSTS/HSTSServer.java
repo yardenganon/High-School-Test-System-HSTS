@@ -6,14 +6,17 @@ import java.util.Date;
 import il.ac.haifa.cs.HSTS.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.QuestionsController;
+import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.UsersController;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
+import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.UsersRepository;
 
 public class HSTSServer extends AbstractServer {
     QuestionsController questionsController;
-
+    UsersController usersController;
     public HSTSServer(int port) {
         super(port);
         questionsController = new QuestionsController(new QuestionsRepository());
+        usersController = new UsersController(new UsersRepository());
         System.out.println("Server initiated");
     }
 
@@ -32,7 +35,8 @@ public class HSTSServer extends AbstractServer {
                 case "questions":
                     commandFromClient = questionsController.QuestionHandler(commandFromClient); break;
                 // other cases
-                case "users" : break;
+                case "users" :
+                    commandFromClient = usersController.UserHandler(commandFromClient); break;
 
                 default:
                     Command handled = commandFromClient;

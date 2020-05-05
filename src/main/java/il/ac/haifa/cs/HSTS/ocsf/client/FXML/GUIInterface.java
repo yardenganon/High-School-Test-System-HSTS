@@ -24,7 +24,7 @@ public class GUIInterface {
         System.out.println("Enter [delete] [questions] [*Question Object*]");
     }
 
-    public void CLIInterfaceLoop() {
+    public void guiInterfaceLoop() {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         try {
             // Parsing message -> command
