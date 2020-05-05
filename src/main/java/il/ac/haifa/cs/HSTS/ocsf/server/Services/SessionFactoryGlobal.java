@@ -1,6 +1,6 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Services;
 
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,7 +18,12 @@ public class SessionFactoryGlobal {
 
         // Add entities here
         configuration.addAnnotatedClass(Question.class);
-
+        configuration.addAnnotatedClass(Course.class);
+        configuration.addAnnotatedClass(Principle.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Teacher.class);
+        configuration.addAnnotatedClass(Student.class);
+        configuration.addAnnotatedClass(Subject.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties())

@@ -1,9 +1,14 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Entities;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String username;
     private String password;
     private String email;
@@ -13,8 +18,7 @@ public class User {
     private Date date_of_signup;
     private Date date_of_last_login;
 
-    public User(String username, String password, String email, String first_name, String last_name,
-                String gender, String job) {
+    public User(String username, String password, String email, String first_name, String last_name, String gender) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -29,6 +33,10 @@ public class User {
 
     public Date getDate_of_signup() {
         return date_of_signup;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {

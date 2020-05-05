@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="744.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
    <children>
       <Button fx:id="loginBtn" layoutX="395.0" layoutY="407.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" text="Login">
@@ -29,9 +28,9 @@
       </TextField>
       <VBox alignment="CENTER" prefHeight="649.0" prefWidth="370.0" style="-fx-background-color: #808080;">
          <children>
-            <ImageView fitHeight="456.0" fitWidth="371.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="182.0" fitWidth="310.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../../../../../../../../OneDrive/Desktop/img_4436.jpg" />
+                  <Image url="@Images/logo.jpg" />
                </image>
             </ImageView>
             <Label alignment="CENTER" prefHeight="75.0" prefWidth="371.0" text="LONE OAK HIGH SCHOOL" textFill="#f3f3f5">

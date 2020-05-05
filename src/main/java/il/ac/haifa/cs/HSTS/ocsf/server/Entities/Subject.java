@@ -6,41 +6,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "subject")
+@Table(name = "subjects")
 public class Subject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    int subjectCode;
-    String subjectName;
-    @OneToMany
-    List<Question> questions;
-    @OneToMany
-    List<Course> courses;
+
     int numberOfQuestions;
+    String subjectName;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    List<Question> questions;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    List<Course> courses;
+    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Teacher> teachers;
 
 
     public Subject(){}
     public Subject(String subjectName){
         this.subjectName = subjectName;
         this.questions = new ArrayList<Question>();
+        this.teachers = new ArrayList<Teacher>();
         this.numberOfQuestions = 0;
+    }
+
+    public void addTeacher(Teacher teacher) {
+        this.teachers.add(teacher);
+        teacher.addSubject(this);
     }
 
     public int getId() {
         return id;
     }
 
-    public int getSubjectCode() {
-        return subjectCode;
-    }
-
-    public void setSubjectcode(int subjectCode) {
-        this.subjectCode = subjectCode;
-    }
-
     public String getSubjectName() {
         return this.subjectName;
+    }
+    public void addCourse(Course course) {
+        this.courses.add(course);
+    }
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+        numberOfQuestions++;
     }
 
     public void setSubject_name(String subjectName) {
@@ -53,5 +61,25 @@ public class Subject implements Serializable {
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public int getNumberOfQuestions() {
+        return numberOfQuestions;
+    }
+
+    public void setNumberOfQuestions(int numberOfQuestions) {
+        this.numberOfQuestions = numberOfQuestions;
     }
 }
