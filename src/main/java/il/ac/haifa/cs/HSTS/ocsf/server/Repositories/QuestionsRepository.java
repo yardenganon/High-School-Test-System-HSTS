@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Repositories;
 
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.SessionFactoryGlobal;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -11,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 // Repository, data manipulation in DB- Create, Read, Update, Delete
@@ -46,19 +48,23 @@ public class QuestionsRepository {
         }
     }
 
-    public List<Question> getQuestionsBySubject(String subject) {
-        List<Question> results = null;
+    public List<Subject> getQuestionsBySubject(List<Subject> subjects) {
+        List<Subject> results = new ArrayList<Subject>();
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
+
             /* Ask for data here */
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Question> criteriaQuery = builder.createQuery(Question.class);
-            Root<Question> root = criteriaQuery.from(Question.class);
-            criteriaQuery.select(root).where(builder.like(root.get("subject"),"%"+subject+"%"));
+            CriteriaQuery<Subject> criteriaQuery = builder.createQuery(Subject.class);
+            Root<Subject> root = criteriaQuery.from(Subject.class);
 
-            Query query = session.createQuery(criteriaQuery);
-            results = query.getResultList();
-
+            for (int i = 0;i< subjects.size();i++) {
+                String subject = subjects.get(i).getSubjectName();
+                criteriaQuery.select(root).where(
+                        builder.equal(root.get("subjectName"),subject));
+                Query query = session.createQuery(criteriaQuery);
+                results.addAll(query.getResultList());
+            }
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);

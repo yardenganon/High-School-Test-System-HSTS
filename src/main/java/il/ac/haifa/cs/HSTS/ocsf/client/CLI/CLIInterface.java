@@ -10,6 +10,8 @@ import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class CLIInterface {
@@ -21,10 +23,11 @@ public class CLIInterface {
 
     public void helpCLI() {
         System.out.println("Enter [push] [questions] [*Question Object*] [Ans1] [Ans2] [Ans3] [Ans4] [Correct answer] [Writer]");
-        System.out.println("Enter [readBySubject] [questions] ['Subject']");
+        System.out.println("Enter [readBySubject] [questions] ['List<Subject>']"); // You'll get list of subjects with question inside every subject (subject.getQuestions())
         System.out.println("Enter [readById] [questions] [id]");
         System.out.println("Enter [update] [questions] [*Question Object*]");
         System.out.println("Enter [delete] [questions] [*Question Object*]");
+        System.out.println("Enter [login] [users] ['username'] ['password']");
     }
 
     public void CLIInterfaceLoop() {
@@ -50,14 +53,22 @@ public class CLIInterface {
                 if (tokens[0].toLowerCase().equals("push") && tokens[1].toLowerCase().equals("questions")) {
                     if (i == 10) {
                         command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
-                                , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), new Teacher(),new Subject("Math")));
+                                , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), new Teacher(), new Subject("Math")));
                         hstsClientInterface.sendCommandToClient(command);
                     } else
                         System.out.println("Invalid CLI command");
 
 
+                } else if (tokens[0].toLowerCase().equals("login") && tokens[1].toLowerCase().equals("users")){
+                    command = new Command("login","users",tokens[2],tokens[3]);
+                    hstsClientInterface.sendCommandToClient(command);
                 } else if (tokens[0].toLowerCase().equals(("readbysubject")) && tokens[1].toLowerCase().equals("questions")) {
-                    command = new Command(tokens[0], tokens[1], tokens[2]);
+                    List<Subject> subjectList = new ArrayList<Subject>();
+                    Subject subject = new Subject("Mathematics");
+                    Subject subject2 = new Subject("Science");
+                    subjectList.add(subject);
+                    subjectList.add(subject2);
+                    command = new Command(tokens[0], tokens[1], subjectList);
                     hstsClientInterface.sendCommandToClient(command);
                 } else if (tokens[0].toLowerCase().equals("readbyid") && tokens[1].toLowerCase().equals("questions")) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);

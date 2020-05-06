@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.server.Controllers;
 
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class QuestionsController {
 
         // CRUD - Create , Read , Update , Delete
         switch (command.getCommand()) {
-            case "readbysubject" : command.setReturnedObject(questionsRepository.getQuestionsBySubject((String)command.getParameter(0)));break;
+            case "readbysubject" : command.setReturnedObject(questionsRepository.getQuestionsBySubject((List<Subject>)command.getParameter(0)));break;
             case "readbyid" :
                 Object i = command.getParameter(0);
                 int j = (Integer.parseInt(String.valueOf(i)));

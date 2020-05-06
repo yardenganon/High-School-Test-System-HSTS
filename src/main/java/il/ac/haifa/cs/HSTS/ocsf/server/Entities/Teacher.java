@@ -1,11 +1,12 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Teacher extends User{
+public class Teacher extends User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "teacher")
     List<Course> courses;
 
@@ -35,4 +36,11 @@ public class Teacher extends User{
     public void addQuestion(Question question) { this.questions.add(question);}
 
     public void addSubject(Subject subject) {this.subjects.add(subject);}
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "courses=" + courses +
+                '}';
+    }
 }
