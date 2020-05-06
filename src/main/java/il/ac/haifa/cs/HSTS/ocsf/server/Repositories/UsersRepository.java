@@ -33,12 +33,11 @@ public class UsersRepository {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<User> criteriaQuery = builder.createQuery(User.class);
             Root<User> root = criteriaQuery.from(User.class);
-            criteriaQuery.select(root).where(builder.like(root.get("username"),"%"+username+"%"));
-
+            criteriaQuery.select(root).where(
+                    builder.equal(root.get("username"),username),
+                    builder.equal(root.get("password"),password));
             Query query = session.createQuery(criteriaQuery);
-            resultUser = (User)query.getSingleResult();
-            if(!resultUser.getPassword().equals(password))
-                return resultUser;
+            resultUser = (User) query.getResultList().get(0);
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);

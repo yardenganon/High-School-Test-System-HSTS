@@ -4,12 +4,13 @@ package il.ac.haifa.cs.HSTS.ocsf.server.Entities;
 import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "course")
-public class Course {
+@Table(name = "courses")
+public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
@@ -21,12 +22,12 @@ public class Course {
     Teacher teacher;
     @ManyToMany
     @JoinTable(
-            name = "student_course",
+            name = "student_courses",
             joinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
     List<Student> students;
 
-
+    public Course () {}
     public Course(Subject subject, Teacher teacher) {
         setSubject(subject);
         setTeacher(teacher);
