@@ -15,7 +15,7 @@ public class Subject implements Serializable {
     int numberOfQuestions;
     String subjectName;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "subject")
     List<Question> questions;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Course> courses;
@@ -81,5 +81,16 @@ public class Subject implements Serializable {
 
     public void setNumberOfQuestions(int numberOfQuestions) {
         this.numberOfQuestions = numberOfQuestions;
+    }
+
+    @Override
+    public String toString() {
+        return "Subject{" +
+                "id=" + id +
+                ", numberOfQuestions=" + numberOfQuestions +
+                ", subjectName='" + subjectName + '\'' +
+                ", questions=" + questions +
+
+                '}';
     }
 }

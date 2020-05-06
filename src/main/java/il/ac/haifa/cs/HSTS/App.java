@@ -13,6 +13,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,24 +46,34 @@ public class App {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Insert data here */
-            Teacher teacher = new Teacher("Yaffa_Hamuza","1234","yaffa@gmail.com","Yaffa","Hamuza","female");
-            session.save(teacher);
+//            Teacher teacher = new Teacher("Yaffa_Hamuza","1234","yaffa@gmail.com","Yaffa","Hamuza","female");
+//            session.save(teacher);
+//            Subject subject = new Subject("Mathematics");
+//            subject.addTeacher(teacher);
+//            session.save(subject);
+//            Question question1 = new Question("Solve that equation: X+5=10","3","2","5","4.5",3,teacher,subject);
+//            Question question2 = new Question("Solve that equation: X+7=17","3","2","10","4.5",3,teacher,subject);
+//            session.save(question1);
+//            session.save(question2);
+//
+//            Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
+//            session.save(teacher2);
+//            Subject subject2 = new Subject("Science");
+//            subject2.addTeacher(teacher2);
+//            session.save(subject2);
+//            Question question3 = new Question("Which is bigger planet?","Earth","Sun","Earth-moon","Venus",2,teacher2,subject2);
+//            session.save(question3);
+
+
+            QuestionsRepository questionsRepository= new QuestionsRepository();
+
+            List<Subject> subjectList = new ArrayList<Subject>();
             Subject subject = new Subject("Mathematics");
-            subject.addTeacher(teacher);
-            session.save(subject);
-            Question question1 = new Question("Solve that equation: X+5=10","3","2","5","4.5",3,teacher,subject);
-            Question question2 = new Question("Solve that equation: X+7=17","3","2","10","4.5",3,teacher,subject);
-            session.save(question1);
-            session.save(question2);
-
-            Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
-            session.save(teacher2);
             Subject subject2 = new Subject("Science");
-            subject2.addTeacher(teacher2);
-            session.save(subject2);
-            Question question3 = new Question("Which is bigger planet?","Earth","Sun","Earth-moon","Venus",2,teacher2,subject2);
-            session.save(question3);
-
+            subjectList.add(subject);
+            subjectList.add(subject2);
+            List<Subject> questionList = questionsRepository.getQuestionsBySubject(subjectList);
+            System.out.println(questionList);
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {

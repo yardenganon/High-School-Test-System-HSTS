@@ -4,11 +4,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Student extends User {
+public class Student extends User implements Serializable {
     @ManyToMany(mappedBy = "students",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Course> courses;
 

@@ -122,8 +122,6 @@ public class Question implements Serializable {
                 ", answer3='" + answer3 + '\'' +
                 ", answer4='" + answer4 + '\'' +
                 ", correctAnswer=" + correctAnswer +
-                ", writer='" + writer + '\'' +
-                ", subject='" + subject + '\'' +
                 '}';
     }
 }
