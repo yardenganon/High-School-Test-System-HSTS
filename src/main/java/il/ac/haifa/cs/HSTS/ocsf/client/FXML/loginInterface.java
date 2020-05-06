@@ -2,21 +2,19 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class loginInterface {
 	/**
 	 * Sample Skeleton for 'GUIInterface.fxml' Controller Class
 	 */
+	static private Command commandFromServer = null;
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
@@ -29,9 +27,24 @@ public class loginInterface {
 
     @FXML
     void login(ActionEvent event) throws IOException{
+        // Creating command here and send it to client
+        Command command = new Command("login","users",
+                usernameTF.getCharacters().toString(),
+                passwordTF.getCharacters().toString());
+        HSTSClientInterface.sendCommandToServer(command);
+        while (commandFromServer == null){
+            System.out.print("");
+        }
+        System.out.println(commandFromServer);
+        User userLoggedIn = (User)commandFromServer.getReturnedObject();
+        System.out.println("User: "+userLoggedIn.getUsername() + " is logged in");
     	MainClass.setRoot("menuInterface");
     }
-    
+
+    public static void receivedCommandFromServer(Command command){
+        commandFromServer = command;
+        System.out.println("Command received in controller " + command);
+    }
 
 
 }

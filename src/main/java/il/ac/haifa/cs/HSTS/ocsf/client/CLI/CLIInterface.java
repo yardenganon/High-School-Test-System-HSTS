@@ -5,7 +5,6 @@ import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,14 +53,14 @@ public class CLIInterface {
                     if (i == 10) {
                         command = new Command(tokens[0].toLowerCase(), tokens[1].toLowerCase(), new Question(tokens[2]
                                 , tokens[3], tokens[4], tokens[5], tokens[6], Integer.parseInt(tokens[7]), new Teacher(), new Subject("Math")));
-                        hstsClientInterface.sendCommandToClient(command);
+                        hstsClientInterface.sendCommandToServer(command);
                     } else
                         System.out.println("Invalid CLI command");
 
 
                 } else if (tokens[0].toLowerCase().equals("login") && tokens[1].toLowerCase().equals("users")){
                     command = new Command("login","users",tokens[2],tokens[3]);
-                    hstsClientInterface.sendCommandToClient(command);
+                    hstsClientInterface.sendCommandToServer(command);
                 } else if (tokens[0].toLowerCase().equals(("readbysubject")) && tokens[1].toLowerCase().equals("questions")) {
                     List<Subject> subjectList = new ArrayList<Subject>();
                     Subject subject = new Subject("Mathematics");
@@ -69,16 +68,16 @@ public class CLIInterface {
                     subjectList.add(subject);
                     subjectList.add(subject2);
                     command = new Command(tokens[0], tokens[1], subjectList);
-                    hstsClientInterface.sendCommandToClient(command);
+                    hstsClientInterface.sendCommandToServer(command);
                 } else if (tokens[0].toLowerCase().equals("readbyid") && tokens[1].toLowerCase().equals("questions")) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
-                    hstsClientInterface.sendCommandToClient(command);
+                    hstsClientInterface.sendCommandToServer(command);
                 } else if (tokens[0].toLowerCase().equals("update") && tokens[1].toLowerCase().equals("questions")) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
-                    hstsClientInterface.sendCommandToClient(command);
+                    hstsClientInterface.sendCommandToServer(command);
                 } else if (tokens[0].toLowerCase().equals("delete") && tokens[1].toLowerCase().equals("questions")) {
                     command = new Command(tokens[0], tokens[1], tokens[2]);
-                    hstsClientInterface.sendCommandToClient(command);
+                    hstsClientInterface.sendCommandToServer(command);
                 }
 
             } else if (message.equalsIgnoreCase("help"))

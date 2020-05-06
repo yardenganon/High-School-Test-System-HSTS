@@ -1,9 +1,13 @@
 package il.ac.haifa.cs.HSTS;
 
+import com.mysql.cj.xdevapi.Client;
+import com.sun.xml.bind.v2.runtime.MarshallerImpl;
 import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.GUIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.MainClass;
+import il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import org.jboss.jandex.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,19 +17,21 @@ import java.util.ArrayList;
 // That was CLIChatClient
 public class HSTSClientInterface {
 
-    private HSTSClient client;
+    private static HSTSClient client;
     private CLIInterface cliInterface;
     private GUIInterface guiInterface;
+    private MainClass mainClass;
 
     private boolean isRunning;
-    private static final String SHELL_STRING = "Enter command (or exit to help)> ";
+    //private static final String SHELL_STRING = "Enter command (or exit to help)> ";
     private Thread loopThread;
 
     public HSTSClientInterface(HSTSClient client) {
-        this.client = client;
+        HSTSClientInterface.client = client;
         this.isRunning = false;
         this.cliInterface = new CLIInterface(this);
         this.guiInterface = new GUIInterface(this);
+
     }
 
     public void loop() throws IOException {
@@ -37,15 +43,17 @@ public class HSTSClientInterface {
                  * Open login window interface, asking the user to write details.
                  * Then, send request to the server for obtaining User according to the details
                  * Etc.....		*/
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                String message;
-                Command command;
-                while (client.isConnected()) {
-                    System.out.print(SHELL_STRING);
+//                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//                String message;
+//                Command command;
+//                while (client.isConnected()) {
+                    //System.out.print(SHELL_STRING);
                     // Parser and CLI logic moved into new CLIInterface class
-                    cliInterface.CLIInterfaceLoop();
-                    guiInterface.guiInterfaceLoop();
-            }
+                    //cliInterface.CLIInterfaceLoop();
+
+
+                    //guiInterface.guiInterfaceSendCommandToClient(null);
+//            }
         }
     });
 
@@ -53,7 +61,7 @@ public class HSTSClientInterface {
         this.isRunning =true;
 
 }
-    public void sendCommandToClient(Command command)
+    public static void sendCommandToServer(Command command)
     {
         try {
             System.out.println("Sending command to server");
@@ -70,20 +78,21 @@ public class HSTSClientInterface {
     // Was displayMessage function in SimpleChatCLI
     public void commandFromServerHandler(Object message) {
         if (isRunning) {
-            System.out.print("(Interrupted)\n");
+            //System.out.print("(Interrupted)\n");
         }
         Command commandHandled = (Command) message;
         System.out.println("Command received from server : " + commandHandled.toString());
-
-
+        System.out.println("Command:" + commandHandled.getCommand() +
+                " Controller: "+commandHandled.getController());
+        if (commandHandled.isCommand("users","login")){
+            loginInterface.receivedCommandFromServer(commandHandled);
+        }
         if (commandHandled.isCommand("questions", "readBySubject")) {
             // Getting questions asked for
             ArrayList<Question> list = (ArrayList<Question>) ((Command) message).getReturnedObject();
             for (Question q : list)
                 System.out.println(q.toString());
         }
-        if (isRunning)
-            System.out.print(SHELL_STRING);
     }
 
     public void closeConnection() {
@@ -100,8 +109,8 @@ public class HSTSClientInterface {
 
             HSTSClient chatClient = new HSTSClient(host, port);
             chatClient.openConnection();
-//            MainClass.main(args);
-//            chatClient.closeConnection();
+            MainClass.main(args);
+            chatClient.closeConnection();
         }
     }
 }

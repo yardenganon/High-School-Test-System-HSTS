@@ -9,7 +9,7 @@ public class HSTSClient extends AbstractClient {
 	private static final Logger LOGGER =
 			Logger.getLogger(HSTSClient.class.getName());
 	
-	final private HSTSClientInterface hstsClientInterface;
+	private HSTSClientInterface hstsClientInterface;
 
 	public HSTSClient(String host, int port) {
 		super(host, port);
@@ -32,7 +32,12 @@ public class HSTSClient extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		// Client logic
-		hstsClientInterface.commandFromServerHandler(msg);
+		try {
+			System.out.println("Command reached to client " + ((Command) msg).getCommand());
+			hstsClientInterface.commandFromServerHandler(msg);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -40,5 +45,9 @@ public class HSTSClient extends AbstractClient {
 		// TODO Auto-generated method stub
 		super.connectionClosed();
 		hstsClientInterface.closeConnection();
+	}
+
+	public HSTSClientInterface getHstsClientInterface() {
+		return hstsClientInterface;
 	}
 }

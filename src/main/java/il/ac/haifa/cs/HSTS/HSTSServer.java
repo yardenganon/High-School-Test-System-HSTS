@@ -7,6 +7,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.QuestionsController;
 import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.UsersController;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.UsersRepository;
 
@@ -36,7 +37,8 @@ public class HSTSServer extends AbstractServer {
                     commandFromClient = questionsController.QuestionHandler(commandFromClient); break;
                 // other cases
                 case "users" :
-                    commandFromClient = usersController.UserHandler(commandFromClient); break;
+                    commandFromClient = usersController.UserHandler(commandFromClient);
+                    break;
 
                 default:
                     Command handled = commandFromClient;
@@ -52,8 +54,11 @@ public class HSTSServer extends AbstractServer {
             try {
                 // after handling command, send back the command to Client (update status, etc...)
                 commandFromClient.setDateHandled(new Date());
-                System.out.println("Sending command back to client - " + commandFromClient.toString()+"\n");
+                System.out.print("Sending command back to client - " /*+ commandFromClient*/+"\n");
+                commandFromClient.printCommandDetails();
                 client.sendToClient(commandFromClient);
+                System.out.println(commandFromClient.getCommand());
+                System.out.println("Sent!");
             } catch (IOException e) {
                 System.out.println("Command has not sent back to client\n");
                 e.printStackTrace();
