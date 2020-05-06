@@ -31,7 +31,6 @@ public class HSTSClientInterface {
         this.isRunning = false;
         this.cliInterface = new CLIInterface(this);
         this.guiInterface = new GUIInterface(this);
-
     }
 
     public void loop() throws IOException {

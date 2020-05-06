@@ -40,6 +40,9 @@ public class menuInterface {
     	searchbtn.setVisible(true);
     	searchTF.setVisible(true);
     	tablev.setVisible(true);
+
+
+
     }
     
     @FXML
