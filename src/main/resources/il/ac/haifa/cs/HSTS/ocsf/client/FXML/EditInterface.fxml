@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.TextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -65,55 +65,55 @@
       </Text>
       <VBox layoutX="218.0" layoutY="71.0" prefHeight="402.0" prefWidth="530.0">
          <children>
-            <TextField fx:id="QuestionTF" disable="true" prefHeight="38.0" prefWidth="525.0" />
+            <TextField fx:id="QuestionTF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="IdTF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="idTF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="AuthorTF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="authorTF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="SubjectTF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="subjectTF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="Answer1TF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="answer1TF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="Answer2TF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="answer2TF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="Answer3TF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="answer3TF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="Answer4TF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="answer4TF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
                <font>
                   <Font size="10.0" />
                </font>
             </Text>
-            <TextField fx:id="CorrectAnswerTF" disable="true" prefHeight="36.0" prefWidth="492.0" />
+            <TextField fx:id="correctAnswerTF" />
             <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
                <font>
                   <Font size="10.0" />
