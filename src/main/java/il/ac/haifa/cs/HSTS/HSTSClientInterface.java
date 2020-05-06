@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.GUIInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.FXML.MainClass;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 
 import java.io.BufferedReader;
@@ -15,6 +16,7 @@ public class HSTSClientInterface {
     private HSTSClient client;
     private CLIInterface cliInterface;
     private GUIInterface guiInterface;
+
     private boolean isRunning;
     private static final String SHELL_STRING = "Enter command (or exit to help)> ";
     private Thread loopThread;
@@ -35,7 +37,6 @@ public class HSTSClientInterface {
                  * Open login window interface, asking the user to write details.
                  * Then, send request to the server for obtaining User according to the details
                  * Etc.....		*/
-
                 BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
                 String message;
                 Command command;
@@ -99,6 +100,8 @@ public class HSTSClientInterface {
 
             HSTSClient chatClient = new HSTSClient(host, port);
             chatClient.openConnection();
+//            MainClass.main(args);
+//            chatClient.closeConnection();
         }
     }
 }
