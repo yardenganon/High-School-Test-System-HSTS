@@ -2,6 +2,8 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import java.io.IOException;
 
+import il.ac.haifa.cs.HSTS.HSTSClient;
+import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,8 +13,9 @@ import javafx.stage.Stage;
 public class MainClass extends Application {
 
 	private static Scene scene;
-	
-	@Override
+
+
+    @Override
 	public void start(Stage stage) throws IOException {
 	    stage.setTitle("loginInterface");
         scene = new Scene(loadFXML("loginInterface"));

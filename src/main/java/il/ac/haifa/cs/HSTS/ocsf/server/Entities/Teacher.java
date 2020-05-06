@@ -37,10 +37,4 @@ public class Teacher extends User implements Serializable {
 
     public void addSubject(Subject subject) {this.subjects.add(subject);}
 
-    @Override
-    public String toString() {
-        return "Teacher{" +
-                "courses=" + courses +
-                '}';
-    }
 }
