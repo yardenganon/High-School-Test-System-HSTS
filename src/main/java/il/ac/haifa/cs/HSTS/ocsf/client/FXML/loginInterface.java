@@ -32,13 +32,24 @@ public class loginInterface {
                 usernameTF.getCharacters().toString(),
                 passwordTF.getCharacters().toString());
         HSTSClientInterface.sendCommandToServer(command);
+
         while (commandFromServer == null){
             System.out.print("");
         }
         System.out.println(commandFromServer);
-        User userLoggedIn = (User)commandFromServer.getReturnedObject();
-        System.out.println("User: "+userLoggedIn.getUsername() + " is logged in");
-    	MainClass.setRoot("menuInterface");
+        User userLoggedIn;
+        if (commandFromServer.getReturnedObject() != null) {
+            userLoggedIn = (User) commandFromServer.getReturnedObject();
+            System.out.println("User: "+userLoggedIn.getUsername() + " is logged in");
+            MainClass.setRoot("menuInterface");
+            commandFromServer = null;
+        }
+        else
+        {
+            // Label up
+            System.out.println("sad");
+        }
+
     }
 
     public static void receivedCommandFromServer(Command command){
