@@ -18,7 +18,7 @@ public class MainClass extends Application {
 
     @Override
 	public void start(Stage stage) throws IOException {
-	    stage.setTitle("loginInterface");
+	    stage.setTitle("Login");
         scene = new Scene(loadFXML("loginInterface"));
         Scene menu = new Scene(loadFXML("loginInterface"));
         stage.setScene(scene);
