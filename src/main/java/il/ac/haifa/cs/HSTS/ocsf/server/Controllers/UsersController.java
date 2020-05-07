@@ -10,20 +10,20 @@ public class UsersController {
     public UsersController(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
-    public Command UserHandler(Command command) {
 
-        // CRUD - Create , Read , Update , Delete
+    public Command UserHandler(Command command) {
         if (command != null) {
             switch (command.getCommand()) {
-                case "login" :
-                    Object parameter = command.getParameter(0);
-                    String castedParam = (String.valueOf(parameter));
-                    Object parameter1 = command.getParameter(1);
-                    String castedParam1 = String.valueOf(parameter1);
-                    User q = usersRepository.login(castedParam,castedParam1);
-                    command.setReturnedObject(q);
+                case "login":
+                    Object userNameParameter = command.getParameter(0);
+                    String userName = (String.valueOf(userNameParameter));
+                    Object passwordParameter = command.getParameter(1);
+                    String password = String.valueOf(passwordParameter);
+                    User user = usersRepository.login(userName,password);
+                    command.setReturnedObject(user);
                     break;
-                default : command.setStatus("Command invalid");
+                default:
+                    command.setStatus("Command invalid");
                     System.out.println("Command invalid: "+command.getCommand());
                     return command;
             }
