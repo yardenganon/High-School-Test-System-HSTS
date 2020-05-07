@@ -120,7 +120,7 @@ public class Command implements Serializable {
                 ", dateCreated=" + dateCreated +
                 ", dateHandled=" + dateHandled +
                 ", Params=" +parameters +
-                ", ReturnedObject=" +returnedObject.toString() +
+                ", ReturnedObject=" + (returnedObject != null?returnedObject.toString():"null") +
                 '}';
     }
 }
