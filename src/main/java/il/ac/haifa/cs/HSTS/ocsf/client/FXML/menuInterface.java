@@ -8,14 +8,16 @@ import java.io.IOException;
 
 //import com.gluonhq.charm.glisten.control.Icon;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
-public class menuInterface {
+public class menuInterface extends Application {
 
     @FXML // fx:id="logoutbtn"
     private Button logoutBtn; // Value injected by FXMLLoader
@@ -50,4 +52,9 @@ public class menuInterface {
     	MainClass.setRoot("loginInterface");
     }
 
+
+    @Override
+    public void start(Stage stage) throws Exception {
+
+    }
 }

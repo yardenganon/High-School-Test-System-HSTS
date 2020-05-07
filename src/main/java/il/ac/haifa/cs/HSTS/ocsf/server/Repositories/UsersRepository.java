@@ -37,7 +37,9 @@ public class UsersRepository {
                     builder.equal(root.get("username"),username),
                     builder.equal(root.get("password"),password));
             Query query = session.createQuery(criteriaQuery);
-            resultUser = (User) query.getResultList().get(0);
+            Object res = query.getResultList().get(0);
+            if (res != null)
+                resultUser = (User) query.getResultList().get(0);
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
