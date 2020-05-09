@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import il.ac.haifa.cs.HSTS.Command;
@@ -17,6 +18,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -67,38 +69,39 @@ public class menuInterface implements Initializable {
     @FXML // fx:id="author"
     private TableColumn<QuestionTeacher, String> columnAuthor; // Value injected by FXMLLoader
 
-
     @FXML // fx:id="searchTF"
     private TextField searchTF; // Value injected by FXMLLoader
-
-    @FXML // fx:id="searchbtn"
-    private Button searchbtn; // Value injected by FXMLLoader
 
     @FXML // fx:id="searchIV"
     private ImageView searchIV; // Value injected by FXMLLoader
 
+    @FXML // fx:id="editBtn"
+    private Button editBtn; // Value injected by FXMLLoader
+
     @FXML
-    void search(ActionEvent event) {
-        System.out.println("search is being");
+    void edit(ActionEvent event) {
+        Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
+        editInformation.setTitle("Information");
+        editInformation.setHeaderText("Editing Details");
+        editInformation.setContentText("In order to edit a question:\n1. Click on show questions button\n" +
+                "2. Double click on a spesific row");
+        editInformation.setResizable(true);
+        editInformation.getDialogPane().setPrefSize(300, 200);
+        Optional<ButtonType> result = editInformation.showAndWait();
     }
 
     @FXML
     void Show(ActionEvent event) {
-    	searchbtn.setVisible(true);
     	searchTF.setVisible(true);
     	tableVB.setVisible(true);
     	tableV.setVisible(true);
-    	searchbtn.setVisible(true);
     	searchTF.setVisible(true);
     	searchIV.setVisible(true);
-
-    	tableV.setEditable(true);
 
         questsOfTeacher = new ArrayList<Question>();
         List<Subject> subjects = ((Teacher) user).getSubjects();
         for (Subject subject : subjects)
             questsOfTeacher.addAll(subject.getQuestions());
-        System.out.println("hello menu" + questsOfTeacher);
 
         columnId.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("id"));
         columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("question"));
@@ -111,34 +114,60 @@ public class menuInterface implements Initializable {
                     quest.getWriter().getUsername(),
                     quest.getSubject().getSubjectName()));
         }
-        tableV.setItems(questionsOL);
+        //tableV.setItems(questionsOL);
+
+       FilteredList<QuestionTeacher> filteredQuests = new FilteredList<>(questionsOL, b -> true);
+
+        searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
+                    filteredQuests.setPredicate(questsOfTeacher ->
+                    {
+                        if (newValue == null || newValue.isEmpty())
+                            return true;
+
+                        String questionLower = newValue.toLowerCase();
+                        String questionUpper = newValue.toUpperCase();
+                        if (questsOfTeacher.getQuestion().indexOf(questionLower) != -1)
+                            return true;
+                        else
+                            if (questsOfTeacher.getQuestion().indexOf(questionUpper) != -1)
+                                return true;
+                            else
+                                if (questsOfTeacher.getQuestion().indexOf(newValue) != -1)
+                                    return true;
+                                else
+                                    return false;
+                    });
+        });
+
+        tableV.setItems(filteredQuests);
 
         tableV.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 QuestionTeacher questionSelected = tableV.getSelectionModel().getSelectedItem();
-                    if (questionSelected != null && event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                        Scene scene = null;
-                        try {
-
-                            for (Question q : questsOfTeacher)
-                            {
-                                if (q.getId() == Integer.parseInt(questionSelected.getId())){
-                                    EditInterface.setQuestion(q); break;
-                                }
+                if (questionSelected != null && event.getClickCount() == 2) {
+                    Scene scene = null;
+                    try {
+                        for (Question q : questsOfTeacher)
+                        {
+                            if (q.getId() == Integer.parseInt(questionSelected.getId())) {
+                                EditInterface.setQuestion(q);
+                                break;
                             }
-                            scene = new Scene(menuInterface.loadFXML("editInterface"));
-                        } catch (IOException e) {
-                            e.printStackTrace();
                         }
-                        Stage stage = (Stage) tableV.getScene().getWindow();
-                        stage.setScene(scene);
-                        stage.setTitle("Edit Question");
+                        scene = new Scene(menuInterface.loadFXML("editInterface"));
+                    } catch (IOException e) {
+                        System.out.println("not found");
+                        e.printStackTrace();
                     }
+                    Stage stage = (Stage) tableV.getScene().getWindow();
+                    stage.setScene(scene);
+                    stage.setTitle("Edit Question");
                 }
+            }
         });
     }
-    
+
     @FXML
     void logout(ActionEvent event) throws IOException{
         Scene scene = new Scene(loadFXML("loginInterface"));
