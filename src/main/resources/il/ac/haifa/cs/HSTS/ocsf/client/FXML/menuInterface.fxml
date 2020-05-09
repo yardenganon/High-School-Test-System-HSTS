@@ -9,10 +9,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -27,7 +24,7 @@
                         <Font name="Calibri Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label fx:id="helloLB" layoutX="74.0" layoutY="158.0" prefHeight="38.0" prefWidth="100.0" text="Hello teacher" textFill="WHITE">
+                  <Label fx:id="helloLB" layoutX="74.0" layoutY="158.0" prefHeight="38.0" prefWidth="100.0" textFill="WHITE">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -57,32 +54,29 @@
             </Button>
          </children>
       </VBox>
-      <VBox layoutX="248.0" layoutY="66.0" prefHeight="582.0" prefWidth="594.0">
+      <VBox fx:id="tableVB" layoutX="248.0" layoutY="66.0" prefHeight="582.0" prefWidth="594.0" visible="false">
          <children>
-            <GridPane fx:id="t" prefHeight="583.0" prefWidth="480.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="623.9999950408935" minHeight="10.0" prefHeight="588.5999908447266" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <TableView fx:id="tablev" prefHeight="584.0" prefWidth="574.0" visible="false">
-                    <columns>
-                      <TableColumn prefWidth="64.0" text="id" />
-                      <TableColumn prefWidth="252.79995727539062" text="question" />
-                      <TableColumn prefWidth="112.0" text="author" />
-                      <TableColumn prefWidth="108.79998779296875" text="subject" />
-                      <TableColumn prefWidth="57.5999755859375" text="edit" />
-                    </columns>
-                  </TableView>
-               </children>
-            </GridPane>
+            <TableView fx:id="tableV" prefHeight="584.0" prefWidth="574.0" visible="false">
+              <columns>
+                <TableColumn fx:id="columnId" prefWidth="52.0" text="id" />
+                <TableColumn fx:id="columnSubject" prefWidth="111.199951171875" text="subject" />
+                <TableColumn fx:id="columnQuestion" prefWidth="301.6000061035156" text="question" />
+                <TableColumn fx:id="columnAuthor" prefWidth="128.7999267578125" text="author" />
+              </columns>
+            </TableView>
          </children>
       </VBox>
-      <TextField fx:id="searchTF" layoutX="248.0" layoutY="15.0" prefHeight="38.0" prefWidth="522.0" text="Search your question here" visible="false" />
-      <Button fx:id="searchbtn" layoutX="771.0" layoutY="15.0" minWidth="25.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="70.0" visible="false">
-
-      </Button>
+      <TextField fx:id="searchTF" layoutX="253.0" layoutY="14.0" prefHeight="38.0" prefWidth="566.0" promptText="Enter a question..." visible="false">
+         <font>
+            <Font size="15.0" />
+         </font></TextField>
+      <Button fx:id="searchbtn" layoutX="793.0" layoutY="16.0" minWidth="19.0" mnemonicParsing="false" onAction="#search" prefHeight="34.0" prefWidth="19.0" style="-fx-background-color: #ffffff;" visible="false">
+         <graphic>
+            <ImageView fx:id="searchIV" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@Images/search.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </AnchorPane>
