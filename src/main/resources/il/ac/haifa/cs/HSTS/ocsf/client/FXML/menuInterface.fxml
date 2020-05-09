@@ -44,6 +44,14 @@
                   <InnerShadow />
                </effect>
             </Button>
+            <Button fx:id="editBtn" mnemonicParsing="false" onAction="#edit" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="edit question">
+               <font>
+                  <Font name="Calibri Bold" size="23.0" />
+               </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
             <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #808080;" text="Logout">
                <font>
                   <Font name="Calibri Bold" size="23.0" />
@@ -56,7 +64,7 @@
       </VBox>
       <VBox fx:id="tableVB" layoutX="248.0" layoutY="66.0" prefHeight="582.0" prefWidth="594.0" visible="false">
          <children>
-            <TableView fx:id="tableV" prefHeight="584.0" prefWidth="574.0" visible="false">
+            <TableView fx:id="tableV" prefHeight="583.0" prefWidth="594.0" visible="false">
               <columns>
                 <TableColumn fx:id="columnId" prefWidth="52.0" text="id" />
                 <TableColumn fx:id="columnSubject" prefWidth="111.199951171875" text="subject" />
@@ -66,17 +74,14 @@
             </TableView>
          </children>
       </VBox>
-      <TextField fx:id="searchTF" layoutX="253.0" layoutY="14.0" prefHeight="38.0" prefWidth="566.0" promptText="Enter a question..." visible="false">
+      <TextField fx:id="searchTF" layoutX="248.0" layoutY="14.0" prefHeight="31.0" prefWidth="583.0" promptText="Enter a question..." visible="false">
          <font>
             <Font size="15.0" />
          </font></TextField>
-      <Button fx:id="searchbtn" layoutX="793.0" layoutY="16.0" minWidth="19.0" mnemonicParsing="false" onAction="#search" prefHeight="34.0" prefWidth="19.0" style="-fx-background-color: #ffffff;" visible="false">
-         <graphic>
-            <ImageView fx:id="searchIV" fitHeight="26.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" visible="false">
-               <image>
-                  <Image url="@Images/search.png" />
-               </image>
-            </ImageView>
-         </graphic></Button>
+      <ImageView fx:id="searchIV" fitHeight="26.0" fitWidth="30.0" layoutX="802.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@Images/search.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
