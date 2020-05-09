@@ -16,6 +16,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -23,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -106,7 +108,27 @@ public class menuInterface{
                     quest.getSubject().getSubjectName()));
         }
         tableV.setItems(questionsOL);
-        QuestionTeacher questionSelected = tableV.getSelectionModel().getSelectedItem();
+
+        tableV.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                QuestionTeacher questionSelected = tableV.getSelectionModel().getSelectedItem();
+                    if (questionSelected != null && event.isPrimaryButtonDown() && event.getClickCount() == 2) {
+                        System.out.println(tableV.getSelectionModel().getSelectedItem());
+                        Scene scene = null;
+                        try {
+                            scene = new Scene(menuInterface.loadFXML("editInterface"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        Stage stage = (Stage) tableV.getScene().getWindow();
+                        stage.setScene(scene);
+                        stage.setTitle("Edit Question");
+                        //editInterface.setQuestion(...);
+                        //((Label) scene.lookup("#helloLB")).setText("Hello " + userLoggedIn.getFirst_name());
+                    }
+                }
+        });
     }
     
     @FXML
