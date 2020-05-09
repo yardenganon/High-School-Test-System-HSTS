@@ -13,7 +13,7 @@ public class Teacher extends User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "writer")
     List<Question> questions;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
             name = "subjects_teacher",
             joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
@@ -35,6 +35,29 @@ public class Teacher extends User implements Serializable {
 
     public void addQuestion(Question question) { this.questions.add(question);}
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
     public void addSubject(Subject subject) {this.subjects.add(subject);}
 
+   /* @Override
+    public String toString() {
+        return "Teacher{" +
+                ", subjects=" + subjects +
+                '}';
+    }
+    */
 }
