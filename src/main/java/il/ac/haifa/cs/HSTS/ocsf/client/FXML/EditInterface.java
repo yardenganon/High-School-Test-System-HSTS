@@ -1,16 +1,28 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import il.ac.haifa.cs.HSTS.Command;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
-public class EditInterface {
+public class EditInterface implements Initializable {
+
+    private static Question question;
+    private static Command commandFromServer = null;
 
     @FXML
     private AnchorPane anchorPane;
@@ -131,19 +143,60 @@ public class EditInterface {
     	}
     }
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeQuestionDetails();
+    }
     @FXML
     void ResetQuestion(ActionEvent event) {
-
+        initializeQuestionDetails();
     }
 
     @FXML
     void ReturnToMenu(ActionEvent event) throws IOException {
-        MainClass.setRoot("menuInterface");
+        Scene scene = new Scene(loadFXML("menuInterface"));
+        Stage stage = (Stage) returnBtn.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Menu");
     }
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        MainClass.setRoot("loginInterface");
+        Scene scene = new Scene(loadFXML("loginInterface"));
+        Stage stage = (Stage) logoutBtn.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Login");
     }
 
+    public Question getQuestion() {
+        return question;
+    }
+
+    public static void setQuestion(Question question) {
+        EditInterface.question = question;
+    }
+
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
+    }
+
+    public static void receivedCommandFromServer(Command command){
+        commandFromServer = command;
+        System.out.println("Command received in controller " + command);
+    }
+
+    public void initializeQuestionDetails()
+    {
+        questionTF.setText(question.getQuestion());
+        authorTF.setText(question.getWriter().getUsername());
+        idTF.setText(String.valueOf(question.getId()));
+        subjectTF.setText(question.getSubject().getSubjectName());
+        answer1TF.setText(question.getAnswer(1));
+        answer2TF.setText(question.getAnswer(2));
+        answer3TF.setText(question.getAnswer(3));
+        answer4TF.setText(question.getAnswer(4));
+        correctAnswerTF.setText(String.valueOf(question.getCorrectAnswer()));
+    }
 }

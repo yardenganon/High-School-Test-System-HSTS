@@ -35,6 +35,7 @@ public class menuInterface{
 
     private static User user = null;
     private static Command commandFromServer = null;
+    private static List<Question> questsOfTeacher = null;
 
     @FXML // fx:id="helloLB"
     private Label helloLB; // Value injected by FXMLLoader
@@ -90,7 +91,7 @@ public class menuInterface{
 
     	tableV.setEditable(true);
 
-        List<Question> questsOfTeacher = new ArrayList<Question>();
+        questsOfTeacher = new ArrayList<Question>();
         List<Subject> subjects = ((Teacher) user).getSubjects();
         for (Subject subject : subjects)
             questsOfTeacher.addAll(subject.getQuestions());
@@ -117,6 +118,13 @@ public class menuInterface{
                         System.out.println(tableV.getSelectionModel().getSelectedItem());
                         Scene scene = null;
                         try {
+
+                            for (Question q : questsOfTeacher)
+                            {
+                                if (q.getId() == Integer.parseInt(questionSelected.getId()))
+                                    EditInterface.setQuestion(q);
+                                    break;
+                            }
                             scene = new Scene(menuInterface.loadFXML("editInterface"));
                         } catch (IOException e) {
                             e.printStackTrace();
