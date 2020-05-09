@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class QuestionsRepository {
         }
     }
 
-    public List<Subject> getQuestionsBySubject(List<Subject> subjects) {
+     public List<Subject> getQuestionsBySubject(List<Subject> subjects) {
         List<Subject> results = new ArrayList<Subject>();
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
