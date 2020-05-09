@@ -5,8 +5,10 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
@@ -19,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,12 +31,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class menuInterface{
+public class menuInterface implements Initializable {
     /**
      * Sample Skeleton for 'menuInterface.fxml' Controller Class
      */
 
-    private static User user = null;
+    private static User user;
     private static Command commandFromServer = null;
     private static List<Question> questsOfTeacher = null;
 
@@ -132,8 +135,6 @@ public class menuInterface{
                         Stage stage = (Stage) tableV.getScene().getWindow();
                         stage.setScene(scene);
                         stage.setTitle("Edit Question");
-                        //editInterface.setQuestion(...);
-                        //((Label) scene.lookup("#helloLB")).setText("Hello " + userLoggedIn.getFirst_name());
                     }
                 }
         });
@@ -157,7 +158,7 @@ public class menuInterface{
         System.out.println("Command received in controller " + command);
     }
 
-    public User getUser() {
+    public static User getUser() {
         return user;
     }
 
@@ -165,4 +166,12 @@ public class menuInterface{
         menuInterface.user = user;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeUser();
+    }
+
+    public void initializeUser(){
+        helloLB.setText("Hello " + user.getFirst_name());
+    }
 }

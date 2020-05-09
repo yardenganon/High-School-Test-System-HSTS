@@ -62,13 +62,12 @@ public class loginInterface {
         }
         else {
             userLoggedIn = (User) commandFromServer.getReturnedObject();
+            menuInterface.setUser(userLoggedIn);
             System.out.println("User: "+userLoggedIn.getUsername() + " is logged in");
             Scene scene = new Scene(loadFXML("menuInterface"));
             Stage stage = (Stage) loginBtn.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle("Menu");
-            menuInterface.setUser(userLoggedIn);
-            ((Label) scene.lookup("#helloLB")).setText("Hello " + userLoggedIn.getFirst_name());
             commandFromServer = null;
         }
     }
