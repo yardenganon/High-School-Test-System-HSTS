@@ -118,15 +118,14 @@ public class menuInterface implements Initializable {
             public void handle(MouseEvent event) {
                 QuestionTeacher questionSelected = tableV.getSelectionModel().getSelectedItem();
                     if (questionSelected != null && event.isPrimaryButtonDown() && event.getClickCount() == 2) {
-                        System.out.println(tableV.getSelectionModel().getSelectedItem());
                         Scene scene = null;
                         try {
 
                             for (Question q : questsOfTeacher)
                             {
-                                if (q.getId() == Integer.parseInt(questionSelected.getId()))
-                                    EditInterface.setQuestion(q);
-                                    break;
+                                if (q.getId() == Integer.parseInt(questionSelected.getId())){
+                                    EditInterface.setQuestion(q); break;
+                                }
                             }
                             scene = new Scene(menuInterface.loadFXML("editInterface"));
                         } catch (IOException e) {
