@@ -63,6 +63,7 @@ public class EditInterface {
     		questionTF.setEditable(true);
     		authorTF.setEditable(true);
     		subjectTF.setEditable(true);
+
     		answer1TF.setEditable(true);
     		answer2TF.setEditable(true);
     		answer3TF.setEditable(true);
