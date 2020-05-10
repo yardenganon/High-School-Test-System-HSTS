@@ -5,7 +5,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,48 +15,42 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="759.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.EditInterface">
-   <VBox layoutY="-3.0" prefHeight="600.0" prefWidth="206.0" style="-fx-background-color: #808080;">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="646.0" prefWidth="759.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.EditInterface">
+   <VBox layoutY="-3.0" prefHeight="649.0" prefWidth="248.0" style="-fx-background-color: #143452;">
       <children>
-         <Pane prefHeight="226.0" prefWidth="248.0" style="-fx-background-color: #808080;">
+         <Pane prefHeight="304.0" prefWidth="248.0" style="-fx-background-color: #143452;">
             <children>
-               <Label layoutX="14.0" layoutY="128.0" prefHeight="36.0" prefWidth="206.0" text="Lone Oak High School">
+               <Label layoutX="57.0" layoutY="193.0" prefHeight="36.0" prefWidth="134.0" text="Lone Oak High School" textFill="WHITE">
                   <font>
-                     <Font name="Calibri Bold" size="20.0" />
+                     <Font name="Calibri Light Italic" size="15.0" />
                   </font>
                </Label>
-               <Label fx:id="helloLB" layoutX="50.0" layoutY="156.0" prefHeight="38.0" prefWidth="134.0" textFill="#030303">
+               <Label fx:id="helloLB" layoutX="78.0" layoutY="242.0" prefHeight="38.0" prefWidth="91.0" textFill="WHITE">
                   <font>
-                     <Font name="System Bold" size="17.0" />
+                     <Font name="Calibri Light Italic" size="15.0" />
                   </font>
                </Label>
-               <ImageView fitHeight="94.0" fitWidth="187.0" layoutX="44.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+               <ImageView blendMode="SCREEN" fitHeight="181.0" fitWidth="248.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
                   <image>
                      <Image url="@Images/logo.jpg" />
                   </image>
                </ImageView>
             </children>
          </Pane>
-         <Button fx:id="returnBtn" mnemonicParsing="false" onAction="#ReturnToMenu" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: #808080;" text="Return To Menu">
+         <Button fx:id="returnBtn" blendMode="SCREEN" mnemonicParsing="false" onAction="#ReturnToMenu" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Return To Menu" textFill="WHITE">
             <font>
-               <Font name="Calibri Bold" size="18.0" />
+               <Font name="Calibri Bold" size="17.0" />
             </font>
             <VBox.margin>
-               <Insets bottom="5.0" left="10.0" right="10.0" />
+               <Insets />
             </VBox.margin>
-            <effect>
-               <InnerShadow blurType="ONE_PASS_BOX" />
-            </effect>
          </Button>
-         <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="186.0" style="-fx-background-color: #808080;" text="Logout">
+         <Button fx:id="logoutBtn" blendMode="SCREEN" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Logout" textFill="WHITE">
             <font>
-               <Font name="Calibri Bold" size="18.0" />
+               <Font name="Calibri Bold" size="17.0" />
             </font>
-            <effect>
-               <InnerShadow blurType="ONE_PASS_BOX" />
-            </effect>
             <VBox.margin>
-               <Insets bottom="5.0" left="10.0" right="10.0" />
+               <Insets />
             </VBox.margin>
          </Button>
       </children>
@@ -67,73 +60,73 @@
          <Font size="11.0" />
       </font>
    </Text>
-   <VBox layoutX="218.0" layoutY="107.0" prefHeight="402.0" prefWidth="530.0">
+   <VBox layoutX="253.0" layoutY="107.0" prefHeight="402.0" prefWidth="495.0">
       <children>
-         <TextField fx:id="questionTF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
+         <TextField fx:id="questionTF" disable="true" editable="false" prefHeight="25.0" prefWidth="490.0" />
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="idTF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="authorTF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
 
          <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="answer1TF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="answer2TF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="answer3TF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <TextField fx:id="answer4TF" disable="true" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
          <ComboBox fx:id="correctAnswerComboBox" prefHeight="25.0" prefWidth="559.0" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
+         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
       </children>
    </VBox>
-   <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Question Details">
+   <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Question Details" textFill="#143452">
       <font>
          <Font name="System Bold" size="25.0" />
       </font>
    </Label>
-   <HBox layoutX="309.0" layoutY="505.0" prefHeight="40.0" prefWidth="352.0" style="-fx-background-color: #DCDCDC;">
+   <HBox layoutX="309.0" layoutY="505.0" prefHeight="36.0" prefWidth="352.0" style="-fx-background-color: #DCDCDC;">
       <children>
-         <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#ResetQuestion" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #A9A9A9;" text="Reset Question">
+         <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#ResetQuestion" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #143452;" text="Reset Question" textFill="WHITE">
             <HBox.margin>
                <Insets right="50.0" />
             </HBox.margin>
@@ -141,7 +134,7 @@
                <Font name="System Bold" size="14.0" />
             </font>
          </Button>
-         <Button fx:id="editBtn" mnemonicParsing="false" onAction="#EditQuestion" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #A9A9A9;" text="Edit Question">
+         <Button fx:id="editBtn" mnemonicParsing="false" onAction="#EditQuestion" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #143452;" text="Edit Question" textFill="WHITE">
             <HBox.margin>
                <Insets />
             </HBox.margin>

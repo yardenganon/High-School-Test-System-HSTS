@@ -12,26 +12,26 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="744.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
    <children>
-      <Button fx:id="loginBtn" layoutX="413.0" layoutY="406.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" text="Login">
+      <Button fx:id="loginBtn" layoutX="413.0" layoutY="406.0" mnemonicParsing="false" onAction="#login" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Login" textFill="WHITE">
          <font>
             <Font name="Calibri Bold" size="23.0" />
          </font>
       </Button>
       <TextField fx:id="usernameTF" layoutX="413.0" layoutY="273.0" prefHeight="42.0" prefWidth="294.0" promptText="Username">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Italic" size="20.0" />
          </font>
       </TextField>
-      <VBox alignment="CENTER" prefHeight="649.0" prefWidth="370.0" style="-fx-background-color: #808080;">
+      <VBox alignment="CENTER" prefHeight="649.0" prefWidth="370.0" style="-fx-background-color: #143452;">
          <children>
-            <ImageView fitHeight="182.0" fitWidth="310.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView blendMode="SCREEN" fitHeight="325.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@Images/logo.jpg" />
                </image>
             </ImageView>
             <Label alignment="CENTER" prefHeight="75.0" prefWidth="371.0" text="LONE OAK HIGH SCHOOL" textFill="#f3f3f5">
                <font>
-                  <Font name="Calibri Bold" size="30.0" />
+                  <Font name="Calibri Light" size="30.0" />
                </font>
             </Label>
          </children>
@@ -41,9 +41,9 @@
             <Font name="Calibri Bold" size="50.0" />
          </font>
       </Label>
-      <Label alignment="CENTER" layoutX="427.0" layoutY="192.0" prefHeight="34.0" prefWidth="236.0" text="sign in to continue" textFill="#090111">
+      <Label alignment="CENTER" layoutX="427.0" layoutY="192.0" prefHeight="34.0" prefWidth="236.0" text="Sign in" textFill="#090111">
          <font>
-            <Font name="Calibri Bold" size="20.0" />
+            <Font name="Calibri Light Italic" size="20.0" />
          </font>
       </Label>
       <Label fx:id="errorLB" layoutX="427.0" layoutY="235.0" prefHeight="24.0" prefWidth="265.0" text="username and/or password are incorrect" textFill="#e80808" visible="false">
@@ -53,7 +53,7 @@
       </Label>
       <PasswordField fx:id="passwordTF" layoutX="413.0" layoutY="336.0" prefHeight="44.0" prefWidth="294.0" promptText="Password">
          <font>
-            <Font size="20.0" />
+            <Font name="Calibri Italic" size="20.0" />
          </font>
       </PasswordField>
    </children>
