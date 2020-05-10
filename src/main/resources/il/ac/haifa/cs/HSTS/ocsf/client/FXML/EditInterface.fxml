@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -26,7 +25,7 @@
                      <Font name="Calibri Bold" size="20.0" />
                   </font>
                </Label>
-               <Label layoutX="50.0" layoutY="156.0" prefHeight="38.0" prefWidth="134.0" text="Hello teacher" textFill="#daa0d8">
+               <Label fx:id="helloLB" layoutX="50.0" layoutY="156.0" prefHeight="38.0" prefWidth="134.0" textFill="#030303">
                   <font>
                      <Font name="System Bold" size="17.0" />
                   </font>
@@ -69,49 +68,55 @@
    </Text>
    <VBox layoutX="218.0" layoutY="107.0" prefHeight="402.0" prefWidth="530.0">
       <children>
-         <TextField fx:id="questionTF" editable="false" />
+         <TextField fx:id="questionTF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="idTF" editable="false" />
+         <TextField fx:id="idTF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="authorTF" editable="false" />
+         <TextField fx:id="authorTF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="answer1TF" editable="false" />
+         <TextField fx:id="subjectTF" disable="true" editable="false" />
+         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+            <font>
+               <Font size="10.0" />
+            </font>
+         </Text>
+         <TextField fx:id="answer1TF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="answer2TF" editable="false" />
+         <TextField fx:id="answer2TF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="answer3TF" editable="false" />
+         <TextField fx:id="answer3TF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="answer4TF" editable="false" />
+         <TextField fx:id="answer4TF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
          </Text>
-         <TextField fx:id="correctAnswerTF" editable="false" />
+         <TextField fx:id="correctAnswerTF" disable="true" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
             <font>
                <Font size="10.0" />
