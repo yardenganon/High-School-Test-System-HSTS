@@ -242,6 +242,7 @@ public class EditInterface implements Initializable {
         answer3TF.setDisable(true);
         answer4TF.setDisable(true);
         correctAnswerComboBox.setDisable(true);
+
     }
 
     @FXML
@@ -287,7 +288,8 @@ public class EditInterface implements Initializable {
         for (Subject subject : teacher.getSubjects())
             subjectComboBox.getItems().add(subject.getSubjectName());
         subjectComboBox.getSelectionModel().select(question.getSubject().getSubjectName());
-
+        subjectComboBox.setEditable(false);
+        subjectComboBox.setDisable(true);
 
         correctAnswerComboBox.getItems().clear();
         correctAnswerComboBox.getItems().add("1");
@@ -295,7 +297,8 @@ public class EditInterface implements Initializable {
         correctAnswerComboBox.getItems().add("3");
         correctAnswerComboBox.getItems().add("4");
         correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
-
+        correctAnswerComboBox.setEditable(false);
+        correctAnswerComboBox.setDisable(true);
 
         questionTF.setText(question.getQuestion());
         authorTF.setText(question.getWriter().getUsername());
