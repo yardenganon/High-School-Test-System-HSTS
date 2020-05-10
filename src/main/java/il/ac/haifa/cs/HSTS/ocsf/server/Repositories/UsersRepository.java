@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.server.Repositories;
 
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
@@ -7,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.List;
 
 public class UsersRepository {
 
@@ -47,6 +50,29 @@ public class UsersRepository {
             SessionFactoryGlobal.closeSession(session);
         }
         return resultUser;
+    }
+    public List<Subject> getSubjectsListByUsername(String username){
+        User resultTeacher = null;
+        List<Subject> subjectList = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Ask for data here */
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Teacher> criteriaQuery = builder.createQuery(Teacher.class);
+            Root<Teacher> root = criteriaQuery.from(Teacher.class);
+            criteriaQuery.select(root).where(
+                    builder.equal(root.get("username"),username));
+            Query query = session.createQuery(criteriaQuery);
+            resultTeacher = (Teacher) query.getResultList().get(0);
+            if (resultTeacher!=null)
+                subjectList =((Teacher)resultTeacher).getSubjects();
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return subjectList;
     }
 
 

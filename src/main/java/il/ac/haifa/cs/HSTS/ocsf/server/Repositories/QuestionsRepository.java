@@ -2,6 +2,8 @@ package il.ac.haifa.cs.HSTS.ocsf.server.Repositories;
 
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.SessionFactoryGlobal;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
