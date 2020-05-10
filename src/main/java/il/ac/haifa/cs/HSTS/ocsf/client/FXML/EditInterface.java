@@ -155,7 +155,6 @@ public class EditInterface implements Initializable {
                 correctAnswerTF.setStyle("-fx-text-inner-color: #ff0000;");
                 thereIsAnError = true;
             }
-
             if (!thereIsAnError)
             {
                 // Showing waiting alert
