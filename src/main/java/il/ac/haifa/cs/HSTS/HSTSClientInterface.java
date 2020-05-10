@@ -1,17 +1,13 @@
 package il.ac.haifa.cs.HSTS;
 
-import com.mysql.cj.xdevapi.Client;
-import com.sun.xml.bind.v2.runtime.MarshallerImpl;
 import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.FXML.EditInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.GUIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.MainClass;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
-import org.jboss.jandex.Main;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 // That was CLIChatClient
@@ -92,6 +88,8 @@ public class HSTSClientInterface {
             for (Question q : list)
                 System.out.println(q.toString());
         }
+        if (commandHandled.isCommand("questions","update"))
+            EditInterface.receivedCommandFromServer(commandHandled);
     }
 
     public void closeConnection() {

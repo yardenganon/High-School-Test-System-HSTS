@@ -1,9 +1,9 @@
 package il.ac.haifa.cs.HSTS;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.AbstractClient;
+
 import java.io.IOException;
 import java.util.logging.Logger;
-
-import il.ac.haifa.cs.HSTS.ocsf.client.AbstractClient;
 
 public class HSTSClient extends AbstractClient {
 	private static final Logger LOGGER =
