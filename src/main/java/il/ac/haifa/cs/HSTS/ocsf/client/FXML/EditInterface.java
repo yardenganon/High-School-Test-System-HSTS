@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.Command;
+import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,79 +68,153 @@ public class EditInterface implements Initializable {
     private Button editBtn; // Value injected by FXMLLoader
 
     @FXML
+    private Label helloLB;
+
+    @FXML
     void EditQuestion(ActionEvent event) {
     	// If button text is "Edit Question"
-    	if (((Button)event.getSource()).getText().equals("Edit Question"))
+    	//if (((Button)event.getSource()).getText().equals("Edit Question"))
+        if(editBtn.getText().equals("Edit Question"))
     	{
+    	    initializeQuestionDetails();
+            questionTF.setStyle("-fx-text-inner-color: #000000;");
+            answer1TF.setStyle("-fx-text-inner-color: #000000;");
+            answer2TF.setStyle("-fx-text-inner-color: #000000;");
+            answer3TF.setStyle("-fx-text-inner-color: #000000;");
+            answer4TF.setStyle("-fx-text-inner-color: #000000;");
+            correctAnswerTF.setStyle("-fx-text-inner-color: #000000;");
+
     		// Enable changing the relevant text fields
     		questionTF.setEditable(true);
-    		authorTF.setEditable(true);
-    		subjectTF.setEditable(true);
-
+    		//subjectTF.setEditable(true);
     		answer1TF.setEditable(true);
     		answer2TF.setEditable(true);
     		answer3TF.setEditable(true);
     		answer4TF.setEditable(true);
     		correctAnswerTF.setEditable(true);
 
+            questionTF.setDisable(false);
+            //subjectTF.setDisable(false);
+            answer1TF.setDisable(false);
+            answer2TF.setDisable(false);
+            answer3TF.setDisable(false);
+            answer4TF.setDisable(false);
+            correctAnswerTF.setDisable(false);
+
             // Change button text to "Confirm Changes"
             ((Button)event.getSource()).setText("Confirm Changes");
     	}
     	// If button text is "Confirm Changes"
-    	else
-    	{
-    	    // Ask the user to confirm the changes
-    	    Alert updateQuestionAlert = new Alert(Alert.AlertType.CONFIRMATION);
-    	    updateQuestionAlert.setHeaderText("Are you sure you want to update the question?");
+    	else {
+            // Ask the user to confirm the changes
+            Alert updateQuestionAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            updateQuestionAlert.setHeaderText("Are you sure you want to update the question?");
             Optional<ButtonType> result = updateQuestionAlert.showAndWait();
             //if (result.isPresent() && result.get() != ButtonType.OK) {
-                // need to do the same action as when Reset Button
+            // need to do the same action as when Reset Button
             //}
 
-            // Showing waiting alert
-            Alert waitingAlert = new Alert(Alert.AlertType.INFORMATION);
-            waitingAlert.setHeaderText("");
-            waitingAlert.setContentText("Please wait while the question is updating");
-            //waitingAlert.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
+            boolean thereIsAnError = false;
+            // Input checking
+            if (questionTF.getText().isEmpty()) {
+                questionTF.setText("Invalid Input");
+                questionTF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            //if (subjectTF.getText().isEmpty()) {
+            //    subjectTF.setText("Invalid input");
+            //    thereIsAnError = true;
+            //}
+            if (answer1TF.getText().isEmpty()) {
+                answer1TF.setText("Invalid input");
+                answer1TF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            if (answer2TF.getText().isEmpty()) {
+                answer2TF.setText("Invalid input");
+                answer2TF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            if (answer3TF.getText().isEmpty()) {
+                answer3TF.setText("Invalid input");
+                answer3TF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            if (answer4TF.getText().isEmpty()) {
+                answer4TF.setText("Invalid input");
+                answer4TF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            if (correctAnswerTF.getText().equals("The correct answer must be one of the four options"))
+                correctAnswerTF.setText(String.valueOf(question.getCorrectAnswer()));
+            if (!(correctAnswerTF.getText().equals(answer1TF.getText()) ||
+                    correctAnswerTF.getText().equals(answer2TF.getText()) ||
+                    correctAnswerTF.getText().equals(answer3TF.getText()) ||
+                    correctAnswerTF.getText().equals(answer4TF.getText()))) {
+                correctAnswerTF.setText("The correct answer must be one of the four options");
+                correctAnswerTF.setStyle("-fx-text-inner-color: #ff0000;");
+                thereIsAnError = true;
+            }
+            if (!thereIsAnError)
+            {
+                // Showing waiting alert
+                Alert waitingAlert = new Alert(Alert.AlertType.INFORMATION);
+                waitingAlert.setHeaderText("");
+                waitingAlert.setContentText("Please wait while the question is updating");
+                //waitingAlert.getDialogPane().lookupButton(ButtonType.OK).setVisible(false);
 
-            // Creating a waiting indicator
-            ProgressIndicator waitingMessage = new ProgressIndicator();
-            VBox vbox = new VBox(waitingMessage);
-            vbox.setAlignment(Pos.CENTER);
-            waitingAlert.setGraphic(vbox);
-            anchorPane.setDisable(true);
-            waitingAlert.showAndWait();
-            anchorPane.setDisable(false);
-            //Stage stage = (Stage)anchorPane.getScene().getWindow();
-            //stage.show();
+                // Creating a waiting indicator
+                ProgressIndicator waitingMessage = new ProgressIndicator();
+                VBox vbox = new VBox(waitingMessage);
+                vbox.setAlignment(Pos.CENTER);
+                waitingAlert.setGraphic(vbox);
+                anchorPane.setDisable(true);
+                waitingAlert.showAndWait();
+                anchorPane.setDisable(false);
 
+                //question.setSubject(subjectTF.getText());
+                question.setCorrectAnswer(Integer.parseInt(correctAnswerTF.getText()));
+                question.setAnswer(1, answer1TF.getText());
+                question.setAnswer(2, answer2TF.getText());
+                question.setAnswer(3, answer3TF.getText());
+                question.setAnswer(4, answer4TF.getText());
+
+                Command command = new Command("update", "questions", question);
+                HSTSClientInterface.sendCommandToServer(command);
+
+                // Waiting for server confirmation
             /*
-            // This section is for closing an alert who doesn't have OK button
-            Button cancelButton = (Button)waitingAlert.getDialogPane().lookupButton(ButtonType.CANCEL);
-            if (cancelButton != null)
-                cancelButton.fire();
+            while (commandFromServer == null){
+                System.out.print("");
+            }
             */
 
-            //After server confirmation we show the message "The question was successfully changed"
-            Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
-            updateSuccessAlert.setHeaderText("The question was successfully changed");
-            updateSuccessAlert.showAndWait();
+                System.out.println(commandFromServer);
+                // After server confirmation we show the message "The question was successfully changed"
+                Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
+                updateSuccessAlert.setHeaderText("The question was successfully changed");
+                updateSuccessAlert.showAndWait();
+            }
 
             // Return button text to "Edit"
-            ((Button)event.getSource()).setText("Edit");
-
-    		// Here need to update the text fields to contain the new data
-    		// For each text field: QuestionTF.setText() with the new data
+            ((Button)event.getSource()).setText("Edit Question");
 
             // Again lock the access for the text fields
         	questionTF.setEditable(false);
-        	authorTF.setEditable(false);
-        	subjectTF.setEditable(false);
+        	//subjectTF.setEditable(false);
         	answer1TF.setEditable(false);
         	answer2TF.setEditable(false);
         	answer3TF.setEditable(false);
         	answer4TF.setEditable(false);
         	correctAnswerTF.setEditable(false);
+
+            questionTF.setDisable(true);
+            //subjectTF.setDisable(false);
+            answer1TF.setDisable(true);
+            answer2TF.setDisable(true);
+            answer3TF.setDisable(true);
+            answer4TF.setDisable(true);
+            correctAnswerTF.setDisable(true);
     	}
     }
 
@@ -151,6 +226,15 @@ public class EditInterface implements Initializable {
     @FXML
     void ResetQuestion(ActionEvent event) {
         initializeQuestionDetails();
+        if (editBtn.getText().equals("Confirm Changes"))
+            editBtn.setText("Edit Question");
+        questionTF.setDisable(true);
+        //subjectTF.setDisable(false);
+        answer1TF.setDisable(true);
+        answer2TF.setDisable(true);
+        answer3TF.setDisable(true);
+        answer4TF.setDisable(true);
+        correctAnswerTF.setDisable(true);
     }
 
     @FXML
@@ -198,5 +282,6 @@ public class EditInterface implements Initializable {
         answer3TF.setText(question.getAnswer(3));
         answer4TF.setText(question.getAnswer(4));
         correctAnswerTF.setText(String.valueOf(question.getCorrectAnswer()));
+        helloLB.setText("Hello " + question.getWriter().getFirst_name());
     }
 }
