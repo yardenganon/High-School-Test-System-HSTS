@@ -3,6 +3,8 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,8 +45,8 @@ public class EditInterface implements Initializable {
     @FXML // fx:id="AuthorTF"
     private TextField authorTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="SubjectTF"
-    private TextField subjectTF; // Value injected by FXMLLoader
+    @FXML
+    private ComboBox<String> subjectComboBox;
 
     @FXML // fx:id="Answer1TF"
     private TextField answer1TF; // Value injected by FXMLLoader
@@ -58,8 +60,10 @@ public class EditInterface implements Initializable {
     @FXML // fx:id="Answer4TF"
     private TextField answer4TF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="CorrectAnswerTF"
-    private TextField correctAnswerTF; // Value injected by FXMLLoader
+
+    @FXML
+    private ComboBox<String> correctAnswerComboBox;
+
 
     @FXML // fx:id="Resetbtn"
     private Button resetBtn; // Value injected by FXMLLoader
@@ -82,7 +86,7 @@ public class EditInterface implements Initializable {
             answer2TF.setStyle("-fx-text-inner-color: #000000;");
             answer3TF.setStyle("-fx-text-inner-color: #000000;");
             answer4TF.setStyle("-fx-text-inner-color: #000000;");
-            correctAnswerTF.setStyle("-fx-text-inner-color: #000000;");
+            correctAnswerComboBox.setStyle("-fx-text-inner-color: #000000;");
 
     		// Enable changing the relevant text fields
     		questionTF.setEditable(true);
@@ -91,7 +95,7 @@ public class EditInterface implements Initializable {
     		answer2TF.setEditable(true);
     		answer3TF.setEditable(true);
     		answer4TF.setEditable(true);
-    		correctAnswerTF.setEditable(true);
+    		correctAnswerComboBox.setEditable(true);
 
             questionTF.setDisable(false);
             //subjectTF.setDisable(false);
@@ -99,7 +103,7 @@ public class EditInterface implements Initializable {
             answer2TF.setDisable(false);
             answer3TF.setDisable(false);
             answer4TF.setDisable(false);
-            correctAnswerTF.setDisable(false);
+            correctAnswerComboBox.setDisable(false);
 
             // Change button text to "Confirm Changes"
             ((Button)event.getSource()).setText("Confirm Changes");
@@ -145,14 +149,15 @@ public class EditInterface implements Initializable {
                 answer4TF.setStyle("-fx-text-inner-color: #ff0000;");
                 thereIsAnError = true;
             }
-            if (correctAnswerTF.getText().equals("The correct answer must be one of the four options"))
-                correctAnswerTF.setText(String.valueOf(question.getCorrectAnswer()));
-            if (!(correctAnswerTF.getText().equals(answer1TF.getText()) ||
-                    correctAnswerTF.getText().equals(answer2TF.getText()) ||
-                    correctAnswerTF.getText().equals(answer3TF.getText()) ||
-                    correctAnswerTF.getText().equals(answer4TF.getText()))) {
-                correctAnswerTF.setText("The correct answer must be one of the four options");
-                correctAnswerTF.setStyle("-fx-text-inner-color: #ff0000;");
+            String selectedAnswer = correctAnswerComboBox.getSelectionModel().getSelectedItem();
+            if (selectedAnswer.equals("The correct answer must be one of the four options"))
+                correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
+            if (!(selectedAnswer.equals(answer1TF.getText()) ||
+                    selectedAnswer.equals(answer2TF.getText()) ||
+                    selectedAnswer.equals(answer3TF.getText()) ||
+                    selectedAnswer.equals(answer4TF.getText()))) {
+                correctAnswerComboBox.getSelectionModel().select("The correct answer must be one of the four options");
+                correctAnswerComboBox.setStyle("-fx-text-inner-color: #ff0000;");
                 thereIsAnError = true;
             }
             if (!thereIsAnError)
@@ -173,7 +178,7 @@ public class EditInterface implements Initializable {
                 anchorPane.setDisable(false);
 
                 //question.setSubject(subjectTF.getText());
-                question.setCorrectAnswer(Integer.parseInt(correctAnswerTF.getText()));
+                question.setCorrectAnswer(Integer.parseInt(selectedAnswer.toString()));
                 question.setAnswer(1, answer1TF.getText());
                 question.setAnswer(2, answer2TF.getText());
                 question.setAnswer(3, answer3TF.getText());
@@ -202,19 +207,21 @@ public class EditInterface implements Initializable {
             // Again lock the access for the text fields
         	questionTF.setEditable(false);
         	//subjectTF.setEditable(false);
+            subjectComboBox.setEditable(false);
         	answer1TF.setEditable(false);
         	answer2TF.setEditable(false);
         	answer3TF.setEditable(false);
         	answer4TF.setEditable(false);
-        	correctAnswerTF.setEditable(false);
+        	correctAnswerComboBox.setEditable(false);
 
             questionTF.setDisable(true);
             //subjectTF.setDisable(false);
+
             answer1TF.setDisable(true);
             answer2TF.setDisable(true);
             answer3TF.setDisable(true);
             answer4TF.setDisable(true);
-            correctAnswerTF.setDisable(true);
+            correctAnswerComboBox.setDisable(true);
     	}
     }
 
@@ -234,7 +241,7 @@ public class EditInterface implements Initializable {
         answer2TF.setDisable(true);
         answer3TF.setDisable(true);
         answer4TF.setDisable(true);
-        correctAnswerTF.setDisable(true);
+        correctAnswerComboBox.setDisable(true);
     }
 
     @FXML
@@ -273,15 +280,31 @@ public class EditInterface implements Initializable {
 
     public void initializeQuestionDetails()
     {
+
+        Teacher teacher = ((Teacher)menuInterface.getUser());
+        subjectComboBox.getItems().clear();
+        System.out.println(teacher.getSubjects());
+        for (Subject subject : teacher.getSubjects())
+            subjectComboBox.getItems().add(subject.getSubjectName());
+        subjectComboBox.getSelectionModel().select(question.getSubject().getSubjectName());
+
+
+        correctAnswerComboBox.getItems().clear();
+        correctAnswerComboBox.getItems().add("1");
+        correctAnswerComboBox.getItems().add("2");
+        correctAnswerComboBox.getItems().add("3");
+        correctAnswerComboBox.getItems().add("4");
+        correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
+
+
         questionTF.setText(question.getQuestion());
         authorTF.setText(question.getWriter().getUsername());
         idTF.setText(String.valueOf(question.getId()));
-        subjectTF.setText(question.getSubject().getSubjectName());
         answer1TF.setText(question.getAnswer(1));
         answer2TF.setText(question.getAnswer(2));
         answer3TF.setText(question.getAnswer(3));
         answer4TF.setText(question.getAnswer(4));
-        correctAnswerTF.setText(String.valueOf(question.getCorrectAnswer()));
+        correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
         helloLB.setText("Hello " + question.getWriter().getFirst_name());
     }
 }
