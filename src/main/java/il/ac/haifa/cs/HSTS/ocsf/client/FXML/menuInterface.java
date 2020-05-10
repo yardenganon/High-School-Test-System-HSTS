@@ -83,7 +83,7 @@ public class menuInterface implements Initializable {
         Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
         editInformation.setTitle("Information");
         editInformation.setHeaderText("Editing Details");
-        editInformation.setContentText("In order to edit a question:\n1. Click on show questions button\n" +
+        editInformation.setContentText("In order to edit a question:\n1. Click on Questions button\n" +
                 "2. Double click on a spesific row");
         editInformation.setResizable(true);
         editInformation.getDialogPane().setPrefSize(300, 200);
@@ -124,18 +124,11 @@ public class menuInterface implements Initializable {
                         if (newValue == null || newValue.isEmpty())
                             return true;
 
-                        String questionLower = newValue.toLowerCase();
-                        String questionUpper = newValue.toUpperCase();
-                        if (questsOfTeacher.getQuestion().indexOf(questionLower) != -1)
+                        String questionLowerCase = newValue.toLowerCase();
+                        if (questsOfTeacher.getQuestion().toLowerCase().indexOf(questionLowerCase) != -1)
                             return true;
                         else
-                            if (questsOfTeacher.getQuestion().indexOf(questionUpper) != -1)
-                                return true;
-                            else
-                                if (questsOfTeacher.getQuestion().indexOf(newValue) != -1)
-                                    return true;
-                                else
-                                    return false;
+                            return false;
                     });
         });
 
