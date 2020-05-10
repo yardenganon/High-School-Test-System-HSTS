@@ -60,63 +60,158 @@
          <Font size="11.0" />
       </font>
    </Text>
-   <VBox layoutX="253.0" layoutY="107.0" prefHeight="402.0" prefWidth="495.0">
+   <VBox layoutX="277.0" layoutY="107.0" prefHeight="402.0" prefWidth="436.0">
       <children>
-         <TextField fx:id="questionTF" disable="true" editable="false" prefHeight="25.0" prefWidth="490.0" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="idTF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="authorTF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-
-         <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="answer1TF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="answer2TF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="answer3TF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="answer4TF" disable="true" editable="false" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <ComboBox fx:id="correctAnswerComboBox" prefHeight="25.0" prefWidth="559.0" />
-         <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Question" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="questionTF" disable="true" editable="false" prefHeight="25.0" prefWidth="402.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="idTF" disable="true" editable="false" prefHeight="25.0" prefWidth="377.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="authorTF" disable="true" editable="false" prefHeight="25.0" prefWidth="447.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+      
+               <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </ComboBox>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 1" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="answer1TF" disable="true" editable="false" prefHeight="25.0" prefWidth="452.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 2" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="answer2TF" disable="true" editable="false" prefHeight="25.0" prefWidth="420.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 3" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="answer3TF" disable="true" editable="false" prefHeight="25.0" prefWidth="435.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answer 4" wrappingWidth="47.58310890197754">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <TextField fx:id="answer4TF" disable="true" editable="false" prefHeight="25.0" prefWidth="405.0">
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>
+               </TextField>
+            </children>
+         </HBox>
+         <HBox prefHeight="100.0" prefWidth="200.0">
+            <children>
+               <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Correct Answer" wrappingWidth="77.18308448791504">
+                  <font>
+                     <Font size="10.0" />
+                  </font>
+                  <HBox.margin>
+                     <Insets top="4.0" />
+                  </HBox.margin>
+               </Text>
+               <ComboBox fx:id="correctAnswerComboBox" prefHeight="25.0" prefWidth="415.0" />
+            </children>
+         </HBox>
       </children>
    </VBox>
    <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Question Details" textFill="#143452">
@@ -124,7 +219,7 @@
          <Font name="System Bold" size="25.0" />
       </font>
    </Label>
-   <HBox layoutX="309.0" layoutY="505.0" prefHeight="36.0" prefWidth="352.0" style="-fx-background-color: #DCDCDC;">
+   <HBox layoutX="363.0" layoutY="509.0" prefHeight="36.0" prefWidth="352.0" style="-fx-background-color: #DCDCDC;">
       <children>
          <Button fx:id="resetBtn" mnemonicParsing="false" onAction="#ResetQuestion" prefHeight="36.0" prefWidth="170.0" style="-fx-background-color: #143452;" text="Reset Question" textFill="WHITE">
             <HBox.margin>
