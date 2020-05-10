@@ -2,6 +2,8 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +26,10 @@ public class EditInterface implements Initializable {
     private static Question question;
     private static Command commandFromServer = null;
 
+
+    @FXML
+    private ComboBox<String> subjectComboBox;
+
     @FXML
     private AnchorPane anchorPane;
 
@@ -42,8 +48,6 @@ public class EditInterface implements Initializable {
     @FXML // fx:id="AuthorTF"
     private TextField authorTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="SubjectTF"
-    private TextField subjectTF; // Value injected by FXMLLoader
 
     @FXML // fx:id="Answer1TF"
     private TextField answer1TF; // Value injected by FXMLLoader
@@ -74,7 +78,7 @@ public class EditInterface implements Initializable {
     		// Enable changing the relevant text fields
     		questionTF.setEditable(true);
     		authorTF.setEditable(true);
-    		subjectTF.setEditable(true);
+    		subjectComboBox.setEditable(true);
 
     		answer1TF.setEditable(true);
     		answer2TF.setEditable(true);
@@ -134,7 +138,7 @@ public class EditInterface implements Initializable {
             // Again lock the access for the text fields
         	questionTF.setEditable(false);
         	authorTF.setEditable(false);
-        	subjectTF.setEditable(false);
+        	subjectComboBox.setEditable(false);
         	answer1TF.setEditable(false);
         	answer2TF.setEditable(false);
         	answer3TF.setEditable(false);
@@ -192,7 +196,6 @@ public class EditInterface implements Initializable {
         questionTF.setText(question.getQuestion());
         authorTF.setText(question.getWriter().getUsername());
         idTF.setText(String.valueOf(question.getId()));
-        subjectTF.setText(question.getSubject().getSubjectName());
         answer1TF.setText(question.getAnswer(1));
         answer2TF.setText(question.getAnswer(2));
         answer3TF.setText(question.getAnswer(3));

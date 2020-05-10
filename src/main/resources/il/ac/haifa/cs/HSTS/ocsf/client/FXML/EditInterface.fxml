@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -82,12 +83,6 @@
          </Text>
          <TextField fx:id="authorTF" editable="false" />
          <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
-            <font>
-               <Font size="10.0" />
-            </font>
-         </Text>
-         <TextField fx:id="subjectTF" editable="false" />
-         <Text fill="#00000062" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
             <font>
                <Font size="10.0" />
             </font>
