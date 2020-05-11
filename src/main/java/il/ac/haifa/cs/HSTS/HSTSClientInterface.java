@@ -1,10 +1,7 @@
 package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
-import il.ac.haifa.cs.HSTS.ocsf.client.FXML.EditInterface;
-import il.ac.haifa.cs.HSTS.ocsf.client.FXML.GUIInterface;
-import il.ac.haifa.cs.HSTS.ocsf.client.FXML.MainClass;
-import il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 
 import java.io.IOException;
@@ -83,11 +80,10 @@ public class HSTSClientInterface {
         if (commandHandled.isCommand("users","login")){
             loginInterface.receivedCommandFromServer(commandHandled);
         }
-        if (commandHandled.isCommand("questions", "readBySubject")) {
+        if (commandHandled.isCommand("questions", "readbysubject")) {
             // Getting questions asked for
-            ArrayList<Question> list = (ArrayList<Question>) ((Command) message).getReturnedObject();
-            for (Question q : list)
-                System.out.println(q.toString());
+            System.out.println("subjects with question received: "+ commandHandled.getReturnedObject());
+            menuInterface.receivedCommandFromServer(commandHandled);
         }
         if (commandHandled.isCommand("questions","update"))
             EditInterface.receivedCommandFromServer(commandHandled);

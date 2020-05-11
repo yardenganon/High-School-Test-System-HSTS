@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import il.ac.haifa.cs.HSTS.Command;
+import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
@@ -190,6 +191,16 @@ public class menuInterface implements Initializable {
     public void refreshList() {
         questsOfTeacher = new ArrayList<Question>();
         List<Subject> subjects = ((Teacher) user).getSubjects();
+
+        commandFromServer =null;
+        Command command = new Command("readbysubject","Questions",subjects);
+        HSTSClientInterface.sendCommandToServer(command);
+
+        while (commandFromServer == null)
+            System.out.print("");
+
+        subjects = (List<Subject>) commandFromServer.getReturnedObject();
+
         for (Subject subject : subjects)
             questsOfTeacher.addAll(subject.getQuestions());
 
