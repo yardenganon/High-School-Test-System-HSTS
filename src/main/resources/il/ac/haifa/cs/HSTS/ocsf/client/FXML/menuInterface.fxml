@@ -28,7 +28,7 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="coursesBtn" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" onAction="#Show" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Courses" textFill="WHITE">
+            <Button fx:id="coursesBtn" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Courses" textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="17.0" />
                </font>
@@ -38,7 +38,7 @@
                   <Font name="Calibri Bold" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="testsBtn" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" onAction="#Show" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Tests" textFill="WHITE">
+            <Button fx:id="testsBtn" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Tests" textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="17.0" />
                </font>
