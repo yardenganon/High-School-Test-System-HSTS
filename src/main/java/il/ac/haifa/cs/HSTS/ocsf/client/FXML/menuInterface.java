@@ -73,8 +73,6 @@ public class menuInterface implements Initializable {
     @FXML // fx:id="searchTF"
     private TextField searchTF; // Value injected by FXMLLoader
 
-    @FXML // fx:id="searchIV"
-    private ImageView searchIV; // Value injected by FXMLLoader
 
     @FXML // fx:id="editBtn"
     private Button editBtn; // Value injected by FXMLLoader
@@ -102,7 +100,6 @@ public class menuInterface implements Initializable {
     	tableVB.setVisible(true);
     	tableV.setVisible(true);
     	searchTF.setVisible(true);
-    	searchIV.setVisible(true);
 
         refreshList();
         //tableV.setItems(questionsOL);
