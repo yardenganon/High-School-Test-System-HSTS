@@ -55,7 +55,7 @@
             </Button>
          </children>
       </VBox>
-      <VBox fx:id="tableVB" layoutX="248.0" layoutY="66.0" prefHeight="582.0" prefWidth="594.0" visible="false">
+      <VBox fx:id="tableVB" layoutX="248.0" layoutY="117.0" prefHeight="531.0" prefWidth="594.0" visible="false">
          <children>
             <TableView fx:id="tableV" prefHeight="583.0" prefWidth="594.0" visible="false">
               <columns>
@@ -67,9 +67,13 @@
             </TableView>
          </children>
       </VBox>
-      <TextField fx:id="searchTF" layoutX="248.0" layoutY="14.0" prefHeight="31.0" prefWidth="583.0" promptText="Enter a question..." visible="false">
+      <TextField fx:id="searchTF" layoutX="261.0" layoutY="72.0" prefHeight="31.0" prefWidth="568.0" promptText="Enter a question..." visible="false">
          <font>
             <Font size="15.0" />
          </font></TextField>
+      <Button fx:id="addQuestionBtn" layoutX="777.0" layoutY="26.0" mnemonicParsing="false" style="-fx-background-color: #143452;" text="+" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Calibri Light" size="20.0" />
+         </font></Button>
    </children>
 </AnchorPane>
