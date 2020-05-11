@@ -4,20 +4,26 @@ import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class loginInterface {
+public class loginInterface implements Initializable {
 	/**
 	 * Sample Skeleton for 'loginInterface.fxml' Controller Class
 	 */
@@ -35,8 +41,13 @@ public class loginInterface {
     @FXML // fx:id="errorLB"
     private Label errorLB; // Value injected by FXMLLoader
 
+
+
     @FXML
-    void login(ActionEvent event) throws IOException{
+    void loginBtnPressed(ActionEvent event) throws IOException{
+       executeLogin();
+    }
+    void executeLogin() throws IOException{
         // Creating command here and send it to client
         errorLB.setVisible(false);
         String username = usernameTF.getCharacters().toString();
@@ -83,6 +94,33 @@ public class loginInterface {
     }
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        usernameTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    try {
+                        executeLogin();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        passwordTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER) {
+                    try {
+                        executeLogin();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
 }
 
 
