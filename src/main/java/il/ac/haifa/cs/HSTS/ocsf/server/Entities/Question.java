@@ -19,7 +19,7 @@ public class Question implements Serializable {
     String answer4;
     int correctAnswer;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "writer_id")
     Teacher writer;
 

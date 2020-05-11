@@ -129,6 +129,7 @@ public class EditInterface implements Initializable {
                     question.setAnswer(3, answer3TF.getText());
                     question.setAnswer(4, answer4TF.getText());
 
+                    commandFromServer=null;
                     Command command = new Command("update", "questions", question);
                     HSTSClientInterface.sendCommandToServer(command);
 
@@ -136,6 +137,9 @@ public class EditInterface implements Initializable {
                     while (commandFromServer == null) {
                         System.out.print("");
                     }
+                    question = (Question)commandFromServer.getReturnedObject();
+                    System.out.println(question);
+                    //initializeQuestionDetails();
 
                     // After server confirmation we show the message "The question was successfully changed"
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
