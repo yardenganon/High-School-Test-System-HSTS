@@ -124,7 +124,7 @@
                   </HBox.margin>
                </Text>
       
-               <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0">
+               <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -209,7 +209,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <ComboBox fx:id="correctAnswerComboBox" prefHeight="25.0" prefWidth="415.0" />
+               <ComboBox fx:id="correctAnswerComboBox" prefHeight="25.0" prefWidth="415.0" style="-fx-background-color: #ffffff;" />
             </children>
          </HBox>
       </children>

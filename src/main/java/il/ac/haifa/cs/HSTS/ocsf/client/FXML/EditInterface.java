@@ -142,6 +142,8 @@ public class EditInterface implements Initializable {
                     updateSuccessAlert.setHeaderText("The question was successfully changed");
                     updateSuccessAlert.showAndWait();
                 }
+                else
+                    thereIsAnError = false;
             }
             // Return button text to "Edit"
             ((Button) event.getSource()).setText("Edit Question");
@@ -234,13 +236,12 @@ public class EditInterface implements Initializable {
     private void setDisableAndVisible(boolean changeToDisableAndVisible)
     {
         questionTF.setEditable(changeToDisableAndVisible);
-        //subjectTF.setEditable(false);
-        subjectComboBox.setEditable(changeToDisableAndVisible);
+        subjectComboBox.setDisable(true);
         answer1TF.setEditable(changeToDisableAndVisible);
         answer2TF.setEditable(changeToDisableAndVisible);
         answer3TF.setEditable(changeToDisableAndVisible);
         answer4TF.setEditable(changeToDisableAndVisible);
-        correctAnswerComboBox.setEditable(changeToDisableAndVisible);
+        correctAnswerComboBox.setDisable(!changeToDisableAndVisible);
     }
 
     private void inputError(TextField textField)
