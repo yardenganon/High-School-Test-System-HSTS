@@ -78,6 +78,9 @@ public class menuInterface implements Initializable {
     private Button editBtn; // Value injected by FXMLLoader
 
     @FXML
+    private Button addQuestionBtn;
+
+    @FXML
     private Button testsBtn;
     @FXML
     private Button coursesBtn;
@@ -100,6 +103,7 @@ public class menuInterface implements Initializable {
     	tableVB.setVisible(true);
     	tableV.setVisible(true);
     	searchTF.setVisible(true);
+    	addQuestionBtn.setVisible(true);
 
         refreshList();
         //tableV.setItems(questionsOL);
