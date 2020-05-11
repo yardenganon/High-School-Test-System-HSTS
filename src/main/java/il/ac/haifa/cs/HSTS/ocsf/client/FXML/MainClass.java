@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.hibernate.boot.archive.scan.spi.ScanEnvironment;
 
 public class MainClass extends Application {
@@ -19,6 +20,7 @@ public class MainClass extends Application {
     @Override
 	public void start(Stage stage) throws IOException {
 	    stage.setTitle("Login");
+	    //stage.initStyle(StageStyle.UNDECORATED);
         scene = new Scene(loadFXML("loginInterface"));
         Scene menu = new Scene(loadFXML("loginInterface"));
         stage.setScene(scene);

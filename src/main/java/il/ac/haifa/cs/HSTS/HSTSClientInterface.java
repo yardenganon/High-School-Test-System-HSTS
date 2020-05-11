@@ -79,6 +79,7 @@ public class HSTSClientInterface {
         System.out.println("Command received from server : " + commandHandled.toString());
         System.out.println("Command:" + commandHandled.getCommand() +
                 " Controller: "+commandHandled.getController());
+        System.out.println("Command returned object : "+ (commandHandled.getReturnedObject()!=null?commandHandled.getReturnedObject():"null"));
         if (commandHandled.isCommand("users","login")){
             loginInterface.receivedCommandFromServer(commandHandled);
         }

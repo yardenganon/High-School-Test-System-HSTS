@@ -39,6 +39,7 @@ public class QuestionsRepository {
     }
 
     public Question updateQuestion(Question question) {
+        Question question1;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
@@ -47,9 +48,11 @@ public class QuestionsRepository {
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
+            question1 = getQuestionById(question.getId());
+            System.out.println(question1);
             SessionFactoryGlobal.closeSession(session);
         }
-        Question question1 = getQuestionById(question.getId());
+
         return question1;
     }
 
