@@ -80,6 +80,11 @@ public class menuInterface implements Initializable {
     private Button editBtn; // Value injected by FXMLLoader
 
     @FXML
+    private Button testsBtn;
+    @FXML
+    private Button coursesBtn;
+
+    @FXML
     void edit(ActionEvent event) {
         Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
         editInformation.setTitle("Information");

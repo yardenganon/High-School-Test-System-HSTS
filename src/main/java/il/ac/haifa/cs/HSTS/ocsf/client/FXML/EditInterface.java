@@ -138,8 +138,6 @@ public class EditInterface implements Initializable {
                         System.out.print("");
                     }
                     question = (Question)commandFromServer.getReturnedObject();
-                    System.out.println(question);
-                    //initializeQuestionDetails();
 
                     // After server confirmation we show the message "The question was successfully changed"
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
