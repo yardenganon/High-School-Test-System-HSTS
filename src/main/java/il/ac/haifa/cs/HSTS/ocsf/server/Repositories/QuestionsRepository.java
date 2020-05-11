@@ -38,7 +38,7 @@ public class QuestionsRepository {
         }
     }
 
-    public void updateQuestion(Question question) {
+    public Question updateQuestion(Question question) {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
@@ -49,6 +49,8 @@ public class QuestionsRepository {
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
+        Question question1 = getQuestionById(question.getId());
+        return question1;
     }
 
      public List<Subject> getQuestionsBySubject(List<Subject> subjects) {

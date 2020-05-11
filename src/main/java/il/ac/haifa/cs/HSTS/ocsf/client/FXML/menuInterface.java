@@ -41,6 +41,7 @@ public class menuInterface implements Initializable {
     private static User user;
     private static Command commandFromServer = null;
     private static List<Question> questsOfTeacher = null;
+    private ObservableList<QuestionTeacher> questionsOL = null;
 
     @FXML // fx:id="helloLB"
     private Label helloLB; // Value injected by FXMLLoader
@@ -98,22 +99,7 @@ public class menuInterface implements Initializable {
     	searchTF.setVisible(true);
     	searchIV.setVisible(true);
 
-        questsOfTeacher = new ArrayList<Question>();
-        List<Subject> subjects = ((Teacher) user).getSubjects();
-        for (Subject subject : subjects)
-            questsOfTeacher.addAll(subject.getQuestions());
-
-        columnId.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("id"));
-        columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("question"));
-        columnAuthor.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("author"));
-        columnSubject.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("subject"));
-
-        ObservableList<QuestionTeacher> questionsOL= FXCollections.observableArrayList();
-        for (Question quest : questsOfTeacher){
-            questionsOL.add(new QuestionTeacher(String.valueOf(quest.getId()), quest.getQuestion(),
-                    quest.getWriter().getUsername(),
-                    quest.getSubject().getSubjectName()));
-        }
+        refreshList();
         //tableV.setItems(questionsOL);
 
        FilteredList<QuestionTeacher> filteredQuests = new FilteredList<>(questionsOL, b -> true);
@@ -194,5 +180,23 @@ public class menuInterface implements Initializable {
 
     public void initializeUser(){
         helloLB.setText("Hello " + user.getFirst_name());
+    }
+    public void refreshList() {
+        questsOfTeacher = new ArrayList<Question>();
+        List<Subject> subjects = ((Teacher) user).getSubjects();
+        for (Subject subject : subjects)
+            questsOfTeacher.addAll(subject.getQuestions());
+
+        columnId.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("id"));
+        columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("question"));
+        columnAuthor.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("author"));
+        columnSubject.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("subject"));
+
+        questionsOL= FXCollections.observableArrayList();
+        for (Question quest : questsOfTeacher){
+            questionsOL.add(new QuestionTeacher(String.valueOf(quest.getId()), quest.getQuestion(),
+                    quest.getWriter().getUsername(),
+                    quest.getSubject().getSubjectName()));
+        }
     }
 }

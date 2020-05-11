@@ -28,7 +28,7 @@ public class QuestionsController {
                 Question q = questionsRepository.getQuestionById(j);
                 command.setReturnedObject(q); break;
             case "push" : questionsRepository.pushQuestion((Question) command.getParameter(0));break;
-            case "update" : questionsRepository.updateQuestion((Question) command.getParameter(0)); break;
+            case "update" : command.setReturnedObject(questionsRepository.updateQuestion((Question) command.getParameter(0))); break;
             case "delete" : questionsRepository.deleteQuestion((Question) command.getParameter(0)); break;
             // cases
             default : command.setStatus("Command invalid");
