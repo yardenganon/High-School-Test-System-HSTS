@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="744.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="744.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.loginInterface">
    <children>
       <Button fx:id="loginBtn" layoutX="413.0" layoutY="406.0" mnemonicParsing="false" onAction="#loginBtnPressed" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Login" textFill="WHITE">
          <font>
@@ -46,7 +46,7 @@
             <Font name="Calibri Light Italic" size="20.0" />
          </font>
       </Label>
-      <Label fx:id="errorLB" layoutX="427.0" layoutY="235.0" prefHeight="24.0" prefWidth="265.0" text="username and/or password are incorrect" textFill="#e80808" visible="false">
+      <Label fx:id="errorLB" layoutX="427.0" layoutY="235.0" prefHeight="24.0" prefWidth="265.0" text="Username and/or password are incorrect" textFill="#e80808" visible="false">
          <font>
             <Font name="Calibri Bold" size="15.0" />
          </font>

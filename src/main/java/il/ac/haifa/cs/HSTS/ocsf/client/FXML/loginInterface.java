@@ -3,19 +3,21 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -41,6 +43,9 @@ public class loginInterface implements Initializable {
     @FXML // fx:id="errorLB"
     private Label errorLB; // Value injected by FXMLLoader
 
+    @FXML
+    private AnchorPane anchorPane;
+
 
 
     @FXML
@@ -57,30 +62,58 @@ public class loginInterface implements Initializable {
             errorLB.setVisible(true);
             return;
         }
-        Command command = new Command("login","users", username, password);
-        HSTSClientInterface.sendCommandToServer(command);
 
-        while (commandFromServer == null){
-            System.out.print("");
-        }
-
-        System.out.println(commandFromServer);
         User userLoggedIn;
-        if (commandFromServer.getReturnedObject() == null) {
+
+        Task<Command> task = new Task<Command>() {
+
+            @Override
+            protected Command call() throws Exception {
+
+                Command command = new Command("login","users", username, password);
+                HSTSClientInterface.sendCommandToServer(command);
+//                StackPane root = (StackPane) anchorPane.getParent();
+//                ProgressIndicator indicator = new ProgressIndicator();
+//                VBox vbox = new VBox(indicator);
+//                vbox.setAlignment(Pos.CENTER);
+//                vbox.setVisible(true);
+//                root.getChildren().add(vbox);
+//                Scene scene1 = anchorPane.getScene();
+//                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
+//                stage1.setScene(scene1);
+//                stage1.show();
+                while (commandFromServer == null)
+                    System.out.print("");
+                return commandFromServer;
+            }
+        };
+        task.setOnFailed(e-> {
+            errorLB.setText("Error - Connection Problem");
             errorLB.setVisible(true);
+        });
+        task.setOnSucceeded(e -> {
+            commandFromServer = task.getValue();
+            User user = (User) commandFromServer.getReturnedObject();
+            if (user == null) {
+                errorLB.setText("Username and/or password are incorrect");
+                errorLB.setVisible(true);
+            }
+            else {
+                menuInterface.setUser(user);
+                System.out.println("User: "+user.getUsername() + " is logged in");
+                Scene scene = null;
+                try {
+                    scene = new Scene(loadFXML("menuInterface"));
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+                Stage stage = (Stage) loginBtn.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("Menu");
+            }
             commandFromServer = null;
-            return;
-        }
-        else {
-            userLoggedIn = (User) commandFromServer.getReturnedObject();
-            menuInterface.setUser(userLoggedIn);
-            System.out.println("User: "+userLoggedIn.getUsername() + " is logged in");
-            Scene scene = new Scene(loadFXML("menuInterface"));
-            Stage stage = (Stage) loginBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Menu");
-            commandFromServer = null;
-        }
+        });
+        new Thread(task).start();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
