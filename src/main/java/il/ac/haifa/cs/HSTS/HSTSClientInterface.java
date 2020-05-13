@@ -85,6 +85,11 @@ public class HSTSClientInterface {
             System.out.println("subjects with question received: "+ commandHandled.getReturnedObject());
             menuInterface.receivedCommandFromServer(commandHandled);
         }
+        if (commandHandled.isCommand("questions", "readall")) {
+            // Getting questions asked for
+            System.out.println("All question received: "+ commandHandled.getReturnedObject());
+            menuInterface.receivedCommandFromServer(commandHandled);
+        }
         if (commandHandled.isCommand("questions","update"))
             EditInterface.receivedCommandFromServer(commandHandled);
     }

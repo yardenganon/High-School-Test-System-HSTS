@@ -22,6 +22,10 @@ public class QuestionsController {
         // CRUD - Create , Read , Update , Delete
         switch (command.getCommand()) {
             case "readbysubject" : command.setReturnedObject(questionsRepository.getQuestionsBySubject((List<Subject>)command.getParameter(0)));break;
+            case "readall" :
+                List<Question> list = questionsRepository.getAll();
+                command.setReturnedObject(list);
+                System.out.println(command.getReturnedObject()); break;
             case "readbyid" :
                 Object i = command.getParameter(0);
                 int j = (Integer.parseInt(String.valueOf(i)));

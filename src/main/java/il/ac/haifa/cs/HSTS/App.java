@@ -1,9 +1,6 @@
 package il.ac.haifa.cs.HSTS;
 
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.SessionFactoryGlobal;
 import org.hibernate.HibernateException;
@@ -67,13 +64,17 @@ public class App {
 
             QuestionsRepository questionsRepository= new QuestionsRepository();
 
-            List<Subject> subjectList = new ArrayList<Subject>();
-            Subject subject = new Subject("Mathematics");
-            Subject subject2 = new Subject("Science");
-            subjectList.add(subject);
-            subjectList.add(subject2);
-            List<Subject> questionList = questionsRepository.getQuestionsBySubject(subjectList);
-            System.out.println(questionList);
+            Principle principle = new Principle("nitza_patiti","1234","nitza_patiti@gmail.com",
+                    "Nitza","Patiti","Female");
+            session.save(principle);
+
+//            List<Subject> subjectList = new ArrayList<Subject>();
+//            Subject subject = new Subject("Mathematics");
+//            Subject subject2 = new Subject("Science");
+//            subjectList.add(subject);
+//            subjectList.add(subject2);
+//            List<Subject> questionList = questionsRepository.getQuestionsBySubject(subjectList);
+//            System.out.println(questionList);
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
