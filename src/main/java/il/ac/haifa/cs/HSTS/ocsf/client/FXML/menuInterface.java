@@ -30,6 +30,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+
 public class menuInterface implements Initializable {
     /**
      * Sample Skeleton for 'menuInterface.fxml' Controller Class
@@ -193,6 +195,9 @@ public class menuInterface implements Initializable {
             Command command = new Command("readbysubject", "Questions", subjects);
             HSTSClientInterface.sendCommandToServer(command);
 
+            while (commandFromServer == null)
+                System.out.print("");
+
             subjects = (List<Subject>) commandFromServer.getReturnedObject();
 
             for (Subject subject : subjects)
@@ -204,6 +209,7 @@ public class menuInterface implements Initializable {
 
             while (commandFromServer == null)
                 System.out.print("");
+
             questionList = (List<Question>)commandFromServer.getReturnedObject();
         }
         columnId.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("id"));
