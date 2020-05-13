@@ -117,26 +117,27 @@ public class QuestionsRepository {
         return result;
     }
 
-    public static <T> List<T> getAll(Class<T> object) {
-        TypedQuery<T> allQuery = null;
+    public List<Question> getAll() {
+        List<Question> list = new ArrayList<Question>();
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<T> criteriaQuery = builder.createQuery(object);
-            Root<T> rootEntry = criteriaQuery.from(object);
-            CriteriaQuery<T> allCriteriaQuery = criteriaQuery.select(rootEntry);
-            allQuery = session.createQuery(allCriteriaQuery);
+            CriteriaQuery<Question> criteriaQuery = builder.createQuery(Question.class);
+            Root<Question> rootEntry = criteriaQuery.from(Question.class);
+            CriteriaQuery<Question> allCriteriaQuery = criteriaQuery.select(rootEntry);
+            Query allQuery = session.createQuery(allCriteriaQuery);
+            list.addAll(allQuery.getResultList());
 
+            SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
 
-             SessionFactoryGlobal.closeTransaction(session);
             SessionFactoryGlobal.closeSession(session);
         }
-        return allQuery.getResultList();
-
+        System.out.println(list);
+        return list;
     }
 
     private static <E> void updateEntities(List<? extends E> obj) throws Exception {

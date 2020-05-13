@@ -202,10 +202,13 @@ public class EditInterface implements Initializable {
 
     public void initializeQuestionDetails()
     {
-        Teacher teacher = ((Teacher)menuInterface.getUser());
-        subjectComboBox.getItems().clear();
-        for (Subject subject : teacher.getSubjects())
-            subjectComboBox.getItems().add(subject.getSubjectName());
+        if (menuInterface.getUser() instanceof Teacher) {
+            Teacher teacher = ((Teacher) menuInterface.getUser());
+            subjectComboBox.getItems().clear();
+            for (Subject subject : teacher.getSubjects())
+                subjectComboBox.getItems().add(subject.getSubjectName());
+        }
+
         subjectComboBox.getSelectionModel().select(question.getSubject().getSubjectName());
         setDisableAndVisible(false);
 

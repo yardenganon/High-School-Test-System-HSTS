@@ -13,10 +13,7 @@ import java.util.ResourceBundle;
 
 import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -29,7 +26,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,7 +37,7 @@ public class menuInterface implements Initializable {
 
     private static User user;
     private static Command commandFromServer = null;
-    private static List<Question> questsOfTeacher = null;
+    private static List<Question> questionList = null;
     private ObservableList<QuestionTeacher> questionsOL = null;
 
     @FXML // fx:id="helloLB"
@@ -134,7 +130,7 @@ public class menuInterface implements Initializable {
                 if (questionSelected != null && event.getClickCount() == 2) {
                     Scene scene = null;
                     try {
-                        for (Question q : questsOfTeacher)
+                        for (Question q : questionList)
                         {
                             if (q.getId() == Integer.parseInt(questionSelected.getId())) {
                                 EditInterface.setQuestion(q);
@@ -189,28 +185,34 @@ public class menuInterface implements Initializable {
         helloLB.setText("Hello " + user.getFirst_name());
     }
     public void refreshList() {
-        questsOfTeacher = new ArrayList<Question>();
-        List<Subject> subjects = ((Teacher) user).getSubjects();
+        questionList = new ArrayList<Question>();
+        if (user instanceof Teacher) {
+            List<Subject> subjects = ((Teacher) user).getSubjects();
 
-        commandFromServer =null;
-        Command command = new Command("readbysubject","Questions",subjects);
-        HSTSClientInterface.sendCommandToServer(command);
+            commandFromServer = null;
+            Command command = new Command("readbysubject", "Questions", subjects);
+            HSTSClientInterface.sendCommandToServer(command);
 
-        while (commandFromServer == null)
-            System.out.print("");
+            subjects = (List<Subject>) commandFromServer.getReturnedObject();
 
-        subjects = (List<Subject>) commandFromServer.getReturnedObject();
+            for (Subject subject : subjects)
+                questionList.addAll(subject.getQuestions());
+        } else if (user instanceof Principle){
+            commandFromServer = null;
+            Command command = new Command("readAll", "Questions");
+            HSTSClientInterface.sendCommandToServer(command);
 
-        for (Subject subject : subjects)
-            questsOfTeacher.addAll(subject.getQuestions());
-
+            while (commandFromServer == null)
+                System.out.print("");
+            questionList = (List<Question>)commandFromServer.getReturnedObject();
+        }
         columnId.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("id"));
         columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("question"));
         columnAuthor.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("author"));
         columnSubject.setCellValueFactory(new PropertyValueFactory<QuestionTeacher, String>("subject"));
 
         questionsOL= FXCollections.observableArrayList();
-        for (Question quest : questsOfTeacher){
+        for (Question quest : questionList){
             questionsOL.add(new QuestionTeacher(String.valueOf(quest.getId()), quest.getQuestion(),
                     quest.getWriter().getUsername(),
                     quest.getSubject().getSubjectName()));
