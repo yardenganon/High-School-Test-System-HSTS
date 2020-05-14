@@ -16,7 +16,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionReadAllCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionReadBySubjectCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.*;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -39,7 +39,7 @@ public class MenuController implements Initializable {
      */
 
     private static User user;
-    private static Respond responseFromServer = null;
+    private static Response responseFromServer = null;
     private static List<Question> questionList = null;
     private ObservableList<QuestionTableView> questionsOL = null;
 
@@ -166,9 +166,9 @@ public class MenuController implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static void receivedRespondFromServer(Respond respond){
-        responseFromServer = respond;
-        System.out.println("Command received in controller " + respond);
+    public static void receivedRespondFromServer(Response response){
+        responseFromServer = response;
+        System.out.println("Command received in controller " + response);
     }
 
     public static User getUser() {

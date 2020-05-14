@@ -4,7 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionReadBySubjectCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.util.Date;
 import java.util.List;
@@ -18,18 +18,18 @@ public class QuestionReadBySubjectController implements ControllerInterface{
     }
 
     @Override
-    public Respond executeCommand(CommandInterface command){
+    public Response executeCommand(CommandInterface command){
         QuestionReadBySubjectCommand questionReadBySubjectCommand = (QuestionReadBySubjectCommand) command;
         List<Subject> subjectsList = questionReadBySubjectCommand.getSubjectsList();
         List<Subject> subjectsFromRepository = questionsRepository.getQuestionsBySubject(subjectsList);
 
-        Respond respondMessage = new Respond();
-        respondMessage.setDateHandled(new Date());
-        respondMessage.setReturnedObject(subjectsFromRepository);
-        respondMessage.setStatus("Success");
-        respondMessage.setRespondName("ReadBySubject");
+        Response responseMessage = new Response();
+        responseMessage.setDateHandled(new Date());
+        responseMessage.setReturnedObject(subjectsFromRepository);
+        responseMessage.setStatus("Success");
+        responseMessage.setRespondName("ReadBySubject");
         System.out.print("Command handled successfully ");
-        return respondMessage;
+        return responseMessage;
     }
 
     @Override

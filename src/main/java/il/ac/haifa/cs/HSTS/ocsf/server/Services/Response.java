@@ -3,14 +3,14 @@ package il.ac.haifa.cs.HSTS.ocsf.server.Services;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Respond implements Serializable {
+public class Response implements Serializable {
     protected String status;
     protected Date dateCreated;
     protected Date dateHandled;
     protected Object returnedObject;
     protected String respondName;
 
-    public Respond(){
+    public Response(){
         status = "Open";
         dateCreated = new Date();
         dateHandled = null;
@@ -58,5 +58,16 @@ public class Respond implements Serializable {
         if(returnedObject != null)
             return returnedObject.getClass().getSimpleName();
         else return "No Returned Object";
+    }
+
+    @Override
+    public String toString() {
+        return "Respond{" +
+                "status='" + status + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", dateHandled=" + dateHandled +
+                ", returnedObject=" + returnedObject +
+                ", respondName='" + respondName + '\'' +
+                '}';
     }
 }

@@ -4,7 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.UsersRepository;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.util.Date;
 
@@ -17,7 +17,7 @@ public class UserLoginController implements ControllerInterface {
     }
 
     @Override
-    public Respond executeCommand(CommandInterface command) {
+    public Response executeCommand(CommandInterface command) {
         System.out.println("Execute Command - Login");
         LoginCommand loginCommand = (LoginCommand) command;
         String userName = loginCommand.getUserName();
@@ -25,14 +25,14 @@ public class UserLoginController implements ControllerInterface {
 
         User user = usersRepository.login(userName, password);
 
-        Respond respondMessage = new Respond();
-        respondMessage.setDateHandled(new Date());
-        respondMessage.setReturnedObject(user);
-        respondMessage.setRespondName("Login");
-        respondMessage.setStatus("Success");
+        Response responseMessage = new Response();
+        responseMessage.setDateHandled(new Date());
+        responseMessage.setReturnedObject(user);
+        responseMessage.setRespondName("Login");
+        responseMessage.setStatus("Success");
         System.out.println("Command handled successfully");
         System.out.println("Return respond");
-        return respondMessage;
+        return responseMessage;
     }
 
     @Override
