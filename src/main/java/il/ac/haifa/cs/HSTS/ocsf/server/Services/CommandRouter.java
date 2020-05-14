@@ -25,13 +25,13 @@ public class CommandRouter {
         System.out.println("Router initiated");
     }
 
-    public Respond handleRequest(CommandInterface commandFromClient){
+    public Response handleRequest(CommandInterface commandFromClient){
         System.out.println("In handleRequest");
-        Respond respondMessage;
+        Response responseMessage;
         String commandName = commandFromClient.getCommandName();
         System.out.println(commandName);
         ControllerInterface controllerInterface = commandsMap.get(commandName);
-        respondMessage = controllerInterface.executeCommand(commandFromClient);
-        return respondMessage;
+        responseMessage = controllerInterface.executeCommand(commandFromClient);
+        return responseMessage;
     }
 }

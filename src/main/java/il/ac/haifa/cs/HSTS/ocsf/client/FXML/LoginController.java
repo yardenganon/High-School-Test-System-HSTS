@@ -3,7 +3,7 @@ import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,7 +26,7 @@ public class LoginController implements Initializable {
 	/**
 	 * Sample Skeleton for 'Login.fxml' Controller Class
 	 */
-	private static Respond responseFromServer = null;
+	private static Response responseFromServer = null;
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
@@ -62,10 +62,10 @@ public class LoginController implements Initializable {
 
         User userLoggedIn;
 
-        Task<Respond> task = new Task<Respond>() {
+        Task<Response> task = new Task<Response>() {
 
             @Override
-            protected Respond call() throws Exception {
+            protected Response call() throws Exception {
                 CommandInterface command = new LoginCommand(username, password);
                 HSTSClientInterface.sendCommandToServer(command);
                 while (responseFromServer == null)
@@ -107,9 +107,9 @@ public class LoginController implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static void receivedRespondFromServer(Respond respond){
-        responseFromServer = respond;
-        System.out.println("Command received in controller " + respond);
+    public static void receivedRespondFromServer(Response response){
+        responseFromServer = response;
+        System.out.println("Command received in controller " + response);
     }
 
 

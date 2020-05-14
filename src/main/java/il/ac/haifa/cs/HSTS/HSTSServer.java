@@ -10,7 +10,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.ocsf.server.ConnectionToClient;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.CommandRouter;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 public class HSTSServer extends AbstractServer {
 
@@ -28,25 +28,25 @@ public class HSTSServer extends AbstractServer {
     @Override
     protected void handleMessageFromClient(Object message, ConnectionToClient client) {
         if (message != null) {
-            Respond respondMessage;
+            Response responseMessage;
             CommandInterface commandFromClient = null;
             try {
                 commandFromClient = (CommandInterface) message;
                 System.out.print("Command received from client ");
 
-                respondMessage = commandRouter.handleRequest(commandFromClient);
+                responseMessage = commandRouter.handleRequest(commandFromClient);
                 System.out.println("got back from DB");
-                System.out.println(respondMessage.getReturnedObjectName());
+                System.out.println(responseMessage.getReturnedObjectName());
             } catch (Exception e) {
-                respondMessage = new Respond();
-                respondMessage.setDateHandled(new Date());
-                respondMessage.setStatus("Controller not found");
+                responseMessage = new Response();
+                responseMessage.setDateHandled(new Date());
+                responseMessage.setStatus("Controller not found");
                 e.printStackTrace();
             }
             try {
                 //sending back respond to the client
                 System.out.println("Sending response back to client");
-                client.sendToClient(respondMessage);
+                client.sendToClient(responseMessage);
                 System.out.println("Sent!");
             } catch (IOException e) {
                 System.out.println("Command has not sent back to client");

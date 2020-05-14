@@ -2,7 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.server.Controllers;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.util.Date;
 import java.util.List;
@@ -15,16 +15,16 @@ public class QuestionReadAllController implements ControllerInterface {
     }
 
     @Override
-    public Respond executeCommand(CommandInterface command){
+    public Response executeCommand(CommandInterface command){
         List<Question> questionsFromRepository = questionsRepository.getAll();
 
-        Respond respondMessage = new Respond();
-        respondMessage.setDateHandled(new Date());
-        respondMessage.setReturnedObject(questionsFromRepository);
-        respondMessage.setStatus("Success");
-        respondMessage.setRespondName("ReadAllQuestions");
+        Response responseMessage = new Response();
+        responseMessage.setDateHandled(new Date());
+        responseMessage.setReturnedObject(questionsFromRepository);
+        responseMessage.setStatus("Success");
+        responseMessage.setRespondName("ReadAllQuestions");
         System.out.print("Command handled successfully ");
-        return respondMessage;
+        return responseMessage;
     }
 
     @Override

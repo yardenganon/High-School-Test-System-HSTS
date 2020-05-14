@@ -1,7 +1,7 @@
 package il.ac.haifa.cs.HSTS;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.io.IOException;
 
@@ -70,7 +70,7 @@ public class HSTSClientInterface {
         if (isRunning) {
             //System.out.print("(Interrupted)\n");
         }
-        Respond serverResponse = (Respond) message;
+        Response serverResponse = (Response) message;
         System.out.println("Command received from server : " + serverResponse.getRespondName());
         System.out.println("Command returned object : "+ (serverResponse.getReturnedObject()!=null?serverResponse.getReturnedObject():"null"));
         if (serverResponse.getRespondName().equals("Login")){

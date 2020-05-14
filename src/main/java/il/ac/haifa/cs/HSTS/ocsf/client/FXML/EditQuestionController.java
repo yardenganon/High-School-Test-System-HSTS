@@ -6,7 +6,7 @@ import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionUpdateCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 public class EditQuestionController implements Initializable {
 
     private static Question question;
-    private static Respond responseFromServer = null;
+    private static Response responseFromServer = null;
     private static boolean thereIsAnError = false;
 
     @FXML
@@ -197,9 +197,9 @@ public class EditQuestionController implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static void receivedResponseFromServer(Respond respond){
-        responseFromServer = respond;
-        System.out.println("Command received in controller " + respond);
+    public static void receivedResponseFromServer(Response response){
+        responseFromServer = response;
+        System.out.println("Command received in controller " + response);
     }
 
     public void initializeQuestionDetails()
