@@ -1,18 +1,16 @@
 package il.ac.haifa.cs.HSTS;
-
-import il.ac.haifa.cs.HSTS.ocsf.client.CLI.CLIInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
-import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 // That was CLIChatClient
 public class HSTSClientInterface {
 
     private static HSTSClient client;
-    private CLIInterface cliInterface;
-    private GUIInterface guiInterface;
+//    private CLIInterface cliInterface;
+//    private GUIInterface guiInterface;
     private MainClass mainClass;
 
     private boolean isRunning;
@@ -22,8 +20,8 @@ public class HSTSClientInterface {
     public HSTSClientInterface(HSTSClient client) {
         HSTSClientInterface.client = client;
         this.isRunning = false;
-        this.cliInterface = new CLIInterface(this);
-        this.guiInterface = new GUIInterface(this);
+//        this.cliInterface = new CLIInterface(this);
+//        this.guiInterface = new GUIInterface(this);
     }
 
     public void loop() throws IOException {
@@ -53,7 +51,7 @@ public class HSTSClientInterface {
         this.isRunning =true;
 
 }
-    public static void sendCommandToServer(Command command)
+    public static void sendCommandToServer(CommandInterface command)
     {
         try {
             System.out.println("Sending command to server");
@@ -72,26 +70,24 @@ public class HSTSClientInterface {
         if (isRunning) {
             //System.out.print("(Interrupted)\n");
         }
-        Command commandHandled = (Command) message;
-        System.out.println("Command received from server : " + commandHandled.toString());
-        System.out.println("Command:" + commandHandled.getCommand() +
-                " Controller: "+commandHandled.getController());
-        System.out.println("Command returned object : "+ (commandHandled.getReturnedObject()!=null?commandHandled.getReturnedObject():"null"));
-        if (commandHandled.isCommand("users","login")){
-            loginInterface.receivedCommandFromServer(commandHandled);
+        Respond serverResponse = (Respond) message;
+        System.out.println("Command received from server : " + serverResponse.getRespondName());
+        System.out.println("Command returned object : "+ (serverResponse.getReturnedObject()!=null?serverResponse.getReturnedObject():"null"));
+        if (serverResponse.getRespondName().equals("Login")){
+            LoginController.receivedRespondFromServer(serverResponse);
         }
-        if (commandHandled.isCommand("questions", "readbysubject")) {
+        if (serverResponse.getRespondName().equals("ReadBySubject")) {
             // Getting questions asked for
-            System.out.println("subjects with question received: "+ commandHandled.getReturnedObject());
-            menuInterface.receivedCommandFromServer(commandHandled);
+            System.out.println("subjects with question received: "+ serverResponse.getReturnedObject());
+            Menu.receivedRespondFromServer(serverResponse);
         }
-        if (commandHandled.isCommand("questions", "readall")) {
+        if (serverResponse.getRespondName().equals("ReadAllQuestions")) {
             // Getting questions asked for
-            System.out.println("All question received: "+ commandHandled.getReturnedObject());
-            menuInterface.receivedCommandFromServer(commandHandled);
+            System.out.println("All question received: "+ serverResponse.getReturnedObject());
+            Menu.receivedRespondFromServer(serverResponse);
         }
-        if (commandHandled.isCommand("questions","update"))
-            EditInterface.receivedCommandFromServer(commandHandled);
+        if (serverResponse.getRespondName().equals("UpdateQuestion"))
+            EditInterface.receivedResponseFromServer(serverResponse);
     }
 
     public void closeConnection() {

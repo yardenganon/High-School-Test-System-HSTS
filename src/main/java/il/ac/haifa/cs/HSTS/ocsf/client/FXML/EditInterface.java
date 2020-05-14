@@ -1,10 +1,12 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
-import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionUpdateCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +27,7 @@ import java.util.ResourceBundle;
 public class EditInterface implements Initializable {
 
     private static Question question;
-    private static Command commandFromServer = null;
+    private static Respond responseFromServer = null;
     private static boolean thereIsAnError = false;
 
     @FXML
@@ -129,15 +131,15 @@ public class EditInterface implements Initializable {
                     question.setAnswer(3, answer3TF.getText());
                     question.setAnswer(4, answer4TF.getText());
 
-                    commandFromServer=null;
-                    Command command = new Command("update", "questions", question);
+                    responseFromServer =null;
+                    CommandInterface command = new QuestionUpdateCommand(question);
                     HSTSClientInterface.sendCommandToServer(command);
 
                     //Waiting for server confirmation
-                    while (commandFromServer == null) {
+                    while (responseFromServer == null) {
                         System.out.print("");
                     }
-                    question = (Question)commandFromServer.getReturnedObject();
+                    question = (Question) responseFromServer.getReturnedObject();
                     initializeQuestionDetails();
 
                     // After server confirmation we show the message "The question was successfully changed"
@@ -195,15 +197,15 @@ public class EditInterface implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static void receivedCommandFromServer(Command command){
-        commandFromServer = command;
-        System.out.println("Command received in controller " + command);
+    public static void receivedResponseFromServer(Respond respond){
+        responseFromServer = respond;
+        System.out.println("Command received in controller " + respond);
     }
 
     public void initializeQuestionDetails()
     {
-        if (menuInterface.getUser() instanceof Teacher) {
-            Teacher teacher = ((Teacher) menuInterface.getUser());
+        if (Menu.getUser() instanceof Teacher) {
+            Teacher teacher = ((Teacher) Menu.getUser());
             subjectComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectComboBox.getItems().add(subject.getSubjectName());

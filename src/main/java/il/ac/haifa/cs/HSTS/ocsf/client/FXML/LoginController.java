@@ -1,35 +1,32 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
-
-import il.ac.haifa.cs.HSTS.Command;
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.ocsf.server.Entities.User;
+import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class loginInterface implements Initializable {
+public class LoginController implements Initializable {
 	/**
 	 * Sample Skeleton for 'loginInterface.fxml' Controller Class
 	 */
-	private static Command commandFromServer = null;
+	private static Respond responseFromServer = null;
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
@@ -65,12 +62,12 @@ public class loginInterface implements Initializable {
 
         User userLoggedIn;
 
-        Task<Command> task = new Task<Command>() {
+        Task<Respond> task = new Task<Respond>() {
 
             @Override
-            protected Command call() throws Exception {
+            protected Respond call() throws Exception {
 
-                Command command = new Command("login","users", username, password);
+                CommandInterface command = new LoginCommand(username, password);
                 HSTSClientInterface.sendCommandToServer(command);
 //                StackPane root = (StackPane) anchorPane.getParent();
 //                ProgressIndicator indicator = new ProgressIndicator();
@@ -82,9 +79,9 @@ public class loginInterface implements Initializable {
 //                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
 //                stage1.setScene(scene1);
 //                stage1.show();
-                while (commandFromServer == null)
+                while (responseFromServer == null)
                     System.out.print("");
-                return commandFromServer;
+                return responseFromServer;
             }
         };
         task.setOnFailed(e-> {
@@ -92,14 +89,14 @@ public class loginInterface implements Initializable {
             errorLB.setVisible(true);
         });
         task.setOnSucceeded(e -> {
-            commandFromServer = task.getValue();
-            User user = (User) commandFromServer.getReturnedObject();
+            responseFromServer = task.getValue();
+            User user = (User) responseFromServer.getReturnedObject();
             if (user == null) {
                 errorLB.setText("Username and/or password are incorrect");
                 errorLB.setVisible(true);
             }
             else {
-                menuInterface.setUser(user);
+                Menu.setUser(user);
                 System.out.println("User: "+user.getUsername() + " is logged in");
                 Scene scene = null;
                 try {
@@ -111,7 +108,7 @@ public class loginInterface implements Initializable {
                 stage.setScene(scene);
                 stage.setTitle("Menu");
             }
-            commandFromServer = null;
+            responseFromServer = null;
         });
         new Thread(task).start();
     }
@@ -121,9 +118,9 @@ public class loginInterface implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static void receivedCommandFromServer(Command command){
-        commandFromServer = command;
-        System.out.println("Command received in controller " + command);
+    public static void receivedRespondFromServer(Respond respond){
+        responseFromServer = respond;
+        System.out.println("Command received in controller " + respond);
     }
 
 
