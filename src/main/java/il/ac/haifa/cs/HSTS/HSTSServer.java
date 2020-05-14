@@ -9,31 +9,21 @@ import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.Controllers.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.ocsf.server.ConnectionToClient;
-import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.QuestionsRepository;
-import il.ac.haifa.cs.HSTS.ocsf.server.Repositories.UsersRepository;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.CommandRouter;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.Respond;
 
 public class HSTSServer extends AbstractServer {
 
-    //    UserLoginController usersController;
-//    QuestionReadBySubjectController questionReadBySubjectController;
-//    QuestionReadAllController questionReadAllController;
-//    QuestionUpdateController questionUpdateController;
     List<ControllerInterface> controllers;
+    CommandRouter commandRouter;
 
     public HSTSServer(int port) {
         super(port);
-        controllers = new ArrayList<>();
-        controllers.add(new UserLoginController());
-        controllers.add(new QuestionReadBySubjectController());
-        controllers.add(new QuestionUpdateController());
-        controllers.add(new QuestionReadAllController());
-//        System.out.println(controllers.get(0).getControllerName());
-//        System.out.println(controllers.get(1).getControllerName());
-//        System.out.println(controllers.get(2).getControllerName());
-//        System.out.println(controllers.get(3).getControllerName());
         System.out.println("Server initiated");
+        controllers = new ArrayList<>();
+        controllersInit();
+        commandRouter = new CommandRouter();
+        commandRouter.initRouter(this.controllers);
     }
     @Override
     protected void handleMessageFromClient(Object message, ConnectionToClient client) {
@@ -43,12 +33,7 @@ public class HSTSServer extends AbstractServer {
             try {
                 commandFromClient = (CommandInterface) message;
                 System.out.print("Command received from client ");
-                CommandRouter commandRouter = new CommandRouter();
-                commandRouter.initRouter(this.controllers);
-//                System.out.println(controllers.get(0).getControllerName());
-//                System.out.println(controllers.get(1).getControllerName());
-//                System.out.println(controllers.get(2).getControllerName());
-//                System.out.println(controllers.get(3).getControllerName());
+
                 respondMessage = commandRouter.handleRequest(commandFromClient);
                 System.out.println("got back from DB");
                 System.out.println(respondMessage.getReturnedObjectName());
@@ -68,6 +53,12 @@ public class HSTSServer extends AbstractServer {
                 e.printStackTrace();
             }
         }
+    }
+    public void controllersInit(){
+        controllers.add(new UserLoginController());
+        controllers.add(new QuestionReadBySubjectController());
+        controllers.add(new QuestionUpdateController());
+        controllers.add(new QuestionReadAllController());
     }
 
     public static void main(String[] args) throws IOException {

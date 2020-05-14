@@ -21,8 +21,8 @@ public class MainClass extends Application {
 	public void start(Stage stage) throws IOException {
 	    stage.setTitle("Login");
 	    //stage.initStyle(StageStyle.UNDECORATED);
-        scene = new Scene(loadFXML("loginInterface"));
-        Scene menu = new Scene(loadFXML("loginInterface"));
+        scene = new Scene(loadFXML("Login"));
+        Scene menu = new Scene(loadFXML("Login"));
         stage.setScene(scene);
         stage.show();
 	}

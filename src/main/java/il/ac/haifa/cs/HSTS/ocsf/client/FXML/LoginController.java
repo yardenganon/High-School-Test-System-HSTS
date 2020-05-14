@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 	/**
-	 * Sample Skeleton for 'loginInterface.fxml' Controller Class
+	 * Sample Skeleton for 'Login.fxml' Controller Class
 	 */
 	private static Respond responseFromServer = null;
 
@@ -66,19 +66,8 @@ public class LoginController implements Initializable {
 
             @Override
             protected Respond call() throws Exception {
-
                 CommandInterface command = new LoginCommand(username, password);
                 HSTSClientInterface.sendCommandToServer(command);
-//                StackPane root = (StackPane) anchorPane.getParent();
-//                ProgressIndicator indicator = new ProgressIndicator();
-//                VBox vbox = new VBox(indicator);
-//                vbox.setAlignment(Pos.CENTER);
-//                vbox.setVisible(true);
-//                root.getChildren().add(vbox);
-//                Scene scene1 = anchorPane.getScene();
-//                Stage stage1 = (Stage) anchorPane.getScene().getWindow();
-//                stage1.setScene(scene1);
-//                stage1.show();
                 while (responseFromServer == null)
                     System.out.print("");
                 return responseFromServer;
@@ -96,11 +85,11 @@ public class LoginController implements Initializable {
                 errorLB.setVisible(true);
             }
             else {
-                Menu.setUser(user);
+                MenuController.setUser(user);
                 System.out.println("User: "+user.getUsername() + " is logged in");
                 Scene scene = null;
                 try {
-                    scene = new Scene(loadFXML("menuInterface"));
+                    scene = new Scene(loadFXML("Menu"));
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

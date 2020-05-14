@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'menuInterface.fxml' Controller Class
+ * Sample Skeleton for 'Menu.fxml' Controller Class
  */
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
@@ -33,9 +33,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class Menu implements Initializable {
+public class MenuController implements Initializable {
     /**
-     * Sample Skeleton for 'menuInterface.fxml' Controller Class
+     * Sample Skeleton for 'Menu.fxml' Controller Class
      */
 
     private static User user;
@@ -136,11 +136,11 @@ public class Menu implements Initializable {
                         for (Question q : questionList)
                         {
                             if (q.getId() == Integer.parseInt(questionSelected.getId())) {
-                                EditInterface.setQuestion(q);
+                                EditQuestionController.setQuestion(q);
                                 break;
                             }
                         }
-                        scene = new Scene(Menu.loadFXML("editInterface"));
+                        scene = new Scene(MenuController.loadFXML("EditQuestion"));
                     } catch (IOException e) {
                         System.out.println("not found");
                         e.printStackTrace();
@@ -155,7 +155,7 @@ public class Menu implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException{
-        Scene scene = new Scene(loadFXML("loginInterface"));
+        Scene scene = new Scene(loadFXML("Login"));
         Stage stage = (Stage) logoutBtn.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
@@ -176,7 +176,7 @@ public class Menu implements Initializable {
     }
 
     public static void setUser(User user) {
-        Menu.user = user;
+        MenuController.user = user;
     }
 
     @Override
