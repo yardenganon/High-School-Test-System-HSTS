@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.AbstractClient;
+import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -33,7 +34,6 @@ public class HSTSClient extends AbstractClient {
 	protected void handleMessageFromServer(Object msg) {
 		// Client logic
 		try {
-			System.out.println("Command reached to client " + ((Command) msg).getCommand());
 			hstsClientInterface.commandFromServerHandler(msg);
 		} catch (Exception exception) {
 			exception.printStackTrace();

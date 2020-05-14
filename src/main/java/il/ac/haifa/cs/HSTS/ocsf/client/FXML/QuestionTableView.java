@@ -1,12 +1,12 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
-public class QuestionTeacher {
+public class QuestionTableView {
     private String id;
     private String question;
     private String author;
     private String subject;
 
-    public QuestionTeacher(String id, String question, String author, String subject) {
+    public QuestionTableView(String id, String question, String author, String subject) {
         this.id = id;
         this.question = question;
         this.author = author;
