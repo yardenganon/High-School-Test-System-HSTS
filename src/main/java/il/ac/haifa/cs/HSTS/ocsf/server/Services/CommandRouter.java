@@ -22,7 +22,6 @@ public class CommandRouter {
         commandsMap.put("QuestionReadBySubjectCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionUpdateCommand", controllerInterfaces.get(2));
         commandsMap.put("QuestionReadAllCommand", controllerInterfaces.get(3));
-//        System.out.println(commandsMap.get("LoginCommand").getControllerName());
     }
 
     public Respond handleRequest(CommandInterface commandFromClient){
