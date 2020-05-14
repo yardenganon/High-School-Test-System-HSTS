@@ -238,7 +238,7 @@ public class EditQuestionController implements Initializable {
         answer3TF.setText(question.getAnswer(3));
         answer4TF.setText(question.getAnswer(4));
         correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
-        helloLB.setText("Hello " + question.getWriter().getFirst_name());
+        helloLB.setText("Hello " + MenuController.getUser().getFirst_name());
     }
 
     private void setDisableAndVisible(boolean changeToDisableAndVisible)
