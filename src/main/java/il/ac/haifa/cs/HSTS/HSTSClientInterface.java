@@ -79,15 +79,15 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals("ReadBySubject")) {
             // Getting questions asked for
             System.out.println("subjects with question received: "+ serverResponse.getReturnedObject());
-            Menu.receivedRespondFromServer(serverResponse);
+            MenuController.receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("ReadAllQuestions")) {
             // Getting questions asked for
             System.out.println("All question received: "+ serverResponse.getReturnedObject());
-            Menu.receivedRespondFromServer(serverResponse);
+            MenuController.receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("UpdateQuestion"))
-            EditInterface.receivedResponseFromServer(serverResponse);
+            EditQuestionController.receivedResponseFromServer(serverResponse);
     }
 
     public void closeConnection() {

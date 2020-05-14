@@ -17,11 +17,12 @@ public class CommandRouter {
     }
 
     public void initRouter(List<ControllerInterface> controllerInterfaces){
-        System.out.println("In initRouter Function");
         commandsMap.put("LoginCommand", controllerInterfaces.get(0));
         commandsMap.put("QuestionReadBySubjectCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionUpdateCommand", controllerInterfaces.get(2));
         commandsMap.put("QuestionReadAllCommand", controllerInterfaces.get(3));
+
+        System.out.println("Router initiated");
     }
 
     public Respond handleRequest(CommandInterface commandFromClient){
