@@ -4,13 +4,6 @@
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
-
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.QuestionReadAllCommand;
@@ -33,6 +26,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 public class MenuController implements Initializable {
     /**
      * Sample Skeleton for 'Menu.fxml' Controller Class
@@ -43,14 +43,23 @@ public class MenuController implements Initializable {
     private static List<Question> questionList = null;
     private ObservableList<QuestionTableView> questionsOL = null;
 
-    @FXML // fx:id="helloLB"
-    private Label helloLB; // Value injected by FXMLLoader
+    @FXML
+    private Label helloLabel;
 
-    @FXML // fx:id="Showbtn"
-    private Button Showbtn; // Value injected by FXMLLoader
+    @FXML
+    private Button coursesButton;
 
-    @FXML // fx:id="logoutBtn"
-    private Button logoutBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button showQuestionButton;
+
+    @FXML
+    private Button goToTestsButton;
+
+    @FXML
+    private Button aboutButton;
+
+    @FXML
+    private Button logoutButton;
 
     @FXML // fx:id="tableVB"
     private VBox tableVB; // Value injected by FXMLLoader
@@ -73,20 +82,16 @@ public class MenuController implements Initializable {
     @FXML // fx:id="searchTF"
     private TextField searchTF; // Value injected by FXMLLoader
 
-
-    @FXML // fx:id="editBtn"
-    private Button editBtn; // Value injected by FXMLLoader
-
     @FXML
     private Button addQuestionBtn;
 
     @FXML
-    private Button testsBtn;
-    @FXML
-    private Button coursesBtn;
+    void goToTests(ActionEvent event) {
+
+    }
 
     @FXML
-    void edit(ActionEvent event) {
+    void about(ActionEvent event) {
         Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
         editInformation.setTitle("Information");
         editInformation.setHeaderText("Editing Details");
@@ -98,7 +103,7 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    void Show(ActionEvent event) {
+    void showQuestions(ActionEvent event) {
     	searchTF.setVisible(true);
     	tableVB.setVisible(true);
     	tableV.setVisible(true);
@@ -156,7 +161,7 @@ public class MenuController implements Initializable {
     @FXML
     void logout(ActionEvent event) throws IOException{
         Scene scene = new Scene(loadFXML("Login"));
-        Stage stage = (Stage) logoutBtn.getScene().getWindow();
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
     }
@@ -185,7 +190,7 @@ public class MenuController implements Initializable {
     }
 
     public void initializeUser(){
-        helloLB.setText("Hello " + user.getFirst_name());
+        helloLabel.setText("Hello " + user.getFirst_name());
     }
     public void refreshList() {
         questionList = new ArrayList<Question>();

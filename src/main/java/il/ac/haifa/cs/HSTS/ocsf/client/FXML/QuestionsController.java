@@ -123,6 +123,7 @@ public class QuestionsController implements Initializable {
         stage.setTitle("Login");
     }
 
+
     @FXML
     void showQuestions(ActionEvent event) {
         searchTextField.setVisible(true);
@@ -204,7 +205,7 @@ public class QuestionsController implements Initializable {
     }
 
     public void initializeUser(){
-        helloLabel.setText("Hello " + user.getFirst_name());
+        //helloLabel.setText("Hello " + user.getFirst_name());
     }
 
     public void refreshList() {
