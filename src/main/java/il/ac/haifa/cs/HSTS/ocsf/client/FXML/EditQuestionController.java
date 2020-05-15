@@ -11,12 +11,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -30,63 +28,80 @@ public class EditQuestionController implements Initializable {
     private static Response responseFromServer = null;
     private static boolean thereIsAnError = false;
 
+
     @FXML
     private AnchorPane anchorPane;
 
-    @FXML // fx:id="returnBtn"
-    private Button returnBtn; // Value injected by FXMLLoader
+    @FXML
+    private TextField questionTextField;
 
-    @FXML // fx:id="Logoutbtn"
-    private Button logoutBtn; // Value injected by FXMLLoader
+    @FXML
+    private TextField idTextField;
 
-    @FXML // fx:id="QuestionTF"
-    private TextField questionTF; // Value injected by FXMLLoader
-
-    @FXML // fx:id="IdTF"
-    private TextField idTF; // Value injected by FXMLLoader
-
-    @FXML // fx:id="AuthorTF"
-    private TextField authorTF; // Value injected by FXMLLoader
+    @FXML
+    private TextField authorTextField;
 
     @FXML
     private ComboBox<String> subjectComboBox;
 
-    @FXML // fx:id="Answer1TF"
-    private TextField answer1TF; // Value injected by FXMLLoader
+    @FXML
+    private TextField answer1TextField;
 
-    @FXML // fx:id="Answer2TF"
-    private TextField answer2TF; // Value injected by FXMLLoader
+    @FXML
+    private TextField answer2TextField;
 
-    @FXML // fx:id="Answer3TF"
-    private TextField answer3TF; // Value injected by FXMLLoader
+    @FXML
+    private TextField answer3TextField;
 
-    @FXML // fx:id="Answer4TF"
-    private TextField answer4TF; // Value injected by FXMLLoader
-
+    @FXML
+    private TextField answer4TextField;
 
     @FXML
     private ComboBox<String> correctAnswerComboBox;
 
-
-    @FXML // fx:id="Resetbtn"
-    private Button resetBtn; // Value injected by FXMLLoader
-
-    @FXML // fx:id="Editbtn"
-    private Button editBtn; // Value injected by FXMLLoader
+    @FXML
+    private Button resetQuestionButton;
 
     @FXML
-    private Label helloLB;
+    private Button editQuestionButton;
 
     @FXML
-    void EditQuestion(ActionEvent event) {
+    private Label helloLabel;
+
+    @FXML
+    private Button goToMenuButton;
+
+    @FXML
+    private Button goToCoursesButton;
+
+    @FXML
+    private Button goToQuestionsButton;
+
+    @FXML
+    private Button goToTestsButton;
+
+    @FXML
+    private Button aboutButton;
+
+    @FXML
+    private Button logoutButton;
+
+    @FXML
+    void EditQuestion(ActionEvent event) throws InterruptedException {
     	// If button text is "Edit Question"
-        if(editBtn.getText().equals("Edit Question"))
+        if(editQuestionButton.getText().equals("Edit Question"))
     	{
-            initializeQuestionDetails();
-    		// Enable changing the relevant text fields
-    		setDisableAndVisible(true);
-            // Change button text to "Confirm Changes"
-            ((Button)event.getSource()).setText("Confirm Changes");
+    	    if (!question.getWriter().equals(MenuController.getUser().getUsername()))
+            {
+                // Show permission error
+                Alert updateQuestionAlert = new Alert(Alert.AlertType.ERROR);
+                updateQuestionAlert.setHeaderText("You don't have the permissions to change that question");
+            }
+    	    else {
+                initializeQuestionDetails();
+                setDisableAndVisible(true);
+                ((Button) event.getSource()).setText("Confirm Changes");
+            }
     	}
     	// If button text is "Confirm Changes"
     	else {
@@ -98,16 +113,16 @@ public class EditQuestionController implements Initializable {
                 initializeQuestionDetails();
             else {
                 // Input checking
-                if (questionTF.getText().isEmpty())
-                    inputError(questionTF);
-                if (answer1TF.getText().isEmpty())
-                    inputError(answer1TF);
-                if (answer2TF.getText().isEmpty())
-                    inputError(answer2TF);
-                if (answer3TF.getText().isEmpty())
-                    inputError(answer3TF);
-                if (answer4TF.getText().isEmpty())
-                    inputError(answer4TF);
+                if (questionTextField.getText().isEmpty())
+                    inputError(questionTextField);
+                if (answer1TextField.getText().isEmpty())
+                    inputError(answer1TextField);
+                if (answer2TextField.getText().isEmpty())
+                    inputError(answer2TextField);
+                if (answer3TextField.getText().isEmpty())
+                    inputError(answer3TextField);
+                if (answer4TextField.getText().isEmpty())
+                    inputError(answer4TextField);
 
                 if (!thereIsAnError) {
                     // Showing waiting alert
@@ -115,6 +130,7 @@ public class EditQuestionController implements Initializable {
                     waitingAlert.setHeaderText("");
                     waitingAlert.setContentText("Please wait while the question is updating");
 
+                    /*
                     // Creating a waiting indicator
                     ProgressIndicator waitingMessage = new ProgressIndicator();
                     VBox vbox = new VBox(waitingMessage);
@@ -123,13 +139,14 @@ public class EditQuestionController implements Initializable {
                     anchorPane.setDisable(true);
                     waitingAlert.showAndWait();
                     anchorPane.setDisable(false);
+                     */
 
-                    question.setQuestion(questionTF.getText());
+                    question.setQuestion(questionTextField.getText());
                     question.setCorrectAnswer(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
-                    question.setAnswer(1, answer1TF.getText());
-                    question.setAnswer(2, answer2TF.getText());
-                    question.setAnswer(3, answer3TF.getText());
-                    question.setAnswer(4, answer4TF.getText());
+                    question.setAnswer(1, answer1TextField.getText());
+                    question.setAnswer(2, answer2TextField.getText());
+                    question.setAnswer(3, answer3TextField.getText());
+                    question.setAnswer(4, answer4TextField.getText());
 
                     responseFromServer =null;
                     CommandInterface command = new QuestionUpdateCommand(question);
@@ -142,7 +159,6 @@ public class EditQuestionController implements Initializable {
                     question = (Question) responseFromServer.getReturnedObject();
                     initializeQuestionDetails();
 
-                    // After server confirmation we show the message "The question was successfully changed"
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
                     updateSuccessAlert.setHeaderText("The question was successfully changed");
                     updateSuccessAlert.showAndWait();
@@ -150,7 +166,6 @@ public class EditQuestionController implements Initializable {
                 else
                     thereIsAnError = false;
             }
-            // Return button text to "Edit"
             ((Button) event.getSource()).setText("Edit Question");
             setDisableAndVisible(false);
         }
@@ -163,23 +178,46 @@ public class EditQuestionController implements Initializable {
     @FXML
     void ResetQuestion(ActionEvent event) {
         initializeQuestionDetails();
-        if (editBtn.getText().equals("Confirm Changes"))
-            editBtn.setText("Edit Question");
+        if (editQuestionButton.getText().equals("Confirm Changes"))
+            editQuestionButton.setText("Edit Question");
         setDisableAndVisible(false);
     }
 
     @FXML
-    void ReturnToMenu(ActionEvent event) throws IOException {
+    void about(ActionEvent event) {
+
+    }
+
+    @FXML
+    void goToCourses(ActionEvent event) {
+
+    }
+
+    @FXML
+    void goToMenu(ActionEvent event) throws IOException {
         Scene scene = new Scene(loadFXML("Menu"));
-        Stage stage = (Stage) returnBtn.getScene().getWindow();
+        Stage stage = (Stage) goToMenuButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Menu");
     }
 
     @FXML
+    void goToQuestions(ActionEvent event) throws IOException {
+        Scene scene = new Scene(loadFXML("Questions"));
+        Stage stage = (Stage) goToQuestionsButton.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Questions");
+    }
+
+    @FXML
+    void goToTests(ActionEvent event) {
+
+    }
+
+    @FXML
     void logout(ActionEvent event) throws IOException {
         Scene scene = new Scene(loadFXML("Login"));
-        Stage stage = (Stage) logoutBtn.getScene().getWindow();
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
     }
@@ -223,32 +261,32 @@ public class EditQuestionController implements Initializable {
         correctAnswerComboBox.setEditable(false);
         correctAnswerComboBox.setDisable(true);
 
-        questionTF.setStyle("-fx-text-inner-color: #000000;");
-        answer1TF.setStyle("-fx-text-inner-color: #000000;");
-        answer2TF.setStyle("-fx-text-inner-color: #000000;");
-        answer3TF.setStyle("-fx-text-inner-color: #000000;");
-        answer4TF.setStyle("-fx-text-inner-color: #000000;");
+        questionTextField.setStyle("-fx-text-inner-color: #000000;");
+        answer1TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer2TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer3TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer4TextField.setStyle("-fx-text-inner-color: #000000;");
         correctAnswerComboBox.setStyle("-fx-text-inner-color: #000000;");
 
-        questionTF.setText(question.getQuestion());
-        authorTF.setText(question.getWriter().getUsername());
-        idTF.setText(String.valueOf(question.getId()));
-        answer1TF.setText(question.getAnswer(1));
-        answer2TF.setText(question.getAnswer(2));
-        answer3TF.setText(question.getAnswer(3));
-        answer4TF.setText(question.getAnswer(4));
+        questionTextField.setText(question.getQuestion());
+        authorTextField.setText(question.getWriter().getUsername());
+        idTextField.setText(String.valueOf(question.getId()));
+        answer1TextField.setText(question.getAnswer(1));
+        answer2TextField.setText(question.getAnswer(2));
+        answer3TextField.setText(question.getAnswer(3));
+        answer4TextField.setText(question.getAnswer(4));
         correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
-        helloLB.setText("Hello " + MenuController.getUser().getFirst_name());
+        helloLabel.setText("Hello " + MenuController.getUser().getFirst_name());
     }
 
     private void setDisableAndVisible(boolean changeToDisableAndVisible)
     {
-        questionTF.setEditable(changeToDisableAndVisible);
+        questionTextField.setEditable(changeToDisableAndVisible);
         subjectComboBox.setDisable(true);
-        answer1TF.setEditable(changeToDisableAndVisible);
-        answer2TF.setEditable(changeToDisableAndVisible);
-        answer3TF.setEditable(changeToDisableAndVisible);
-        answer4TF.setEditable(changeToDisableAndVisible);
+        answer1TextField.setEditable(changeToDisableAndVisible);
+        answer2TextField.setEditable(changeToDisableAndVisible);
+        answer3TextField.setEditable(changeToDisableAndVisible);
+        answer4TextField.setEditable(changeToDisableAndVisible);
         correctAnswerComboBox.setDisable(!changeToDisableAndVisible);
     }
 

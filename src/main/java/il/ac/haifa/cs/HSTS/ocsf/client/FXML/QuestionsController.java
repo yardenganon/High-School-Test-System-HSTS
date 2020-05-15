@@ -1,8 +1,9 @@
 /**
- * Sample Skeleton for 'Menu.fxml' Controller Class
+ * Sample Skeleton for 'Questions.fxml' Controller Class
  */
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
+
 
 import il.ac.haifa.cs.HSTS.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
@@ -33,10 +34,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class MenuController implements Initializable {
-    /**
-     * Sample Skeleton for 'Menu.fxml' Controller Class
-     */
+
+
+public class QuestionsController implements Initializable {
 
     private static User user;
     private static Response responseFromServer = null;
@@ -47,10 +47,10 @@ public class MenuController implements Initializable {
     private Label helloLabel;
 
     @FXML
-    private Button coursesButton;
+    private Button goToMenuButton;
 
     @FXML
-    private Button showQuestionButton;
+    private Button goToCoursesButton;
 
     @FXML
     private Button goToTestsButton;
@@ -61,11 +61,11 @@ public class MenuController implements Initializable {
     @FXML
     private Button logoutButton;
 
-    @FXML // fx:id="tableVB"
-    private VBox tableVB; // Value injected by FXMLLoader
+    @FXML
+    private VBox tableViewVbox;
 
-    @FXML // fx:id="tableV"
-    private TableView<QuestionTableView> tableV; // Value injected by FXMLLoader
+    @FXML
+    private TableView<QuestionTableView> tableView;
 
     @FXML // fx:id="id"
     private TableColumn<QuestionTableView, String> columnId; // Value injected by FXMLLoader
@@ -79,11 +79,24 @@ public class MenuController implements Initializable {
     @FXML // fx:id="author"
     private TableColumn<QuestionTableView, String> columnAuthor; // Value injected by FXMLLoader
 
-    @FXML // fx:id="searchTF"
-    private TextField searchTF; // Value injected by FXMLLoader
+    @FXML
+    private TextField searchTextField;
 
     @FXML
-    private Button addQuestionBtn;
+    private Button addQuestionButton;
+
+    @FXML
+    void goToMenu(ActionEvent event) throws IOException {
+        Scene scene = new Scene(loadFXML("Menu"));
+        Stage stage = (Stage) goToMenuButton.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Menu");
+    }
+
+    @FXML
+    void goToCourses(ActionEvent event) {
+
+    }
 
     @FXML
     void goToTests(ActionEvent event) {
@@ -103,38 +116,47 @@ public class MenuController implements Initializable {
     }
 
     @FXML
+    void logout(ActionEvent event) throws IOException{
+        Scene scene = new Scene(loadFXML("Login"));
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Login");
+    }
+
+
+    @FXML
     void showQuestions(ActionEvent event) {
-    	searchTF.setVisible(true);
-    	tableVB.setVisible(true);
-    	tableV.setVisible(true);
-    	searchTF.setVisible(true);
-    	addQuestionBtn.setVisible(true);
+        searchTextField.setVisible(true);
+        tableViewVbox.setVisible(true);
+        tableView.setVisible(true);
+        searchTextField.setVisible(true);
+        addQuestionButton.setVisible(true);
 
         refreshList();
         //tableV.setItems(questionsOL);
 
-       FilteredList<QuestionTableView> filteredQuests = new FilteredList<>(questionsOL, b -> true);
+        FilteredList<QuestionTableView> filteredQuests = new FilteredList<>(questionsOL, b -> true);
 
-        searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
-                    filteredQuests.setPredicate(questsOfTeacher ->
-                    {
-                        if (newValue == null || newValue.isEmpty())
-                            return true;
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredQuests.setPredicate(questsOfTeacher ->
+            {
+                if (newValue == null || newValue.isEmpty())
+                    return true;
 
-                        String questionLowerCase = newValue.toLowerCase();
-                        if (questsOfTeacher.getQuestion().toLowerCase().indexOf(questionLowerCase) != -1)
-                            return true;
-                        else
-                            return false;
-                    });
+                String questionLowerCase = newValue.toLowerCase();
+                if (questsOfTeacher.getQuestion().toLowerCase().indexOf(questionLowerCase) != -1)
+                    return true;
+                else
+                    return false;
+            });
         });
 
-        tableV.setItems(filteredQuests);
+        tableView.setItems(filteredQuests);
 
-        tableV.setOnMousePressed(new EventHandler<MouseEvent>() {
+        tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                QuestionTableView questionSelected = tableV.getSelectionModel().getSelectedItem();
+                QuestionTableView questionSelected = tableView.getSelectionModel().getSelectedItem();
                 if (questionSelected != null && event.getClickCount() == 2) {
                     Scene scene = null;
                     try {
@@ -145,12 +167,12 @@ public class MenuController implements Initializable {
                                 break;
                             }
                         }
-                        scene = new Scene(MenuController.loadFXML("EditQuestion"));
+                        scene = new Scene(QuestionsController.loadFXML("EditQuestion"));
                     } catch (IOException e) {
                         System.out.println("not found");
                         e.printStackTrace();
                     }
-                    Stage stage = (Stage) tableV.getScene().getWindow();
+                    Stage stage = (Stage) tableView.getScene().getWindow();
                     stage.setScene(scene);
                     stage.setTitle("Edit Question");
                 }
@@ -158,13 +180,6 @@ public class MenuController implements Initializable {
         });
     }
 
-    @FXML
-    void logout(ActionEvent event) throws IOException{
-        Scene scene = new Scene(loadFXML("Login"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Login");
-    }
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
@@ -181,7 +196,7 @@ public class MenuController implements Initializable {
     }
 
     public static void setUser(User user) {
-        MenuController.user = user;
+        QuestionsController.user = user;
     }
 
     @Override
@@ -190,8 +205,9 @@ public class MenuController implements Initializable {
     }
 
     public void initializeUser(){
-        helloLabel.setText("Hello " + user.getFirst_name());
+        //helloLabel.setText("Hello " + user.getFirst_name());
     }
+
     public void refreshList() {
         questionList = new ArrayList<Question>();
         if (user instanceof Teacher) {
