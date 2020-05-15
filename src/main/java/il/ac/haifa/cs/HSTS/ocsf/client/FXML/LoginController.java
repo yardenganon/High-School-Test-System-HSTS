@@ -115,7 +115,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usernameTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        EventHandler<KeyEvent> enterLoginEvent = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -126,19 +126,9 @@ public class LoginController implements Initializable {
                     }
                 }
             }
-        });
-        passwordTF.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                if (keyEvent.getCode() == KeyCode.ENTER) {
-                    try {
-                        executeLogin();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
+        };
+        usernameTF.setOnKeyPressed(enterLoginEvent);
+        passwordTF.setOnKeyPressed(enterLoginEvent);
     }
 }
 
