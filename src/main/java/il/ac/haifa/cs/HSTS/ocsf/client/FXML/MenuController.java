@@ -34,14 +34,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
-    /**
-     * Sample Skeleton for 'Menu.fxml' Controller Class
-     */
 
     private static User user;
-    private static Response responseFromServer = null;
-    private static List<Question> questionList = null;
-    private ObservableList<QuestionTableView> questionsOL = null;
 
     @FXML
     private Label helloLabel;
@@ -61,30 +55,6 @@ public class MenuController implements Initializable {
     @FXML
     private Button logoutButton;
 
-    @FXML // fx:id="tableVB"
-    private VBox tableVB; // Value injected by FXMLLoader
-
-    @FXML // fx:id="tableV"
-    private TableView<QuestionTableView> tableV; // Value injected by FXMLLoader
-
-    @FXML // fx:id="id"
-    private TableColumn<QuestionTableView, String> columnId; // Value injected by FXMLLoader
-
-    @FXML // fx:id="subject"
-    private TableColumn<QuestionTableView, String> columnSubject; // Value injected by FXMLLoader
-
-    @FXML // fx:id="question"
-    private TableColumn<QuestionTableView, String> columnQuestion; // Value injected by FXMLLoader
-
-    @FXML // fx:id="author"
-    private TableColumn<QuestionTableView, String> columnAuthor; // Value injected by FXMLLoader
-
-    @FXML // fx:id="searchTF"
-    private TextField searchTF; // Value injected by FXMLLoader
-
-    @FXML
-    private Button addQuestionBtn;
-
     @FXML
     void goToTests(ActionEvent event) {
 
@@ -103,63 +73,16 @@ public class MenuController implements Initializable {
     }
 
     @FXML
-    void showQuestions(ActionEvent event) {
-    	searchTF.setVisible(true);
-    	tableVB.setVisible(true);
-    	tableV.setVisible(true);
-    	searchTF.setVisible(true);
-    	addQuestionBtn.setVisible(true);
-
-        refreshList();
-        //tableV.setItems(questionsOL);
-
-       FilteredList<QuestionTableView> filteredQuests = new FilteredList<>(questionsOL, b -> true);
-
-        searchTF.textProperty().addListener((observable, oldValue, newValue) -> {
-                    filteredQuests.setPredicate(questsOfTeacher ->
-                    {
-                        if (newValue == null || newValue.isEmpty())
-                            return true;
-
-                        String questionLowerCase = newValue.toLowerCase();
-                        if (questsOfTeacher.getQuestion().toLowerCase().indexOf(questionLowerCase) != -1)
-                            return true;
-                        else
-                            return false;
-                    });
-        });
-
-        tableV.setItems(filteredQuests);
-
-        tableV.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                QuestionTableView questionSelected = tableV.getSelectionModel().getSelectedItem();
-                if (questionSelected != null && event.getClickCount() == 2) {
-                    Scene scene = null;
-                    try {
-                        for (Question q : questionList)
-                        {
-                            if (q.getId() == Integer.parseInt(questionSelected.getId())) {
-                                EditQuestionController.setQuestion(q);
-                                break;
-                            }
-                        }
-                        scene = new Scene(MenuController.loadFXML("EditQuestion"));
-                    } catch (IOException e) {
-                        System.out.println("not found");
-                        e.printStackTrace();
-                    }
-                    Stage stage = (Stage) tableV.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Question");
-                }
-            }
-        });
+    void showQuestions(ActionEvent event) throws IOException {
+        QuestionsController.setUser(user);
+        Scene scene = new Scene(loadFXML("Questions"));
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Questions");
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException{
+    void logout(ActionEvent event) throws IOException {
         Scene scene = new Scene(loadFXML("Login"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
@@ -169,11 +92,6 @@ public class MenuController implements Initializable {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-    }
-
-    public static void receivedRespondFromServer(Response response){
-        responseFromServer = response;
-        System.out.println("Command received in controller " + response);
     }
 
     public static User getUser() {
@@ -189,45 +107,7 @@ public class MenuController implements Initializable {
         initializeUser();
     }
 
-    public void initializeUser(){
+    public void initializeUser() {
         helloLabel.setText("Hello " + user.getFirst_name());
-    }
-    public void refreshList() {
-        questionList = new ArrayList<Question>();
-        if (user instanceof Teacher) {
-            List<Subject> subjects = ((Teacher) user).getSubjects();
-
-            responseFromServer = null;
-            CommandInterface command = new QuestionReadBySubjectCommand(subjects);
-            HSTSClientInterface.sendCommandToServer(command);
-
-            while (responseFromServer == null)
-                System.out.print("");
-
-            subjects = (List<Subject>) responseFromServer.getReturnedObject();
-
-            for (Subject subject : subjects)
-                questionList.addAll(subject.getQuestions());
-        } else if (user instanceof Principle){
-            responseFromServer = null;
-            CommandInterface command = new QuestionReadAllCommand();
-            HSTSClientInterface.sendCommandToServer(command);
-
-            while (responseFromServer == null)
-                System.out.print("");
-
-            questionList = (List<Question>) responseFromServer.getReturnedObject();
-        }
-        columnId.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("id"));
-        columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("question"));
-        columnAuthor.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("author"));
-        columnSubject.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("subject"));
-
-        questionsOL= FXCollections.observableArrayList();
-        for (Question quest : questionList){
-            questionsOL.add(new QuestionTableView(String.valueOf(quest.getId()), quest.getQuestion(),
-                    quest.getWriter().getUsername(),
-                    quest.getSubject().getSubjectName()));
-        }
     }
 }

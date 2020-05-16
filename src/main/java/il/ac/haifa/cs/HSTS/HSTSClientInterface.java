@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS;
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.ocsf.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.ocsf.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.io.IOException;
@@ -79,12 +80,12 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals("ReadBySubject")) {
             // Getting questions asked for
             System.out.println("subjects with question received: "+ serverResponse.getReturnedObject());
-            MenuController.receivedRespondFromServer(serverResponse);
+            QuestionsController.receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("ReadAllQuestions")) {
             // Getting questions asked for
             System.out.println("All question received: "+ serverResponse.getReturnedObject());
-            MenuController.receivedRespondFromServer(serverResponse);
+            QuestionsController.receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("UpdateQuestion"))
             EditQuestionController.receivedResponseFromServer(serverResponse);
