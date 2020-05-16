@@ -90,20 +90,19 @@ public class EditQuestionController implements Initializable {
     	// If button text is "Edit Question"
         if(editQuestionButton.getText().equals("Edit Question"))
     	{
-    	    /*
-    	    // Checking is there are permissions to edit the question
-    	    if (!question.getWriter().equals(MenuController.getUser().getUsername()))
+
+    	    // Checking if there are permissions to edit the question
+    	    if (!question.getWriter().getUsername().equals(QuestionsController.getUser().getUsername()))
             {
                 Alert permissionsErrorAlert = new Alert(Alert.AlertType.ERROR);
                 permissionsErrorAlert.setHeaderText("You don't have the permissions to change that question");
                 permissionsErrorAlert.showAndWait();
             }
     	    else {
-    	    */
                 initializeQuestionDetails();
                 setDisableAndVisible(true);
                 ((Button) event.getSource()).setText("Confirm Changes");
-            //}
+            }
     	}
     	// If button text is "Confirm Changes"
     	else {

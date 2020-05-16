@@ -126,14 +126,7 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void initializeQuestionsTable() {
-        searchTextField.setVisible(true);
-        tableViewVbox.setVisible(true);
-        tableView.setVisible(true);
-        searchTextField.setVisible(true);
-        addQuestionButton.setVisible(true);
-
         refreshList();
-        //tableV.setItems(questionsOL);
 
         FilteredList<QuestionTableView> filteredQuests = new FilteredList<>(questionsOL, b -> true);
 
