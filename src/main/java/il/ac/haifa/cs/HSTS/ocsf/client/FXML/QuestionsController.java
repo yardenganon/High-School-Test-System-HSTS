@@ -125,7 +125,7 @@ public class QuestionsController implements Initializable {
 
 
     @FXML
-    void showQuestions(ActionEvent event) {
+    void initializeQuestionsTable() {
         searchTextField.setVisible(true);
         tableViewVbox.setVisible(true);
         tableView.setVisible(true);
@@ -202,10 +202,11 @@ public class QuestionsController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeUser();
+        initializeQuestionsTable();
     }
 
     public void initializeUser(){
-        //helloLabel.setText("Hello " + user.getFirst_name()); - need to return when showQuestions will fix
+        helloLabel.setText("Hello " + user.getFirst_name());
     }
 
     public void refreshList() {
