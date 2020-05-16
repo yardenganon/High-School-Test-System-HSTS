@@ -16,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -91,23 +90,26 @@ public class EditQuestionController implements Initializable {
     	// If button text is "Edit Question"
         if(editQuestionButton.getText().equals("Edit Question"))
     	{
+    	    /*
+    	    // Checking is there are permissions to edit the question
     	    if (!question.getWriter().equals(MenuController.getUser().getUsername()))
             {
-                // Show permission error
-                Alert updateQuestionAlert = new Alert(Alert.AlertType.ERROR);
-                updateQuestionAlert.setHeaderText("You don't have the permissions to change that question");
+                Alert permissionsErrorAlert = new Alert(Alert.AlertType.ERROR);
+                permissionsErrorAlert.setHeaderText("You don't have the permissions to change that question");
+                permissionsErrorAlert.showAndWait();
             }
     	    else {
+    	    */
                 initializeQuestionDetails();
                 setDisableAndVisible(true);
                 ((Button) event.getSource()).setText("Confirm Changes");
-            }
+            //}
     	}
     	// If button text is "Confirm Changes"
     	else {
-            // Ask the user to confirm the changes
             Alert updateQuestionAlert = new Alert(Alert.AlertType.CONFIRMATION);
             updateQuestionAlert.setHeaderText("Are you sure you want to update the question?");
+            anchorPane.setDisable(true);
             Optional<ButtonType> result = updateQuestionAlert.showAndWait();
             if (result.isPresent() && result.get() != ButtonType.OK)
                 initializeQuestionDetails();
@@ -125,22 +127,7 @@ public class EditQuestionController implements Initializable {
                     inputError(answer4TextField);
 
                 if (!thereIsAnError) {
-                    // Showing waiting alert
-                    Alert waitingAlert = new Alert(Alert.AlertType.INFORMATION);
-                    waitingAlert.setHeaderText("");
-                    waitingAlert.setContentText("Please wait while the question is updating");
-
-                    /*
-                    // Creating a waiting indicator
-                    ProgressIndicator waitingMessage = new ProgressIndicator();
-                    VBox vbox = new VBox(waitingMessage);
-                    vbox.setAlignment(Pos.CENTER);
-                    waitingAlert.setGraphic(vbox);
-                    anchorPane.setDisable(true);
-                    waitingAlert.showAndWait();
-                    anchorPane.setDisable(false);
-                     */
-
+                    // Updating question details if there are no input errors
                     question.setQuestion(questionTextField.getText());
                     question.setCorrectAnswer(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
                     question.setAnswer(1, answer1TextField.getText());
@@ -148,24 +135,23 @@ public class EditQuestionController implements Initializable {
                     question.setAnswer(3, answer3TextField.getText());
                     question.setAnswer(4, answer4TextField.getText());
 
-                    responseFromServer =null;
+                    responseFromServer = null;
                     CommandInterface command = new QuestionUpdateCommand(question);
                     HSTSClientInterface.sendCommandToServer(command);
-
-                    //Waiting for server confirmation
+                    // Waiting for server confirmation
                     while (responseFromServer == null) {
                         System.out.print("");
                     }
                     question = (Question) responseFromServer.getReturnedObject();
                     initializeQuestionDetails();
-
+                    anchorPane.setDisable(false);
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
                     updateSuccessAlert.setHeaderText("The question was successfully changed");
                     updateSuccessAlert.showAndWait();
                 }
-                else
-                    thereIsAnError = false;
+                else thereIsAnError = false;
             }
+
             ((Button) event.getSource()).setText("Edit Question");
             setDisableAndVisible(false);
         }
