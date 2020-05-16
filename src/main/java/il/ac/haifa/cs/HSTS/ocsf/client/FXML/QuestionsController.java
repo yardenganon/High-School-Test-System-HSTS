@@ -205,7 +205,7 @@ public class QuestionsController implements Initializable {
     }
 
     public void initializeUser(){
-        //helloLabel.setText("Hello " + user.getFirst_name());
+        //helloLabel.setText("Hello " + user.getFirst_name()); - need to return when showQuestions will fix
     }
 
     public void refreshList() {
