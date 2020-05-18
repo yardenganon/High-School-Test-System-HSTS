@@ -55,10 +55,8 @@ public class HSTSServer extends AbstractServer {
         }
     }
     public void controllersInit(){
-        controllers.add(new UserLoginController());
-        controllers.add(new QuestionReadBySubjectController());
-        controllers.add(new QuestionUpdateController());
-        controllers.add(new QuestionReadAllController());
+        controllers.add(new UserController());
+        controllers.add(new QuestionController());
     }
 
     public static void main(String[] args) throws IOException {

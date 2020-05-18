@@ -8,11 +8,11 @@ import il.ac.haifa.cs.HSTS.ocsf.server.Services.Response;
 
 import java.util.Date;
 
-public class UserLoginController implements ControllerInterface {
+public class UserController implements ControllerInterface {
 
     final private UsersRepository usersRepository;
 
-    public UserLoginController() {
+    public UserController() {
         this.usersRepository = new UsersRepository();
     }
 

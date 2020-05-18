@@ -8,6 +8,10 @@ public class QuestionReadByIdCommand extends CommandInterface{
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getCommandName(){
         return this.getClass().getSimpleName();
     }
