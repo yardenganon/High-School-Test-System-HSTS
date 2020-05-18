@@ -21,12 +21,6 @@
         <artifactId>hibernate-core</artifactId>
         <version>5.4.12.Final</version>
     </dependency>
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.11</version>
-        <scope>test</scope>
-    </dependency>
 </dependencies>
     <name>Entities</name>
     <!-- FIXME change it to the project's website -->
