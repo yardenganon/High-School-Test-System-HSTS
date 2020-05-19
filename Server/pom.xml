@@ -41,8 +41,39 @@
     </dependencies>
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <mainClass>il.ac.haifa.cs.HSTS.HSTSServer</mainClass>
+                            </manifest>
+                        </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
+                </plugin>
                 <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
                 <plugin>
                     <artifactId>maven-clean-plugin</artifactId>
@@ -90,7 +121,14 @@
                         <mainClass>il.ac.haifa.cs.HSTS.HSTSServer</mainClass>
                     </configuration>
                 </plugin>
+
+
+                <!-- Plugins for JAR -->
+
+
             </plugins>
         </pluginManagement>
     </build>
+
+
 </project>
