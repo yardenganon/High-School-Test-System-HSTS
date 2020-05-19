@@ -1,8 +1,8 @@
-# How to supply arguments while running with Maven?
-When configuring the `Maven Build...` target, Add a parameter with the name `exec.args` and the arguments you want as a value.
+# Now project has three different modules:
+Server, Client and Entities.
 
 # Running the client
-Simply run the goal ``exec:java@client`` with two arguments: the host and the port.
+Simply run ``javafx:run`` port is 3000.
 
 # Running the server
-Run the goal ``exec:java@server`` with one argument: the port to listen to.
+Simply run ``exec:java`` port is 3000.
