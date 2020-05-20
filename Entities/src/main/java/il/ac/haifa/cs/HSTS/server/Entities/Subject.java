@@ -31,6 +31,7 @@ public class Subject implements Serializable {
         this.questions = new ArrayList<Question>();
         this.teachers = new ArrayList<Teacher>();
         this.tests = new ArrayList<Test>();
+        this.courses = new ArrayList<Course>();
         this.numberOfQuestions = 0;
     }
 

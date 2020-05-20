@@ -1,7 +1,6 @@
 package il.ac.haifa.cs.HSTS.server.Services;
 
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Controllers.ControllerInterface;
 
 import java.util.HashMap;
@@ -22,10 +21,10 @@ public class CommandRouter {
         commandsMap.put("QuestionReadBySubjectCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionUpdateCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionReadAllCommand", controllerInterfaces.get(1));
-        commandsMap.put("TestReadAllCommand", controllerInterfaces.get(2));
-        commandsMap.put("TestReadByIdCommand", controllerInterfaces.get(2));
-        commandsMap.put("TestReadBySubjectCommand", controllerInterfaces.get(2));
-        commandsMap.put("TestUpdateCommand", controllerInterfaces.get(2));
+        commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllerInterfaces.get(2));
+        commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllerInterfaces.get(2));
+        commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllerInterfaces.get(2));
+        commandsMap.put(TestUpdateCommand.class.getSimpleName(), controllerInterfaces.get(2));
 
         System.out.println("Router initiated");
     }

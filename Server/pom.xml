@@ -38,6 +38,15 @@
             <groupId>il.ac.haifa.cs.HSTS</groupId>
             <artifactId>Entities</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

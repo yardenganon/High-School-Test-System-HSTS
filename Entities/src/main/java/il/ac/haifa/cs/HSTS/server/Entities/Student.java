@@ -13,7 +13,7 @@ public class Student extends User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "student")
     List<AnswerableTest> answerableTests;
 
-    public Student(String username, String password, String email, String first_name, String last_name, String gender, String job) {
+    public Student(String username, String password, String email, String first_name, String last_name, String gender) {
         super(username, password, email, first_name, last_name, gender);
         this.courses = new ArrayList<Course>();
         this.answerableTests = new ArrayList<AnswerableTest>();

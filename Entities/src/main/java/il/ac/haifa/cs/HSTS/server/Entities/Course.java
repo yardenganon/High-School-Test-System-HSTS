@@ -59,6 +59,10 @@ public class Course implements Serializable {
         teacher.addCourse(this);
     }
 
+    public int getId() {
+        return id;
+    }
+
     public List<Student> getStudents() {
         return students;
     }
