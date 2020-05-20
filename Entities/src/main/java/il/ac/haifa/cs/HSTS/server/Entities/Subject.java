@@ -19,6 +19,8 @@ public class Subject implements Serializable {
     List<Question> questions;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Course> courses;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "test")
+    List<Test> tests;
     @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Teacher> teachers;
 
@@ -28,6 +30,7 @@ public class Subject implements Serializable {
         this.subjectName = subjectName;
         this.questions = new ArrayList<Question>();
         this.teachers = new ArrayList<Teacher>();
+        this.tests = new ArrayList<Test>();
         this.numberOfQuestions = 0;
     }
 
@@ -50,6 +53,7 @@ public class Subject implements Serializable {
         this.questions.add(question);
         numberOfQuestions++;
     }
+    public void addTest(Test test) { this.tests.add(test); }
 
     public void setSubject_name(String subjectName) {
         this.subjectName = subjectName;
@@ -81,6 +85,22 @@ public class Subject implements Serializable {
 
     public void setNumberOfQuestions(int numberOfQuestions) {
         this.numberOfQuestions = numberOfQuestions;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     @Override

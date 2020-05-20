@@ -2,6 +2,8 @@ package il.ac.haifa.cs.HSTS.server.Entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "questions")
@@ -23,11 +25,15 @@ public class Question implements Serializable {
     @JoinColumn(name = "writer_id")
     Teacher writer;
 
+    @ManyToMany(mappedBy = "questionList",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<Test> tests;
+
     public Question() {
     }
 
     public Question(String question, String answer1, String answer2, String answer3, String answer4, int correctAnswer,
                     Teacher writer, Subject subject) {
+        this.tests = new ArrayList<Test>();
         this.question = question;
         this.answer1 = answer1;
         this.answer2 = answer2;
@@ -41,7 +47,6 @@ public class Question implements Serializable {
         setWriter(writer);
         setSubject(subject);
     }
-
 
 
     public void setAnswer(int num, String answer) {
@@ -80,6 +85,18 @@ public class Question implements Serializable {
     public void setWriter(Teacher writer) {
         this.writer = writer;
         writer.addQuestion(this);
+    }
+
+    public void addTest(Test test) {
+        this.tests.add(test);
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
     }
 
     public int getId() {
