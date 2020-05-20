@@ -40,6 +40,9 @@ public class ReadyTest implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     List<AnswerableTest> answerableTests;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "readyTest")
+    List<AnswerableManualTest> answerableManualTests;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     List<TimeExtensionRequest> timeExtensionRequests;
 
@@ -56,6 +59,7 @@ public class ReadyTest implements Serializable {
             modifiedPoints.put(question, test.getPoints().get(question));
 
         this.answerableTests = new ArrayList<AnswerableTest>();
+        this.answerableManualTests = new ArrayList<AnswerableManualTest>();
         this.timeExtensionRequests = new ArrayList<TimeExtensionRequest>();
 
         course.addReadyTest(this);
@@ -65,6 +69,10 @@ public class ReadyTest implements Serializable {
 
     public void addTimeExtensionRequest(TimeExtensionRequest request) {
         this.timeExtensionRequests.add(request);
+    }
+
+    public void addAnswerableManualTest(AnswerableManualTest answerableManualTest) {
+        this.answerableManualTests.add(answerableManualTest);
     }
 
     public void addAnswerableTest(AnswerableTest answerableTest) {

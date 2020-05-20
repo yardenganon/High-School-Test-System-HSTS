@@ -28,10 +28,11 @@ public class TestToWord {
         paragraph.setAlignment(ParagraphAlignment.CENTER);
 
         XWPFRun run = paragraph.createRun();
-        run.setText("Test number: "+readyTest.getId()+
-                " Teacher: "+ readyTest.getModifierWriter().getFirst_name()+
+        run.setText("Test number:  "+readyTest.getId()+
+                "     Teacher:  "+ readyTest.getModifierWriter().getFirst_name()+
                 " " +readyTest.getModifierWriter().getLast_name()+
-                " Course number: "+readyTest.getCourse().getId());
+                "     Course number:  "+readyTest.getCourse().getId() +
+                "     Student:  "+student.getFirst_name()+ " "+student.getLast_name());
 
         // Now paragraph for introduction
         paragraph = document.createParagraph();
