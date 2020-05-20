@@ -22,6 +22,10 @@ public class CommandRouter {
         commandsMap.put("QuestionReadBySubjectCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionUpdateCommand", controllerInterfaces.get(1));
         commandsMap.put("QuestionReadAllCommand", controllerInterfaces.get(1));
+        commandsMap.put("TestReadAllCommand", controllerInterfaces.get(2));
+        commandsMap.put("TestReadByIdCommand", controllerInterfaces.get(2));
+        commandsMap.put("TestReadBySubjectCommand", controllerInterfaces.get(2));
+        commandsMap.put("TestUpdateCommand", controllerInterfaces.get(2));
 
         System.out.println("Router initiated");
     }
