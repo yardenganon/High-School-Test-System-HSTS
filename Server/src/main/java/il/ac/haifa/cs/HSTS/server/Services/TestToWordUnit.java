@@ -9,8 +9,8 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class TestToWord {
-    public TestToWord(ReadyTest readyTest, Student student) throws Exception {
+public class TestToWordUnit {
+    public TestToWordUnit(ReadyTest readyTest, Student student) throws Exception {
 
         String fileName = ("C:/Users/yarde/testid_"+readyTest.getId()+
                 "courseid_"+readyTest.getCourse().getId()+
@@ -28,6 +28,7 @@ public class TestToWord {
         paragraph.setAlignment(ParagraphAlignment.CENTER);
 
         XWPFRun run = paragraph.createRun();
+        run.setBold(true);
         run.setText("Test number:  "+readyTest.getId()+
                 "     Teacher:  "+ readyTest.getModifierWriter().getFirst_name()+
                 " " +readyTest.getModifierWriter().getLast_name()+
@@ -64,7 +65,7 @@ public class TestToWord {
         Student st = new Student("Tami_ab","1234","tamiAb@chelsea.com","Tami","Abraham","male");
 
         try {
-            TestToWord test = new TestToWord(r,st);
+            TestToWordUnit test = new TestToWordUnit(r,st);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

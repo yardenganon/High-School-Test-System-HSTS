@@ -4,11 +4,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Teacher extends User implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "teacher")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
     List<Course> courses;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "writer")
@@ -23,7 +25,7 @@ public class Teacher extends User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "initiator")
     List<TimeExtensionRequest> timeExtensionRequests;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinTable(
             name = "subjects_teacher",
             joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
@@ -97,5 +99,21 @@ public class Teacher extends User implements Serializable {
 
     public void setTests(List<Test> tests) {
         this.tests = tests;
+    }
+
+    public List<ReadyTest> getReadyTests() {
+        return readyTests;
+    }
+
+    public void setReadyTests(List<ReadyTest> readyTests) {
+        this.readyTests = readyTests;
+    }
+
+    public List<TimeExtensionRequest> getTimeExtensionRequests() {
+        return timeExtensionRequests;
+    }
+
+    public void setTimeExtensionRequests(List<TimeExtensionRequest> timeExtensionRequests) {
+        this.timeExtensionRequests = timeExtensionRequests;
     }
 }

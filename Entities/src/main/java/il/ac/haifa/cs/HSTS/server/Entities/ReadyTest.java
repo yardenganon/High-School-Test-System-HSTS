@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "readyTest")
@@ -29,7 +30,7 @@ public class ReadyTest implements Serializable {
             joinColumns = {@JoinColumn(name = "readytest_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "question")
     @Column(name = "modifiedPoints")
-    private HashMap<Question, Integer> modifiedPoints;
+    private Map<Question, Integer> modifiedPoints;
 
     private Integer modifiedTime;
 
@@ -95,11 +96,11 @@ public class ReadyTest implements Serializable {
         this.modifiedPoints.put(question, points);
     }
 
-    public HashMap<Question, Integer> getModifiedPoints() {
+    public Map<Question, Integer> getModifiedPoints() {
         return modifiedPoints;
     }
 
-    public void setModifiedPoints(HashMap<Question, Integer> modifiedPoints) {
+    public void setModifiedPoints(Map<Question, Integer> modifiedPoints) {
         this.modifiedPoints = modifiedPoints;
     }
 

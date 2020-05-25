@@ -11,8 +11,15 @@ public class TimeExtensionRequest implements Serializable {
     int id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "teacher_id")
     Teacher initiator;
+
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "principle_id")
+    Principle principle;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "readytest_id")
     ReadyTest test;
 
     Principle principleHandled;

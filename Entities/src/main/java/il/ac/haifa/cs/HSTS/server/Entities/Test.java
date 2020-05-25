@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "tests")
@@ -13,7 +14,7 @@ public class Test implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "questions_tests",
             joinColumns = @JoinColumn(name = "test_id", referencedColumnName = "id"),
@@ -25,7 +26,7 @@ public class Test implements Serializable {
             joinColumns = {@JoinColumn(name = "test_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "question")
     @Column(name = "points")
-    HashMap<Question, Integer> points;
+    Map<Question, Integer> points;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "writer_id")
@@ -61,7 +62,7 @@ public class Test implements Serializable {
         this.points.put(question, points);
     }
 
-    public HashMap<Question, Integer> getPoints() {
+    public Map<Question, Integer> getPoints() {
         return points;
     }
 

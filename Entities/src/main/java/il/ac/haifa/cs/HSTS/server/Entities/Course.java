@@ -39,6 +39,7 @@ public class Course implements Serializable {
     public void addReadyTest(ReadyTest readyTest) {this.readyTests.add(readyTest);}
     public void addStudent(Student student) {
         students.add(student);
+        student.addCourse(this);
     }
 
     public Subject getSubject() {

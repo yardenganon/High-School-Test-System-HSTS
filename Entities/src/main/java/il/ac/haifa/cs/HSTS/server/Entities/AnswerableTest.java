@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 @Table(name = "answerableTest")
@@ -25,7 +26,7 @@ public class AnswerableTest implements Serializable {
             joinColumns = {@JoinColumn(name = "answerabletest_id", referencedColumnName = "id")})
     @MapKeyColumn(name="question")
     @Column(name = "answers")
-    HashMap<Question,Integer> answers;
+    Map<Question,Integer> answers;
 
     Date timeStarted;
     Date timeFinished;
@@ -83,11 +84,11 @@ public class AnswerableTest implements Serializable {
         this.student = student;
     }
 
-    public HashMap<Question, Integer> getAnswers() {
+    public Map<Question, Integer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(HashMap<Question, Integer> answers) {
+    public void setAnswers(Map<Question, Integer> answers) {
         this.answers = answers;
     }
 
