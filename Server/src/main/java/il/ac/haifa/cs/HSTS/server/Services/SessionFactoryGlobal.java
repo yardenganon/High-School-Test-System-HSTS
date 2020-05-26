@@ -21,6 +21,11 @@ public class SessionFactoryGlobal {
         configuration.addAnnotatedClass(Teacher.class);
         configuration.addAnnotatedClass(Student.class);
         configuration.addAnnotatedClass(Subject.class);
+        configuration.addAnnotatedClass(Test.class);
+        configuration.addAnnotatedClass(ReadyTest.class);
+        configuration.addAnnotatedClass(AnswerableTest.class);
+        configuration.addAnnotatedClass(AnswerableManualTest.class);
+        configuration.addAnnotatedClass(TimeExtensionRequest.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(configuration.getProperties())

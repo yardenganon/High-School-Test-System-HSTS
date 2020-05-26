@@ -214,10 +214,11 @@ public class QuestionsController implements Initializable {
             while (responseFromServer == null)
                 System.out.print("");
 
-            subjects = (List<Subject>) responseFromServer.getReturnedObject();
+            questionList = (List<Question>) responseFromServer.getReturnedObject();
 
-            for (Subject subject : subjects)
-                questionList.addAll(subject.getQuestions());
+//            for (Subject subject : subjects)
+//                questionList.addAll(subject.getQuestions());
+
         } else if (user instanceof Principle){
             responseFromServer = null;
             CommandInterface command = new QuestionReadAllCommand();

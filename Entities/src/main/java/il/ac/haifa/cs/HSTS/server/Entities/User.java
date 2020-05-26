@@ -4,9 +4,13 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity(name = "users")
+//@Entity(name = "users")
+//@MappedSuperclass//(strategy = InheritanceType.SINGLE_TABLE)
+
+@Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class User implements Serializable {
+@Table(name = "users")
+public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

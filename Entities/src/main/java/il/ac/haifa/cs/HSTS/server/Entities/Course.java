@@ -25,16 +25,21 @@ public class Course implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
     List<Student> students;
 
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "course")
+    List<ReadyTest> readyTests;
+
     public Course () {}
     public Course(Subject subject, Teacher teacher) {
         setSubject(subject);
         setTeacher(teacher);
         this.students = new ArrayList<Student>();
+        this.readyTests = new ArrayList<ReadyTest>();
     }
 
-
+    public void addReadyTest(ReadyTest readyTest) {this.readyTests.add(readyTest);}
     public void addStudent(Student student) {
         students.add(student);
+        student.addCourse(this);
     }
 
     public Subject getSubject() {
@@ -53,6 +58,10 @@ public class Course implements Serializable {
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
         teacher.addCourse(this);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public List<Student> getStudents() {

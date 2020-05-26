@@ -50,23 +50,23 @@ public class QuestionsRepository {
         return question1;
     }
 
-     public List<Subject> getQuestionsBySubject(List<Subject> subjects) {
-        List<Subject> results = new ArrayList<Subject>();
+     public List<Question> getQuestionsBySubject(List<Subject> subjects) {
+        List<Question> results = new ArrayList<Question>();
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Ask for data here */
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Subject> criteriaQuery = builder.createQuery(Subject.class);
-            Root<Subject> root = criteriaQuery.from(Subject.class);
+            CriteriaQuery<Question> criteriaQuery = builder.createQuery(Question.class);
+            Root<Question> root = criteriaQuery.from(Question.class);
 
-            for (int i = 0;i< subjects.size();i++) {
-                String subject = subjects.get(i).getSubjectName();
+            for (Subject sub: subjects) {
                 criteriaQuery.select(root).where(
-                        builder.equal(root.get("subjectName"),subject));
+                        builder.equal(root.get("subject"),sub));
                 Query query = session.createQuery(criteriaQuery);
                 results.addAll(query.getResultList());
             }
+            System.out.println(results);
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);

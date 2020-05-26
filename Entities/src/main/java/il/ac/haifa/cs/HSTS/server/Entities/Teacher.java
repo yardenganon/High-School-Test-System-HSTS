@@ -2,18 +2,30 @@ package il.ac.haifa.cs.HSTS.server.Entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Teacher extends User implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "teacher")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
     List<Course> courses;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "writer")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "writer")
     List<Question> questions;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "writer")
+    List<Test> tests;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "modifierWriter")
+    List<ReadyTest> readyTests;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "initiator")
+    List<TimeExtensionRequest> timeExtensionRequests;
+
+    @ManyToMany(cascade = CascadeType.ALL , fetch = FetchType.EAGER)
     @JoinTable(
             name = "subjects_teacher",
             joinColumns = @JoinColumn(name = "teacher_id", referencedColumnName = "id"),
@@ -25,15 +37,21 @@ public class Teacher extends User implements Serializable {
         this.courses = new ArrayList<Course>();
         this.questions = new ArrayList<Question>();
         this.subjects = new ArrayList<Subject>();
+        this.tests = new ArrayList<Test>();
+        this.readyTests = new ArrayList<ReadyTest>();
+        this.timeExtensionRequests = new ArrayList<TimeExtensionRequest>();
     }
 
-    public Teacher(){}
+    public Teacher() {
+    }
 
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         this.courses.add(course);
     }
 
-    public void addQuestion(Question question) { this.questions.add(question);}
+    public void addQuestion(Question question) {
+        this.questions.add(question);
+    }
 
     public List<Question> getQuestions() {
         return questions;
@@ -51,5 +69,51 @@ public class Teacher extends User implements Serializable {
         this.subjects = subjects;
     }
 
-    public void addSubject(Subject subject) {this.subjects.add(subject);}
+    public void addSubject(Subject subject) {
+        this.subjects.add(subject);
+    }
+
+    public void addReadyTest(ReadyTest readyTest) {
+        this.readyTests.add(readyTest);
+    }
+
+    public void addTimeExtensionRequest(TimeExtensionRequest request) {
+        this.timeExtensionRequests.add(request);
+    }
+
+    public void addTest(Test test) {
+        this.tests.add(test);
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+
+    public List<ReadyTest> getReadyTests() {
+        return readyTests;
+    }
+
+    public void setReadyTests(List<ReadyTest> readyTests) {
+        this.readyTests = readyTests;
+    }
+
+    public List<TimeExtensionRequest> getTimeExtensionRequests() {
+        return timeExtensionRequests;
+    }
+
+    public void setTimeExtensionRequests(List<TimeExtensionRequest> timeExtensionRequests) {
+        this.timeExtensionRequests = timeExtensionRequests;
+    }
 }

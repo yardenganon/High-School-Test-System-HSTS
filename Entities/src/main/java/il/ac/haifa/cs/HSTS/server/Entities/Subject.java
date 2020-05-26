@@ -3,7 +3,9 @@ package il.ac.haifa.cs.HSTS.server.Entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "subjects")
@@ -15,11 +17,13 @@ public class Subject implements Serializable {
     int numberOfQuestions;
     String subjectName;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "subject")
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Question> questions;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Course> courses;
-    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    List<Test> tests;
+    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Teacher> teachers;
 
 
@@ -27,7 +31,9 @@ public class Subject implements Serializable {
     public Subject(String subjectName){
         this.subjectName = subjectName;
         this.questions = new ArrayList<Question>();
-        this.teachers = new ArrayList<Teacher>();
+        this.teachers = new ArrayList<>();
+        this.tests = new ArrayList<Test>();
+        this.courses = new ArrayList<Course>();
         this.numberOfQuestions = 0;
     }
 
@@ -50,6 +56,7 @@ public class Subject implements Serializable {
         this.questions.add(question);
         numberOfQuestions++;
     }
+    public void addTest(Test test) { this.tests.add(test); }
 
     public void setSubject_name(String subjectName) {
         this.subjectName = subjectName;
@@ -81,6 +88,22 @@ public class Subject implements Serializable {
 
     public void setNumberOfQuestions(int numberOfQuestions) {
         this.numberOfQuestions = numberOfQuestions;
+    }
+
+    public List<Test> getTests() {
+        return tests;
+    }
+
+    public void setTests(List<Test> tests) {
+        this.tests = tests;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
     }
 
     @Override
