@@ -5,6 +5,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionReadAllCommand;
@@ -38,10 +39,13 @@ import java.util.ResourceBundle;
 
 public class QuestionsController implements Initializable {
 
-    private static User user;
-    private static Response responseFromServer = null;
+    public User user;
+    private Response responseFromServer = null;
     private static List<Question> questionList = null;
     private ObservableList<QuestionTableView> questionsOL = null;
+    Question selected = null;
+
+    private HSTSClient client;
 
     @FXML
     private Label helloLabel;
@@ -87,10 +91,16 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Menu"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource("Menu.fxml"));
+        Parent root = fxmlLoader.load();
+        Scene scene = new Scene(root);
         Stage stage = (Stage) goToMenuButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Menu");
+
+        MenuController menuController = fxmlLoader.<MenuController>getController();
+        menuController.setUser(user);
+        menuController.passHSTSClientReference(client);
     }
 
     @FXML
@@ -117,7 +127,12 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException{
-        Scene scene = new Scene(loadFXML("Login"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource("Login.fxml"));
+        Parent root = fxmlLoader.load();
+        LoginController loginController = fxmlLoader.<LoginController>getController();
+        loginController.setUser(null);
+        loginController.passHSTSClientReference(client);
+        Scene scene = new Scene(root);
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
@@ -145,57 +160,70 @@ public class QuestionsController implements Initializable {
         });
 
         tableView.setItems(filteredQuests);
-
         tableView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 QuestionTableView questionSelected = tableView.getSelectionModel().getSelectedItem();
                 if (questionSelected != null && event.getClickCount() == 2) {
                     Scene scene = null;
-                    try {
                         for (Question q : questionList)
                         {
                             if (q.getId() == Integer.parseInt(questionSelected.getId())) {
-                                EditQuestionController.setQuestion(q);
+                                selected = q;
+                                openQuestionEditWindow();
                                 break;
                             }
                         }
-                        scene = new Scene(QuestionsController.loadFXML("EditQuestion"));
-                    } catch (IOException e) {
-                        System.out.println("not found");
-                        e.printStackTrace();
-                    }
-                    Stage stage = (Stage) tableView.getScene().getWindow();
-                    stage.setScene(scene);
-                    stage.setTitle("Edit Question");
                 }
             }
         });
+
     }
 
+    public void openQuestionEditWindow() {
+        System.out.println(selected + " Is selected");
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("EditQuestion.fxml"));
+        Parent root = null;
+        try {
+            root = fxmlLoader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) tableView.getScene().getWindow();
+        stage.setScene(scene);
+        EditQuestionController eqc = fxmlLoader.<EditQuestionController>getController();
+        eqc.setUser(user);
+        eqc.passHSTSClientReference(client);
+        eqc.setQuestion(selected);
+        stage.setTitle("Edit Question");
+    }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    private Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-    public static void receivedRespondFromServer(Response response){
+    public void receivedRespondFromServer(Response response){
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }
 
-    public static User getUser() {
-        return user;
+    public User getUser() {
+        return this.user;
     }
 
-    public static void setUser(User user) {
-        QuestionsController.user = user;
+    public void setUser(User user) {
+        this.user = user;
+        initialize(null,null);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeUser();
-        initializeQuestionsTable();
+        if (user !=null) {
+            initializeUser();
+            initializeQuestionsTable();
+        }
     }
 
     public void initializeUser(){
@@ -209,7 +237,7 @@ public class QuestionsController implements Initializable {
 
             responseFromServer = null;
             CommandInterface command = new QuestionReadBySubjectCommand(subjects);
-            HSTSClientInterface.sendCommandToServer(command);
+            client.getHstsClientInterface().sendCommandToServer(command);
 
             while (responseFromServer == null)
                 System.out.print("");
@@ -222,7 +250,7 @@ public class QuestionsController implements Initializable {
         } else if (user instanceof Principle){
             responseFromServer = null;
             CommandInterface command = new QuestionReadAllCommand();
-            HSTSClientInterface.sendCommandToServer(command);
+            client.getHstsClientInterface().sendCommandToServer(command);
 
             while (responseFromServer == null)
                 System.out.print("");
@@ -240,5 +268,9 @@ public class QuestionsController implements Initializable {
                     quest.getWriter().getUsername(),
                     quest.getSubject().getSubjectName()));
         }
+    }
+    public void passHSTSClientReference(HSTSClient ref) {
+        this.client = ref;
+        ref.getHstsClientInterface().addGUIController(this);
     }
 }

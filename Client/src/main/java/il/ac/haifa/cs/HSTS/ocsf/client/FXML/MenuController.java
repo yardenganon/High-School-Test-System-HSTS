@@ -4,6 +4,7 @@
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +22,8 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
 
-    private static User user;
+    private HSTSClient client;
+    public User user;
 
     @FXML
     private Label helloLabel;
@@ -60,19 +62,29 @@ public class MenuController implements Initializable {
 
     @FXML
     void showQuestions(ActionEvent event) throws IOException {
-        QuestionsController.setUser(user);
-        Scene scene = new Scene(loadFXML("Questions"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Questions.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
+        QuestionsController qc = loader.<QuestionsController>getController();
+        qc.passHSTSClientReference(client);
+        qc.setUser(user);
     }
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Login"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
+
+        LoginController qc = loader.<LoginController>getController();
+        qc.passHSTSClientReference(client);
+        qc.setUser(user);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -80,20 +92,24 @@ public class MenuController implements Initializable {
         return fxmlLoader.load();
     }
 
-    public static User getUser() {
+    public User getUser() {
         return user;
     }
 
-    public static void setUser(User user) {
-        MenuController.user = user;
+    public void setUser(User user) {
+        this.user = user;
+        helloLabel.setText("Hello " + user.getFirst_name());
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeUser();
+
     }
 
-    public void initializeUser() {
-        helloLabel.setText("Hello " + user.getFirst_name());
+
+    public void passHSTSClientReference(HSTSClient ref) {
+        this.client = ref;
+        ref.getHstsClientInterface().addGUIController(this);
     }
 }

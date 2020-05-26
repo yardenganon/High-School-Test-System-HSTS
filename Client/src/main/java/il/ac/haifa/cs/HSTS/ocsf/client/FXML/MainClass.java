@@ -15,20 +15,35 @@ import org.hibernate.boot.archive.scan.spi.ScanEnvironment;
 public class MainClass extends Application {
 
 	private static Scene scene;
-
+	private HSTSClient client;
 
     @Override
 	public void start(Stage stage) throws IOException {
 	    stage.setTitle("Login");
-	    //stage.initStyle(StageStyle.UNDECORATED);
-        scene = new Scene(loadFXML("Login"));
-        Scene menu = new Scene(loadFXML("Login"));
+        FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("Login.fxml"));
+        Parent root = loader.load();
+        scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+        initConnection();
+
+        // Passing client reference to LoginController
+        LoginController loginController = loader.<LoginController>getController();
+        loginController.passHSTSClientReference(client);
 	}
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+	public void initConnection() {
+        this.client = new HSTSClient("localhost", 3000);
+        try {
+            client.openConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        client.closeConnection();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
