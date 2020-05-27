@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -19,6 +20,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,6 +32,7 @@ public class LoginController implements Initializable {
 	private Response responseFromServer = null;
 	private HSTSClient client;
 	public User user;
+	private Bundle bundle;
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
@@ -87,6 +90,7 @@ public class LoginController implements Initializable {
                 errorLB.setVisible(true);
             }
             else {
+                bundle.put("user",user);
                 System.out.println("User: "+user.getUsername() + " is logged in");
                 Scene scene = null;
                 try {
@@ -105,11 +109,7 @@ public class LoginController implements Initializable {
 
     public Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        Parent root =fxmlLoader.load();
-        MenuController menuController = fxmlLoader.<MenuController>getController();
-        menuController.passHSTSClientReference(client);
-        menuController.setUser(user);
-        return root;
+        return fxmlLoader.load();
     }
 
     public void receivedRespondFromServer(Response response){
@@ -120,6 +120,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = Bundle.getInstance();
+        client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
         EventHandler<KeyEvent> enterLoginEvent = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -135,10 +138,7 @@ public class LoginController implements Initializable {
         usernameTF.setOnKeyPressed(enterLoginEvent);
         passwordTF.setOnKeyPressed(enterLoginEvent);
     }
-    public void passHSTSClientReference(HSTSClient ref) {
-        this.client = ref;
-        ref.getHstsClientInterface().addGUIController(this);
-    }
+
     public void setUser(User user) {
         this.user = user;
     }

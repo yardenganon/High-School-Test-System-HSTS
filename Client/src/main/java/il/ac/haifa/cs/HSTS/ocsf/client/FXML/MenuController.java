@@ -5,6 +5,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.jboss.jandex.Main;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,6 +26,7 @@ public class MenuController implements Initializable {
 
     private HSTSClient client;
     public User user;
+    Bundle bundle;
 
     @FXML
     private Label helloLabel;
@@ -62,54 +65,27 @@ public class MenuController implements Initializable {
 
     @FXML
     void showQuestions(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Questions.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(MainClass.loadFXML("Questions"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
-        QuestionsController qc = loader.<QuestionsController>getController();
-        qc.passHSTSClientReference(client);
-        qc.setUser(user);
     }
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Login.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        bundle.remove("user");
+        Scene scene = new Scene(MainClass.loadFXML("Login"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
-
-        LoginController qc = loader.<LoginController>getController();
-        qc.passHSTSClientReference(client);
-        qc.setUser(user);
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-        helloLabel.setText("Hello " + user.getFirst_name());
-
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-
-    public void passHSTSClientReference(HSTSClient ref) {
-        this.client = ref;
-        ref.getHstsClientInterface().addGUIController(this);
+        bundle = Bundle.getInstance();
+        user = (User) bundle.get("user");
+        client = (HSTSClient) bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
+        helloLabel.setText("Hello " + user.getFirst_name());
     }
 }

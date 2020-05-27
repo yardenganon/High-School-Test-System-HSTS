@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -30,6 +31,7 @@ public class EditQuestionController implements Initializable {
     public Question question;
     private Response responseFromServer = null;
     private static boolean thereIsAnError = false;
+    Bundle bundle;
 
     private HSTSClient client;
 
@@ -163,9 +165,12 @@ public class EditQuestionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if (user!=null) {
-            initializeQuestionDetails();
-        }
+        bundle = Bundle.getInstance();
+        question = (Question) bundle.get("question");
+        client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
+        user = (User) bundle.get("user");
+        initializeQuestionDetails();
     }
     @FXML
     void ResetQuestion(ActionEvent event) {
@@ -187,28 +192,18 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Questions.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(MainClass.loadFXML("Questions"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
-        QuestionsController qc = loader.<QuestionsController>getController();
-        qc.passHSTSClientReference(client);
-        qc.setUser(user);
     }
 
     @FXML
     void goToQuestions(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Questions.fxml"));
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(MainClass.loadFXML("Question"));
         Stage stage = (Stage) goToQuestionsButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
-        QuestionsController qc = fxmlLoader.<QuestionsController>getController();
-        qc.passHSTSClientReference(client);
-        qc.setUser(user);
     }
 
     @FXML
@@ -218,29 +213,11 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("Login.fxml"));
-        LoginController lc = fxmlLoader.<LoginController>getController();
-        lc.setUser(null);
-        lc.passHSTSClientReference(client);
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root);
+        bundle.remove("user");
+        Scene scene = new Scene(MainClass.loadFXML("Login"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-        initialize(null,null);
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
     }
 
     public void receivedResponseFromServer(Response response){
@@ -302,18 +279,5 @@ public class EditQuestionController implements Initializable {
         textField.setText("Invalid input");
         textField.setStyle("-fx-text-inner-color: #ff0000;");
         thereIsAnError = true;
-    }
-
-    public void passHSTSClientReference(HSTSClient ref) {
-        this.client = ref;
-        ref.getHstsClientInterface().addGUIController(this);
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }

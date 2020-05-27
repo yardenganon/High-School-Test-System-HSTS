@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,17 +20,15 @@ public class MainClass extends Application {
 
     @Override
 	public void start(Stage stage) throws IOException {
-	    stage.setTitle("Login");
+        initConnection();
+        stage.setTitle("Login");
+        Bundle bundle = Bundle.getInstance();
+        bundle.put("client",client);
         FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("Login.fxml"));
-        Parent root = loader.load();
-        scene = new Scene(root);
+        scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.show();
-        initConnection();
 
-        // Passing client reference to LoginController
-        LoginController loginController = loader.<LoginController>getController();
-        loginController.passHSTSClientReference(client);
 	}
 
 	public void initConnection() {
@@ -46,7 +45,7 @@ public class MainClass extends Application {
         client.closeConnection();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
