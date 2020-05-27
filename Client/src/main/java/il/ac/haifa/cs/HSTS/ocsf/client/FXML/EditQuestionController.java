@@ -1,9 +1,9 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
-import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -13,13 +13,10 @@ import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -182,7 +179,7 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void about(ActionEvent event) {
-
+        Events.aboutWindowEvent();
     }
 
     @FXML
@@ -192,18 +189,12 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-        Scene scene = new Scene(MainClass.loadFXML("Questions"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Questions");
+        Events.navigateMenuEvent(goToMenuButton);
     }
 
     @FXML
     void goToQuestions(ActionEvent event) throws IOException {
-        Scene scene = new Scene(MainClass.loadFXML("Questions"));
-        Stage stage = (Stage) goToQuestionsButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Questions");
+        Events.navigateQuestionsEvent(goToQuestionsButton);
     }
 
     @FXML
@@ -213,11 +204,7 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        bundle.remove("user");
-        Scene scene = new Scene(MainClass.loadFXML("Login"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Login");
+        Events.navigateLogoutEvent(logoutButton);
     }
 
     public void receivedResponseFromServer(Response response){

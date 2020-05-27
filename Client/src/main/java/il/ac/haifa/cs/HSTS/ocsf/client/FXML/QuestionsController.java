@@ -7,6 +7,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionReadAllCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionReadBySubjectCommand;
@@ -18,22 +19,18 @@ import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.jboss.jandex.Main;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -92,10 +89,7 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-        Scene scene = new Scene(MainClass.loadFXML("Menu"));
-        Stage stage = (Stage) goToMenuButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Menu");
+        Events.navigateMenuEvent(goToMenuButton);
     }
 
     @FXML
@@ -110,23 +104,12 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void about(ActionEvent event) {
-        Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
-        editInformation.setTitle("Information");
-        editInformation.setHeaderText("Editing Details");
-        editInformation.setContentText("In order to edit a question:\n1. Click on Questions button\n" +
-                "2. Double click on a spesific row");
-        editInformation.setResizable(true);
-        editInformation.getDialogPane().setPrefSize(300, 200);
-        Optional<ButtonType> result = editInformation.showAndWait();
+        Events.aboutWindowEvent();
     }
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        bundle.remove("user");
-        Scene scene = new Scene(MainClass.loadFXML("Login"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Login");
+        Events.navigateLogoutEvent(logoutButton);
     }
 
 
