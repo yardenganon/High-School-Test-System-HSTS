@@ -24,8 +24,8 @@ public class HSTSClientInterface {
         this.guiControllers = new HashMap<>();
     }
 
-    public void addGUIController(Object object){
-        guiControllers.put(object.getClass().getSimpleName(),object);
+    public void addGUIController(Object object) {
+        guiControllers.put(object.getClass().getSimpleName(), object);
     }
 
     public void loop() throws IOException {

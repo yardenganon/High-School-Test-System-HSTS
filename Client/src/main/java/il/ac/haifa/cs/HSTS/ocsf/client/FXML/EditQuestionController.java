@@ -200,7 +200,7 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void goToQuestions(ActionEvent event) throws IOException {
-        Scene scene = new Scene(MainClass.loadFXML("Question"));
+        Scene scene = new Scene(MainClass.loadFXML("Questions"));
         Stage stage = (Stage) goToQuestionsButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
