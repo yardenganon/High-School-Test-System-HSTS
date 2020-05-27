@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -92,15 +93,7 @@ public class LoginController implements Initializable {
             else {
                 bundle.put("user",user);
                 System.out.println("User: "+user.getUsername() + " is logged in");
-                Scene scene = null;
-                try {
-                    scene = new Scene(loadFXML("Menu"));
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
-                Stage stage = (Stage) loginBtn.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setTitle("Menu");
+                Events.navigateMenuEvent(loginBtn);
             }
             responseFromServer = null;
         });

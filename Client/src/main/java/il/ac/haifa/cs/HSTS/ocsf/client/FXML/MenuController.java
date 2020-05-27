@@ -6,20 +6,15 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-import org.jboss.jandex.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
@@ -53,31 +48,17 @@ public class MenuController implements Initializable {
 
     @FXML
     void about(ActionEvent event) {
-        Alert editInformation = new Alert(Alert.AlertType.INFORMATION);
-        editInformation.setTitle("Information");
-        editInformation.setHeaderText("Editing Details");
-        editInformation.setContentText("In order to edit a question:\n1. Click on Questions button\n" +
-                "2. Double click on a spesific row");
-        editInformation.setResizable(true);
-        editInformation.getDialogPane().setPrefSize(300, 200);
-        Optional<ButtonType> result = editInformation.showAndWait();
+        Events.aboutWindowEvent();
     }
 
     @FXML
     void showQuestions(ActionEvent event) throws IOException {
-        Scene scene = new Scene(MainClass.loadFXML("Questions"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Questions");
+        Events.navigateQuestionsEvent(showQuestionButton);
     }
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        bundle.remove("user");
-        Scene scene = new Scene(MainClass.loadFXML("Login"));
-        Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("Login");
+        Events.navigateLogoutEvent(logoutButton);
     }
 
     @Override
