@@ -17,12 +17,13 @@ public class MainClass extends Application {
 
 	private static Scene scene;
 	private HSTSClient client;
+	private Bundle bundle;
 
     @Override
 	public void start(Stage stage) throws IOException {
         initConnection();
         stage.setTitle("Login");
-        Bundle bundle = Bundle.getInstance();
+        bundle = Bundle.getInstance();
         bundle.put("client",client);
         FXMLLoader loader = new FXMLLoader(MainClass.class.getResource("Login.fxml"));
         scene = new Scene(loader.load());
