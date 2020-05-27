@@ -1,13 +1,16 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.server.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,9 +27,13 @@ import java.util.ResourceBundle;
 
 public class EditQuestionController implements Initializable {
 
-    private static Question question;
-    private static Response responseFromServer = null;
+    public User user;
+    public Question question;
+    private Response responseFromServer = null;
     private static boolean thereIsAnError = false;
+    Bundle bundle;
+
+    private HSTSClient client;
 
 
     @FXML
@@ -91,9 +98,8 @@ public class EditQuestionController implements Initializable {
     	// If button text is "Edit Question"
         if(editQuestionButton.getText().equals("Edit Question"))
     	{
-
     	    // Checking if there are permissions to edit the question
-    	    if (!question.getWriter().getUsername().equals(QuestionsController.getUser().getUsername()))
+    	    if (!question.getWriter().getUsername().equals(user.getUsername()))
             {
                 Alert permissionsErrorAlert = new Alert(Alert.AlertType.ERROR);
                 permissionsErrorAlert.setHeaderText("You don't have the permissions to change that question");
@@ -137,7 +143,7 @@ public class EditQuestionController implements Initializable {
 
                     responseFromServer = null;
                     CommandInterface command = new QuestionUpdateCommand(question);
-                    HSTSClientInterface.sendCommandToServer(command);
+                    client.getHstsClientInterface().sendCommandToServer(command);
                     // Waiting for server confirmation
                     while (responseFromServer == null) {
                         System.out.print("");
@@ -159,6 +165,11 @@ public class EditQuestionController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = Bundle.getInstance();
+        question = (Question) bundle.get("question");
+        client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
+        user = (User) bundle.get("user");
         initializeQuestionDetails();
     }
     @FXML
@@ -181,15 +192,15 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void goToMenu(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Menu"));
-        Stage stage = (Stage) goToMenuButton.getScene().getWindow();
+        Scene scene = new Scene(MainClass.loadFXML("Questions"));
+        Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
-        stage.setTitle("Menu");
+        stage.setTitle("Questions");
     }
 
     @FXML
     void goToQuestions(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Questions"));
+        Scene scene = new Scene(MainClass.loadFXML("Question"));
         Stage stage = (Stage) goToQuestionsButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
@@ -202,34 +213,21 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Login"));
+        bundle.remove("user");
+        Scene scene = new Scene(MainClass.loadFXML("Login"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public static void setQuestion(Question question) {
-        EditQuestionController.question = question;
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public static void receivedResponseFromServer(Response response){
+    public void receivedResponseFromServer(Response response){
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }
-
     public void initializeQuestionDetails()
     {
-        if (MenuController.getUser() instanceof Teacher) {
-            Teacher teacher = ((Teacher) MenuController.getUser());
+        if (user instanceof Teacher) {
+            Teacher teacher = ((Teacher) user);
             subjectComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectComboBox.getItems().add(subject.getSubjectName());
@@ -262,7 +260,7 @@ public class EditQuestionController implements Initializable {
         answer3TextField.setText(question.getAnswer(3));
         answer4TextField.setText(question.getAnswer(4));
         correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
-        helloLabel.setText("Hello " + MenuController.getUser().getFirst_name());
+        helloLabel.setText("Hello " + user.getFirst_name());
     }
 
     private void setDisableAndVisible(boolean changeToDisableAndVisible)

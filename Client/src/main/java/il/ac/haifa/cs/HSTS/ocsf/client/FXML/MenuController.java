@@ -4,6 +4,8 @@
 
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import org.jboss.jandex.Main;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,7 +24,9 @@ import java.util.ResourceBundle;
 
 public class MenuController implements Initializable {
 
-    private static User user;
+    private HSTSClient client;
+    public User user;
+    Bundle bundle;
 
     @FXML
     private Label helloLabel;
@@ -60,8 +65,7 @@ public class MenuController implements Initializable {
 
     @FXML
     void showQuestions(ActionEvent event) throws IOException {
-        QuestionsController.setUser(user);
-        Scene scene = new Scene(loadFXML("Questions"));
+        Scene scene = new Scene(MainClass.loadFXML("Questions"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Questions");
@@ -69,31 +73,19 @@ public class MenuController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException {
-        Scene scene = new Scene(loadFXML("Login"));
+        bundle.remove("user");
+        Scene scene = new Scene(MainClass.loadFXML("Login"));
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Login");
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
-    public static User getUser() {
-        return user;
-    }
-
-    public static void setUser(User user) {
-        MenuController.user = user;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        initializeUser();
-    }
-
-    public void initializeUser() {
+        bundle = Bundle.getInstance();
+        user = (User) bundle.get("user");
+        client = (HSTSClient) bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
     }
 }

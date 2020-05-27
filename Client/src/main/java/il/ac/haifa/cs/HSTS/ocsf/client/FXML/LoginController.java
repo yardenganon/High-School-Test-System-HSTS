@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -18,6 +20,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -26,7 +29,10 @@ public class LoginController implements Initializable {
 	/**
 	 * Sample Skeleton for 'Login.fxml' Controller Class
 	 */
-	private static Response responseFromServer = null;
+	private Response responseFromServer = null;
+	private HSTSClient client;
+	public User user;
+	private Bundle bundle;
 
     @FXML // fx:id="loginBtn"
     private Button loginBtn; // Value injected by FXMLLoader
@@ -43,12 +49,12 @@ public class LoginController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
-
-
     @FXML
     void loginBtnPressed(ActionEvent event) throws IOException{
        executeLogin();
     }
+
+
     void executeLogin() throws IOException{
         // Creating command here and send it to client
         errorLB.setVisible(false);
@@ -60,14 +66,12 @@ public class LoginController implements Initializable {
             return;
         }
 
-        User userLoggedIn;
-
         Task<Response> task = new Task<Response>() {
 
             @Override
             protected Response call() throws Exception {
                 CommandInterface command = new LoginCommand(username, password);
-                HSTSClientInterface.sendCommandToServer(command);
+                client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null)
                     System.out.print("");
                 return responseFromServer;
@@ -80,13 +84,13 @@ public class LoginController implements Initializable {
         });
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
-            User user = (User) responseFromServer.getReturnedObject();
+            user = (User) responseFromServer.getReturnedObject();
             if (user == null) {
                 errorLB.setText("Username and/or password are incorrect");
                 errorLB.setVisible(true);
             }
             else {
-                MenuController.setUser(user);
+                bundle.put("user",user);
                 System.out.println("User: "+user.getUsername() + " is logged in");
                 Scene scene = null;
                 try {
@@ -103,12 +107,12 @@ public class LoginController implements Initializable {
         new Thread(task).start();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
+    public Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 
-    public static void receivedRespondFromServer(Response response){
+    public void receivedRespondFromServer(Response response){
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }
@@ -116,6 +120,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = Bundle.getInstance();
+        client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().addGUIController(this);
         EventHandler<KeyEvent> enterLoginEvent = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -130,6 +137,10 @@ public class LoginController implements Initializable {
         };
         usernameTF.setOnKeyPressed(enterLoginEvent);
         passwordTF.setOnKeyPressed(enterLoginEvent);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
 

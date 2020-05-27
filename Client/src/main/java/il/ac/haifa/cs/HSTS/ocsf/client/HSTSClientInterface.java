@@ -1,37 +1,46 @@
 package il.ac.haifa.cs.HSTS.ocsf.client;
+
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.Entities.Question;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 // That was CLIChatClient
 public class HSTSClientInterface {
 
     private static HSTSClient client;
-    private MainClass mainClass;
-
+    private Map<String, Object> guiControllers;
     private boolean isRunning;
     private Thread loopThread;
 
     public HSTSClientInterface(HSTSClient client) {
         HSTSClientInterface.client = client;
         this.isRunning = false;
+        this.guiControllers = new HashMap<>();
+    }
+
+    public void addGUIController(Object object){
+        guiControllers.put(object.getClass().getSimpleName(),object);
     }
 
     public void loop() throws IOException {
         loopThread = new Thread(new Runnable() {
             @Override
-            public void run() {}
-    });
+            public void run() {
+            }
+        });
 
         loopThread.start();
-        this.isRunning =true;
+        this.isRunning = true;
 
-}
-    public static void sendCommandToServer(CommandInterface command)
-    {
+    }
+
+    public void sendCommandToServer(CommandInterface command) {
         try {
             System.out.println("Sending command to server");
             client.sendToServer(command);
@@ -51,22 +60,27 @@ public class HSTSClientInterface {
         }
         Response serverResponse = (Response) message;
         System.out.println("Command received from server : " + serverResponse.getRespondName());
-        System.out.println("Command returned object : "+ (serverResponse.getReturnedObject()!=null?serverResponse.getReturnedObject():"null"));
-        if (serverResponse.getRespondName().equals("Login")){
-            LoginController.receivedRespondFromServer(serverResponse);
+        System.out.println("Command returned object : " + (serverResponse.getReturnedObject() != null ? serverResponse.getReturnedObject() : "null"));
+
+        if (serverResponse.getRespondName().equals("Login")) {
+            ((LoginController) guiControllers.get(LoginController.class.getSimpleName()))
+                    .receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("ReadBySubject")) {
             // Getting questions asked for
-            System.out.println("subjects with question received: "+ serverResponse.getReturnedObject());
-            QuestionsController.receivedRespondFromServer(serverResponse);
+            System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
+            ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
+                    receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("ReadAllQuestions")) {
             // Getting questions asked for
-            System.out.println("All question received: "+ serverResponse.getReturnedObject());
-            QuestionsController.receivedRespondFromServer(serverResponse);
+            System.out.println("All question received: " + serverResponse.getReturnedObject());
+            ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
+                    receivedRespondFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals("UpdateQuestion"))
-            EditQuestionController.receivedResponseFromServer(serverResponse);
+            ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
     }
 
     public void closeConnection() {
@@ -75,9 +89,6 @@ public class HSTSClientInterface {
     }
 
     public static void main(String[] args) throws IOException {
-        HSTSClient chatClient = new HSTSClient("localhost", 3000);
-        chatClient.openConnection();
         MainClass.main(args);
-        chatClient.closeConnection();
     }
 }
