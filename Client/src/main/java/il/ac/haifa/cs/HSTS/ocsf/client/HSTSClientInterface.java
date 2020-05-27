@@ -13,13 +13,13 @@ import java.util.Map;
 // That was CLIChatClient
 public class HSTSClientInterface {
 
-    private static HSTSClient client;
+    private HSTSClient client;
     private Map<String, Object> guiControllers;
     private boolean isRunning;
     private Thread loopThread;
 
     public HSTSClientInterface(HSTSClient client) {
-        HSTSClientInterface.client = client;
+        this.client = client;
         this.isRunning = false;
         this.guiControllers = new HashMap<>();
     }
