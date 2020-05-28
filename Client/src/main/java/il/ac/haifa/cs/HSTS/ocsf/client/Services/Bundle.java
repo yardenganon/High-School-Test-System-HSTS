@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Bundle implements Serializable {
 
-    static private Bundle bundle =null;
+    static private Bundle bundle = null;
     private Map<String,Object> map;
 
     private Bundle() {
@@ -29,6 +29,7 @@ public class Bundle implements Serializable {
     public Object get(String string){
         return this.map.get(string);
     }
+
     public void remove(String string) {
         System.out.println("Object " + this.map.remove(string) + " has been removed");
     }
