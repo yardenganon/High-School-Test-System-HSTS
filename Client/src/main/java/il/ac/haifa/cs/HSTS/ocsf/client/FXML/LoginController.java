@@ -88,8 +88,6 @@ public class LoginController implements Initializable {
 
             @Override
             protected Response call() throws Exception {
-
-
                 CommandInterface command = new LoginCommand(username, password);
                 client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null)
@@ -122,16 +120,10 @@ public class LoginController implements Initializable {
         new Thread(task).start();
     }
 
-    public Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(MainClass.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
     public void receivedRespondFromServer(Response response){
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
