@@ -11,8 +11,8 @@ import java.io.FileOutputStream;
 
 public class TestToWordUnit {
     public TestToWordUnit(ReadyTest readyTest, Student student) throws Exception {
-
-        String fileName = ("C:/Users/yarde/testid_"+readyTest.getId()+
+        String path = "C:/Users/yarde/";
+        String fileName = (path+"yarde/testid_"+readyTest.getId()+
                 "courseid_"+readyTest.getCourse().getId()+
                 "teacher_"+readyTest.getModifierWriter().getUsername()+
                 "student_"+student.getUsername()+".docx");

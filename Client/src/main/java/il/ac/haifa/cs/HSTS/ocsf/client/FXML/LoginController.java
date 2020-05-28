@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
@@ -13,12 +14,18 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.BufferedInputStream;
@@ -51,6 +58,13 @@ public class LoginController implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private VBox welcomeVbox;
+
+    @FXML
+    private VBox logoVbox;
+
+
+    @FXML
     void loginBtnPressed(ActionEvent event) throws IOException{
        executeLogin();
     }
@@ -67,14 +81,19 @@ public class LoginController implements Initializable {
             return;
         }
 
+        CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(anchorPane);
+        customProgressIndicator.start();
+
         Task<Response> task = new Task<Response>() {
 
             @Override
             protected Response call() throws Exception {
+
+
                 CommandInterface command = new LoginCommand(username, password);
                 client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null)
-                    System.out.print("");
+                    Thread.sleep(10);
                 return responseFromServer;
             }
         };
@@ -89,6 +108,9 @@ public class LoginController implements Initializable {
             if (user == null) {
                 errorLB.setText("Username and/or password are incorrect");
                 errorLB.setVisible(true);
+
+                customProgressIndicator.stop();
+
             }
             else {
                 bundle.put("user",user);
@@ -116,6 +138,7 @@ public class LoginController implements Initializable {
         bundle = Bundle.getInstance();
         client = (HSTSClient)bundle.get("client");
         client.getHstsClientInterface().addGUIController(this);
+
         EventHandler<KeyEvent> enterLoginEvent = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {

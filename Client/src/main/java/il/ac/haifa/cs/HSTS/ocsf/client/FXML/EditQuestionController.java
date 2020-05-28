@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
@@ -11,6 +12,7 @@ import il.ac.haifa.cs.HSTS.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.server.Entities.Subject;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -90,6 +92,8 @@ public class EditQuestionController implements Initializable {
     @FXML
     private Button logoutButton;
 
+    private CustomProgressIndicator progressIndicator;
+
     @FXML
     void EditQuestion(ActionEvent event) throws InterruptedException {
     	// If button text is "Edit Question"
@@ -117,6 +121,7 @@ public class EditQuestionController implements Initializable {
             if (result.isPresent() && result.get() != ButtonType.OK)
                 initializeQuestionDetails();
             else {
+
                 // Input checking
                 if (questionTextField.getText().isEmpty())
                     inputError(questionTextField);
@@ -138,19 +143,35 @@ public class EditQuestionController implements Initializable {
                     question.setAnswer(3, answer3TextField.getText());
                     question.setAnswer(4, answer4TextField.getText());
 
+                    progressIndicator = new CustomProgressIndicator(anchorPane);
+                    progressIndicator.start();
+
                     responseFromServer = null;
-                    CommandInterface command = new QuestionUpdateCommand(question);
-                    client.getHstsClientInterface().sendCommandToServer(command);
-                    // Waiting for server confirmation
-                    while (responseFromServer == null) {
-                        System.out.print("");
-                    }
-                    question = (Question) responseFromServer.getReturnedObject();
-                    initializeQuestionDetails();
-                    anchorPane.setDisable(false);
-                    Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
-                    updateSuccessAlert.setHeaderText("The question was successfully changed");
-                    updateSuccessAlert.showAndWait();
+                    Task<Response> task = new Task<Response>() {
+                        @Override
+                        protected Response call() throws Exception {
+                            CommandInterface command = new QuestionUpdateCommand(question);
+                            client.getHstsClientInterface().sendCommandToServer(command);
+                            // Waiting for server confirmation
+                            while (responseFromServer == null) {
+                                Thread.sleep(10);
+                            }
+                            return responseFromServer;
+                        }
+                    };
+                    task.setOnSucceeded(e -> {
+                        progressIndicator.stop();
+                        question = (Question) responseFromServer.getReturnedObject();
+                        initializeQuestionDetails();
+                        anchorPane.setDisable(false);
+                        Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
+                        updateSuccessAlert.setHeaderText("The question was successfully changed");
+                        updateSuccessAlert.showAndWait();
+                    });
+                    new Thread(task).start();
+
+
+
                 }
                 else thereIsAnError = false;
             }
