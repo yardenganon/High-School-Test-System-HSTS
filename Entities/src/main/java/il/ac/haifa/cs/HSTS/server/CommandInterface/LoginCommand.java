@@ -1,6 +1,5 @@
 package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
-
 public class LoginCommand extends CommandInterface {
 
     private String password;
@@ -25,4 +24,5 @@ public class LoginCommand extends CommandInterface {
     public String getCommandName() {
         return this.getClass().getSimpleName();
     }
+
 }

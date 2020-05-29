@@ -116,7 +116,6 @@ public class EditQuestionController implements Initializable {
     	else {
             Alert updateQuestionAlert = new Alert(Alert.AlertType.CONFIRMATION);
             updateQuestionAlert.setHeaderText("Are you sure you want to update the question?");
-            anchorPane.setDisable(true);
             Optional<ButtonType> result = updateQuestionAlert.showAndWait();
             if (result.isPresent() && result.get() != ButtonType.OK)
                 initializeQuestionDetails();

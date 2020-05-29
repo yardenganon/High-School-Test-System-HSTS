@@ -16,15 +16,15 @@ public class CommandRouter {
         commandsMap = new HashMap<>();
     }
 
-    public void initRouter(List<ControllerInterface> controllerInterfaces){
-        commandsMap.put("LoginCommand", controllerInterfaces.get(0));
-        commandsMap.put("QuestionReadBySubjectCommand", controllerInterfaces.get(1));
-        commandsMap.put("QuestionUpdateCommand", controllerInterfaces.get(1));
-        commandsMap.put("QuestionReadAllCommand", controllerInterfaces.get(1));
-        commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllerInterfaces.get(2));
-        commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllerInterfaces.get(2));
-        commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllerInterfaces.get(2));
-        commandsMap.put(TestUpdateCommand.class.getSimpleName(), controllerInterfaces.get(2));
+    public void initRouter(List<ControllerInterface> controllers){
+        commandsMap.put("LoginCommand", controllers.get(0));
+        commandsMap.put("QuestionReadBySubjectCommand", controllers.get(1));
+        commandsMap.put("QuestionUpdateCommand", controllers.get(1));
+        commandsMap.put("QuestionReadAllCommand", controllers.get(1));
+        commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(TestUpdateCommand.class.getSimpleName(), controllers.get(2));
 
         System.out.println("Router initiated");
     }
