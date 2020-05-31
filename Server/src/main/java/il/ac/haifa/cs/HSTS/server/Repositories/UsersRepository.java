@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class UsersRepository {
 
@@ -40,9 +41,12 @@ public class UsersRepository {
                     builder.equal(root.get("username"),username),
                     builder.equal(root.get("password"),password));
             Query query = session.createQuery(criteriaQuery);
-            Object res = query.getResultList().get(0);
-            if (res != null)
-                resultUser = (User) query.getResultList().get(0);
+            List res = query.getResultList();
+            Object object = null;
+            if (res.size()>0) {
+                object = query.getResultList().get(0);
+                resultUser = (User) object;
+            }
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
@@ -74,6 +78,4 @@ public class UsersRepository {
         }
         return subjectList;
     }
-
-
 }

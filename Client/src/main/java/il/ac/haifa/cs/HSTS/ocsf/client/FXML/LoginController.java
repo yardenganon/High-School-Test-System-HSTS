@@ -91,7 +91,7 @@ public class LoginController implements Initializable {
                 CommandInterface command = new LoginCommand(username, password);
                 client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null)
-                    Thread.sleep(10);
+                    Thread.onSpinWait();
                 return responseFromServer;
             }
         };
