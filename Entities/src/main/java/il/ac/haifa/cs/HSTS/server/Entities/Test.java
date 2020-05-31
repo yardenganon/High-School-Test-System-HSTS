@@ -1,11 +1,11 @@
 package il.ac.haifa.cs.HSTS.server.Entities;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "tests")
@@ -14,12 +14,12 @@ public class Test implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "questions_tests",
             joinColumns = @JoinColumn(name = "test_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
-    List<Question> questionList;
+    Set<Question> questionList;
 
     @ElementCollection
     @CollectionTable(name = "pointsForQuestionMapping",
@@ -46,7 +46,7 @@ public class Test implements Serializable {
 
     public Test(Teacher writer, Subject subject) {
         this.readyTests = new ArrayList<ReadyTest>();
-        this.questionList = new ArrayList<Question>();
+        this.questionList = new HashSet<>();
         this.points = new HashMap<Question, Integer>(); // Mapping question to it's points
         this.writer = writer;
         writer.addTest(this);
@@ -98,11 +98,11 @@ public class Test implements Serializable {
         this.introduction = introduction;
     }
 
-    public List<Question> getQuestionList() {
+    public Set<Question> getQuestionList() {
         return questionList;
     }
 
-    public void setQuestionList(List<Question> questionList) {
+    public void setQuestionList(Set<Question> questionList) {
         this.questionList = questionList;
     }
 
