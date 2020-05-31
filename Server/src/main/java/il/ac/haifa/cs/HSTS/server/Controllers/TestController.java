@@ -8,9 +8,11 @@ import java.util.Date;
 public class TestController implements ControllerInterface {
 
     final private TestsRepository testsRepository;
+    final private AnswerableTestFactory answerableTestFactory;
 
     public TestController() {
         this.testsRepository = new TestsRepository();
+        this.answerableTestFactory = new AnswerableTestFactory();
     }
 
     @Override

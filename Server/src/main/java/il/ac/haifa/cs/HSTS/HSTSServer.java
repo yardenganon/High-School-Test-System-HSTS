@@ -9,6 +9,7 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.Controllers.*;
 import il.ac.haifa.cs.HSTS.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.server.ConnectionToClient;
+import il.ac.haifa.cs.HSTS.server.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.Services.CommandRouter;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 
@@ -16,14 +17,19 @@ public class HSTSServer extends AbstractServer {
 
     List<ControllerInterface> controllers;
     CommandRouter commandRouter;
+    Bundle bundle;
 
     public HSTSServer(int port) {
         super(port);
         System.out.println("Server initiated");
+        bundle = Bundle.getInstance();
+        bundle.put("server",this);
         controllers = new ArrayList<>();
         controllersInit();
         commandRouter = new CommandRouter();
         commandRouter.initRouter(this.controllers);
+
+
     }
     @Override
     protected void handleMessageFromClient(Object message, ConnectionToClient client) {
