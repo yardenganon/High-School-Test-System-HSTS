@@ -33,10 +33,4 @@ public class UserController implements ControllerInterface {
         System.out.println("Return respond");
         return responseMessage;
     }
-
-    @Override
-    public String getControllerName() {
-        return "UserLoginController";
-    }
-
 }

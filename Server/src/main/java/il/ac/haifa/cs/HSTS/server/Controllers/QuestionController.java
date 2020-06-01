@@ -49,9 +49,4 @@ public class QuestionController implements ControllerInterface {
         responseMessage.setDateHandled(new Date());
         return responseMessage;
     }
-
-    @Override
-    public String getControllerName() {
-        return "QuestionReadAllController";
-    }
 }

@@ -42,9 +42,4 @@ public class TestController implements ControllerInterface {
         System.out.print("Command handled successfully ");
         return responseMessage;
     }
-
-    @Override
-    public String getControllerName() {
-        return "TestController";
-    }
 }
