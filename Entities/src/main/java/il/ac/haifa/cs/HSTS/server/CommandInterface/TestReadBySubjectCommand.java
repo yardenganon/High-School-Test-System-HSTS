@@ -12,9 +12,4 @@ public class TestReadBySubjectCommand extends CommandInterface {
     public Subject getSubject() {
         return subject;
     }
-
-    @Override
-    public String getCommandName() {
-        return this.getClass().getSimpleName();
-    }
 }

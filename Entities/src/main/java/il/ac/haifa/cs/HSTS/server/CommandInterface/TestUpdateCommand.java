@@ -14,10 +14,4 @@ public class TestUpdateCommand extends CommandInterface{
     public Test getTestToUpdate() {
         return testToUpdate;
     }
-
-    @Override
-    public String getCommandName() {
-        return this.getClass().getSimpleName();
-    }
-
 }

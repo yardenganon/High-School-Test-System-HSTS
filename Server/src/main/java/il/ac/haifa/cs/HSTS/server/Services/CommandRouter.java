@@ -17,7 +17,7 @@ public class CommandRouter {
     }
 
     public void initRouter(List<ControllerInterface> controllers){
-        commandsMap.put("LoginCommand", controllers.get(0));
+        commandsMap.put(LoginCommand.class.getSimpleName(), controllers.get(0));
         commandsMap.put("QuestionReadBySubjectCommand", controllers.get(1));
         commandsMap.put("QuestionUpdateCommand", controllers.get(1));
         commandsMap.put("QuestionReadAllCommand", controllers.get(1));

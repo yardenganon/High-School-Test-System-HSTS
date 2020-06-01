@@ -19,10 +19,4 @@ public class LoginCommand extends CommandInterface {
     public String getUserName() {
         return userName;
     }
-
-    @Override
-    public String getCommandName() {
-        return this.getClass().getSimpleName();
-    }
-
 }
