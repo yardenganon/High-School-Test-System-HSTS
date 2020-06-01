@@ -14,6 +14,7 @@ public class ReadyTest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private Boolean isManual;
     private Boolean isActive;
     private String code;
 
@@ -51,6 +52,7 @@ public class ReadyTest implements Serializable {
         this.test = test;
         this.code = code;
         this.course = course;
+        this.isManual = false;
         this.isActive = false;
         this.modifiedTime = test.getTime();
         this.modifiedTime = test.getTime();
@@ -66,6 +68,14 @@ public class ReadyTest implements Serializable {
         course.addReadyTest(this);
         test.addReadyTest(this);
         modifierWriter.addReadyTest(this);
+    }
+
+    public Boolean getManual() {
+        return isManual;
+    }
+
+    public void setManual(Boolean manual) {
+        isManual = manual;
     }
 
     public void addTimeExtensionRequest(TimeExtensionRequest request) {
