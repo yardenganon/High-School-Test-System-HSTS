@@ -14,6 +14,7 @@ public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private int idNumber;
     private String username;
     private String password;
     private String email;
@@ -25,6 +26,7 @@ public abstract class User implements Serializable {
 
     public User(String username, String password, String email, String first_name, String last_name, String gender) {
         this.username = username;
+        this.idNumber = 123456789;
         this.password = password;
         this.email = email;
         this.first_name = first_name;
@@ -90,6 +92,14 @@ public abstract class User implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public int getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
     }
 
     @Override

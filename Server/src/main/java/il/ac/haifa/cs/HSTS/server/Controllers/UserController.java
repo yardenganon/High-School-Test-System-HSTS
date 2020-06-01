@@ -28,7 +28,7 @@ public class UserController implements ControllerInterface {
         Response responseMessage = new Response();
         responseMessage.setDateHandled(new Date());
         responseMessage.setReturnedObject(user);
-        responseMessage.setRespondName("Login");
+        responseMessage.setRespondName(command.getCommandName());
         responseMessage.setStatus("Success");
         System.out.println("Command handled successfully");
         System.out.println("Return respond");
