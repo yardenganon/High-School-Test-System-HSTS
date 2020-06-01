@@ -10,9 +10,4 @@ public class TestReadByIdCommand extends CommandInterface {
     public int getId() {
         return id;
     }
-
-    @Override
-    public String getCommandName(){
-        return this.getClass().getSimpleName();
-    }
 }

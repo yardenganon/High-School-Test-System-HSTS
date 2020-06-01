@@ -108,11 +108,10 @@ public class LoginController implements Initializable {
                 errorLB.setVisible(true);
 
                 customProgressIndicator.stop();
-
             }
             else {
                 bundle.put("user",user);
-                System.out.println("User: "+user.getUsername() + " is logged in");
+                System.out.println("User: "+user.getUsername() + "is logged in");
                 Events.navigateMenuEvent(loginBtn);
             }
             responseFromServer = null;

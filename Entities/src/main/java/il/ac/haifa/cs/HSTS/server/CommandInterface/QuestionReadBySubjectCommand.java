@@ -15,9 +15,4 @@ public class QuestionReadBySubjectCommand extends CommandInterface {
     public List<Subject> getSubjectsList() {
         return subjectsList;
     }
-
-    @Override
-    public String getCommandName() {
-        return this.getClass().getSimpleName();
-    }
 }

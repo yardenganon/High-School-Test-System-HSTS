@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.server.Controllers;
 
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 import java.util.Date;
 
@@ -17,9 +18,10 @@ public class TestController implements ControllerInterface {
 
     @Override
     public Response executeCommand(CommandInterface command) {
-        String commandClass = command.getCommandName();
+        String commandName = command.getCommandName();
+        Response responseMessage = new Response(commandName);
         Object returnedObject = null;
-        switch (commandClass) {
+        switch (commandName) {
             case ("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;
             case ("TestReadByIdCommand") :
@@ -34,17 +36,10 @@ public class TestController implements ControllerInterface {
             default:
                 System.out.println("Error - Command not found in controller");
         }
-        Response responseMessage = new Response();
         responseMessage.setReturnedObject(returnedObject);
         responseMessage.setDateHandled(new Date());
-        responseMessage.setStatus("Success");
-        responseMessage.setRespondName(commandClass);
+        responseMessage.setStatus(Status.Success);
         System.out.print("Command handled successfully ");
         return responseMessage;
-    }
-
-    @Override
-    public String getControllerName() {
-        return "TestController";
     }
 }

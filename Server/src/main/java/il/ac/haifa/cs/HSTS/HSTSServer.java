@@ -12,6 +12,7 @@ import il.ac.haifa.cs.HSTS.server.ConnectionToClient;
 import il.ac.haifa.cs.HSTS.server.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.Services.CommandRouter;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 public class HSTSServer extends AbstractServer {
 
@@ -44,9 +45,7 @@ public class HSTSServer extends AbstractServer {
                 System.out.println("got back from DB");
                 System.out.println(responseMessage.getReturnedObjectName());
             } catch (Exception e) {
-                responseMessage = new Response();
-                responseMessage.setDateHandled(new Date());
-                responseMessage.setStatus("Controller not found");
+                responseMessage = new Response(Status.ServerException);
                 e.printStackTrace();
             }
             try {

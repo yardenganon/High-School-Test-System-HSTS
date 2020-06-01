@@ -13,10 +13,4 @@ public class QuestionUpdateCommand extends CommandInterface{
     public Question getQuestionToUpdate() {
         return questionToUpdate;
     }
-
-    @Override
-    public String getCommandName() {
-        return this.getClass().getSimpleName();
-    }
-
 }
