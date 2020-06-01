@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.server.Controllers;
 
 import il.ac.haifa.cs.HSTS.HSTSServer;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
 import il.ac.haifa.cs.HSTS.server.Entities.ReadyTest;
 import il.ac.haifa.cs.HSTS.server.Entities.Student;
