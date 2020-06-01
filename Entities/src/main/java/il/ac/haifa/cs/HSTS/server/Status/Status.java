@@ -4,5 +4,8 @@ public enum Status {
     OK,
     InvalidCode,
     NotActive,
-    PermissionDenied
+    PermissionDenied,
+    OpenRequest,
+    Success,
+    ServerException
 }

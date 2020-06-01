@@ -5,5 +5,4 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 
 public interface ControllerInterface {
     Response executeCommand(CommandInterface command);
-    String getControllerName();
 }

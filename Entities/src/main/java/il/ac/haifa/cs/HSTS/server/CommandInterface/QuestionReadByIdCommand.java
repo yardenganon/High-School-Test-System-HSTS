@@ -11,8 +11,4 @@ public class QuestionReadByIdCommand extends CommandInterface{
     public int getId() {
         return id;
     }
-
-    public String getCommandName(){
-        return this.getClass().getSimpleName();
-    }
 }

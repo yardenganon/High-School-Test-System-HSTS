@@ -19,7 +19,8 @@ public class QuestionsRepository {
     private static Session session;
 
     // Create
-    public void pushQuestion(Question question) {
+    public Question pushQuestion(Question question) {
+        Question returendQuestion;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
@@ -28,12 +29,14 @@ public class QuestionsRepository {
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
+            returendQuestion = getQuestionById(question.getId());
             SessionFactoryGlobal.closeSession(session);
         }
+        return returendQuestion;
     }
 
     public Question updateQuestion(Question question) {
-        Question question1;
+        Question returendQuestion;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
@@ -42,12 +45,10 @@ public class QuestionsRepository {
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
-            question1 = getQuestionById(question.getId());
-            System.out.println(question1);
+            returendQuestion = getQuestionById(question.getId());
             SessionFactoryGlobal.closeSession(session);
         }
-
-        return question1;
+        return returendQuestion;
     }
 
      public List<Question> getQuestionsBySubject(List<Subject> subjects) {

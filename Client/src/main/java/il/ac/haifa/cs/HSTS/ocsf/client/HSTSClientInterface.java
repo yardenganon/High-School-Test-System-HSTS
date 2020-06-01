@@ -1,8 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
 
 
@@ -62,23 +61,23 @@ public class HSTSClientInterface {
         System.out.println("Command received from server : " + serverResponse.getRespondName());
         System.out.println("Command returned object : " + (serverResponse.getReturnedObject() != null ? serverResponse.getReturnedObject() : "null"));
 
-        if (serverResponse.getRespondName().equals("Login")) {
+        if (serverResponse.getRespondName().equals(LoginCommand.class.getSimpleName())){
             ((LoginController) guiControllers.get(LoginController.class.getSimpleName()))
                     .receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals("ReadBySubject")) {
+        if (serverResponse.getRespondName().equals(QuestionReadBySubjectCommand.class.getSimpleName())) {
             // Getting questions asked for
             System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals("ReadAllQuestions")) {
+        if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())) {
             // Getting questions asked for
             System.out.println("All question received: " + serverResponse.getReturnedObject());
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals("UpdateQuestion"))
+        if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName()))
             ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
     }

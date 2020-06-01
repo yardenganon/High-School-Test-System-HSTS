@@ -1,28 +1,48 @@
 package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
+import il.ac.haifa.cs.HSTS.server.Status.Status;
+import net.bytebuddy.dynamic.scaffold.TypeInitializer;
+
+import javax.lang.model.type.NullType;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Response implements Serializable {
-    protected String status;
+    protected Status status;
     protected Date dateCreated;
     protected Date dateHandled;
     protected Object returnedObject;
     protected String respondName;
 
-    public Response(){
-        status = "Open";
+    public Response(Status status){
+        this.status = status;
         dateCreated = new Date();
-        dateHandled = null;
-        returnedObject = null;
-        respondName = "";
+        dateHandled = new Date();
+        this.returnedObject = null;
+        this.respondName = "";
     }
 
-    public String getStatus() {
+    public Response(String respondName){
+        status = Status.OpenRequest;
+        dateCreated = new Date();
+        dateHandled = null;
+        this.returnedObject = null;
+        this.respondName = respondName;
+    }
+
+    public Response(Object returnedObject, String respondName){
+        status = Status.OpenRequest;
+        dateCreated = new Date();
+        dateHandled = null;
+        this.returnedObject = returnedObject;
+        this.respondName = respondName;
+    }
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

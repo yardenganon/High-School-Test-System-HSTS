@@ -5,6 +5,7 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Repositories.UsersRepository;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 import java.util.Date;
 
@@ -25,19 +26,11 @@ public class UserController implements ControllerInterface {
 
         User user = usersRepository.login(userName, password);
 
-        Response responseMessage = new Response();
+        Response responseMessage = new Response(user, command.getCommandName());
         responseMessage.setDateHandled(new Date());
-        responseMessage.setReturnedObject(user);
-        responseMessage.setRespondName(command.getCommandName());
-        responseMessage.setStatus("Success");
+        responseMessage.setStatus(Status.Success);
         System.out.println("Command handled successfully");
         System.out.println("Return respond");
         return responseMessage;
     }
-
-    @Override
-    public String getControllerName() {
-        return "UserLoginController";
-    }
-
 }
