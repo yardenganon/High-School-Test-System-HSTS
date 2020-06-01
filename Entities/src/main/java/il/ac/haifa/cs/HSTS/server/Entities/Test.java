@@ -44,6 +44,8 @@ public class Test implements Serializable {
     Integer time;
     String commentForTeachers;
 
+    public Test(){}
+
     public Test(Teacher writer, Subject subject) {
         this.readyTests = new ArrayList<ReadyTest>();
         this.questionList = new HashSet<>();
