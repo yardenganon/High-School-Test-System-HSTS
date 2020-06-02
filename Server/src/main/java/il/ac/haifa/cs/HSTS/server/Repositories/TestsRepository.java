@@ -1,12 +1,11 @@
 package il.ac.haifa.cs.HSTS.server.Repositories;
 
-import il.ac.haifa.cs.HSTS.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Entities.Test;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -35,20 +34,16 @@ public class TestsRepository {
         return updatedTest;
     }
 
-    public List<Test> getTestsBySubject(Subject subject) {
-        List<Test> testListFromSubject = new ArrayList<Test>();
+    public List<TestFacade> getTestsBySubject(String subject) {
+        List<TestFacade> results = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Ask for data here */
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Test> criteriaQuery = builder.createQuery(Test.class);
-            Root<Test> root = criteriaQuery.from(Test.class);
-
-            criteriaQuery.select(root).where(
-                    builder.equal(root.get("subject"), subject));
-            Query query = session.createQuery(criteriaQuery);
-            testListFromSubject.addAll(query.getResultList());
+            Query<TestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.TestFacade(m.id,m.writer.username,m.subject.subjectName,m.dateCreated,m.questionList.size)"
+                    + " from il.ac.haifa.cs.HSTS.server.Entities.Test m where m.subject.subjectName= :sub");
+            query.setParameter("sub",subject);
+            results = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
@@ -56,7 +51,7 @@ public class TestsRepository {
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
-        return testListFromSubject;
+        return results;
     }
 
     public Test getTestById(int id) {

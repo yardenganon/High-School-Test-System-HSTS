@@ -29,7 +29,7 @@ public class TestController implements ControllerInterface {
                         ((TestReadByIdCommand)command).getId()); break;
             case ("TestReadBySubjectCommand") :
                 returnedObject = testsRepository.getTestsBySubject(
-                        ((TestReadBySubjectCommand) command).getSubject()); break;
+                        ((TestReadBySubjectCommand) command).getSubjectName()); break;
             case ("TestUpdateCommand") :
                 returnedObject = testsRepository.updateTest(
                         ((TestUpdateCommand)command).getTestToUpdate()); break;

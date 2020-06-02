@@ -21,7 +21,7 @@ public class Test implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     Set<Question> questionList;
 
-    @ElementCollection
+    @ElementCollection(fetch= FetchType.EAGER)
     @CollectionTable(name = "pointsForQuestionMapping",
             joinColumns = {@JoinColumn(name = "test_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "question")
@@ -39,6 +39,7 @@ public class Test implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     List<ReadyTest> readyTests;
 
+    Date dateCreated;
     String introduction;
     String epilogue;
     Integer time;
@@ -54,6 +55,7 @@ public class Test implements Serializable {
         writer.addTest(this);
         this.subject = subject;
         subject.addTest(this);
+        this.dateCreated = new Date();
     }
 
     public void addReadyTest(ReadyTest readyTest) {
@@ -132,5 +134,21 @@ public class Test implements Serializable {
 
     public void setCommentForTeachers(String commentForTeachers) {
         this.commentForTeachers = commentForTeachers;
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "id=" + id +
+                ", questionList=" + questionList +
+                ", points=" + points +
+                ", writer=" + writer +
+                ", subject=" + subject +
+                ", dateCreated=" + dateCreated +
+                ", introduction='" + introduction + '\'' +
+                ", epilogue='" + epilogue + '\'' +
+                ", time=" + time +
+                ", commentForTeachers='" + commentForTeachers + '\'' +
+                '}';
     }
 }
