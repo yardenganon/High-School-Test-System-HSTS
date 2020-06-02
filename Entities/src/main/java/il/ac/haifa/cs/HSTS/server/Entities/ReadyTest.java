@@ -48,6 +48,8 @@ public class ReadyTest implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     List<TimeExtensionRequest> timeExtensionRequests;
 
+    public ReadyTest(){}
+
     public ReadyTest(Test test, String code, Course course, Teacher modifierWriter) {
         this.test = test;
         this.code = code;
