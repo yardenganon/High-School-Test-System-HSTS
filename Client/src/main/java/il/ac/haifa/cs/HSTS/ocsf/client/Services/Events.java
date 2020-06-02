@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -58,5 +57,17 @@ public class Events {
         Stage stage = (Stage) button.getScene().getWindow();
         stage.setScene(scene);
         stage.setTitle("Menu");
+    }
+
+    public static void navigateCreateQuestionEvent(Button button){
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("CreateQuestion"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Create Question");
     }
 }
