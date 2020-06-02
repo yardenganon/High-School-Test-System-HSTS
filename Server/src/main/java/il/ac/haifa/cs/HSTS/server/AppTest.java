@@ -1,14 +1,11 @@
 package il.ac.haifa.cs.HSTS.server;
 
-import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadByIdCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
-import il.ac.haifa.cs.HSTS.server.Repositories.QuestionsRepository;
+import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import il.ac.haifa.cs.HSTS.server.AppResult;
-import org.hibernate.query.Query;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -25,14 +22,11 @@ public class AppTest {
 
             Test test;
             TestsRepository testsRepository = new TestsRepository();
-            test = testsRepository.getTestById(1);
-            System.out.println(test.getQuestionList());
+//            test = testsRepository.getTestById(1);
+//            System.out.println(test.getQuestionList());
 
-            Query<AppResult> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.AppResult(m.id,m.writer.username,m.subject.subjectName)"
-                    + " from il.ac.haifa.cs.HSTS.server.Entities.Test m");
-            List<AppResult> results = query.list();
-            AppResult result = results.get(0);
-            System.out.println(result);
+            List<TestFacade> results = testsRepository.getTestsBySubject("Science");
+            System.out.println(results);
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
