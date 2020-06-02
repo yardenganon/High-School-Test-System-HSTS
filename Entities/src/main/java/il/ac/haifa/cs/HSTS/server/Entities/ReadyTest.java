@@ -154,4 +154,12 @@ public class ReadyTest implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
 }

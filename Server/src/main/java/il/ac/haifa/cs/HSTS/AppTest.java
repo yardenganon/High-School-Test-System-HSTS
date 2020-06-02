@@ -1,6 +1,7 @@
-package il.ac.haifa.cs.HSTS.server;
+package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
@@ -20,12 +21,12 @@ public class AppTest {
             SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Test test;
+            ReadyTest readyTest;
             TestsRepository testsRepository = new TestsRepository();
 //            test = testsRepository.getTestById(1);
 //            System.out.println(test.getQuestionList());
 
-            List<TestFacade> results = testsRepository.getTestsBySubject("Science");
+            List<ReadyTestFacade> results = testsRepository.getReadyTestsByTeacher(22);
             System.out.println(results);
 
             SessionFactoryGlobal.closeTransaction(session);
