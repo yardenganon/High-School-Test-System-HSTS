@@ -1,15 +1,13 @@
 package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
-import il.ac.haifa.cs.HSTS.server.Entities.Subject;
-
 public class TestReadBySubjectCommand extends CommandInterface {
-    Subject subject;
+    String subjectName;
 
-    public TestReadBySubjectCommand(Subject subject){
-        this.subject = subject;
+    public TestReadBySubjectCommand(String subject){
+        this.subjectName = subject;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public String getSubjectName() {
+        return subjectName;
     }
 }

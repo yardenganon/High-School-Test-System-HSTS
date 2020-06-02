@@ -26,6 +26,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>org.hibernate.hql</groupId>
+                <artifactId>hibernate-hql-parser</artifactId>
+                <version>1.5.0.Final</version>
+            </dependency>
+            <dependency>
                 <groupId>il.ac.haifa.cs.HSTS</groupId>
                 <artifactId>Entities</artifactId>
                 <version>${project.version}</version>

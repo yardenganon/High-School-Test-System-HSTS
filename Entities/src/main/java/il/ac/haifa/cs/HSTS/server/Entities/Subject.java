@@ -23,7 +23,7 @@ public class Subject implements Serializable {
     List<Course> courses;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Test> tests;
-    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Teacher> teachers;
 
 
@@ -112,8 +112,6 @@ public class Subject implements Serializable {
                 "id=" + id +
                 ", numberOfQuestions=" + numberOfQuestions +
                 ", subjectName='" + subjectName + '\'' +
-                ", questions=" + questions +
-
                 '}';
     }
 }

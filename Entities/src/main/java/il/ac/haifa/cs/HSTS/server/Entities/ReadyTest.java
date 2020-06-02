@@ -2,10 +2,7 @@ package il.ac.haifa.cs.HSTS.server.Entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "readyTest")
@@ -14,6 +11,7 @@ public class ReadyTest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private Date dateCreated;
     private Boolean isManual;
     private Boolean isActive;
     private String code;
@@ -58,6 +56,7 @@ public class ReadyTest implements Serializable {
         this.modifiedTime = test.getTime();
         this.modifiedPoints = new HashMap<>();
         this.modifierWriter = modifierWriter;
+        this.dateCreated = new Date();
         for (Question question : test.getQuestionList())
             modifiedPoints.put(question, test.getPoints().get(question));
 
