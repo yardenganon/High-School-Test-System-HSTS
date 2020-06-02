@@ -128,7 +128,6 @@ public class QuestionsController implements Initializable {
         Events.navigateCreateQuestionEvent(addQuestionButton);
     }
 
-
     @FXML
     void initializeQuestionsTable() {
         refreshList();

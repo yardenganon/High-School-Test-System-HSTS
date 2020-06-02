@@ -235,7 +235,7 @@ public class CreateQuestionController implements Initializable {
                 subjectComboBox.getItems().add(subject.getSubjectName());
 
             authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
-            question.setWriter(teacher);
+            //question.setWriter(teacher);
         }
 
         correctAnswerComboBox.getItems().clear();
