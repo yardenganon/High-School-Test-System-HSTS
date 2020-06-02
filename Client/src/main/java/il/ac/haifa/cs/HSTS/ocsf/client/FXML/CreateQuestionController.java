@@ -5,7 +5,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionPushCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.server.Entities.Subject;
@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class CreateQuestionController implements Initializable {
     private static boolean thereIsAnError = false;
     Bundle bundle;
     private HSTSClient client;
+    private Teacher teacher;
 
 
     @FXML
@@ -115,24 +117,11 @@ public class CreateQuestionController implements Initializable {
             if (answer4TextField.getText().isEmpty())
                 inputErrorTextField(answer4TextField);
 
-            // Input checking of combobox
-            if (correctAnswerComboBox.getSelectionModel().isEmpty() && subjectComboBox.getSelectionModel().isEmpty())
-                inputErrorComboBox(("Correct Answer and subject"));
-            else if (correctAnswerComboBox.getSelectionModel().isEmpty())
-                inputErrorComboBox(("Correct Answer"));
-            else if (subjectComboBox.getSelectionModel().isEmpty())
-                inputErrorComboBox(("subject"));
-
+            // If there are no input errors, request for creating question will be sent to the server
             if (!thereIsAnError) {
-                // If there are no input errors, request for creating question will be sent to the server
-                question.setQuestion(questionTextField.getText());
-                question.setAnswer(1, answer1TextField.getText());
-                question.setAnswer(2, answer2TextField.getText());
-                question.setAnswer(3, answer3TextField.getText());
-                question.setAnswer(4, answer4TextField.getText());
-                question.setCorrectAnswer(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
 
-                // Add the selected subject to question details
+                // Finding the selected subject for sending the object while creating the question
+                Subject selectedSubject = null;
                 if (user instanceof Teacher) {
                     Teacher teacher = ((Teacher) user);
                     List<Subject> listOfSubject = teacher.getSubjects();
@@ -140,11 +129,24 @@ public class CreateQuestionController implements Initializable {
                     {
                         if (subject.getSubjectName() == subjectComboBox.getSelectionModel().getSelectedItem())
                         {
-                            question.setSubject(subject);
+                            selectedSubject = subject;
                             break;
                         }
                     }
                 }
+
+                System.out.println(questionTextField.getText());
+                System.out.println(answer1TextField.getText());
+                System.out.println(answer2TextField.getText());
+                System.out.println(answer3TextField.getText());
+                System.out.println(answer4TextField.getText());
+                System.out.println(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
+                System.out.println(teacher.getFirst_name());
+                System.out.println(selectedSubject.getSubjectName());
+
+                // Creating the question
+                question = new Question(questionTextField.getText(), answer1TextField.getText(), answer2TextField.getText(), answer3TextField.getText(), answer4TextField.getText(),
+                Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()), teacher, selectedSubject);
 
                 progressIndicator = new CustomProgressIndicator(anchorPane);
                 progressIndicator.start();
@@ -153,7 +155,7 @@ public class CreateQuestionController implements Initializable {
                 Task<Response> task = new Task<Response>() {
                     @Override
                     protected Response call() throws Exception {
-                        CommandInterface command = new QuestionUpdateCommand(question);
+                        CommandInterface command = new QuestionPushCommand(question);
                         client.getHstsClientInterface().sendCommandToServer(command);
                         // Waiting for server confirmation
                         while (responseFromServer == null) {
@@ -229,13 +231,12 @@ public class CreateQuestionController implements Initializable {
     public void initializeQuestionDetails()
     {
         if (user instanceof Teacher) {
-            Teacher teacher = ((Teacher) user);
+            teacher = ((Teacher) user);
             subjectComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectComboBox.getItems().add(subject.getSubjectName());
 
             authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
-            //question.setWriter(teacher);
         }
 
         correctAnswerComboBox.getItems().clear();
@@ -248,17 +249,10 @@ public class CreateQuestionController implements Initializable {
         helloLabel.setText("Hello " + user.getFirst_name());
     }
 
-    public void inputErrorComboBox(String emptyFields) {
-        Alert inputErrorAlert = new Alert(Alert.AlertType.ERROR);
-        inputErrorAlert.setHeaderText("Input Error");
-        inputErrorAlert.setContentText("In " + emptyFields +  " No answer was selected");
-        Optional<ButtonType> result = inputErrorAlert.showAndWait();
-    }
-
     public void inputErrorTextField(TextField textField)
     {
         textField.setText("Invalid input");
-        textField.setStyle("-fx-border-color: #ff0000;");
+        textField.setStyle("-fx-text-inner-color: #ff0000;");
         thereIsAnError = true;
     }
 
@@ -271,44 +265,44 @@ public class CreateQuestionController implements Initializable {
         answer2TextField.setText("");
         answer3TextField.setText("");
         answer4TextField.setText("");
-        correctAnswerComboBox.getSelectionModel().clearSelection();
-        subjectComboBox.getSelectionModel().clearSelection();
+        correctAnswerComboBox.getSelectionModel().selectFirst();
+        subjectComboBox.getSelectionModel().selectFirst();
+    }
+
+    public void ResetField(TextField textField)
+    {
+        textField.setText("");
+        textField.setStyle("-fx-text-inner-color: #000000;");
     }
 
     public void ResetRedColor()
     {
-        questionTextField.setStyle("-fx-border-color: #000000;");
-        answer1TextField.setStyle("-fx-border-color: #000000;");
-        answer2TextField.setStyle("-fx-border-color: #000000;");
-        answer3TextField.setStyle("-fx-border-color: #000000;");
-        answer4TextField.setStyle("-fx-border-color: #000000;");
-        correctAnswerComboBox.setStyle("-fx-border-color: #000000;");
+        questionTextField.setStyle("-fx-text-inner-color: #000000;");
+        answer1TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer2TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer3TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer4TextField.setStyle("-fx-text-inner-color: #000000;");
     }
 
-
-    // This events for return textfield color to black
-    @FXML
-    void writeAnswer1(ActionEvent event) {
-        ResetRedColor();
+    // That event sets textfield font color to black and remove the text only if he has an input error
+    public void questionOnMouseClicked(MouseEvent mouseEvent) {
+        if (questionTextField.getText().equals("Invalid input"))
+            ResetField(questionTextField);
     }
-
-    @FXML
-    void writeAnswer2(ActionEvent event) {
-        ResetRedColor();
+    public void answer1OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer1TextField.getText().equals("Invalid input"))
+            ResetField(answer1TextField);
     }
-
-    @FXML
-    void writeAnswer3(ActionEvent event) {
-        ResetRedColor();
+    public void answer2OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer2TextField.getText().equals("Invalid input"))
+            ResetField(answer2TextField);
     }
-
-    @FXML
-    void writeAnswer4(ActionEvent event) {
-        ResetRedColor();
+    public void answer3OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer3TextField.getText().equals("Invalid input"))
+            ResetField(answer3TextField);
     }
-
-    @FXML
-    void writeQuestion(ActionEvent event) {
-        ResetRedColor();
+    public void answer4OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer4TextField.getText().equals("Invalid input"))
+            ResetField(answer4TextField);
     }
 }
