@@ -8,22 +8,25 @@ public class TestFacade {
     String subject;
     Date dateCreated;
     int numberOfQuestions;
-    public TestFacade(int id, String teacherWriter, String subject, Date dateCreated, int numberOfQuestions) {
+    int time;
+    public TestFacade(int id, String teacherWriter, String subject, Date dateCreated, int numberOfQuestions, int time) {
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.subject = subject;
         this.dateCreated = dateCreated;
         this.numberOfQuestions = numberOfQuestions;
+        this.time = time;
     }
 
     @Override
     public String toString() {
-        return "AppResult{" +
+        return "TestFacade{" +
                 "id=" + id +
                 ", teacherWriter='" + teacherWriter + '\'' +
                 ", subject='" + subject + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", numberOfQuestions=" + numberOfQuestions +
+                ", time=" + time +
                 '}';
     }
 }

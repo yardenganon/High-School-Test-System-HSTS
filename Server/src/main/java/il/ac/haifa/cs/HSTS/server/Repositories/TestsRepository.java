@@ -40,7 +40,7 @@ public class TestsRepository {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Ask for data here */
-            Query<TestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.TestFacade(m.id,m.writer.username,m.subject.subjectName,m.dateCreated,m.questionList.size)"
+            Query<TestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.TestFacade(m.id,m.writer.username,m.subject.subjectName,m.dateCreated,m.questionList.size,m.time)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.Test m where m.subject.subjectName= :sub");
             query.setParameter("sub",subject);
             results = query.list();
