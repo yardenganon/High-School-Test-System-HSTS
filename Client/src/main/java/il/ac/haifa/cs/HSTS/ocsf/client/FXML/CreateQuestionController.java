@@ -40,6 +40,9 @@ public class CreateQuestionController implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private AnchorPane anchorPane2;
+
+    @FXML
     private TextField questionTextField;
 
     @FXML
@@ -148,7 +151,7 @@ public class CreateQuestionController implements Initializable {
                 question = new Question(questionTextField.getText(), answer1TextField.getText(), answer2TextField.getText(), answer3TextField.getText(), answer4TextField.getText(),
                 Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()), teacher, selectedSubject);
 
-                progressIndicator = new CustomProgressIndicator(anchorPane);
+                progressIndicator = new CustomProgressIndicator(anchorPane2);
                 progressIndicator.start();
 
                 responseFromServer = null;
@@ -159,12 +162,13 @@ public class CreateQuestionController implements Initializable {
                         client.getHstsClientInterface().sendCommandToServer(command);
                         // Waiting for server confirmation
                         while (responseFromServer == null) {
-                            Thread.sleep(10);
+                            Thread.onSpinWait();
                         }
                         return responseFromServer;
                     }
                 };
                 task.setOnSucceeded(e -> {
+                    responseFromServer = task.getValue();
                     progressIndicator.stop();
                     question = (Question) responseFromServer.getReturnedObject();
                     initializeQuestionDetails();

@@ -19,6 +19,7 @@ public class CommandRouter {
         commandsMap.put(QuestionReadBySubjectCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(QuestionUpdateCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(QuestionReadAllCommand.class.getSimpleName(), controllers.get(1));
+        commandsMap.put(QuestionPushCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
@@ -30,11 +31,15 @@ public class CommandRouter {
 
     public Response handleRequest(CommandInterface commandFromClient){
         System.out.println("In handleRequest");
-        Response responseMessage;
+        Response responseMessage = null;
         String commandName = commandFromClient.getCommandName();
         System.out.println(commandName);
-        ControllerInterface controllerInterface = commandsMap.get(commandName);
-        responseMessage = controllerInterface.executeCommand(commandFromClient);
+        try {
+            ControllerInterface controllerInterface = commandsMap.get(commandName);
+            responseMessage = controllerInterface.executeCommand(commandFromClient);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         return responseMessage;
     }
 }

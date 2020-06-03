@@ -20,6 +20,7 @@ public class QuestionController implements ControllerInterface {
     @Override
     public Response executeCommand(CommandInterface command) {
         String commandName = command.getCommandName();
+        System.out.println(commandName);
         Response responseMessage = new Response(commandName);
         Object returnedObject = null;
         switch (commandName) {

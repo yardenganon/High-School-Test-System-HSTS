@@ -87,6 +87,9 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName()))
             ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(QuestionPushCommand.class.getSimpleName()))
+            ((CreateQuestionController) guiControllers.get(CreateQuestionController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
     }
 
     public void closeConnection() {
