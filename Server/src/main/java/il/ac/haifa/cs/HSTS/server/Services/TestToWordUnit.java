@@ -59,7 +59,7 @@ public class TestToWordUnit {
     public static void main(String[] args){
         Subject sub = new Subject("Football");
         Teacher fl = new Teacher("Frank_Lampard","1234","fl@chelsea.com","Frank","Lampard","Male");
-        Course course = new Course(sub,fl);
+        Course course = new Course("Football" ,sub,fl);
         ReadyTest r = new ReadyTest(new Test(fl,sub),"abcd",course,fl);
 
         Student st = new Student("Tami_ab","1234","tamiAb@chelsea.com","Tami","Abraham","male");

@@ -30,12 +30,12 @@ public class Course implements Serializable {
     List<ReadyTest> readyTests;
 
     public Course () {}
-    public Course(Subject subject, Teacher teacher) {
+    public Course(String name, Subject subject, Teacher teacher) {
         setSubject(subject);
         setTeacher(teacher);
+        this.courseName = name;
         this.students = new ArrayList<Student>();
         this.readyTests = new ArrayList<ReadyTest>();
-        this.courseName = "Algo";
     }
 
     public void addReadyTest(ReadyTest readyTest) {this.readyTests.add(readyTest);}
