@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.HSTS.server.Repositories;
 
+import il.ac.haifa.cs.HSTS.server.Entities.ReadyTest;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Entities.Test;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
@@ -15,23 +17,40 @@ import java.util.List;
 public class TestsRepository {
     private static Session session;
 
+    public List<ReadyTestFacade> getReadyTestsByTeacher(int id){
+        List<ReadyTestFacade> readyTests = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-    public Test updateTest(Test test) {
-        Test updatedTest;
+            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code)"
+                    + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.modifierWriter.id= :teacherId");
+            query.setParameter("teacherId", id);
+            readyTests = query.list();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+            return readyTests;
+    }
+
+    public Test pushTest(Test test) {
+        Test newTest;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
-            session.update(test);
+            session.save(test);
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
-            updatedTest = getTestById(test.getId());
-            System.out.println(updatedTest);
+            newTest = getTestById(test.getId());
+            System.out.println(newTest);
             SessionFactoryGlobal.closeSession(session);
         }
-
-        return updatedTest;
+        return newTest;
     }
 
     public List<TestFacade> getTestsBySubject(String subject) {
@@ -39,7 +58,6 @@ public class TestsRepository {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            /* Ask for data here */
             Query<TestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.TestFacade(m.id,m.writer.username,m.subject.subjectName,m.dateCreated,m.questionList.size,m.time)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.Test m where m.subject.subjectName= :sub");
             query.setParameter("sub",subject);

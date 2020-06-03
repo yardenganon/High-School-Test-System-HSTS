@@ -6,6 +6,7 @@ import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -64,7 +65,7 @@ public class App {
             session.save(question14);
             session.save(question15);
 
-            Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
+                Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
             session.save(teacher2);
             Subject subject2 = new Subject("Science");
             subject.addTeacher(teacher2);
@@ -133,6 +134,7 @@ public class App {
 
             Course scienceADV = new Course(subject2,teacher2);
             scienceADV.addStudent(student2);
+            //scienceADV.setCourseName("Algo");
             session.save(scienceADV);
 
             Course biology = new Course(subject2,teacher2);
@@ -304,6 +306,7 @@ public class App {
             answerTest1 = new AnswerableTest(readyTest1, student3);
             session.save(answerTest1);
 
+
             test1 = new Test(teacher2,subject2);
             test1.addQuestion(question18,33);
             test1.addQuestion(question6,33);
@@ -348,13 +351,6 @@ public class App {
             test1.setEpilogue("Good luck");
             session.save(test1);
 
-
-            //questionsRepository.getQuestionsByUser()
-            /*List<Subject> subjectList = new ArrayList<Subject>();
-            subjectList.add(subject);
-            subjectList.add(subject2);
-            List<Subject> questionList = questionsRepository.getQuestionsBySubject(subjectList);
-            System.out.println(questionList);*/
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {

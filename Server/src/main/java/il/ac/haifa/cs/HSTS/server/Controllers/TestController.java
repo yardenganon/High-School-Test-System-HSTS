@@ -22,6 +22,9 @@ public class TestController implements ControllerInterface {
         Response responseMessage = new Response(commandName);
         Object returnedObject = null;
         switch (commandName) {
+            case ("getReadyTestsByTeacherCommand"):
+                returnedObject = testsRepository.getReadyTestsByTeacher(
+                        ((TestReadByTeacherCommand)command).getTeacherId());
             case ("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;
             case ("TestReadByIdCommand") :
@@ -30,9 +33,9 @@ public class TestController implements ControllerInterface {
             case ("TestReadBySubjectCommand") :
                 returnedObject = testsRepository.getTestsBySubject(
                         ((TestReadBySubjectCommand) command).getSubjectName()); break;
-            case ("TestUpdateCommand") :
-                returnedObject = testsRepository.updateTest(
-                        ((TestUpdateCommand)command).getTestToUpdate()); break;
+            case ("TestPushCommand") :
+                returnedObject = testsRepository.pushTest(
+                        ((TestPushCommand)command).getNewTest()); break;
             default:
                 System.out.println("Error - Command not found in controller");
         }
