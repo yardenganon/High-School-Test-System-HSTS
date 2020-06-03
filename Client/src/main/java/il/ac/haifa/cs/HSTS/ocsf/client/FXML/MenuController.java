@@ -46,8 +46,8 @@ public class MenuController implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
-    void goToTests(ActionEvent event) {
-
+    void goToTests(ActionEvent event) throws IOException {
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML

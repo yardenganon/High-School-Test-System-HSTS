@@ -77,6 +77,13 @@ public class HSTSClientInterface {
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
+
+        if (serverResponse.getRespondName().equals(TestReadBySubjectCommand.class.getSimpleName())) {
+            // Getting questions asked for
+            System.out.println("All testFacade received: " + serverResponse.getReturnedObject());
+            ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
+                    receivedRespondFromServer(serverResponse);
+        }
         if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName()))
             ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);

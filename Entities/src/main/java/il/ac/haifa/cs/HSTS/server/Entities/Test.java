@@ -47,6 +47,10 @@ public class Test implements Serializable {
 
     public Test(){}
 
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
     public Test(Teacher writer, Subject subject) {
         this.readyTests = new ArrayList<ReadyTest>();
         this.questionList = new HashSet<>();
