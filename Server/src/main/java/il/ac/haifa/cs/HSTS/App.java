@@ -110,47 +110,46 @@ public class App {
             session.save(student2);
             session.save(student3);
 
-            Course mathADV = new Course(subject,teacher);
+            Course mathADV = new Course("MathADV",subject,teacher);
             mathADV.addStudent(student);
             mathADV.addStudent(student1);
             mathADV.addStudent(student2);
             mathADV.addStudent(student3);
             session.save(mathADV);
 
-            Course mathDiscrete = new Course(subject,teacher);
+            Course mathDiscrete = new Course("DiscreteMath",subject,teacher);
             mathADV.addStudent(student);
             mathADV.addStudent(student1);
             session.save(mathDiscrete);
 
-            Course calculus = new Course(subject,teacher);
+            Course calculus = new Course("Calculus",subject,teacher);
             mathADV.addStudent(student);
             mathADV.addStudent(student3);
             session.save(mathDiscrete);
 
-            Course algebra = new Course(subject,teacher);
+            Course algebra = new Course("Algebra",subject,teacher);
             mathADV.addStudent(student2);
             mathADV.addStudent(student);
             session.save(mathDiscrete);
 
-            Course scienceADV = new Course(subject2,teacher2);
+            Course scienceADV = new Course("ScienceADV", subject2,teacher2);
             scienceADV.addStudent(student2);
-            //scienceADV.setCourseName("Algo");
             session.save(scienceADV);
 
-            Course biology = new Course(subject2,teacher2);
+            Course biology = new Course("Biology" ,subject2,teacher2);
             scienceADV.addStudent(student);
             scienceADV.addStudent(student2);
             scienceADV.addStudent(student3);
             scienceADV.addStudent(student1);
             session.save(scienceADV);
 
-            Course physics = new Course(subject2,teacher2);
+            Course physics = new Course("Physics" ,subject2,teacher2);
             scienceADV.addStudent(student);
             scienceADV.addStudent(student2);
             scienceADV.addStudent(student1);
             session.save(scienceADV);
 
-            Course probability = new Course(subject,teacher2);
+            Course probability = new Course("Probability",subject,teacher2);
             scienceADV.addStudent(student3);
             scienceADV.addStudent(student2);
             scienceADV.addStudent(student1);
