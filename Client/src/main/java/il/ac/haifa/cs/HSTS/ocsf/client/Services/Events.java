@@ -70,4 +70,28 @@ public class Events {
         stage.setScene(scene);
         stage.setTitle("Create Question");
     }
+
+    public static void navigateCreateTestEvent(Button button){
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("AddTest"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Create Test");
+    }
+
+    public static void navigateTestsEvent(Button button){
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("Tests"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Tests");
+    }
 }
