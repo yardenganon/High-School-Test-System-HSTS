@@ -46,6 +46,8 @@ public class ReadyTest implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
     List<TimeExtensionRequest> timeExtensionRequests;
 
+    public ReadyTest(){}
+
     public ReadyTest(Test test, String code, Course course, Teacher modifierWriter) {
         this.test = test;
         this.code = code;
@@ -151,5 +153,13 @@ public class ReadyTest implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }

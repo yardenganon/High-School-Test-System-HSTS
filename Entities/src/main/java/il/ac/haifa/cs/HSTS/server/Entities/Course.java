@@ -12,6 +12,7 @@ public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
+    String courseName;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     Subject subject;
@@ -29,9 +30,10 @@ public class Course implements Serializable {
     List<ReadyTest> readyTests;
 
     public Course () {}
-    public Course(Subject subject, Teacher teacher) {
+    public Course(String name, Subject subject, Teacher teacher) {
         setSubject(subject);
         setTeacher(teacher);
+        this.courseName = name;
         this.students = new ArrayList<Student>();
         this.readyTests = new ArrayList<ReadyTest>();
     }
@@ -70,5 +72,13 @@ public class Course implements Serializable {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 }
