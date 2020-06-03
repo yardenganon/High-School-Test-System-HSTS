@@ -50,7 +50,7 @@ public class Teacher extends User implements Serializable {
     }
 
     public void addQuestion(Question question) {
-        this.questions.add(question);
+        //this.questions.add(question);
     }
 
     public List<Question> getQuestions() {

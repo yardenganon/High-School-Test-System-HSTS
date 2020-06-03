@@ -44,8 +44,8 @@ public class Question implements Serializable {
         this.subject = subject;
 
         // making Bi-Directional bond
-        setWriter(writer);
-        setSubject(subject);
+        //setWriter(writer);
+        //setSubject(subject);
     }
 
 

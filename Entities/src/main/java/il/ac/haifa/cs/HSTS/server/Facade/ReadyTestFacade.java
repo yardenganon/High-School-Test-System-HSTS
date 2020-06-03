@@ -101,4 +101,18 @@ public class ReadyTestFacade {
     public void setCode(String code) {
         this.code = code;
     }
+
+    @Override
+    public String toString() {
+        return "ReadyTestFacade{" +
+                "id=" + id +
+                ", teacherWriter='" + teacherWriter + '\'' +
+                ", courseName='" + courseName + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", time=" + time +
+                ", isManual=" + isManual +
+                ", isActive=" + isActive +
+                ", code='" + code + '\'' +
+                '}';
+    }
 }
