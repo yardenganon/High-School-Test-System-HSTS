@@ -14,8 +14,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CreateQuestion">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CreateQuestionController">
    <children>
       <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="648.0" prefWidth="759.0" style="-fx-background-color: #DCDCDC;">
          <VBox layoutX="277.0" layoutY="107.0" prefHeight="402.0" prefWidth="436.0">
@@ -30,7 +29,7 @@
                            <Insets top="4.0" />
                         </HBox.margin>
                      </Text>
-                     <TextField fx:id="questionTextField" onAction="#writeQuestion" prefHeight="25.0" prefWidth="402.0">
+                     <TextField fx:id="questionTextField" onMouseClicked="#questionOnMouseClicked" prefHeight="25.0" prefWidth="402.0">
                         <HBox.margin>
                            <Insets left="30.0" />
                         </HBox.margin>
@@ -39,19 +38,20 @@
                </HBox>
                <HBox prefHeight="100.0" prefWidth="200.0">
                   <children>
-                     <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
-                        <font>
-                           <Font size="10.0" />
-                        </font>
-                        <HBox.margin>
-                           <Insets top="4.0" />
-                        </HBox.margin>
-                     </Text>
-                     <TextField fx:id="idTextField" onAction="#writeId" prefHeight="25.0" prefWidth="377.0">
-                        <HBox.margin>
-                           <Insets left="30.0" />
-                        </HBox.margin>
-                     </TextField>
+                     <HBox prefHeight="45.0" prefWidth="438.0">
+                        <children>
+                           <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" wrappingWidth="47.58310890197754">
+                              <font>
+                                 <Font size="10.0" />
+                              </font>
+                           </Text>
+                           <TextField editable="false" prefHeight="26.0" prefWidth="358.0">
+                              <HBox.margin>
+                                 <Insets left="30.0" />
+                              </HBox.margin>
+                           </TextField>
+                        </children>
+                     </HBox>
                   </children>
                </HBox>
                <HBox prefHeight="100.0" prefWidth="200.0">
@@ -99,7 +99,7 @@
                            <Insets top="4.0" />
                         </HBox.margin>
                      </Text>
-                     <TextField fx:id="answer1TextField" onAction="#writeAnswer1" prefHeight="25.0" prefWidth="452.0">
+                     <TextField fx:id="answer1TextField" onMouseClicked="#answer1OnMouseClicked" prefHeight="25.0" prefWidth="452.0">
                         <HBox.margin>
                            <Insets left="30.0" />
                         </HBox.margin>
@@ -116,7 +116,7 @@
                            <Insets top="4.0" />
                         </HBox.margin>
                      </Text>
-                     <TextField fx:id="answer2TextField" onAction="#writeAnswer2" prefHeight="25.0" prefWidth="420.0">
+                     <TextField fx:id="answer2TextField" onMouseClicked="#answer2OnMouseClicked" prefHeight="25.0" prefWidth="420.0">
                         <HBox.margin>
                            <Insets left="30.0" />
                         </HBox.margin>
@@ -133,7 +133,7 @@
                            <Insets top="4.0" />
                         </HBox.margin>
                      </Text>
-                     <TextField fx:id="answer3TextField" onAction="#writeAnswer3" prefHeight="25.0" prefWidth="435.0">
+                     <TextField fx:id="answer3TextField" onMouseClicked="#answer3OnMouseClicked" prefHeight="25.0" prefWidth="435.0">
                         <HBox.margin>
                            <Insets left="30.0" />
                         </HBox.margin>
@@ -150,7 +150,7 @@
                            <Insets top="4.0" />
                         </HBox.margin>
                      </Text>
-                     <TextField fx:id="answer4TextField" onAction="#writeAnswer4" prefHeight="25.0" prefWidth="405.0">
+                     <TextField fx:id="answer4TextField" onMouseClicked="#answer4OnMouseClicked" prefHeight="25.0" prefWidth="405.0">
                         <HBox.margin>
                            <Insets left="30.0" />
                         </HBox.margin>
