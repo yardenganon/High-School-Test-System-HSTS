@@ -21,7 +21,7 @@ public class AnswerableTest implements Serializable {
     @JoinColumn(name = "student_id")
     Student student;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="answersForQuestions",
             joinColumns = {@JoinColumn(name = "answerabletest_id", referencedColumnName = "id")})
     @MapKeyColumn(name="question")

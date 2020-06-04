@@ -24,7 +24,7 @@ public class ReadyTest implements Serializable {
     @JoinColumn(name = "test_id")
     private Test test;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "modifiedPointsForQuestion",
             joinColumns = {@JoinColumn(name = "readytest_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "question")
