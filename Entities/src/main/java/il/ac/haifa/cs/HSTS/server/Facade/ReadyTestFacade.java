@@ -46,7 +46,15 @@ public class ReadyTestFacade {
         this.teacherWriter = teacherWriter;
     }
 
-//    public String getSubject() {
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    //    public String getSubject() {
 //        return subject;
 //    }
 //

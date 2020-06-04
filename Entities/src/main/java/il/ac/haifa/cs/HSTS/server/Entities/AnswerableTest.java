@@ -1,5 +1,8 @@
 package il.ac.haifa.cs.HSTS.server.Entities;
 
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +36,7 @@ public class AnswerableTest implements Serializable {
     private Integer score;
     private Boolean isChecked;
     private String teacherComment;
+    private Status Teststatus;
 
     public AnswerableTest() {
     }
@@ -45,6 +49,14 @@ public class AnswerableTest implements Serializable {
 
         test.addAnswerableTest(this);
         student.addAnswerableTest(this);
+    }
+
+    public Status getAnswerableTestStatus() {
+        return Teststatus;
+    }
+
+    public void setAnswerableTestStatus(Status status){
+        this.Teststatus = status;
     }
 
     public int getId() {
