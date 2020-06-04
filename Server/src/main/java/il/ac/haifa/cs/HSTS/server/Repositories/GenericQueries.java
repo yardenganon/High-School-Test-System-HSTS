@@ -11,6 +11,7 @@ import javax.persistence.criteria.Root;
 public class GenericQueries {
     private static Session session;
     public static <T> T getById(Class<T> object, int id) {
+        T returnedObject = null;
         TypedQuery<T> query = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -20,9 +21,12 @@ public class GenericQueries {
             CriteriaQuery<T> CriteriaQuery = criteriaQuery.select(rootEntry);
             criteriaQuery.select(rootEntry).where(builder.equal(rootEntry.get("id"),id));
             query = session.createQuery(CriteriaQuery);
+            returnedObject = query.getSingleResult();
+            session = SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         }
-        return query.getSingleResult();
+        SessionFactoryGlobal.closeSession(session);
+        return returnedObject;
     }
 }
