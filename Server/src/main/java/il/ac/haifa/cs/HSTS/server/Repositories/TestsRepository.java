@@ -20,28 +20,6 @@ import java.util.List;
 public class TestsRepository {
     private static Session session;
 
-    public ReadyTest getReadyTestById(int id) {
-        ReadyTest readyTest = null;
-        try {
-            session =  SessionFactoryGlobal.openSessionAndTransaction(session);
-            /* Ask for data here */
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Test> criteriaQuery = builder.createQuery(Test.class);
-            Root<Test> root = criteriaQuery.from(Test.class);
-            criteriaQuery.select(root).where(builder.equal(root.get("id"),id));
-
-            Query query = session.createQuery(criteriaQuery);
-            readyTest = (ReadyTest)query.getSingleResult();
-
-            SessionFactoryGlobal.closeTransaction(session);
-        } catch (Exception exception) {
-            SessionFactoryGlobal.exceptionCaught(session,exception);
-        } finally {
-            SessionFactoryGlobal.closeSession(session);
-        }
-        return readyTest;
-    }
-
     public AnswerableTest getAnwerableTestByStudent(Student student){
         AnswerableTest answerableTest = null;
         int studentGeneratedId = student.getIdNumber();
