@@ -28,7 +28,7 @@ public class RequestAnswerableTestController implements ControllerInterface {
         Response serverMessage = new Response(command.getCommandName());
         String readyTestCode = ((RequestAnswerableTestCommand) command).getReadyTestCode();
         Student student = ((RequestAnswerableTestCommand) command).getStudent();
-        ReadyTestFacade readyTestFacade = testsRepository.getReadyTestsByCode(readyTestCode);
+        ReadyTestFacade readyTestFacade = testsRepository.getReadyTestsByTeacher(readyTestCode);
         if(readyTestFacade == null){
             serverMessage.setReturnedObject(null);
             serverMessage.setStatus(Status.InvalidCode);
@@ -44,10 +44,10 @@ public class RequestAnswerableTestController implements ControllerInterface {
                     serverMessage.setReturnedObject(null);
                 }
                 else{
-                    AnswerableTest answerableTest = testsRepository.getAnwerableTestByStudent(student);
+                    AnswerableTest answerableTest = testsRepository.getAnswerableTestByStudent(student);
                     if(answerableTest == null){
                         AnswerableTest newAnswerableTest = generateAnswerableTest(student, readyTestFacade);
-                        testsRepository.pushAnserableTest(newAnswerableTest);
+                        testsRepository.pushAnswerableTest(newAnswerableTest);
                         serverMessage.setReturnedObject(newAnswerableTest);
                         serverMessage.setStatus(Status.Success);
                     }
