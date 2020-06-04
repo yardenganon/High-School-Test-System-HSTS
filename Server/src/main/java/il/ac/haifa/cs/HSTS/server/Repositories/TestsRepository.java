@@ -42,7 +42,7 @@ public class TestsRepository {
         return readyTest;
     }
 
-    public AnswerableTest getAnwerableTestByStudent(Student student){
+    public AnswerableTest getAnswerableTestByStudent(Student student){
         AnswerableTest answerableTest = null;
         int studentGeneratedId = student.getIdNumber();
         try{
@@ -61,7 +61,7 @@ public class TestsRepository {
         return answerableTest;
     }
 
-    public ReadyTestFacade getReadyTestsByCode(String readyTestCode){
+    public ReadyTestFacade getReadyTestsByTeacher(String readyTestCode){
         ReadyTestFacade readyTest = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -80,7 +80,7 @@ public class TestsRepository {
         return readyTest;
     }
 
-    public List<ReadyTestFacade> getReadyTestsByCode(int id){
+    public List<ReadyTestFacade> getReadyTestsByTeacher(int id){
         List<ReadyTestFacade> readyTests = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -99,27 +99,6 @@ public class TestsRepository {
             return readyTests;
     }
 
-    public ReadyTest getReadyTestById(int id) {
-        ReadyTest test = null;
-        try {
-            session =  SessionFactoryGlobal.openSessionAndTransaction(session);
-            /* Ask for data here */
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<ReadyTest> criteriaQuery = builder.createQuery(ReadyTest.class);
-            Root<ReadyTest> root = criteriaQuery.from(ReadyTest.class);
-            criteriaQuery.select(root).where(builder.equal(root.get("id"),id));
-
-            Query query = session.createQuery(criteriaQuery);
-            test = (ReadyTest)query.getSingleResult();
-
-            SessionFactoryGlobal.closeTransaction(session);
-        } catch (Exception exception) {
-            SessionFactoryGlobal.exceptionCaught(session,exception);
-        } finally {
-            SessionFactoryGlobal.closeSession(session);
-        }
-        return test;
-    }
 
     public ReadyTest pushReadyTest(ReadyTest test) {
         ReadyTest newReadyTest = null;
@@ -155,7 +134,7 @@ public class TestsRepository {
         return newTest;
     }
 
-    public AnswerableTest getAnserableTestById(int id){
+    public AnswerableTest getAnswerableTestById(int id){
         AnswerableTest answerableTest = null;
         try {
             session =  SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -177,7 +156,7 @@ public class TestsRepository {
         return answerableTest;
     }
 
-    public void pushAnserableTest(AnswerableTest test) {
+    public void pushAnswerableTest(AnswerableTest test) {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */

@@ -21,7 +21,7 @@ public class TestController implements ControllerInterface {
         Object returnedObject = null;
         switch (commandName) {
             case ("getReadyTestsByTeacherCommand"):
-                returnedObject = testsRepository.getReadyTestsByCode(
+                returnedObject = testsRepository.getReadyTestsByTeacher(
                         ((TestReadByTeacherCommand)command).getTeacherId());
             case ("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;
