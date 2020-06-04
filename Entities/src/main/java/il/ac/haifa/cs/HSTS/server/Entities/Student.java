@@ -37,4 +37,36 @@ public class Student extends User implements Serializable {
     public void addAnswerableManualTest(AnswerableManualTest answerableManualTest) {
         this.answerableManualTests.add(answerableManualTest);
     }
+
+    public Boolean isInCourse(String courseName){
+        for(Course course : this.courses){
+            if(courseName.equals(course.courseName))
+                return true;
+        }
+        return false;
+    }
+
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
+    public List<AnswerableTest> getAnswerableTests() {
+        return answerableTests;
+    }
+
+    public void setAnswerableTests(List<AnswerableTest> answerableTests) {
+        this.answerableTests = answerableTests;
+    }
+
+    public List<AnswerableManualTest> getAnswerableManualTests() {
+        return answerableManualTests;
+    }
+
+    public void setAnswerableManualTests(List<AnswerableManualTest> answerableManualTests) {
+        this.answerableManualTests = answerableManualTests;
+    }
 }

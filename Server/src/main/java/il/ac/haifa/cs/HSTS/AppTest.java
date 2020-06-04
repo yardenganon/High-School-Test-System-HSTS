@@ -3,7 +3,9 @@ package il.ac.haifa.cs.HSTS;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
+import il.ac.haifa.cs.HSTS.server.Repositories.GenericQueries;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
+import il.ac.haifa.cs.HSTS.server.Repositories.UsersRepository;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,24 +18,15 @@ public class AppTest {
     private static Session session;
 
     public static void main(String[] args){
-        try {
-            Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
-            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            //Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+//            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
+            //session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            ReadyTest readyTest;
             TestsRepository testsRepository = new TestsRepository();
-//            test = testsRepository.getTestById(1);
-//            System.out.println(test.getQuestionList());
+            System.out.println(GenericQueries.getById(Question.class,1));
+            System.out.println(GenericQueries.getById(Question.class,2));
+            System.out.println(GenericQueries.getById(AnswerableTest.class,1));
+            System.out.println(GenericQueries.getAll(Question.class));
 
-            List<ReadyTestFacade> results = testsRepository.getReadyTestsByTeacher(22);
-            System.out.println(results);
-
-            SessionFactoryGlobal.closeTransaction(session);
-        } catch (Exception exception) {
-            SessionFactoryGlobal.exceptionCaught(session, exception);
-        } finally {
-            SessionFactoryGlobal.closeSession(session);
-        }
     }
 }

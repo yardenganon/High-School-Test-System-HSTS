@@ -24,7 +24,7 @@ public class ReadyTest implements Serializable {
     @JoinColumn(name = "test_id")
     private Test test;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "modifiedPointsForQuestion",
             joinColumns = {@JoinColumn(name = "readytest_id", referencedColumnName = "id")})
     @MapKeyColumn(name = "question")
@@ -161,5 +161,21 @@ public class ReadyTest implements Serializable {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    @Override
+    public String toString() {
+        return "ReadyTest{" +
+                "id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", isManual=" + isManual +
+                ", isActive=" + isActive +
+                ", code='" + code + '\'' +
+                ", course=" + course +
+                ", test=" + test +
+                ", modifiedPoints=" + modifiedPoints +
+                ", modifiedTime=" + modifiedTime +
+                ", modifierWriter=" + modifierWriter +
+                '}';
     }
 }

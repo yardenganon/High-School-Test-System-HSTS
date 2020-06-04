@@ -4,28 +4,29 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadBySubjectCommand;
-import il.ac.haifa.cs.HSTS.server.Entities.Principle;
-import il.ac.haifa.cs.HSTS.server.Entities.Subject;
-import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
+import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +42,7 @@ public class TestsController implements Initializable {
     private static List<TestFacade> testList = null;
     private ObservableList<TestFacade> testsOL = null;
     private String subjectSelected = null;
-    TestFacade selectedTest = null;
+    Test selectedTest = null;
     private Bundle bundle;
 
     private HSTSClient client;
@@ -92,9 +93,6 @@ public class TestsController implements Initializable {
     private TableColumn<TestFacade, String> columnTime;
 
     @FXML
-    private TextField searchTextField;
-
-    @FXML
     private Button addTestButton;
 
     @FXML
@@ -127,7 +125,7 @@ public class TestsController implements Initializable {
 
     @FXML
     void logout(ActionEvent event) throws IOException{
-        Events.navigateMenuEvent(logoutButton);
+        Events.navigateLogoutEvent(logoutButton);
     }
 
     @FXML
@@ -137,38 +135,52 @@ public class TestsController implements Initializable {
         TestsTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+                //progressIndicator.start();
                 TestFacade testSelected = TestsTableView.getSelectionModel().getSelectedItem();
                 if (testSelected != null && event.getClickCount() == 2) {
                     Scene scene = null;
                     for (TestFacade test : testList) {
                         if (test.getId() == testSelected.getId()) {
-                            selectedTest = test;
-                            openTestDetailsWindow();
-                            break;
+                            testList = new ArrayList<TestFacade>();
+                            Task<Response> task = new Task<Response>() {
+                                @Override
+                                protected Response call() throws Exception {
+                                    if (user instanceof Teacher) {
+                                        responseFromServer = null;
+                                        CommandInterface command = new TestReadByIdCommand(test.getId());
+                                        client.getHstsClientInterface().sendCommandToServer(command);
+
+                                        while (responseFromServer == null)
+                                            Thread.sleep(10);
+
+                                    } else if (user instanceof Principle) {
+                                   /* responseFromServer = null;
+
+                                    CommandInterface command = new TestReadAllCommand();
+                                    client.getHstsClientInterface().sendCommandToServer(command);
+
+                                    while (responseFromServer == null)
+                                        Thread.sleep(10);
+
+                                    testList = (List<Test>) responseFromServer.getReturnedObject();*/
+                                    }
+                                    return responseFromServer;
+                                }
+                            };
+                            task.setOnSucceeded(e-> {
+                                responseFromServer = task.getValue();
+                                selectedTest = (Test) responseFromServer.getReturnedObject();
+                                openTestDetailsWindow();
+                                //progressIndicator.stop();
+                            });
+                            new Thread(task).start();
                         }
                     }
                 }
             }
         });
     }
-
-    public void openTestDetailsWindow() {
-        System.out.println(selectedTest + " Is selected");
-        bundle.put("id", selectedTest.getId());
-        bundle.put("test", selectedTest);
-        bundle.put("client", client);
-        bundle.put("user", user);
-        Scene scene = null;
-        try {
-            scene = new Scene(MainClass.loadFXML("MakeReadyTest"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Stage stage = (Stage) TestsTableView.getScene().getWindow();
-        stage.setScene(scene);
-        stage.setTitle("MakeReadyTest");
-    }
-
 
     public void receivedRespondFromServer(Response response) {
         responseFromServer = response;
@@ -201,9 +213,29 @@ public class TestsController implements Initializable {
         subjectsComboBox.getSelectionModel().select(subjectsComboBox.getItems().get(0));
     }
 
+    public void openTestDetailsWindow() {
+        System.out.println(selectedTest + " Is selected");
+        bundle.put("test", selectedTest);
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("TestDetails"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) TestsTableView.getScene().getWindow();
+        Stage secondaryStage = new Stage();
+        secondaryStage.setScene(scene);
+        secondaryStage.setTitle("Test Details");
+        secondaryStage.initModality(Modality.APPLICATION_MODAL);
+        secondaryStage.show();
+        secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
+            refreshList();
+        });
+    }
+
     public void refreshList() {
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-        //progressIndicator.start();
+        progressIndicator.start();
         testList = new ArrayList<TestFacade>();
         Task<Response> task = new Task<Response>() {
             @Override
@@ -216,8 +248,6 @@ public class TestsController implements Initializable {
 
                     while (responseFromServer == null)
                         Thread.sleep(10);
-
-                    System.out.println("hello");
 
                 } else if (user instanceof Principle) {
                    /* responseFromServer = null;
@@ -235,7 +265,7 @@ public class TestsController implements Initializable {
         };
         task.setOnSucceeded(e-> {
             responseFromServer = task.getValue();
-            //progressIndicator.stop();
+            progressIndicator.stop();
             testList = (List<TestFacade>) responseFromServer.getReturnedObject();
             columnId.setCellValueFactory(new PropertyValueFactory<TestFacade, String>("id"));
             columnSubject.setCellValueFactory(new PropertyValueFactory<TestFacade, String>("subject"));
