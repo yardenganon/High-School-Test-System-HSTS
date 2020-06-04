@@ -2,7 +2,6 @@ package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
-import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
@@ -21,13 +20,7 @@ public class AppTest {
             SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            ReadyTest readyTest;
-            TestsRepository testsRepository = new TestsRepository();
-//            test = testsRepository.getTestById(1);
-//            System.out.println(test.getQuestionList());
 
-            List<ReadyTestFacade> results = testsRepository.getReadyTestsByTeacher(22);
-            System.out.println(results);
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
