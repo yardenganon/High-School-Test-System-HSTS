@@ -36,6 +36,45 @@ public class TestsRepository {
             return readyTests;
     }
 
+    public ReadyTest getReadyTestById(int id) {
+        ReadyTest test = null;
+        try {
+            session =  SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Ask for data here */
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<ReadyTest> criteriaQuery = builder.createQuery(ReadyTest.class);
+            Root<ReadyTest> root = criteriaQuery.from(ReadyTest.class);
+            criteriaQuery.select(root).where(builder.equal(root.get("id"),id));
+
+            Query query = session.createQuery(criteriaQuery);
+            test = (ReadyTest)query.getSingleResult();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return test;
+    }
+
+    public ReadyTest pushReadyTest(ReadyTest test) {
+        ReadyTest newReadyTest = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Insert data here */
+            session.save(test);
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            newReadyTest = getReadyTestById(test.getId());
+            System.out.println(newReadyTest);
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return newReadyTest;
+    }
+
     public Test pushTest(Test test) {
         Test newTest;
         try {

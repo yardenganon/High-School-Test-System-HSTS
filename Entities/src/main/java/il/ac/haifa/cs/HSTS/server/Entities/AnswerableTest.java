@@ -34,6 +34,8 @@ public class AnswerableTest implements Serializable {
     private Boolean isChecked;
     private String teacherComment;
 
+    public AnswerableTest() {
+    }
 
     public AnswerableTest(ReadyTest test, Student student) {
         this.test = test;
@@ -115,5 +117,20 @@ public class AnswerableTest implements Serializable {
 
     public void setTeacherComment(String teacherComment) {
         this.teacherComment = teacherComment;
+    }
+
+    @Override
+    public String toString() {
+        return "AnswerableTest{" +
+                "id=" + id +
+                ", test=" + test +
+                ", student=" + student +
+                ", answers=" + answers +
+                ", timeStarted=" + timeStarted +
+                ", timeFinished=" + timeFinished +
+                ", score=" + score +
+                ", isChecked=" + isChecked +
+                ", teacherComment='" + teacherComment + '\'' +
+                '}';
     }
 }
