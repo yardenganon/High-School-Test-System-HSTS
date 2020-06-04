@@ -2,7 +2,6 @@ package il.ac.haifa.cs.HSTS.server.Entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,8 +9,8 @@ import java.util.Set;
 
 @Entity
 public class Teacher extends User implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "teacher")
-    List<Course> courses;
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER, mappedBy = "teacher")
+    Set<Course> courses;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "writer")
     List<Question> questions;
@@ -34,7 +33,7 @@ public class Teacher extends User implements Serializable {
 
     public Teacher(String username, String password, String email, String first_name, String last_name, String gender) {
         super(username, password, email, first_name, last_name, gender);
-        this.courses = new ArrayList<Course>();
+        this.courses = new HashSet<>();
         this.questions = new ArrayList<Question>();
         this.subjects = new ArrayList<Subject>();
         this.tests = new ArrayList<Test>();
@@ -85,11 +84,11 @@ public class Teacher extends User implements Serializable {
         this.tests.add(test);
     }
 
-    public List<Course> getCourses() {
+    public Set<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(List<Course> courses) {
+    public void setCourses(Set<Course> courses) {
         this.courses = courses;
     }
 

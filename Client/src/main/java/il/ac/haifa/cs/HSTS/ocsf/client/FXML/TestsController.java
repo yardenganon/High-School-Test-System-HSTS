@@ -4,15 +4,18 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
-import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadBySubjectCommand;
+import il.ac.haifa.cs.HSTS.server.Entities.Principle;
+import il.ac.haifa.cs.HSTS.server.Entities.Subject;
+import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -140,7 +143,7 @@ public class TestsController implements Initializable {
                     for (TestFacade test : testList) {
                         if (test.getId() == testSelected.getId()) {
                             selectedTest = test;
-                            //openTestDetailsWindow();
+                            openTestDetailsWindow();
                             break;
                         }
                     }
@@ -149,19 +152,22 @@ public class TestsController implements Initializable {
         });
     }
 
-    /*public void openTestDetailsWindow() {
+    public void openTestDetailsWindow() {
         System.out.println(selectedTest + " Is selected");
+        bundle.put("id", selectedTest.getId());
         bundle.put("test", selectedTest);
+        bundle.put("client", client);
+        bundle.put("user", user);
         Scene scene = null;
         try {
-            scene = new Scene(MainClass.loadFXML("EditQuestion"));
+            scene = new Scene(MainClass.loadFXML("MakeReadyTest"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         Stage stage = (Stage) TestsTableView.getScene().getWindow();
         stage.setScene(scene);
-        stage.setTitle("Edit Question");
-    }*/
+        stage.setTitle("MakeReadyTest");
+    }
 
 
     public void receivedRespondFromServer(Response response) {
@@ -212,6 +218,7 @@ public class TestsController implements Initializable {
                         Thread.sleep(10);
 
                     System.out.println("hello");
+
                 } else if (user instanceof Principle) {
                    /* responseFromServer = null;
 
