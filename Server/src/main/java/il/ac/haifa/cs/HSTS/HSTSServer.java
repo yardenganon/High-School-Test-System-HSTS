@@ -63,6 +63,7 @@ public class HSTSServer extends AbstractServer {
         controllers.add(new UserController());
         controllers.add(new QuestionController());
         controllers.add(new TestController());
+        controllers.add(new RequestAnswerableTestController());
     }
 
     public static void main(String[] args) throws IOException {

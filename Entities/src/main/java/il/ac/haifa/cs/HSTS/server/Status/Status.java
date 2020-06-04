@@ -1,11 +1,12 @@
 package il.ac.haifa.cs.HSTS.server.Status;
 
 public enum Status {
-    OK,
+    TestFinished,
+    TestActive,
     InvalidCode,
-    NotActive,
+    TestNotActive,
     PermissionDenied,
     OpenRequest,
     Success,
-    ServerException
+    ServerException,
 }

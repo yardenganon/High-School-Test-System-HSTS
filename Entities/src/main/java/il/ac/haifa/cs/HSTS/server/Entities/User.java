@@ -36,6 +36,10 @@ public abstract class User implements Serializable {
         this.date_of_last_login = new Date();
     }
 
+    public int getId() {
+        return id;
+    }
+
     public User(){}
 
     public Date getDate_of_signup() {

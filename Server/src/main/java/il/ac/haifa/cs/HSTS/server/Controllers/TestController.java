@@ -9,11 +9,9 @@ import java.util.Date;
 public class TestController implements ControllerInterface {
 
     final private TestsRepository testsRepository;
-    final private AnswerableTestFactory answerableTestFactory;
 
     public TestController() {
         this.testsRepository = new TestsRepository();
-        this.answerableTestFactory = new AnswerableTestFactory();
     }
 
     @Override
@@ -23,7 +21,7 @@ public class TestController implements ControllerInterface {
         Object returnedObject = null;
         switch (commandName) {
             case ("getReadyTestsByTeacherCommand"):
-                returnedObject = testsRepository.getReadyTestsByTeacher(
+                returnedObject = testsRepository.getReadyTestsByCode(
                         ((TestReadByTeacherCommand)command).getTeacherId());
             case ("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;

@@ -25,6 +25,7 @@ public class CommandRouter {
         commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestPushCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestReadByTeacherCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
 
         System.out.println("Router initiated");
     }
