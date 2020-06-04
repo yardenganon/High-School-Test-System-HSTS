@@ -138,15 +138,6 @@ public class CreateQuestionController implements Initializable {
                     }
                 }
 
-                System.out.println(questionTextField.getText());
-                System.out.println(answer1TextField.getText());
-                System.out.println(answer2TextField.getText());
-                System.out.println(answer3TextField.getText());
-                System.out.println(answer4TextField.getText());
-                System.out.println(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
-                System.out.println(teacher.getFirst_name());
-                System.out.println(selectedSubject.getSubjectName());
-
                 // Creating the question
                 question = new Question(questionTextField.getText(), answer1TextField.getText(), answer2TextField.getText(), answer3TextField.getText(), answer4TextField.getText(),
                 Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()), teacher, selectedSubject);
