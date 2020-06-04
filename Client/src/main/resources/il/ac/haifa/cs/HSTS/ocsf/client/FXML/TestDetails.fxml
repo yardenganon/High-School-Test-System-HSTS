@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="884.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestFullDetailsController">
+   <children>
+      <VBox layoutX="29.0" layoutY="83.0" prefHeight="538.0" prefWidth="844.0">
+         <children>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="id" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="idTextField" editable="false" prefHeight="26.0" prefWidth="767.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="781.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="subjectTextField" editable="false" prefHeight="26.0" prefWidth="770.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Date Created" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="dateCreatedTextField" editable="false" prefHeight="26.0" prefWidth="806.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Intro" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="introTextField" editable="false" prefHeight="26.0" prefWidth="766.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Epilogue" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="epliogueTextField" editable="false" prefHeight="26.0" prefWidth="777.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="commentTextField" editable="false" prefHeight="26.0" prefWidth="788.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="time" wrappingWidth="76.38309669494629">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="timeTextField" editable="false" prefHeight="26.0" prefWidth="767.0" />
+               </children>
+            </HBox>
+            <HBox prefHeight="182.0" prefWidth="595.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions selected" wrappingWidth="74.78312110900879">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TableView fx:id="questionsTableView" prefHeight="166.0" prefWidth="769.0">
+                     <columns>
+                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="223.19991606473923" text="question" />
+                        <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="90.40007019042969" text="answer1" />
+                         <TableColumn fx:id="columnAnswer2" editable="false" minWidth="0.0" prefWidth="112.80001831054688" text="answer2" />
+                         <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="118.39996337890625" text="answer3" />
+                         <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="121.5999755859375" text="answer4" />
+                         <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="53.5999755859375" text="correct" />
+                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="47.99996337890627" text="points" />
+                     </columns>
+                  </TableView>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="291.0" layoutY="20.0" prefHeight="50.0" prefWidth="206.0" text="Test Details" textFill="#143452">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
