@@ -110,7 +110,7 @@ public class QuestionsController implements Initializable {
 
     @FXML
     void goToTests(ActionEvent event) {
-
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML
