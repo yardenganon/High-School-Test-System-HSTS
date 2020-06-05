@@ -130,7 +130,7 @@ public class MakeExecuteTestController implements Initializable {
             columnPoints.setCellFactory(TextFieldTableCell.forTableColumn());
 
             questionsOL = FXCollections.observableArrayList();
-            Set<Question> questionList = test.getQuestionList();
+            Set<Question> questionList = test.getQuestionSet();
             updatedHashMap.clear();
             for (Question quest : questionList) {
                 int points = test.getPoints().get(quest);
