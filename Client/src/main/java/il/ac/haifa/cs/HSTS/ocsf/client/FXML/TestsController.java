@@ -4,19 +4,19 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadByIdCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadBySubjectCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -25,13 +25,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class TestsController implements Initializable {
@@ -99,17 +99,20 @@ public class TestsController implements Initializable {
     private ComboBox<String> subjectsComboBox;
 
     @FXML
+    private Button MakeExecuteTestButton;
+
+    @FXML
     void about(ActionEvent event) {
         Events.aboutWindowEvent();
     }
 
     @FXML
-    void goToCourses(ActionEvent event) throws IOException{
+    void goToCourses(ActionEvent event) throws IOException {
 
     }
 
     @FXML
-    void goToAddTest(ActionEvent event) throws IOException{
+    void goToAddTest(ActionEvent event) throws IOException {
         Events.navigateCreateTestEvent(addTestButton);
     }
 
@@ -119,12 +122,12 @@ public class TestsController implements Initializable {
     }
 
     @FXML
-    void goToQuestions(ActionEvent event) throws IOException{
+    void goToQuestions(ActionEvent event) throws IOException {
         Events.navigateQuestionsEvent(goToQuestionsButton);
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException{
+    void logout(ActionEvent event) throws IOException {
         Events.navigateLogoutEvent(logoutButton);
     }
 
@@ -168,7 +171,7 @@ public class TestsController implements Initializable {
                                     return responseFromServer;
                                 }
                             };
-                            task.setOnSucceeded(e-> {
+                            task.setOnSucceeded(e -> {
                                 responseFromServer = task.getValue();
                                 selectedTest = (Test) responseFromServer.getReturnedObject();
                                 openTestDetailsWindow();
@@ -203,7 +206,7 @@ public class TestsController implements Initializable {
         helloLabel.setText("Hello " + user.getFirst_name());
     }
 
-    public void initializeSubjectsComboBox(){
+    public void initializeSubjectsComboBox() {
         if (user instanceof Teacher) {
             Teacher teacher = ((Teacher) user);
             subjectsComboBox.getItems().clear();
@@ -263,7 +266,7 @@ public class TestsController implements Initializable {
                 return responseFromServer;
             }
         };
-        task.setOnSucceeded(e-> {
+        task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
             progressIndicator.stop();
             testList = (List<TestFacade>) responseFromServer.getReturnedObject();
@@ -284,8 +287,6 @@ public class TestsController implements Initializable {
             TestsTableView.setItems(testsOL);
         });
         new Thread(task).start();
-
-
     }
 
     @FXML
@@ -293,4 +294,28 @@ public class TestsController implements Initializable {
         refreshList();
     }
 
+    public void MakeExecuteTest(ActionEvent actionEvent) throws IOException {
+
+        TestFacade selectedTest = TestsTableView.getSelectionModel().getSelectedItem();
+        if (selectedTest != null) {
+            System.out.println(selectedTest + " Is selected");
+            bundle.put("id", selectedTest.getId());
+            bundle.put("test", selectedTest);
+            bundle.put("client", client);
+            bundle.put("user", user);
+            Scene scene = new Scene(MainClass.loadFXML("MakeExecuteTest"));
+            Stage stage = (Stage) MakeExecuteTestButton.getScene().getWindow();
+            Stage secondaryStage = new Stage();
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("Make Execute Test");
+            secondaryStage.initModality(Modality.APPLICATION_MODAL);
+            secondaryStage.show();
+        }
+        else
+        {
+            Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+            needChooseTestAlert.setHeaderText("For making execute test you need to select a test and then push \"Make Execute Text\" button" );
+            Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+        }
+    }
 }

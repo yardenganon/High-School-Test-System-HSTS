@@ -19,14 +19,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
-public class MakeReadyTestController implements Initializable {
+public class MakeExecuteTestController implements Initializable {
 
-    public User user;
+    User user;
     public Test test;
     public int testId;
     TestFacade selectedTest = null;
@@ -39,6 +36,8 @@ public class MakeReadyTestController implements Initializable {
     private int sumOfPoints = 0;
     private String codeErrorMessage = "Execution code should consist of two letters and then two digits";
     private String pointsErrorMessage = "Questions points should sum to 100 or more";
+    ReadyTest readyTest;
+    HashMap updatedHashMap = new HashMap<>();
 
     @FXML
     private AnchorPane anchorPane;
@@ -59,9 +58,6 @@ public class MakeReadyTestController implements Initializable {
     private Button confirmTestButton1;
 
     @FXML
-    private Button exitButton;
-
-    @FXML
     private Label pointsLabel;
 
     @FXML
@@ -73,6 +69,12 @@ public class MakeReadyTestController implements Initializable {
     @FXML
     private TableColumn<QuestionTableView, String> columnPoints;
 
+    @FXML
+    private CheckBox activeCheckBox;
+
+    @FXML
+    private CheckBox manualCheckBox;
+
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
@@ -83,17 +85,29 @@ public class MakeReadyTestController implements Initializable {
         ShowQuestionList();
 
         Teacher teacher;
-        if (user instanceof Teacher) {
-            teacher = ((Teacher) user);
-            coursesComboBox.getItems().clear();
+        teacher = ((Teacher) user);
+        coursesComboBox.getItems().clear();
 
-            for (Course course : teacher.getCourses()) {
-                coursesComboBox.getItems().add(course.getCourseName());
+        System.out.println(teacher.getCourses());
+        Course courseForReadyTest = null;
+        boolean firstLoop = true;
+        for (Course course : teacher.getCourses()) {
+            coursesComboBox.getItems().add(course.getCourseName());
+            if (firstLoop) {
+                courseForReadyTest = course;
+                firstLoop = false;
             }
-
-            coursesComboBox.getSelectionModel().selectFirst();
-            authorTextField.setText(selectedTest.getTeacherWriter());
         }
+
+        coursesComboBox.getSelectionModel().selectFirst();
+        authorTextField.setText(selectedTest.getTeacherWriter());
+
+        readyTest = new ReadyTest(test, executionCodeTextField.getText(), courseForReadyTest, teacher);
+        readyTest.setActive(true);
+        readyTest.setManual(false);
+        readyTest.setModifiedTime(test.getTime());
+
+        readyTest.setModifierWriter(teacher);
         testTimeTextField.setText(String.valueOf(selectedTest.getTime()));
     }
 
@@ -109,6 +123,7 @@ public class MakeReadyTestController implements Initializable {
                 while (responseFromServer == null) {
                     Thread.sleep(10);
                 }
+
                 return responseFromServer;
             }
         };
@@ -120,10 +135,12 @@ public class MakeReadyTestController implements Initializable {
 
             questionsOL = FXCollections.observableArrayList();
             Set<Question> questionList = test.getQuestionList();
+            updatedHashMap.clear();
             for (Question quest : questionList) {
                 int points = test.getPoints().get(quest);
                 questionsOL.add(new QuestionTableView(quest.getQuestion(), String.valueOf(points)));
                 sumOfPoints += test.getPoints().get(quest);
+                updatedHashMap.put(quest, points);
             }
             questionTableView.setItems(questionsOL);
             pointsLabel.setText(String.valueOf(sumOfPoints));
@@ -177,8 +194,7 @@ public class MakeReadyTestController implements Initializable {
             if (executionCodeError)
                 thereIsAnError = true;
 
-            if (sumOfPoints < 100)
-            {
+            if (sumOfPoints < 100) {
                 thereIsAnError = true;
                 pointsSumError = true;
             }
@@ -194,14 +210,39 @@ public class MakeReadyTestController implements Initializable {
                 errorAlert.setHeaderText(codeErrorMessage);
             else if (pointsSumError)
                 errorAlert.setHeaderText(pointsErrorMessage);
-            else {
-                System.out.println("yes");
-
+            else
                 needToShowAlert = false;
-            }
 
             if (needToShowAlert)
                 errorAlert.showAndWait();
+        } else {
+
+            readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
+            readyTest.setCode(executionCodeTextField.getText());
+            readyTest.setActive(activeCheckBox.isSelected());
+            readyTest.setManual(activeCheckBox.isSelected());
+            readyTest.setModifiedPoints(updatedHashMap);
+
+            Task<Response> task = new Task<Response>() {
+                @Override
+                protected Response call() throws Exception {
+                    responseFromServer = null;
+                    CommandInterface command = new CreateReadyTestCommand(readyTest);
+                    client.getHstsClientInterface().sendCommandToServer(command);
+
+                    // Waiting for server confirmation
+                    while (responseFromServer == null) {
+                        Thread.sleep(10);
+                    }
+                    return responseFromServer;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
+                executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
+                executeTestCreatedAlert.showAndWait();
+            });
+            new Thread(task).start();
         }
     }
 
@@ -220,13 +261,10 @@ public class MakeReadyTestController implements Initializable {
             }
             return false;
         }
-        else {
+        else
             return true;
-        }
     }
 
-    public void onExitButtonClick(javafx.event.ActionEvent actionEvent) {
-    }
 
     public void generateExecutionCode(javafx.event.ActionEvent actionEvent) {
 
@@ -254,31 +292,16 @@ public class MakeReadyTestController implements Initializable {
     }
 
     public void changePoints(TableColumn.CellEditEvent<QuestionTableView, String> questionTableViewStringCellEditEvent) {
-        QuestionTableView k = questionTableView.getSelectionModel().getSelectedItem();
-        k.setPoints(questionTableViewStringCellEditEvent.getNewValue());
+        QuestionTableView changedColumn = questionTableView.getSelectionModel().getSelectedItem();
+        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
 
         sumOfPoints = 0;
+        updatedHashMap.clear();
         for (QuestionTableView question : questionTableView.getItems())
         {
             sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
+            updatedHashMap.put(question, columnPoints.getCellObservableValue(question).getValue());
         }
         pointsLabel.setText(String.valueOf(sumOfPoints));
     }
 }
-
-/*
-        System.out.println(selectedTest + " Is selected");
-                bundle.put("id", selectedTest.getId());
-                bundle.put("test", selectedTest);
-                bundle.put("client", client);
-                bundle.put("user", user);
-                Scene scene = null;
-                try {
-                scene = new Scene(MainClass.loadFXML("MakeReadyTest"));
-                } catch (IOException e) {
-                e.printStackTrace();
-                }
-                Stage stage = (Stage) TestsTableView.getScene().getWindow();
-                stage.setScene(scene);
-                stage.setTitle("MakeReadyTest");
-                */

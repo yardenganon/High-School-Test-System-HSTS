@@ -95,8 +95,12 @@ public class HSTSClientInterface {
             ((CreateQuestionController) guiControllers.get(CreateQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
         if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName()))
-            ((MakeReadyTestController) guiControllers.get(MakeReadyTestController.class.getSimpleName()))
+            ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(CreateReadyTestCommand.class.getSimpleName()))
+            ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
     }
 
     public void closeConnection() {
