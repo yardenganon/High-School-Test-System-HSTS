@@ -19,21 +19,25 @@ public class TestController implements ControllerInterface {
         String commandName = command.getCommandName();
         Response responseMessage = new Response(commandName);
         Object returnedObject = null;
-        switch (commandName) {
-            case ("getReadyTestsByTeacherCommand"):
+        switch(commandName) {
+            case("CreateReadyTestCommand"):
+                returnedObject = testsRepository.pushReadyTest(((CreateReadyTestCommand) command).getReadyTest());
+            case("getReadyTestsByTeacherCommand"):
                 returnedObject = testsRepository.getReadyTestsByTeacher(
                         ((TestReadByTeacherCommand)command).getTeacherId());
-            case ("TestReadAllCommand") :
+            case("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;
-            case ("TestReadByIdCommand") :
+            case("TestReadByIdCommand") :
                 returnedObject = testsRepository.getTestById(
                         ((TestReadByIdCommand)command).getId()); break;
-            case ("TestReadBySubjectCommand") :
+            case("TestReadBySubjectCommand") :
                 returnedObject = testsRepository.getTestsBySubject(
                         ((TestReadBySubjectCommand) command).getSubjectName()); break;
-            case ("TestPushCommand") :
+            case("TestPushCommand") :
                 returnedObject = testsRepository.pushTest(
                         ((TestPushCommand)command).getNewTest()); break;
+            case("PushAnswerableTestCommand"):
+                returnedObject = testsRepository.pushAnswerableTest(((PushAnswerableTestCommand)command).getAnswerableTest());
             default:
                 System.out.println("Error - Command not found in controller");
         }

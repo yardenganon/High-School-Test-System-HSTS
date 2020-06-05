@@ -10,7 +10,6 @@ import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -100,7 +99,6 @@ public class TestsRepository {
             return readyTests;
     }
 
-
     public ReadyTest pushReadyTest(ReadyTest test) {
         ReadyTest newReadyTest = null;
         try {
@@ -157,7 +155,8 @@ public class TestsRepository {
         return answerableTest;
     }
 
-    public void pushAnswerableTest(AnswerableTest test) {
+    public AnswerableTest pushAnswerableTest(AnswerableTest test) {
+        AnswerableTest newAnserableTest = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Insert data here */
@@ -166,8 +165,10 @@ public class TestsRepository {
         } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session,exception);
         } finally {
+            newAnserableTest = getAnswerableTestById(test.getId());
             SessionFactoryGlobal.closeSession(session);
         }
+        return newAnserableTest;
     }
 
     public List<TestFacade> getTestsBySubject(String subject) {
