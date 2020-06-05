@@ -2,8 +2,6 @@ package il.ac.haifa.cs.HSTS.ocsf.client;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
-import il.ac.haifa.cs.HSTS.server.Entities.Question;
-
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -96,6 +94,13 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(QuestionPushCommand.class.getSimpleName()))
             ((CreateQuestionController) guiControllers.get(CreateQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName()))
+            ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(CreateReadyTestCommand.class.getSimpleName()))
+            ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
     }
 
     public void closeConnection() {
