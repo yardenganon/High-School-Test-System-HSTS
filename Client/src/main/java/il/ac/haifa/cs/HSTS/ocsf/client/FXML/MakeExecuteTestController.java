@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CreateReadyTestCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadByIdCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
@@ -24,8 +25,8 @@ import java.util.*;
 public class MakeExecuteTestController implements Initializable {
 
     User user;
-    public Test test;
-    public int testId;
+    private Test test;
+    private int testId;
     TestFacade selectedTest = null;
     private Response responseFromServer = null;
     private static List<Question> questionList = null;
@@ -81,14 +82,10 @@ public class MakeExecuteTestController implements Initializable {
     }
 
     public void initializeQuestionDetails() {
-
-        ShowQuestionList();
-
         Teacher teacher;
         teacher = ((Teacher) user);
         coursesComboBox.getItems().clear();
 
-        System.out.println(teacher.getCourses());
         Course courseForReadyTest = null;
         boolean firstLoop = true;
         for (Course course : teacher.getCourses()) {
@@ -101,13 +98,11 @@ public class MakeExecuteTestController implements Initializable {
 
         coursesComboBox.getSelectionModel().selectFirst();
         authorTextField.setText(selectedTest.getTeacherWriter());
-
         readyTest = new ReadyTest(test, executionCodeTextField.getText(), courseForReadyTest, teacher);
         readyTest.setActive(true);
         readyTest.setManual(false);
         readyTest.setModifiedTime(test.getTime());
 
-        readyTest.setModifierWriter(teacher);
         testTimeTextField.setText(String.valueOf(selectedTest.getTime()));
     }
 
@@ -129,6 +124,7 @@ public class MakeExecuteTestController implements Initializable {
         };
         task.setOnSucceeded(e -> {
             test = (Test) responseFromServer.getReturnedObject();
+            System.out.println(test);
             columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("question"));
             columnPoints.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("points"));
             columnPoints.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -144,6 +140,9 @@ public class MakeExecuteTestController implements Initializable {
             }
             questionTableView.setItems(questionsOL);
             pointsLabel.setText(String.valueOf(sumOfPoints));
+
+            initializeQuestionDetails();
+
         });
         new Thread(task).start();
     }
@@ -162,13 +161,12 @@ public class MakeExecuteTestController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bundle = Bundle.getInstance();
-
         testId = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
         selectedTest = (TestFacade) bundle.get("test");
         user = (User) bundle.get("user");
         client.getHstsClientInterface().addGUIController(this);
-        initializeQuestionDetails();
+        ShowQuestionList();
     }
 
     public void confirmTest(javafx.event.ActionEvent actionEvent) {
@@ -234,15 +232,20 @@ public class MakeExecuteTestController implements Initializable {
                     while (responseFromServer == null) {
                         Thread.sleep(10);
                     }
+
                     return responseFromServer;
                 }
             };
             task.setOnSucceeded(e -> {
+                responseFromServer = task.getValue();
+                System.out.println(responseFromServer);
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
                 executeTestCreatedAlert.showAndWait();
             });
             new Thread(task).start();
+
+
         }
     }
 

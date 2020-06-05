@@ -21,10 +21,10 @@ public class TestController implements ControllerInterface {
         Object returnedObject = null;
         switch(commandName) {
             case("CreateReadyTestCommand"):
-                returnedObject = testsRepository.pushReadyTest(((CreateReadyTestCommand) command).getReadyTest());
+                returnedObject = testsRepository.pushReadyTest(((CreateReadyTestCommand) command).getReadyTest()); break;
             case("getReadyTestsByTeacherCommand"):
                 returnedObject = testsRepository.getReadyTestsByTeacher(
-                        ((TestReadByTeacherCommand)command).getTeacherId());
+                        ((TestReadByTeacherCommand)command).getTeacherId()); break;
             case("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll(); break;
             case("TestReadByIdCommand") :

@@ -318,4 +318,10 @@ public class TestsController implements Initializable {
             Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }
+
+    public void editTestRequest(ActionEvent actionEvent) {
+    }
+
+    public void confirmTestRequest(ActionEvent actionEvent) {
+    }
 }

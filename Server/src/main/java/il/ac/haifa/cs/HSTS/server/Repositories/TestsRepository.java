@@ -25,8 +25,8 @@ public class TestsRepository {
             session =  SessionFactoryGlobal.openSessionAndTransaction(session);
             /* Ask for data here */
             CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Test> criteriaQuery = builder.createQuery(Test.class);
-            Root<Test> root = criteriaQuery.from(Test.class);
+            CriteriaQuery<ReadyTest> criteriaQuery = builder.createQuery(ReadyTest.class);
+            Root<ReadyTest> root = criteriaQuery.from(ReadyTest.class);
             criteriaQuery.select(root).where(builder.equal(root.get("id"),id));
 
             Query query = session.createQuery(criteriaQuery);

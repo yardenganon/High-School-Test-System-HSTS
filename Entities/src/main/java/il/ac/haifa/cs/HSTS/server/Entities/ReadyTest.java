@@ -16,11 +16,11 @@ public class ReadyTest implements Serializable {
     private Boolean isActive;
     private String code;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "test_id")
     private Test test;
 
@@ -33,7 +33,7 @@ public class ReadyTest implements Serializable {
 
     private Integer modifiedTime;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "modifierteacher_id")
     private Teacher modifierWriter;
 
@@ -66,9 +66,11 @@ public class ReadyTest implements Serializable {
         this.answerableManualTests = new ArrayList<AnswerableManualTest>();
         this.timeExtensionRequests = new ArrayList<TimeExtensionRequest>();
 
+        /*
         course.addReadyTest(this);
         test.addReadyTest(this);
         modifierWriter.addReadyTest(this);
+         */
     }
 
     public Boolean getManual() {
