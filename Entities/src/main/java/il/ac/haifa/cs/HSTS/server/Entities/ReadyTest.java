@@ -59,7 +59,7 @@ public class ReadyTest implements Serializable {
         this.modifiedPoints = new HashMap<>();
         this.modifierWriter = modifierWriter;
         this.dateCreated = new Date();
-        for (Question question : test.getQuestionList())
+        for (Question question : test.getQuestionSet())
             modifiedPoints.put(question, test.getPoints().get(question));
 
         this.answerableTests = new ArrayList<AnswerableTest>();

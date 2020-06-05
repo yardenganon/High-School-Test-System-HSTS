@@ -1,13 +1,10 @@
 package il.ac.haifa.cs.HSTS.server.Entities;
 
-import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name = "answerableTest")
@@ -50,7 +47,9 @@ public class AnswerableTest implements Serializable {
         test.addAnswerableTest(this);
         student.addAnswerableTest(this);
     }
-
+    public Set<Question> getQuestionsSet() {
+        return this.test.getTest().getQuestionSet();
+    }
     public Status getAnswerableTestStatus() {
         return Teststatus;
     }
