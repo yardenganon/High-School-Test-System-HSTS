@@ -19,7 +19,7 @@
          <children>
             <HBox prefHeight="43.0" prefWidth="661.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Question Id" wrappingWidth="46.78312110900879">
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answe Id" wrappingWidth="46.78312110900879">
                      <font>
                         <Font size="10.0" />
                      </font>

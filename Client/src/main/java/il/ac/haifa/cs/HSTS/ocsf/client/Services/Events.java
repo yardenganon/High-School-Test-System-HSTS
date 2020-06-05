@@ -94,4 +94,17 @@ public class Events {
         stage.setScene(scene);
         stage.setTitle("Tests");
     }
+
+    public static void navigateCheckingTestsEvent(Button button)
+    {
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("TestChecking"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Test Checking");
+    }
 }

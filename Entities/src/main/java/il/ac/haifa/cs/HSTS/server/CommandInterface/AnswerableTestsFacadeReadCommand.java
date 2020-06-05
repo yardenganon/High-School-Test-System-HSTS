@@ -2,10 +2,10 @@ package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 
-public class getAnswerableTestsFacadeCommand extends CommandInterface{
+public class AnswerableTestsFacadeReadCommand extends CommandInterface{
     Teacher teacher;
 
-    public getAnswerableTestsFacadeCommand(Teacher teacher){
+    public AnswerableTestsFacadeReadCommand(Teacher teacher){
         this.teacher = teacher;
     }
 

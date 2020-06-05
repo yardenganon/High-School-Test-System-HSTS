@@ -4,7 +4,6 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.Entities.Test;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.ObservableList;
@@ -23,15 +22,13 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class TeacherTestCheckingController implements Initializable {
+public class TestCheckingController implements Initializable {
 
     public User user;
 
     private Response responseFromServer = null;
     private static List<TestFacade> testList = null;
     private ObservableList<TestFacade> testsOL = null;
-    private String subjectSelected = null;
-    Test selectedTest = null;
     private Bundle bundle;
 
     private HSTSClient client;
@@ -91,23 +88,36 @@ public class TeacherTestCheckingController implements Initializable {
 
     @FXML
     void editTestRequest(ActionEvent event) {
-        // popup another screen
+        /*
+    }
+        //TestFacade selectedTest = TestsTableView.getSelectionModel().getSelectedItem();
+        if (selectedTest != null) {
+            System.out.println(selectedTest + " Is selected");
+            bundle.put("id", selectedTest.getId());
+            bundle.put("test", selectedTest);
+            bundle.put("client", client);
+            bundle.put("user", user);
+            Scene scene = new Scene(MainClass.loadFXML("Check "));
+            Stage stage = (Stage) MakeExecuteTestButton.getScene().getWindow();
+            Stage secondaryStage = new Stage();
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("Make Execute Test");
+            secondaryStage.initModality(Modality.APPLICATION_MODAL);
+            secondaryStage.show();
+            */
+
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
-        client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
-        System.out.println(user);
+        client = (HSTSClient) bundle.get("client");
         client.getHstsClientInterface().addGUIController(this);
-        initializeUser();
+        helloLabel.setText("Hello " + user.getFirst_name());
         initializeTestsTable();
     }
 
-    public void initializeUser() {
-        helloLabel.setText("Hello " + user.getFirst_name());
-    }
 
     public void receivedRespondFromServer(Response response) {
         responseFromServer = response;

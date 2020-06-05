@@ -209,7 +209,6 @@ public class TestsController implements Initializable {
     public void initializeSubjectsComboBox() {
         if (user instanceof Teacher) {
             Teacher teacher = ((Teacher) user);
-            subjectsComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectsComboBox.getItems().add(subject.getSubjectName());
         }

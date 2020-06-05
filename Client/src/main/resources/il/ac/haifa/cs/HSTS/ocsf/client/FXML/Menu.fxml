@@ -59,5 +59,10 @@
             </Button>
          </children>
       </VBox>
+      <Button fx:id="checkingTestsButton" layoutX="666.0" layoutY="599.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

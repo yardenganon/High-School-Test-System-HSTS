@@ -15,9 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
 import java.awt.event.ActionEvent;
-import java.net.URL;
 import java.util.List;
-import java.util.ResourceBundle;
 
 public class CheckAnswerableTestController {
 
@@ -73,6 +71,7 @@ public class CheckAnswerableTestController {
         // לצרף ל-answrable את ההערה ואת הציון ואז לשלח לשרת
     }
 
+    /*
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
@@ -80,10 +79,10 @@ public class CheckAnswerableTestController {
         user = (User) bundle.get("user");
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
-        initializeUser();
-        initializeTestsTable();
+        //initializeUser();
+        //initializeTestsTable();
     }
-
+*/
 
 
 }
