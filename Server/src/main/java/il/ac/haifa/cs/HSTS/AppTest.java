@@ -18,15 +18,17 @@ public class AppTest {
     private static Session session;
 
     public static void main(String[] args){
-            //Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
-//            SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
-            //session = SessionFactoryGlobal.openSessionAndTransaction(session);
+        //Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+        SessionFactory sessionFactory = SessionFactoryGlobal.getSessionFactory();
+        session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            TestsRepository testsRepository = new TestsRepository();
-            System.out.println(GenericQueries.getById(Question.class,1));
-            System.out.println(GenericQueries.getById(Question.class,2));
-            System.out.println(GenericQueries.getById(AnswerableTest.class,1));
-            System.out.println(GenericQueries.getAll(Question.class));
+        UsersRepository usersRepository = new UsersRepository();
+        TestsRepository testsRepository = new TestsRepository();
 
+        Teacher teacher = (Teacher) usersRepository.login("Yaffa_Hamuza", "1234");
+
+        //System.out.println(testsRepository.getReadyTestsByTeacher(1));
+        System.out.println(testsRepository.getAnswerableTestsFacade(teacher));
+        //System.out.println(testsRepository.getReadyTestsByTeacher("1234"));
     }
 }

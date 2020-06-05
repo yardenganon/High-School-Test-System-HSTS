@@ -1,8 +1,9 @@
 package il.ac.haifa.cs.HSTS.server.Facade;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ReadyTestFacade {
+public class ReadyTestFacade implements Serializable {
     int id;
     String teacherWriter;
     //String subject;
