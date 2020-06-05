@@ -124,7 +124,7 @@ public class MakeExecuteTestController implements Initializable {
         };
         task.setOnSucceeded(e -> {
             test = (Test) responseFromServer.getReturnedObject();
-            System.out.println(test);
+
             columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("question"));
             columnPoints.setCellValueFactory(new PropertyValueFactory<QuestionTableView, String>("points"));
             columnPoints.setCellFactory(TextFieldTableCell.forTableColumn());
