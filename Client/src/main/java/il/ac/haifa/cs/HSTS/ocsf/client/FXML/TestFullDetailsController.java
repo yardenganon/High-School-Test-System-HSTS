@@ -2,22 +2,16 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
-import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
-import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -116,7 +110,7 @@ public class TestFullDetailsController implements Initializable {
         columnPoints.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("points"));
 
         questionsOL = FXCollections.observableArrayList();
-        for (Question question : test.getQuestionList()) {
+        for (Question question : test.getQuestionSet()) {
             questionsOL.add(new QuestionOfTestTableView(question.getQuestion(), question.getAnswer(1),
                     question.getAnswer(2), question.getAnswer(3), question.getAnswer(4),
                     question.getCorrectAnswer(), test.getPoints().get(question)));

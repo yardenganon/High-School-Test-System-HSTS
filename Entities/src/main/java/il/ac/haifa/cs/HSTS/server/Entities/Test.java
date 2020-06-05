@@ -106,7 +106,7 @@ public class Test implements Serializable {
         this.introduction = introduction;
     }
 
-    public Set<Question> getQuestionList() {
+    public Set<Question> getQuestionSet() {
         return questionList;
     }
 
