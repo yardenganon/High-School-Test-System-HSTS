@@ -37,7 +37,9 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.pushTest(
                         ((TestPushCommand)command).getNewTest()); break;
             case("PushAnswerableTestCommand"):
-                returnedObject = testsRepository.pushAnswerableTest(((PushAnswerableTestCommand)command).getAnswerableTest());
+                returnedObject = testsRepository.pushAnswerableTest(((PushAnswerableTestCommand)command).getAnswerableTest()); break;
+            case("getAnswerableTestsFacadeCommand"):
+                returnedObject = testsRepository.getAnswerableTestsFacade(((getAnswerableTestsFacadeCommand) command).getTeacher()); break;
             default:
                 System.out.println("Error - Command not found in controller");
         }
