@@ -210,7 +210,6 @@ public class TestsController implements Initializable {
     public void initializeSubjectsComboBox() {
         if (user instanceof Teacher) {
             Teacher teacher = ((Teacher) user);
-            subjectsComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectsComboBox.getItems().add(subject.getSubjectName());
         }
@@ -315,7 +314,7 @@ public class TestsController implements Initializable {
         else
         {
             Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-            needChooseTestAlert.setHeaderText("For making execute test you need to select a test and then push \"Make Execute Text\" button" );
+            needChooseTestAlert.setHeaderText("For making execute test you need to select a test and then push \"Make Execute Test\" button" );
             Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }
