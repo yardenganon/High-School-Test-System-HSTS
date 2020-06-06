@@ -13,23 +13,23 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="710.0" style="-fx-background-color: #D0D0D0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CheckAnswerableTestController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="718.0" style="-fx-background-color: #D0D0D0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CheckAnswerableTestController">
    <children>
-      <VBox layoutX="29.0" layoutY="83.0" prefHeight="496.0" prefWidth="650.0">
+      <VBox layoutX="14.0" layoutY="92.0" prefHeight="491.0" prefWidth="692.0">
          <children>
-            <HBox prefHeight="43.0" prefWidth="661.0">
+            <HBox prefHeight="34.0" prefWidth="654.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answe Id" wrappingWidth="46.78312110900879">
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Answerable Id" wrappingWidth="52.38315773010254">
                      <font>
                         <Font size="10.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="4.0" />
+                        <Insets left="5.0" top="4.0" />
                      </HBox.margin>
                   </Text>
                   <TextField fx:id="idTextField" disable="true" editable="false" prefHeight="26.0" prefWidth="155.0">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="20.0" />
                      </HBox.margin>
                      <effect>
                         <InnerShadow />
@@ -37,19 +37,19 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox prefHeight="43.0" prefWidth="476.0">
+            <HBox prefHeight="34.0" prefWidth="653.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Name" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="4.0" />
+                        <Insets left="5.0" top="4.0" />
                      </HBox.margin>
                   </Text>
                   <TextField fx:id="studentNameButton" disable="true" editable="false" prefHeight="26.0" prefWidth="155.0">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                      <effect>
                         <InnerShadow />
@@ -57,19 +57,19 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox prefHeight="43.0" prefWidth="476.0">
+            <HBox prefHeight="33.0" prefWidth="651.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="4.0" />
+                        <Insets left="5.0" top="4.0" />
                      </HBox.margin>
                   </Text>
                   <TextField fx:id="startTimeButton" disable="true" editable="false" prefHeight="26.0" prefWidth="155.0">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets left="25.0" />
                      </HBox.margin>
                      <effect>
                         <InnerShadow />
@@ -77,19 +77,19 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox prefHeight="43.0" prefWidth="476.0">
+            <HBox prefHeight="33.0" prefWidth="652.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="4.0" />
+                        <Insets left="5.0" top="4.0" />
                      </HBox.margin>
                   </Text>
                   <TextField fx:id="endTimeButton" disable="true" editable="false" prefHeight="26.0" prefWidth="155.0">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets bottom="10.0" left="25.0" />
                      </HBox.margin>
                      <effect>
                         <InnerShadow />
@@ -97,21 +97,14 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox prefHeight="238.0" prefWidth="650.0">
+            <HBox prefHeight="258.0" prefWidth="692.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions  details" wrappingWidth="74.78312110900879">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets top="4.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TableView fx:id="questionsTableView" fixedCellSize="0.0" prefHeight="242.0" prefWidth="558.0">
+                  <TableView fx:id="questionsTableView" fixedCellSize="0.0" prefHeight="258.0" prefWidth="698.0">
                      <columns>
-                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="362.4000274538994" text="question" />
-                        <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="95.20001220703125" text="Student Answer" />
-                        <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="99.99993896484375" text="Correct Answer" />
+                        <TableColumn fx:id="columnIdQuestion" editable="false" minWidth="0.0" prefWidth="42.39999485015869" text="Id" />
+                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="436.7999382019043" text="question" />
+                        <TableColumn fx:id="columnStudentAnswer" editable="false" minWidth="0.0" prefWidth="107.20001220703125" text="Student Answer" />
+                        <TableColumn fx:id="columnCorrectAnswer" editable="false" minWidth="0.0" prefWidth="114.4000244140625" text="Correct Answer   " />
                      </columns>
                      <effect>
                         <InnerShadow />
@@ -121,17 +114,17 @@
             </HBox>
             <HBox prefHeight="82.0" prefWidth="650.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment" wrappingWidth="47.58310890197754">
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment" wrappingWidth="51.58310890197754">
                      <font>
-                        <Font size="10.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="10.0" />
+                        <Insets left="5.0" top="15.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="commentTextField" editable="false" prefHeight="70.0" prefWidth="555.0">
+                  <TextField fx:id="commentTextField" editable="false" prefHeight="70.0" prefWidth="623.0">
                      <HBox.margin>
-                        <Insets left="30.0" top="10.0" />
+                        <Insets left="27.0" top="13.0" />
                      </HBox.margin>
                      <opaqueInsets>
                         <Insets />
@@ -146,16 +139,16 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="confirmTestButton" layoutX="504.0" layoutY="591.0" mnemonicParsing="false" onAction="#confirmTestRequest" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
+      <Button fx:id="confirmTestButton" layoutX="550.0" layoutY="587.0" mnemonicParsing="false" onAction="#confirmTestRequest" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Button>
-      <Text fill="#1434529e" layoutX="27.0" layoutY="603.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grade" wrappingWidth="47.58310890197754">
+      <Text fill="#1434529e" layoutX="20.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grade" wrappingWidth="47.58310890197754">
          <font>
-            <Font size="10.0" />
+            <Font name="System Bold" size="11.0" />
          </font>
       </Text>
-      <TextField fx:id="gradeButton" layoutX="105.0" layoutY="584.0" prefHeight="26.0" prefWidth="86.0" />
+      <TextField fx:id="gradeButton" layoutX="98.0" layoutY="584.0" onMouseClicked="#gradeOnClick" prefHeight="26.0" prefWidth="87.0" />
    </children>
 </AnchorPane>
