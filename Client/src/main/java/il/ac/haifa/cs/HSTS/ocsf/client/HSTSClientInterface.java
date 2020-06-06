@@ -76,7 +76,7 @@ public class HSTSClientInterface {
                     receivedRespondFromServer(serverResponse);
         }
 
-        if (serverResponse.getRespondName().equals(TestReadBySubjectCommand.class.getSimpleName())) {
+        if (serverResponse.getRespondName().equals(TestsFacadeReadBySubjectCommand.class.getSimpleName())) {
             // Getting questions asked for
             System.out.println("All testFacade received: " + serverResponse.getReturnedObject());
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).

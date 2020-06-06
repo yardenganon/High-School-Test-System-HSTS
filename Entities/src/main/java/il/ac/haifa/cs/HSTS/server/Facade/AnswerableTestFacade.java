@@ -20,6 +20,46 @@ public class AnswerableTestFacade implements Serializable {
         this.lastName = lastName;
     }
 
+    public Integer getAnswerableTestId() {
+        return answerableTestId;
+    }
+
+    public void setAnswerableTestId(Integer answerableTestId) {
+        this.answerableTestId = answerableTestId;
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     @Override
     public String toString() {
         return "AnswerableTestFacade{" +

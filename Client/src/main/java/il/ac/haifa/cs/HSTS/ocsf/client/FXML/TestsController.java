@@ -7,7 +7,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadByIdCommand;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadBySubjectCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestsFacadeReadBySubjectCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
@@ -246,7 +246,7 @@ public class TestsController implements Initializable {
                 if (user instanceof Teacher) {
                     subjectSelected = subjectsComboBox.getSelectionModel().getSelectedItem();
                     responseFromServer = null;
-                    CommandInterface command = new TestReadBySubjectCommand(subjectSelected);
+                    CommandInterface command = new TestsFacadeReadBySubjectCommand(subjectSelected);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     while (responseFromServer == null)
