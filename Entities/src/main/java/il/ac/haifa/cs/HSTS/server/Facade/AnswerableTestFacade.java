@@ -70,14 +70,4 @@ public class AnswerableTestFacade implements Serializable {
                 '}';
     }
 
-    public Integer getAnswerableTestId() { return answerableTestId; }
-
-    public Integer getScore() { return score; }
-
-    public String getCourseName() { return courseName; }
-
-    public String getFirstName() { return firstName; }
-
-    public String getLastName() { return lastName; }
-
 }

@@ -4,6 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateByIdCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -23,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -107,8 +107,8 @@ public class TestCheckingController implements Initializable {
                 protected Response call() throws Exception {
 
                     // Asking to update that the test was checked
-                    //CommandInterface command = new AnswerableTestUpdateById(checkedTestId, teacher);
-                    //client.getHstsClientInterface().sendCommandToServer(command);
+                    CommandInterface command = new AnswerableTestUpdateByIdCommand(checkedTestId, teacher);
+                    client.getHstsClientInterface().sendCommandToServer(command);
 
                     while (responseFromServer == null) {
                         Thread.sleep(10);
@@ -152,10 +152,14 @@ public class TestCheckingController implements Initializable {
             secondaryStage.setTitle("Check Answerable Test");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
             secondaryStage.show();
+            /*
             secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
                 theTestWasChecked = (boolean)bundle.get("ifTestWasChecked");
                 refreshList();
+
             });
+
+             */
         }
         else
         {
@@ -179,6 +183,7 @@ public class TestCheckingController implements Initializable {
 
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
+
         System.out.println("Command received in controller " + response);
     }
 
@@ -193,7 +198,6 @@ public class TestCheckingController implements Initializable {
                     // Asking unchecked tests of the teacher from server
                     CommandInterface command = new AnswerableTestsFacadeReadCommand(teacher);
                     client.getHstsClientInterface().sendCommandToServer(command);
-
                     while (responseFromServer == null) {
                         Thread.sleep(10);
                     }
@@ -201,8 +205,8 @@ public class TestCheckingController implements Initializable {
                 }
         };
         task.setOnSucceeded(e -> {
-
-            //List<AnswerableTestFacade> listOfAnswerableTestFacade = (AnswerableTestFacade) responseFromServer.getReturnedObject();
+            responseFromServer = task.getValue();
+            List<AnswerableTestFacade> listOfAnswerableTestFacade = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
 
             idColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("id"));
             courseColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("course"));
@@ -211,15 +215,13 @@ public class TestCheckingController implements Initializable {
 
             questionsOL = FXCollections.observableArrayList();
             sumOfTestsNeededToCheck = 0;
-/*
+
             for (AnswerableTestFacade answerableTestFacade : listOfAnswerableTestFacade) {
                 sumOfTestsNeededToCheck++;
                 questionsOL.add(new UncheckedTestTable(String.valueOf(answerableTestFacade.getAnswerableTestId()),
                         answerableTestFacade.getCourseName(), answerableTestFacade.getFirstName() +   answerableTestFacade.getLastName(),
                         String.valueOf(answerableTestFacade.getScore())));
             }
-
- */
             TestsTableView.setItems(questionsOL);
             numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
         });

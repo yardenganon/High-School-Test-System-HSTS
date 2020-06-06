@@ -29,7 +29,7 @@ public class CommandRouter {
         commandsMap.put(AnswerableTestReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
-        commandsMap.put(getAnswerableTestsFacadeCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
 
         System.out.println("Router initiated");

@@ -2,6 +2,8 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestReadCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
@@ -29,7 +31,7 @@ public class CheckAnswerableTestController implements Initializable {
     private ObservableList<TestFacade> testsOL = null;
     private String subjectSelected = null;
     private Bundle bundle;
-    int idTest;
+    private int idTest;
     private HSTSClient client;
     private AnswerableTest answerableTest;
     private ObservableList<UncheckedAnswerableTest> questionsOL = null;
@@ -76,9 +78,9 @@ public class CheckAnswerableTestController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
+        //idTest = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
-        idTest = (int) bundle.get("id");
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
         initializeAnswerableTest();
@@ -90,9 +92,9 @@ public class CheckAnswerableTestController implements Initializable {
             protected Response call() throws Exception {
 
                 // Asking the full answerable test that was selected
-                //CommandInterface command = new AnswerableTestReadCommand(idTest);
-                //client.getHstsClientInterface().sendCommandToServer(command);
-
+                idTest = 2;
+                CommandInterface command = new AnswerableTestReadCommand(idTest);
+                client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null) {
                     Thread.sleep(10);
                 }
@@ -104,10 +106,11 @@ public class CheckAnswerableTestController implements Initializable {
                 answerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
 
                 idTextField.setText(String.valueOf(idTest));
-                studentNameButton.setText(answerableTest.getStudent().getFirst_name() + "" +
+                studentNameButton.setText(answerableTest.getStudent().getFirst_name() + " " +
                         answerableTest.getStudent().getLast_name());
                 startTimeButton.setText(answerableTest.getTimeStarted().toString());
                 endTimeButton.setText(answerableTest.getTimeFinished().toString());
+                gradeButton.setText(String.valueOf(answerableTest.getScore()));
                 initializeQuestionTable();
         });
         new Thread(task).start();
@@ -188,5 +191,8 @@ public class CheckAnswerableTestController implements Initializable {
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
+    }
+
+    public void confirmTestRequest(javafx.event.ActionEvent actionEvent) {
     }
 }

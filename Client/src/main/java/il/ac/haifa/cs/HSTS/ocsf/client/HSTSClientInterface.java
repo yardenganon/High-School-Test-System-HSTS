@@ -2,7 +2,6 @@ package il.ac.haifa.cs.HSTS.ocsf.client;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
-import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -112,17 +111,18 @@ public class HSTSClientInterface {
             ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
-        if (serverResponse.getRespondName().equals(AnswerableTestFacade.class.getSimpleName()))
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-        /*
+
         if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName()))
             ((CheckAnswerableTestController) guiControllers.get(CheckAnswerableTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-        if (serverResponse.getRespondName().equals(AnswerableTestUpdateById.class.getSimpleName()))
+
+        if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-*/
+
     }
 
     public Map<String, Object> getGuiControllers() {
