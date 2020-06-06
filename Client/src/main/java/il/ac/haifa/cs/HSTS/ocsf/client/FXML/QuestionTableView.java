@@ -1,6 +1,10 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
-public class QuestionTableView {
+import com.sun.prism.Image;
+
+import java.io.Serializable;
+
+public class QuestionTableView implements Serializable {
     private String id;
     private String question;
     private String author;
