@@ -1,8 +1,7 @@
 package il.ac.haifa.cs.HSTS.server.Repositories;
 
-import il.ac.haifa.cs.HSTS.server.Entities.Subject;
-import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
 import org.hibernate.Session;
 import javax.persistence.Query;
@@ -56,6 +55,24 @@ public class UsersRepository {
         }
         return resultUser;
     }
+
+//    public Boolean checkIfstudentInCourse(Student student, String courseName){
+//        Boolean result = null;
+//        List<Course> coursesList;
+//        try{
+//            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+//
+//            Query<Course> query = session.createQuery("select from il.ac.haifa.cs.HSTS.server.Entities.Student m where m.courses");
+//            coursesList = query.list();
+//
+//        } catch (Exception exception){
+//            SessionFactoryGlobal.exceptionCaught(session, exception);
+//        } finally {
+//            SessionFactoryGlobal.closeSession(session);
+//        }
+//        return result;
+//    }
+
     public List<Subject> getSubjectsListByUsername(String username){
         User resultTeacher = null;
         List<Subject> subjectList = null;

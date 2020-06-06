@@ -55,6 +55,7 @@
             </Button>
          </children>
       </VBox>
+
       <AnchorPane fx:id="studentMenu" layoutX="248.0" prefHeight="649.0" prefWidth="595.0" visible="false">
          <children>
             <Button fx:id="enterCodeButton" layoutX="151.0" layoutY="564.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Enter Execution Code" textFill="WHITE">
@@ -64,5 +65,15 @@
             </Button>
          </children>
       </AnchorPane>
+
+      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="649.0" prefWidth="595.0" visible="false">
+         <children>
+            <Button fx:id="checkingTestsButton" layoutX="14.0" layoutY="601.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

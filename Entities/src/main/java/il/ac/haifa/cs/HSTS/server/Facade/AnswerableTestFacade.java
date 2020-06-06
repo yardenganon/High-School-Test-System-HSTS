@@ -1,6 +1,5 @@
 package il.ac.haifa.cs.HSTS.server.Facade;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 
 public class AnswerableTestFacade implements Serializable {
@@ -70,4 +69,5 @@ public class AnswerableTestFacade implements Serializable {
                 ", lastName='" + lastName + '\'' +
                 '}';
     }
+
 }

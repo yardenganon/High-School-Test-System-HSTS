@@ -6,19 +6,22 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
-import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.server.Entities.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -57,6 +60,12 @@ public class MenuController implements Initializable {
     private AnchorPane anchorPane;
 
     @FXML
+    private Button checkingTestsButton;
+
+    @FXML
+    private Pane teacherPane;
+
+    @FXML
     void goToTests(ActionEvent event) throws IOException {
         Events.navigateTestsEvent(goToTestsButton);
     }
@@ -76,6 +85,12 @@ public class MenuController implements Initializable {
         Events.navigateLogoutEvent(logoutButton);
     }
 
+
+    @FXML
+    void goToCheckingTests(ActionEvent event) {
+        Events.navigateCheckingTestsEvent(checkingTestsButton);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
@@ -84,6 +99,9 @@ public class MenuController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
+       if (user instanceof Teacher)
+            teacherPane.setVisible(true);
+     
         if (user instanceof Student)
             initStudentMenu();
     }
