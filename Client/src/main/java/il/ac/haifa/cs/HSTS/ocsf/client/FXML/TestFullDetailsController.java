@@ -56,6 +56,9 @@ public class TestFullDetailsController implements Initializable {
     private TableView<QuestionOfTestTableView> questionsTableView;
 
     @FXML
+    private TableColumn<QuestionOfTestTableView, String> columnId;
+
+    @FXML
     private TableColumn<QuestionOfTestTableView, String> columnQuestion;
 
     @FXML
@@ -81,7 +84,7 @@ public class TestFullDetailsController implements Initializable {
         bundle = Bundle.getInstance();
         test = (Test) bundle.get("test");
         client = (HSTSClient)bundle.get("client");
-        client.getHstsClientInterface().getGuiControllers().clear();
+        //client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
         initializeTestDetails();
@@ -102,6 +105,7 @@ public class TestFullDetailsController implements Initializable {
         commentTextField.setText(test.getCommentForTeachers());
         timeTextField.setText(test.getTime().toString());
 
+        columnId.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
         columnQuestion.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("question"));
         columnAnswer1.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer1"));
         columnAnswer2.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer2"));
@@ -112,7 +116,7 @@ public class TestFullDetailsController implements Initializable {
 
         questionsOL = FXCollections.observableArrayList();
         for (Question question : test.getQuestionSet()) {
-            questionsOL.add(new QuestionOfTestTableView(question.getQuestion(), question.getAnswer(1),
+            questionsOL.add(new QuestionOfTestTableView(question.getId(), question.getQuestion(), question.getAnswer(1),
                     question.getAnswer(2), question.getAnswer(3), question.getAnswer(4),
                     question.getCorrectAnswer(), test.getPoints().get(question)));
         }

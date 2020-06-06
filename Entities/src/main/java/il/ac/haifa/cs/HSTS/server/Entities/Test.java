@@ -56,9 +56,9 @@ public class Test implements Serializable {
         this.questionList = new HashSet<>();
         this.points = new HashMap<Question, Integer>(); // Mapping question to it's points
         this.writer = writer;
-        writer.addTest(this);
+        //writer.addTest(this);
         this.subject = subject;
-        subject.addTest(this);
+        //subject.addTest(this);
         this.dateCreated = new Date();
     }
 

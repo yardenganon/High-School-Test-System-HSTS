@@ -71,6 +71,15 @@ public class HSTSClientInterface {
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
+
+        if (serverResponse.getRespondName().equals(QuestionReadBySubjectCommand.class.getSimpleName())
+                && guiControllers.get(CreateTestController.class.getSimpleName()) != null) {
+            // Getting questions asked for
+            System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
+            ((CreateTestController) guiControllers.get(CreateTestController.class.getSimpleName())).
+                    receivedRespondFromServer(serverResponse);
+        }
+
         if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())
                 && guiControllers.get(QuestionsController.class.getSimpleName()) != null) {
             // Getting questions asked for
@@ -109,6 +118,18 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(CreateReadyTestCommand.class.getSimpleName())
                 && guiControllers.get(MakeExecuteTestController.class.getSimpleName()) != null)
             ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName()))
+            ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName()))
+            ((CheckAnswerableTestController) guiControllers.get(CheckAnswerableTestController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
+            ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
     }
