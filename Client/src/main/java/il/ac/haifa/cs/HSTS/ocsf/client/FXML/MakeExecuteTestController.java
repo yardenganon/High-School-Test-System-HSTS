@@ -165,6 +165,7 @@ public class MakeExecuteTestController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         selectedTest = (TestFacade) bundle.get("test");
         user = (User) bundle.get("user");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         ShowQuestionList();
     }

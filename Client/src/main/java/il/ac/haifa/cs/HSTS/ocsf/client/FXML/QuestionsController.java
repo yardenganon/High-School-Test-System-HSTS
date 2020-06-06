@@ -177,6 +177,7 @@ public class QuestionsController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
         System.out.println(user);
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         initializeUser();
         initializeQuestionsTable();

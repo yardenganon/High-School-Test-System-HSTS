@@ -128,8 +128,8 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bundle = Bundle.getInstance();
         client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
-
         EventHandler<KeyEvent> enterLoginEvent = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
