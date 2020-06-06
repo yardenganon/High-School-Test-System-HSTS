@@ -7,6 +7,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
+import il.ac.haifa.cs.HSTS.server.Entities.Student;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import javafx.event.ActionEvent;
@@ -102,7 +103,7 @@ public class MenuController implements Initializable {
        if (user instanceof Teacher)
             teacherPane.setVisible(true);
      
-        if (user instanceof Student)
+       if (user instanceof Student)
             initStudentMenu();
     }
     public void initStudentMenu() {
