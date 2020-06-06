@@ -130,7 +130,7 @@ public class TeacherTestCheckingController implements Initializable {
                 if (user instanceof Teacher) {
                     subjectSelected = subjectsComboBox.getSelectionModel().getSelectedItem();
                     responseFromServer = null;
-                    CommandInterface command = new TestReadBySubjectCommand(subjectSelected);
+                    CommandInterface command = new TestsFacadeReadBySubjectCommand(subjectSelected);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     while (responseFromServer == null)
