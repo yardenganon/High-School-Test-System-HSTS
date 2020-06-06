@@ -1,9 +1,9 @@
 package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
-public class TestReadByTeacherCommand extends CommandInterface{
+public class ReadyTestFacadeReadByTeacherCommand extends CommandInterface{
     private int teacherId;
 
-    public TestReadByTeacherCommand(int teacherId){
+    public ReadyTestFacadeReadByTeacherCommand(int teacherId){
         this.teacherId = teacherId;
     }
 

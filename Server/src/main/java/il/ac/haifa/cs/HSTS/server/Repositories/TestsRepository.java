@@ -5,8 +5,8 @@ import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 import org.hibernate.Session;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -57,7 +57,7 @@ public class TestsRepository {
         return newTest;
     }
 
-    public List<TestFacade> getTestsBySubject(String subject) {
+    public List<TestFacade> getTestsFacadeBySubject(String subject) {
         List<TestFacade> results = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -115,7 +115,7 @@ public class TestsRepository {
         return newReadyTest;
     }
 
-    public ReadyTestFacade getReadyTestsByTeacher(String readyTestCode){
+    public ReadyTestFacade getReadyTestsFacadeByExecutionCode(String readyTestCode){
         ReadyTestFacade readyTest = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -134,7 +134,7 @@ public class TestsRepository {
         return readyTest;
     }
 
-    public List<ReadyTestFacade> getReadyTestsByTeacher(int id){
+    public List<ReadyTestFacade> getReadyTestsFacadeByTeacherId(int id){
         List<ReadyTestFacade> readyTests = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
@@ -153,23 +153,39 @@ public class TestsRepository {
         return readyTests;
     }
     /* ----------------------------------------------AnswerableTest-------------------------------------------- */
-    public AnswerableTest getAnswerableTestByStudent(Student student){
+    public AnswerableTest getAnswerableTestByStudent(Student student, ReadyTestFacade readyTestFacade){
         AnswerableTest answerableTest = null;
-        int studentGeneratedId = student.getIdNumber();
         try{
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            NativeQuery query = session.createSQLQuery("select*from answerableteset where student_id = :studentId");
-            query.setParameter("studentId", studentGeneratedId);
-            answerableTest = (AnswerableTest) query.getSingleResult();
+            Query<AnswerableTest> query = session.createQuery("from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.test.code =: code and m.student.id =: studentId");
+            query.setParameter("studentId", student.getId()).setParameter("code", readyTestFacade.getCode());
+            answerableTest = query.getSingleResult();
 
             SessionFactoryGlobal.closeTransaction(session);
-        } catch (Exception exception){
+        } catch (Exception exception) {
             SessionFactoryGlobal.exceptionCaught(session, exception);
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
         return answerableTest;
+    }
+
+    public AnswerableTest updateAnswerableTest(AnswerableTest test) {
+        AnswerableTest updatedAnswerableTest = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Insert data here */
+            session.update(test);
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            updatedAnswerableTest = getAnswerableTestById(test.getId());
+            System.out.println(updatedAnswerableTest);
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return updatedAnswerableTest;
     }
 
     public AnswerableTest getAnswerableTestById(int id){
@@ -210,13 +226,31 @@ public class TestsRepository {
         return newAnserableTest;
     }
 
+    public List<AnswerableTestFacade> updateAnswerableTestById(int id, Teacher teacher){
+        List<AnswerableTestFacade> answerableTestsFacade = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            Query<AnswerableTestFacade> query = session.createQuery("update il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest set isChecked =: true where id =: testId");
+            query.setParameter("true", true).setParameter("testId", id);
+            query.executeUpdate();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+            answerableTestsFacade = getAnswerableTestsFacade(teacher);
+        }
+        return answerableTestsFacade;
+    }
+
     public List<AnswerableTestFacade> getAnswerableTestsFacade(Teacher teacher){
         List<AnswerableTestFacade> answerableTestsFacade = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             Query<AnswerableTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade(m.id, m.score, m.test.course.courseName, m.student.first_name, m.student.last_name)"
-                    + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.test.isActive =: false and m.test.modifierWriter.id =: teacherId");
-            query.setParameter("false", false).setParameter("teacherId", teacher.getId());
+                    + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.answerableTestStatus =: notActive and m.test.modifierWriter.id =: teacherId and m.isChecked =: false2");
+            query.setParameter("notActive", Status.TestNotActive).setParameter("teacherId", teacher.getId()).setParameter("false2", false);
             answerableTestsFacade = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);

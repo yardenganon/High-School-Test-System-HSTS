@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//command router
 public class CommandRouter {
     private final Map<String, ControllerInterface> commandsMap;
 
@@ -22,12 +21,15 @@ public class CommandRouter {
         commandsMap.put(QuestionPushCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllers.get(2));
-        commandsMap.put(TestReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(TestsFacadeReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestPushCommand.class.getSimpleName(), controllers.get(2));
-        commandsMap.put(TestReadByTeacherCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(ReadyTestFacadeReadByTeacherCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(CreateReadyTestCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(PushAnswerableTestCommand.class.getSimpleName(), controllers.get(2));
-        commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestReadCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestUpdateByIdCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(getAnswerableTestsFacadeCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
 
         System.out.println("Router initiated");

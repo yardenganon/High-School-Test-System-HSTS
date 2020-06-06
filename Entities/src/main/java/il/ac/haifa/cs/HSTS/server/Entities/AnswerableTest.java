@@ -33,7 +33,7 @@ public class AnswerableTest implements Serializable {
     private Integer score;
     private Boolean isChecked;
     private String teacherComment;
-    private Status Teststatus;
+    private Status answerableTestStatus;
 
     public AnswerableTest() {
     }
@@ -43,6 +43,7 @@ public class AnswerableTest implements Serializable {
         this.student = student;
         this.answers = new HashMap<>();
         this.timeStarted = new Date();
+        this.answerableTestStatus = Status.TestNotActive;
 
         test.addAnswerableTest(this);
         student.addAnswerableTest(this);
@@ -50,12 +51,13 @@ public class AnswerableTest implements Serializable {
     public Set<Question> getQuestionsSet() {
         return this.test.getTest().getQuestionSet();
     }
+
     public Status getAnswerableTestStatus() {
-        return Teststatus;
+        return answerableTestStatus;
     }
 
     public void setAnswerableTestStatus(Status status){
-        this.Teststatus = status;
+        this.answerableTestStatus = status;
     }
 
     public int getId() {

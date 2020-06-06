@@ -1,9 +1,9 @@
 package il.ac.haifa.cs.HSTS.server.CommandInterface;
 
-public class TestReadBySubjectCommand extends CommandInterface {
+public class TestsFacadeReadBySubjectCommand extends CommandInterface {
     String subjectName;
 
-    public TestReadBySubjectCommand(String subject){
+    public TestsFacadeReadBySubjectCommand(String subject){
         this.subjectName = subject;
     }
 

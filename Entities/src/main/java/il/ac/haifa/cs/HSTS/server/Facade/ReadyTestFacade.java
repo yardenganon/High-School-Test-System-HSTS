@@ -6,10 +6,8 @@ import java.util.Date;
 public class ReadyTestFacade implements Serializable {
     int id;
     String teacherWriter;
-    //String subject;
     String courseName;
     Date dateCreated;
-    //int numberOfQuestions;
     int time;
     private Boolean isManual;
     private Boolean isActive;
@@ -21,9 +19,7 @@ public class ReadyTestFacade implements Serializable {
                            int time, Boolean isManual, Boolean isActive, String code) {
         this.id = id;
         this.teacherWriter = teacherWriter;
-        //this.subject = subject;
         this.dateCreated = dateCreated;
-        //this.numberOfQuestions = numberOfQuestions;
         this.time = time;
         this.isActive = isActive;
         this.isManual = isManual;
