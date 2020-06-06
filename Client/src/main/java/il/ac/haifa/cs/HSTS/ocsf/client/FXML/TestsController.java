@@ -270,6 +270,7 @@ public class TestsController implements Initializable {
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
             progressIndicator.stop();
+            System.out.println("hello");
             testList = (List<TestFacade>) responseFromServer.getReturnedObject();
             columnId.setCellValueFactory(new PropertyValueFactory<TestFacade, String>("id"));
             columnSubject.setCellValueFactory(new PropertyValueFactory<TestFacade, String>("subject"));
