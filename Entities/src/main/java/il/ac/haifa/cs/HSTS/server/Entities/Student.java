@@ -38,14 +38,6 @@ public class Student extends User implements Serializable {
         this.answerableManualTests.add(answerableManualTest);
     }
 
-    public Boolean isInCourse(String courseName){
-        for(Course course : this.courses){
-            if(courseName.equals(course.courseName))
-                return true;
-        }
-        return false;
-    }
-
     public List<Course> getCourses() {
         return courses;
     }
