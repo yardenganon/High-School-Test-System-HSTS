@@ -73,6 +73,9 @@ public class TestInProgressController implements Initializable {
     private Timer timer;
     private int hours, minutes, seconds;
 
+    // ExtraTime in minutes
+    private int extraTime;
+
 
 
     @Override
@@ -83,15 +86,12 @@ public class TestInProgressController implements Initializable {
         initRadioButtons();
         initHBox();
         loadQuestion(1);
-        initTimer(1);
+        initTimer(answerableTest.getTest().getModifiedTime());
         initNumberOfQuestions();
-
     }
     public void endTest(){
         // endTestLogic
         System.out.println("Time is up....");
-
-
     }
     public void initQuestionsFromAnswerableTest() {
         Set<Question> questionsSet = this.answerableTest.getQuestionsSet();
@@ -238,6 +238,10 @@ public class TestInProgressController implements Initializable {
         numberOfQuestionsAnswered = 0;
         numberOfQuestions = questionList.size();
         questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
+    }
+
+    public void addExtraTime(int extraTime){
+        this.extraTime = extraTime;
     }
 
     public void initDummyData() {
