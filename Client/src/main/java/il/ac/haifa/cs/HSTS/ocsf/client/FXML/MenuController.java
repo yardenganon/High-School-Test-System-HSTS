@@ -70,6 +70,7 @@ public class MenuController implements Initializable {
         bundle = Bundle.getInstance();
         user = (User) bundle.get("user");
         client = (HSTSClient) bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
     }
