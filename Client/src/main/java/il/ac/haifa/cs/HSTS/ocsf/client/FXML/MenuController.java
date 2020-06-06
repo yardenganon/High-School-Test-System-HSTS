@@ -10,10 +10,15 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +44,12 @@ public class MenuController implements Initializable {
 
     @FXML
     private Button aboutButton;
+
+    @FXML
+    private AnchorPane studentMenu;
+
+    @FXML
+    private Button enterCodeButton;
 
     @FXML
     private Button logoutButton;
@@ -73,5 +84,24 @@ public class MenuController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
+        if (user instanceof Student)
+            initStudentMenu();
+    }
+    public void initStudentMenu() {
+        studentMenu.setVisible(true);
+        enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            Scene scene = null;
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    scene = new Scene(MainClass.loadFXML("EnterExecutionCodePopup"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.show();
+            }
+        });
     }
 }
