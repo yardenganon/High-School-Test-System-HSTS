@@ -60,45 +60,55 @@ public class HSTSClientInterface {
         System.out.println("Command received from server : " + serverResponse.getRespondName());
         System.out.println("Command returned object : " + (serverResponse.getReturnedObject() != null ? serverResponse.getReturnedObject() : "null"));
 
-        if (serverResponse.getRespondName().equals(LoginCommand.class.getSimpleName())){
+        if (serverResponse.getRespondName().equals(LoginCommand.class.getSimpleName())
+                && guiControllers.get(LoginController.class.getSimpleName()) != null){
             ((LoginController) guiControllers.get(LoginController.class.getSimpleName()))
                     .receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals(QuestionReadBySubjectCommand.class.getSimpleName())) {
+        if (serverResponse.getRespondName().equals(QuestionReadBySubjectCommand.class.getSimpleName())
+                && guiControllers.get(QuestionsController.class.getSimpleName()) != null) {
             // Getting questions asked for
             System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())) {
+        if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())
+                && guiControllers.get(QuestionsController.class.getSimpleName()) != null) {
             // Getting questions asked for
             System.out.println("All question received: " + serverResponse.getReturnedObject());
             ((QuestionsController) guiControllers.get(QuestionsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
 
-        if (serverResponse.getRespondName().equals(TestsFacadeReadBySubjectCommand.class.getSimpleName())) {
-            // Getting questions asked for
+        if (serverResponse.getRespondName().equals(TestsFacadeReadBySubjectCommand.class.getSimpleName())
+                && guiControllers.get(TestsController.class.getSimpleName()) != null) {
             System.out.println("All testFacade received: " + serverResponse.getReturnedObject());
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())) {
-            // Getting questions asked for
+        if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())
+                && guiControllers.get(TestsController.class.getSimpleName()) != null) {
             System.out.println("Test received: " + serverResponse.getReturnedObject());
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
                     receivedRespondFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName()))
+        if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName())
+                && guiControllers.get(EditQuestionController.class.getSimpleName()) != null)
             ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-        if (serverResponse.getRespondName().equals(QuestionPushCommand.class.getSimpleName()))
+
+        if (serverResponse.getRespondName().equals(QuestionPushCommand.class.getSimpleName())
+                && guiControllers.get(CreateQuestionController.class.getSimpleName()) != null)
             ((CreateQuestionController) guiControllers.get(CreateQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-        if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName()))
+
+        if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())
+                && guiControllers.get(MakeExecuteTestController.class.getSimpleName()) != null)
             ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-        if (serverResponse.getRespondName().equals(CreateReadyTestCommand.class.getSimpleName()))
+
+        if (serverResponse.getRespondName().equals(CreateReadyTestCommand.class.getSimpleName())
+                && guiControllers.get(MakeExecuteTestController.class.getSimpleName()) != null)
             ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
@@ -113,6 +123,10 @@ public class HSTSClientInterface {
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 */
+    }
+
+    public Map<String, Object> getGuiControllers() {
+        return guiControllers;
     }
 
     public void closeConnection() {

@@ -81,6 +81,7 @@ public class TestFullDetailsController implements Initializable {
         bundle = Bundle.getInstance();
         test = (Test) bundle.get("test");
         client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
         initializeTestDetails();

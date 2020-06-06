@@ -185,6 +185,7 @@ public class EditQuestionController implements Initializable {
         bundle = Bundle.getInstance();
         question = (Question) bundle.get("question");
         client = (HSTSClient)bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
         initializeQuestionDetails();
