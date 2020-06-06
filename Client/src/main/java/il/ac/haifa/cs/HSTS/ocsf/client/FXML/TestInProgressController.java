@@ -1,6 +1,10 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.server.Entities.*;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.MapChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +16,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.text.DateFormat;
@@ -22,7 +28,15 @@ import java.util.*;
 public class TestInProgressController implements Initializable {
 
     @FXML
-    private Label questionTextLabel, questionNumberLabel, timerLabel, courseLabel, testLable;
+    private Label questionTextLabel, questionNumberLabel, courseLabel, testLable;
+    @FXML
+    private Label hoursLabel;
+
+    @FXML
+    private Label minutesLabel;
+
+    @FXML
+    private Label secondsLabel;
 
     @FXML
     private RadioButton answer1RadioBtn, answer2RadioBtn, answer3RadioBtn, answer4RadioBtn;
@@ -48,13 +62,16 @@ public class TestInProgressController implements Initializable {
     private List<Question> questionList;
     private Question questionSelected;
     private int questionNumber;
+    
+    private Map<Question,Integer> answers;
 
     private AnswerableTest answerableTest;
+    private int numberOfQuestionsAnswered;
+    private int numberOfQuestions;
 
     // Timer
     private Timer timer;
-    private TimerTask timerTask;
-
+    private int hours, minutes, seconds;
 
 
 
@@ -63,11 +80,16 @@ public class TestInProgressController implements Initializable {
         // Dummy init
         initDummyData();
         initQuestionsFromAnswerableTest();
-
         initRadioButtons();
         initHBox();
         loadQuestion(1);
-        initTimer();
+        initTimer(1);
+        initNumberOfQuestions();
+
+    }
+    public void endTest(){
+        // endTestLogic
+        System.out.println("Time is up....");
 
 
     }
@@ -76,20 +98,43 @@ public class TestInProgressController implements Initializable {
         questionList = new ArrayList<>();
         for (Question question : questionsSet)
             questionList.add(question);
+        answers = this.answerableTest.getAnswers();
     }
-    public void initTimer() {
-        String input = "10:10:10";
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        Date date = null;
-//        String dateString = dateFormat.format(date);
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-//                timerLabel.setText(dateString);
-//                dateString = dateString
-            }
-        };
-
+    public void initTimer(int timeInMinutes) {
+        // init Hours, Minutes, Seconds
+        hours = timeInMinutes / 60;
+        minutes = timeInMinutes % 60;
+        seconds = 0;
+        hoursLabel.setText(String.valueOf(hours));
+        minutesLabel.setText(String.valueOf(minutes));
+        secondsLabel.setText(String.valueOf(seconds));
+        timer = new Timer();
+        timer.schedule(new updateTimeLabel(), 0, 1000);
+    }
+    class updateTimeLabel extends TimerTask{
+        @Override
+        public void run() {
+            Platform.runLater(() ->{
+                seconds--;
+                System.out.println("Hours: "+hours+ " Minutes: "+minutes+ " Seconds: "+seconds);
+                if (hours == (minutes) && minutes == (seconds) && seconds == (0)) {
+                    this.cancel();
+                    endTest();
+                }
+                else if (minutes == (0) && seconds == (-1)) {
+                    hours--;
+                    minutes = 59;
+                    seconds = 59;
+                }
+                else if (seconds == -1) {
+                    minutes--;
+                    seconds = 59;
+                }
+                secondsLabel.setText(String.valueOf(seconds));
+                minutesLabel.setText(String.valueOf(minutes));
+                hoursLabel.setText(String.valueOf(hours));
+            });
+        }
     }
     public void initHBox() {
         questionsLabelsList = new ArrayList<>();
@@ -117,6 +162,24 @@ public class TestInProgressController implements Initializable {
         answer2RadioBtn.setToggleGroup(group);
         answer3RadioBtn.setToggleGroup(group);
         answer4RadioBtn.setToggleGroup(group);
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+            @Override
+            public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
+                if (group.getSelectedToggle() != null) {
+                    if (group.getSelectedToggle() == answer1RadioBtn)
+                        answers.put(questionSelected,1);
+                    else if (group.getSelectedToggle() == answer2RadioBtn)
+                        answers.put(questionSelected,2);
+                    else if (group.getSelectedToggle() == answer3RadioBtn)
+                        answers.put(questionSelected,3);
+                    else if (group.getSelectedToggle() == answer4RadioBtn)
+                        answers.put(questionSelected,4);
+                }
+                numberOfQuestionsAnswered = answers.size();
+                questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
+            }
+        });
 
         rightArrowPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,26 +215,32 @@ public class TestInProgressController implements Initializable {
         answer2RadioBtn.setText(questionSelected.getAnswer(2));
         answer3RadioBtn.setText(questionSelected.getAnswer(3));
         answer4RadioBtn.setText(questionSelected.getAnswer(4));
+        loadQuestionAnswer();
+    }
+    public void loadQuestionAnswer() {
+        if (answers.get(questionSelected) == null) {
+            group.selectToggle(null);
+        }
+        else {
+            switch (answers.get(questionSelected)) {
+                case 1:
+                    group.selectToggle(answer1RadioBtn); break;
+                case 2:
+                    group.selectToggle(answer2RadioBtn); break;
+                case 3:
+                    group.selectToggle(answer3RadioBtn); break;
+                case 4:
+                    group.selectToggle(answer4RadioBtn); break;
+            }
+        }
+    }
+    public void initNumberOfQuestions() {
+        numberOfQuestionsAnswered = 0;
+        numberOfQuestions = questionList.size();
+        questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
     }
 
-
-
     public void initDummyData() {
-//        Question question = new Question("Solve that equation: X+5=10","3","2","5","4.5",3,
-//                new Teacher(("iodot_com"),"1234","k@gmil.com","simon","koli","male"),
-//                new Subject("Math"));
-//        Question question2 = new Question("Solve that equation: X+7=17","3","2","10","4.5",3,
-//                new Teacher(("iodot_com"),"1234","k@gmil.com","simon","koli","male"),
-//                new Subject("Math"));
-//        Question question3 = new Question("The value of x + x(x^x) when x = 2 is:","10","16","19","36",1,
-//                new Teacher(("io23dot_com"),"12234","k@gmil22.com","s22imon","ko2li","male"),
-//                new Subject("Math"));
-//        questionList = new ArrayList<>();
-//        questionList.add(question);
-//        questionList.add(question2);
-//        questionList.add(question3);
-
-
         Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
 
         Subject subject2 = new Subject("Science");
@@ -188,12 +257,10 @@ public class TestInProgressController implements Initializable {
         Question question19 = new Question("Find the value of 3 + 2 • (8 – 3):","25","13","17","24",2,teacher2,subject2);
         Question question20 = new Question("Factor: 16w^3 – u^4 * w^3:","w^3(4 + u^2)(2 + u)(2 - u)","w^3(4 + u^2)(2 - u)","w^3(4 + u^2)(2 + u)","w^3(4 + u^2)(4 + u)",1,teacher2,subject2);
 
-
         Student student = new Student("yoav_ben_haim","1234","yovavi@gmail.com","Yoav","Ben Haim","Male");
         Student student1 = new Student("yarden_ganon","1234","yardenganon@gmail.com","Yarden","Ganon","Male");
         Student student2 = new Student("daniel_levi","1234","levidaniel@gmail.com","Daniel","Levi","Female");
         Student student3 = new Student("ohad_fridman","1234","ohadfridman@gmail.com","Ohad","Fridman","Male");
-
 
         Course scienceADV = new Course("ScienceADV", subject2,teacher2);
         scienceADV.addStudent(student);
@@ -213,7 +280,6 @@ public class TestInProgressController implements Initializable {
         test.setEpilogue("Good Luck");
         test.setIntroduction("Answer all questions please, every question = 10 points");
         test.setTime(20);
-
 
         ReadyTest readyTest = new ReadyTest(test, "1234",scienceADV,teacher2);
 
