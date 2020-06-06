@@ -66,10 +66,10 @@
          <children>
             <TableView fx:id="TestsTableView" prefHeight="447.0" prefWidth="632.0">
                <columns>
-                  <TableColumn fx:id="columnId" prefWidth="35.99998474121094" text="Test Id" />
-                  <TableColumn fx:id="columnSubject" prefWidth="124.79998779296875" text="Course Name" />
-                  <TableColumn fx:id="columnCreationDate" prefWidth="195.99993896484375" text="Student Name" />
-                  <TableColumn fx:id="columnQuestionsNumber" prefWidth="126.4000244140625" text="Grade" />
+                  <TableColumn fx:id="idColumn" prefWidth="35.99998474121094" text="Test Id" />
+                  <TableColumn fx:id="courseColumn" prefWidth="124.79998779296875" text="Course Name" />
+                  <TableColumn fx:id="studentNameColumn" prefWidth="195.99993896484375" text="Student Name" />
+                  <TableColumn fx:id="gradeColumn" prefWidth="126.4000244140625" text="Grade" />
                </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
