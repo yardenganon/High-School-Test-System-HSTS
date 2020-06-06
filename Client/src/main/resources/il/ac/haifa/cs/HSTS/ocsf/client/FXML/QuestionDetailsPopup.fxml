@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="305.0" prefWidth="298.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.QuestionDetailsPopup">
+   <children>
+      <Label fx:id="idLabel" layoutX="14.0" layoutY="14.0" text="-" />
+      <Label fx:id="writerLabel" layoutX="135.0" layoutY="14.0" text="-" />
+      <Label fx:id="subjectLabel" layoutX="243.0" layoutY="14.0" text="-" />
+      <Label fx:id="questionLabel" alignment="TOP_LEFT" layoutX="12.0" layoutY="54.0" prefHeight="60.0" prefWidth="274.0" text="-" />
+      <Label fx:id="answer1Label" layoutX="29.0" layoutY="135.0" text="-" />
+      <Label fx:id="answer2Label" layoutX="29.0" layoutY="164.0" text="-" />
+      <Label fx:id="answer3Label" layoutX="29.0" layoutY="195.0" text="-" />
+      <Label fx:id="answer4Label" layoutX="29.0" layoutY="226.0" text="-" />
+      <Label fx:id="text" layoutX="89.0" layoutY="273.0" prefHeight="17.0" prefWidth="120.0" text="Correct answer is bold" textAlignment="CENTER">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
