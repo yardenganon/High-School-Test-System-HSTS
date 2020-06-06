@@ -110,6 +110,11 @@ public class HSTSClientInterface {
                 && guiControllers.get(MakeExecuteTestController.class.getSimpleName()) != null)
             ((MakeExecuteTestController) guiControllers.get(MakeExecuteTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(RequestAnswerableTestCommand.class.getSimpleName())
+                && guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()) != null)
+            ((EnterExecutionCodePopup) guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
 
     }
 
