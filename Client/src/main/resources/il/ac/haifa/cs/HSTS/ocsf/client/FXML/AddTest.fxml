@@ -19,7 +19,7 @@
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="843.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CreateTestController">
    <children>
-      <VBox layoutX="273.0" layoutY="96.0" prefHeight="474.0" prefWidth="476.0">
+      <VBox layoutX="273.0" layoutY="96.0" prefHeight="474.0" prefWidth="555.0">
          <children>
             <HBox prefHeight="66.0" prefWidth="436.0">
                <children>
@@ -31,7 +31,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="authorTextField" editable="false" prefHeight="25.0" prefWidth="447.0">
+                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="479.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -48,14 +48,14 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <ComboBox fx:id="subjectComboBox" prefHeight="25.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
+                  <ComboBox fx:id="subjectComboBox" onAction="#subjectSelect" prefHeight="25.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
             </HBox>
-            <HBox prefHeight="134.0" prefWidth="440.0">
+            <HBox prefHeight="146.0" prefWidth="476.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions to choose" wrappingWidth="76.38309669494629">
                      <font>
@@ -65,15 +65,38 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <ListView prefHeight="134.0" prefWidth="407.0" />
+                  <ListView fx:id="questionsListView" prefHeight="133.0" prefWidth="479.0" />
                </children>
                <VBox.margin>
-                  <Insets bottom="45.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="143.0" prefWidth="460.0">
+            <HBox prefHeight="68.0" prefWidth="476.0" style="-fx-background-color: #DCDCDC;">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions selected" wrappingWidth="76.38309669494629">
+                  <ImageView fx:id="addQuestionImageView" fitHeight="64.0" fitWidth="64.0" onMouseClicked="#addQuestion" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                     <HBox.margin>
+                        <Insets left="240.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@Images/arrow.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="removeQuestionImageView" fitHeight="64.0" fitWidth="64.0" onMouseClicked="#removeQuestion" pickOnBounds="true" preserveRatio="true">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                     <image>
+                        <Image url="@Images/arrow.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox prefHeight="161.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions selected" wrappingWidth="70.78312110900879">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -81,10 +104,16 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TableView prefHeight="143.0" prefWidth="403.0">
+                  <TableView fx:id="questionsTableView" editable="true" prefHeight="148.0" prefWidth="484.0">
                     <columns>
-                      <TableColumn prefWidth="343.1999633908272" text="question" />
-                      <TableColumn minWidth="0.0" prefWidth="60.0" text="points" />
+                       <TableColumn fx:id="idColumn" editable="false" prefWidth="26.400023639202118" text="id" />
+                       <TableColumn fx:id="questionColumn" editable="false" prefWidth="109.59997940063477" text="question" />
+                       <TableColumn fx:id="answer1Column" editable="false" prefWidth="63.199981689453125" text="answer1" />
+                       <TableColumn fx:id="answer2Column" editable="false" prefWidth="68.0" text="answer2" />
+                       <TableColumn fx:id="answer3Column" editable="false" prefWidth="60.00001525878906" text="answer3" />
+                       <TableColumn fx:id="answer4Column" editable="false" prefWidth="58.4000244140625" text="answer4" />
+                       <TableColumn fx:id="correctAnswerColumn" editable="false" prefWidth="48.7999267578125" text="correct" />
+                      <TableColumn fx:id="pointsColumn" editable="true" minWidth="0.0" onEditCommit="#editPoint" prefWidth="43.2000732421875" text="points" />
                     </columns>
                   </TableView>
                </children>

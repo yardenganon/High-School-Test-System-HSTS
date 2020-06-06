@@ -159,13 +159,14 @@
                   </Text>
                   <TableView fx:id="questionsTableView" prefHeight="166.0" prefWidth="769.0">
                      <columns>
+                        <TableColumn fx:id="columnId" editable="false" prefWidth="20" text="id" />
                         <TableColumn fx:id="columnQuestion" editable="false" prefWidth="223.19991606473923" text="question" />
                         <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="90.40007019042969" text="answer1" />
                          <TableColumn fx:id="columnAnswer2" editable="false" minWidth="0.0" prefWidth="112.80001831054688" text="answer2" />
                          <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="118.39996337890625" text="answer3" />
-                         <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="121.5999755859375" text="answer4" />
-                         <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="53.5999755859375" text="correct" />
-                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="47.99996337890627" text="points" />
+                         <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="104.7999267578125" text="answer4" />
+                         <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="45.5999755859375" text="correct" />
+                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="53.5999755859375" text="points" />
                      </columns>
                   </TableView>
                </children>
