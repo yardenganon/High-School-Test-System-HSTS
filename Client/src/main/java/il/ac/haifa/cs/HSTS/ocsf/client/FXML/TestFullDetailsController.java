@@ -118,7 +118,7 @@ public class TestFullDetailsController implements Initializable {
         for (Question question : test.getQuestionSet()) {
             questionsOL.add(new QuestionOfTestTableView(question.getId(), question.getQuestion(), question.getAnswer(1),
                     question.getAnswer(2), question.getAnswer(3), question.getAnswer(4),
-                    question.getCorrectAnswer(), test.getPoints().get(question)));
+                    question.getCorrectAnswer(), test.getPoints().get(question).toString()));
         }
         questionsTableView.setItems(questionsOL);
     }

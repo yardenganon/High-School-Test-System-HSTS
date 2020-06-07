@@ -10,7 +10,7 @@ public class QuestionOfTestTableView {
     private String answer3;
     private String answer4;
     private int correctAnswer;
-    private int points;
+    private String points;
 
     public void setId(int id) {
         this.id = id;
@@ -40,12 +40,12 @@ public class QuestionOfTestTableView {
         this.correctAnswer = correctAnswer;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(String points) {
         this.points = points;
     }
 
     public QuestionOfTestTableView(int id, String question, String answer1, String answer2, String answer3,
-                                   String answer4, int correctAnswer, int points) {
+                                   String answer4, int correctAnswer, String points) {
         this.id = id;
         this.question = question;
         this.answer1 = answer1;
@@ -93,7 +93,7 @@ public class QuestionOfTestTableView {
         return correctAnswer;
     }
 
-    public int getPoints() {
+    public String getPoints() {
         return points;
     }
 }

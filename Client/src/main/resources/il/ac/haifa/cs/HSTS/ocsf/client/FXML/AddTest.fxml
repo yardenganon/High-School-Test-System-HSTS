@@ -19,7 +19,7 @@
 
 <AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="843.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CreateTestController">
    <children>
-      <VBox layoutX="273.0" layoutY="96.0" prefHeight="474.0" prefWidth="555.0">
+      <VBox layoutX="273.0" layoutY="56.0" prefHeight="538.0" prefWidth="555.0">
          <children>
             <HBox prefHeight="66.0" prefWidth="436.0">
                <children>
@@ -31,9 +31,9 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="479.0">
+                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="492.0">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets bottom="10.0" left="30.0" />
                      </HBox.margin>
                   </TextField>
                </children>
@@ -50,14 +50,14 @@
                   </Text>
                   <ComboBox fx:id="subjectComboBox" onAction="#subjectSelect" prefHeight="25.0" prefWidth="545.0" style="-fx-background-color: #ffffff;">
                      <HBox.margin>
-                        <Insets left="30.0" />
+                        <Insets bottom="10.0" left="30.0" />
                      </HBox.margin>
                   </ComboBox>
                </children>
             </HBox>
-            <HBox prefHeight="146.0" prefWidth="476.0">
+            <HBox prefHeight="66.0" prefWidth="436.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions to choose" wrappingWidth="76.38309669494629">
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Comment" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -65,20 +65,99 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <ListView fx:id="questionsListView" prefHeight="133.0" prefWidth="479.0" />
+                  <TextField fx:id="commentTextField" prefHeight="26.0" prefWidth="479.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="66.0" prefWidth="436.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Epilogue" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="epilogueTextField" prefHeight="26.0" prefWidth="479.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="66.0" prefWidth="436.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Intro" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="introductionTextField" prefHeight="26.0" prefWidth="479.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="66.0" prefWidth="436.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="time" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="timeTextField" onMouseClicked="#timeOnMouseClicked" prefHeight="26.0" prefWidth="479.0">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="118.0" prefWidth="555.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions to choose" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <ListView fx:id="questionsListView" prefHeight="99.0" prefWidth="478.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin></ListView>
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </HBox>
-            <HBox prefHeight="68.0" prefWidth="476.0" style="-fx-background-color: #DCDCDC;">
+            <HBox prefHeight="64.0" prefWidth="503.0" style="-fx-background-color: #DCDCDC;">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
                <children>
+                  <Text fx:id="errorLabel" fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="151.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Text>
                   <ImageView fx:id="addQuestionImageView" fitHeight="64.0" fitWidth="64.0" onMouseClicked="#addQuestion" pickOnBounds="true" preserveRatio="true" rotate="180.0">
                      <HBox.margin>
-                        <Insets left="240.0" />
+                        <Insets left="100.0" />
                      </HBox.margin>
                      <image>
                         <Image url="@Images/arrow.png" />
@@ -94,7 +173,7 @@
                   </ImageView>
                </children>
             </HBox>
-            <HBox prefHeight="161.0" prefWidth="476.0">
+            <HBox prefHeight="134.0" prefWidth="555.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="questions selected" wrappingWidth="70.78312110900879">
                      <font>
@@ -104,7 +183,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TableView fx:id="questionsTableView" editable="true" prefHeight="148.0" prefWidth="484.0">
+                  <TableView fx:id="questionsTableView" editable="true" prefHeight="122.0" prefWidth="484.0">
                     <columns>
                        <TableColumn fx:id="idColumn" editable="false" prefWidth="26.400023639202118" text="id" />
                        <TableColumn fx:id="questionColumn" editable="false" prefWidth="109.59997940063477" text="question" />
@@ -113,14 +192,17 @@
                        <TableColumn fx:id="answer3Column" editable="false" prefWidth="60.00001525878906" text="answer3" />
                        <TableColumn fx:id="answer4Column" editable="false" prefWidth="58.4000244140625" text="answer4" />
                        <TableColumn fx:id="correctAnswerColumn" editable="false" prefWidth="48.7999267578125" text="correct" />
-                      <TableColumn fx:id="pointsColumn" editable="true" minWidth="0.0" onEditCommit="#editPoint" prefWidth="43.2000732421875" text="points" />
+                      <TableColumn fx:id="pointsColumn" editable="true" minWidth="0.0" onEditCommit="#editPoints" prefWidth="43.2000732421875" text="points" />
                     </columns>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </TableView>
                </children>
             </HBox>
          </children>
       </VBox>
-      <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Create Test" textFill="#143452">
+      <Label layoutX="264.0" prefHeight="50.0" prefWidth="206.0" text="Create Test" textFill="#143452">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
@@ -183,23 +265,17 @@
             </Button>
          </children>
       </VBox>
-      <HBox layoutX="483.0" layoutY="581.0" prefHeight="36.0" prefWidth="247.0" style="-fx-background-color: #DCDCDC;">
-         <children>
-            <Button fx:id="confirmTestButton" mnemonicParsing="false" onAction="#confirmTest" prefHeight="36.0" prefWidth="183.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <font>
-                  <Font name="System Bold" size="14.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <Text fill="#1434529e" layoutX="283.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="points sum" wrappingWidth="77.18308448791504">
+      <HBox layoutX="483.0" layoutY="605.0" prefHeight="36.0" prefWidth="247.0" style="-fx-background-color: #DCDCDC;" />
+      <Text fill="#1434529e" layoutX="281.0" layoutY="621.0" strokeType="OUTSIDE" strokeWidth="0.0" text="points sum" wrappingWidth="77.18308448791504">
          <font>
             <Font size="10.0" />
          </font>
       </Text>
-      <Label fx:id="SumOfPointsLabel" alignment="CENTER" layoutX="348.0" layoutY="590.0" prefHeight="15.0" prefWidth="64.0" text="0" />
+      <Label fx:id="SumOfPointsLabel" alignment="CENTER" layoutX="348.0" layoutY="608.0" prefHeight="15.0" prefWidth="64.0" text="0" />
+      <Button fx:id="confirmTestButton" layoutX="484.0" layoutY="605.0" mnemonicParsing="false" onAction="#confirmTest" prefHeight="36.0" prefWidth="183.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

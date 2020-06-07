@@ -19,22 +19,27 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
 
+import javax.crypto.spec.PSource;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
-public class CreateTestController implements Initializable {
+public class CreateTestController implements Initializable, Serializable {
 
     public User user;
     public Test test;
     private List<Question> questionList = null;
     private Response responseFromServer = null;
     private ObservableList<String> questionsOL = null;
-    //private Map<QuestionOfTestTableView, Question> mapQuestions = new HashMap<QuestionOfTestTableView, Question>();
+    //Map<Question, Integer> questionPointsMap = new HashMap<>();
     private static boolean thereIsAnError = false;
-    private String subjectSelected = null;
+    private Integer sumOfPoints = 0;
+    private Subject subjectSelected = null;
     private Question questionChosenToAdd = null;
     private Question questionChosenToRemove = null;
     Bundle bundle;
@@ -49,6 +54,18 @@ public class CreateTestController implements Initializable {
 
     @FXML
     private ComboBox<String> subjectComboBox;
+
+    @FXML
+    private TextField commentTextField;
+
+    @FXML
+    private TextField epilogueTextField;
+
+    @FXML
+    private TextField introductionTextField;
+
+    @FXML
+    private TextField timeTextField;
 
     @FXML
     private ListView<String> questionsListView;
@@ -84,7 +101,11 @@ public class CreateTestController implements Initializable {
     private TableColumn<QuestionOfTestTableView, String> correctAnswerColumn;
 
     @FXML
-    private TableColumn<QuestionOfTestTableView, Integer> pointsColumn;
+    private TableColumn<QuestionOfTestTableView, String> pointsColumn;
+
+
+    @FXML
+    private Text errorLabel;
 
     @FXML
     private Label helloLB;
@@ -133,6 +154,7 @@ public class CreateTestController implements Initializable {
         questionsListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
+                System.out.println("listener add question code ");
                 selectQuestionToAdd();
             }
         });
@@ -140,6 +162,7 @@ public class CreateTestController implements Initializable {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 selectQuestionToRemove();
+                System.out.println("listener remove question code");
             }
         });
     }
@@ -151,59 +174,53 @@ public class CreateTestController implements Initializable {
         Optional<ButtonType> result = createTestAlert.showAndWait();
 
         /* If the teacher clicks OK, question details will be sent to the server after input checking */
-       /* if (result.isPresent() && result.get() == ButtonType.OK)
+        if (result.isPresent() && result.get() == ButtonType.OK)
         {
+            thereIsAnError = false;
+            errorLabel.setText("");
             // Input checking of TextField
-            if (questionTextField.getText().isEmpty())
-                inputErrorTextField(questionTextField);
-            if (answer1TextField.getText().isEmpty())
-                inputErrorTextField(answer1TextField);
-            if (answer2TextField.getText().isEmpty())
-                inputErrorTextField(answer2TextField);
-            if (answer3TextField.getText().isEmpty())
-                inputErrorTextField(answer3TextField);
-            if (answer4TextField.getText().isEmpty())
-                inputErrorTextField(answer4TextField);
+            if (timeTextField.getText().isEmpty())
+                inputErrorTextField(timeTextField);
+            try {
+                Integer.parseInt(timeTextField.getText());
+            }
+            catch (NumberFormatException e) {
+                //Not an integer
+                inputErrorTextField(timeTextField);
+            }
+            if (Integer.parseInt(SumOfPointsLabel.getText()) < 100)
+            {
+                errorLabel.setFill(Color.RED);
+                errorLabel.setText("No questions were selected and/or sum of test points is not 100");
+                thereIsAnError = true;
+            }
 
-            // If there are no input errors, request for creating question will be sent to the server
+
+            // If there are no input errors, request for creating test will be sent to the server
             if (!thereIsAnError) {
-
-                // Finding the selected subject for sending the object while creating the question
-                Subject selectedSubject = null;
-                if (user instanceof Teacher) {
-                    Teacher teacher = ((Teacher) user);
-                    List<Subject> listOfSubject = teacher.getSubjects();
-                    for (Subject subject : teacher.getSubjects())
-                    {
-                        if (subject.getSubjectName() == subjectComboBox.getSelectionModel().getSelectedItem())
-                        {
-                            selectedSubject = subject;
-                            break;
-                        }
-                    }
-                }
-
-                System.out.println(questionTextField.getText());
-                System.out.println(answer1TextField.getText());
-                System.out.println(answer2TextField.getText());
-                System.out.println(answer3TextField.getText());
-                System.out.println(answer4TextField.getText());
-                System.out.println(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
-                System.out.println(teacher.getFirst_name());
-                System.out.println(selectedSubject.getSubjectName());
-
-                // Creating the question
-                question = new Question(questionTextField.getText(), answer1TextField.getText(), answer2TextField.getText(), answer3TextField.getText(), answer4TextField.getText(),
-                        Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()), teacher, selectedSubject);
-
-                progressIndicator = new CustomProgressIndicator(anchorPane2);
+                // setting the test data
+                test.setSubject(subjectSelected);
+                test.setCommentForTeachers(commentTextField.getText());
+                test.setEpilogue(epilogueTextField.getText());
+                test.setIntroduction(introductionTextField.getText());
+                test.setTime(Integer.parseInt(timeTextField.getText()));
+                Set<Question> questionsOfTest = null;
+                /*for (Question q : questionPointsMap.keySet())
+                {
+                    System.out.println("question of test: " + q);
+                    test.getQuestionSet().add(q);
+                    test.setPointsToQuestion(q, questionPointsMap.get(q));
+                }*/
+                System.out.println("test: "+ test);
+                CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
                 progressIndicator.start();
 
                 responseFromServer = null;
                 Task<Response> task = new Task<Response>() {
                     @Override
                     protected Response call() throws Exception {
-                        CommandInterface command = new QuestionPushCommand(question);
+                        System.out.println(test);
+                        CommandInterface command = new TestPushCommand(test);
                         client.getHstsClientInterface().sendCommandToServer(command);
                         // Waiting for server confirmation
                         while (responseFromServer == null) {
@@ -215,16 +232,17 @@ public class CreateTestController implements Initializable {
                 task.setOnSucceeded(e -> {
                     responseFromServer = task.getValue();
                     progressIndicator.stop();
-                    question = (Question) responseFromServer.getReturnedObject();
-                    initializeQuestionDetails();
+                    test = (Test) responseFromServer.getReturnedObject();
+                    //initializeTestDetails();
+                    Events.navigateTestsEvent(confirmTestButton);
                     anchorPane.setDisable(false);
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
-                    updateSuccessAlert.setHeaderText("The question was successfully created");
+                    updateSuccessAlert.setHeaderText("The test was successfully created");
                     updateSuccessAlert.showAndWait();
                 });
                 new Thread(task).start();
             }
-        }*/
+        }
     }
 
     @FXML
@@ -244,7 +262,7 @@ public class CreateTestController implements Initializable {
 
     @FXML
     void goToTests(ActionEvent event) throws  IOException{
-        Events.navigateLogoutEvent(goToTestsButton);
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML
@@ -252,22 +270,26 @@ public class CreateTestController implements Initializable {
         Events.navigateLogoutEvent(logoutButton);
     }
 
-    public void receivedRespondFromServer(Response response){
+    public void receivedResponseFromServer(Response response){
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }
 
     public void initializeTestDetails()
     {
-        if (user instanceof Teacher) {
-            teacher = (Teacher) user;
+            System.out.println("user: " + user);
+            System.out.println("teacher: " + teacher);
             subjectComboBox.getItems().clear();
             for (Subject subject : teacher.getSubjects())
                 subjectComboBox.getItems().add(subject.getSubjectName());
             authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
-        }
-        resetFields();
-        refreshList();
+            subjectComboBox.getSelectionModel().selectFirst();
+            subjectSelect(new ActionEvent());
+            timeTextField.setText("");
+            epilogueTextField.setText("");
+            introductionTextField.setText("");
+            commentTextField.setText("");
+            questionsTableView.getItems().clear();
         helloLabel.setText("Hello " + user.getFirst_name());
     }
 
@@ -281,12 +303,11 @@ public class CreateTestController implements Initializable {
             protected Response call() throws Exception {
                 if (user instanceof Teacher) {
                     List<Subject> subjects = new ArrayList<Subject>();
-                    subjectSelected = subjectComboBox.getSelectionModel().getSelectedItem();
-                    Subject subjectSelectedType = null;
+                    String subjectSelectedType = subjectComboBox.getSelectionModel().getSelectedItem();
                     for (Subject sub : teacher.getSubjects())
                         if (sub.getSubjectName().equals(subjectSelected))
-                            subjectSelectedType = sub;
-                    subjects.add(subjectSelectedType);
+                            subjectSelected = sub;
+                    subjects.add(subjectSelected);
                     responseFromServer = null;
                     CommandInterface command = new QuestionReadBySubjectCommand(subjects);
                     client.getHstsClientInterface().sendCommandToServer(command);
@@ -321,6 +342,7 @@ public class CreateTestController implements Initializable {
             for (Question quest : questionList) {
                 questionsOL.add(quest.getQuestion());
             }
+            FXCollections.sort(questionsOL);
             questionsListView.getItems().addAll(questionsOL);
         });
         new Thread(task).start();
@@ -333,51 +355,25 @@ public class CreateTestController implements Initializable {
         thereIsAnError = true;
     }
 
-    public void resetFields()
-    {
-        //ResetRedColor();
-        subjectComboBox.getSelectionModel().selectFirst();
-    }
-
-    /*public void ResetRedColor()
-    {
-        questionTextField.setStyle("-fx-text-inner-color: #000000;");
-        answer1TextField.setStyle("-fx-text-inner-color: #000000;");
-        answer2TextField.setStyle("-fx-text-inner-color: #000000;");
-        answer3TextField.setStyle("-fx-text-inner-color: #000000;");
-        answer4TextField.setStyle("-fx-text-inner-color: #000000;");
-    }
-
     // That event sets textfield font color to black and remove the text only if he has an input error
-    public void questionOnMouseClicked(MouseEvent mouseEvent) {
-        if (questionTextField.getText().equals("Invalid input"))
-            ResetField(questionTextField);
+
+    @FXML
+    void timeOnMouseClicked(MouseEvent event) {
+        if (timeTextField.getText().equals("Invalid input")) {
+            timeTextField.setStyle("-fx-text-inner-color: #000000;");
+            timeTextField.setText("");
+        }
     }
-    public void answer1OnMouseClicked(MouseEvent mouseEvent) {
-        if (answer1TextField.getText().equals("Invalid input"))
-            ResetField(answer1TextField);
-    }
-    public void answer2OnMouseClicked(MouseEvent mouseEvent) {
-        if (answer2TextField.getText().equals("Invalid input"))
-            ResetField(answer2TextField);
-    }
-    public void answer3OnMouseClicked(MouseEvent mouseEvent) {
-        if (answer3TextField.getText().equals("Invalid input"))
-            ResetField(answer3TextField);
-    }
-    public void answer4OnMouseClicked(MouseEvent mouseEvent) {
-        if (answer4TextField.getText().equals("Invalid input"))
-            ResetField(answer4TextField);
-    }*/
 
     @FXML
     void subjectSelect(ActionEvent event) {
-        refreshList();
+        String subjectSelectedType = subjectComboBox.getSelectionModel().getSelectedItem();
         for (Subject subj : teacher.getSubjects())
-            if (subj.getSubjectName().equals(subjectSelected)) {
-                test.setSubject(subj);
+            if (subj.getSubjectName().equals(subjectSelectedType)) {
+                subjectSelected = subj;
                 break;
             }
+        refreshList();
         questionsTableView.getItems().clear();
     }
 
@@ -387,10 +383,12 @@ public class CreateTestController implements Initializable {
             for (Question quest : questionList) {
                 if (quest.getQuestion().equals(questionSelected)) {
                     questionChosenToAdd = quest;
-                    test.setPointsToQuestion(questionChosenToAdd, 0);
+                    break;
                 }
             }
         }
+        else
+            questionChosenToAdd = null;
     }
 
     void selectQuestionToRemove(){
@@ -399,15 +397,20 @@ public class CreateTestController implements Initializable {
             for (Question quest : questionList) {
                 if (quest.getId() == questionSelected.getId()) {
                     questionChosenToRemove = quest;
-                    test.getPoints().remove(questionChosenToRemove);
+                    break;
                 }
             }
         }
+        else
+            questionChosenToRemove = null;
     }
 
     @FXML
     void addQuestion(MouseEvent event) {
         if (questionChosenToAdd != null) {
+            test.getQuestionSet().add(questionChosenToAdd);
+            test.getPoints().put(questionChosenToAdd, 0);
+
             questionsListView.getItems().remove(questionsListView.getSelectionModel().getSelectedItem());
             idColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
             questionColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("question"));
@@ -416,19 +419,22 @@ public class CreateTestController implements Initializable {
             answer3Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer3"));
             answer4Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer4"));
             correctAnswerColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("correctAnswer"));
-            pointsColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, Integer>("points"));
-            pointsColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+            pointsColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("points"));
+            pointsColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 
             QuestionOfTestTableView questionAdded = new QuestionOfTestTableView(questionChosenToAdd.getId(),
                     questionChosenToAdd.getQuestion(), questionChosenToAdd.getAnswer(1),
                     questionChosenToAdd.getAnswer(2), questionChosenToAdd.getAnswer(3),
                     questionChosenToAdd.getAnswer(4), questionChosenToAdd.getCorrectAnswer(),
-                    test.getPoints().get(questionChosenToAdd));
+                    test.getPoints().get(questionChosenToAdd).toString());
 
             questionsTableView.getItems().add(questionAdded);
 
+            System.out.println("question: " + questionChosenToAdd);
+            System.out.println("all questions in points map: " + test.getPoints());
             //mapQuestions.put(questionAdded, questionChosenToAdd);
 
+            //questionChosenToAdd = null;
             selectQuestionToAdd();
         }
     }
@@ -436,16 +442,46 @@ public class CreateTestController implements Initializable {
     @FXML
     void removeQuestion(MouseEvent event) {
         if (questionChosenToRemove != null) {
-            questionsTableView.getItems().remove(questionsTableView.getSelectionModel().getSelectedItem());
-            //mapQuestions.remove(questionChosenToRemove);
+            test.getPoints().remove(questionChosenToRemove);
+            test.getQuestionSet().remove(questionChosenToRemove);
+
+            QuestionOfTestTableView currentQuestion = questionsTableView.getSelectionModel().getSelectedItem();
+            questionsTableView.getItems().remove(currentQuestion);
             questionsListView.getItems().add(questionChosenToRemove.getQuestion());
+            ObservableList<String> questionsRemovalObs = FXCollections.observableArrayList();
+            for (String quest : questionsListView.getItems()) {
+                questionsRemovalObs.add(quest);
+            }
+            FXCollections.sort(questionsRemovalObs);
+            questionsListView.getItems().clear();
+            questionsListView.getItems().addAll(questionsRemovalObs);
+            sumOfPoints -= Integer.parseInt(currentQuestion.getPoints());
+            SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
+            System.out.println("question: " + questionChosenToRemove);
+            System.out.println("all questions in points map: " + test.getPoints());
+            questionsRemovalObs.removeAll();
+
+            //questionChosenToRemove = null;
             selectQuestionToRemove();
         }
     }
 
-    @FXML
-    void editPoint(ActionEvent event) {
-        //QuestionOfTestTableView currentQuestion = questionsTableView.getSelectionModel().getSelectedItem();
+    public void editPoints(TableColumn.CellEditEvent<QuestionOfTestTableView, String> questionsTableViewIntegerCellEditEvent) {
+        QuestionOfTestTableView changedColumn = questionsTableView.getSelectionModel().getSelectedItem();
+        changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getNewValue());
+
+        for (Question quest : questionList){
+            if (quest.getId() == changedColumn.getId()) {
+                test.setPointsToQuestion(quest,Integer.parseInt(changedColumn.getPoints()));
+                break;
+            }
+        }
+
+        sumOfPoints = 0;
+        for (QuestionOfTestTableView quest : questionsTableView.getItems()){
+            sumOfPoints += Integer.parseInt(quest.getPoints());
+        }
+        SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
     }
 
 }
