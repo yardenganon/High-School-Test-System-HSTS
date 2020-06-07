@@ -22,10 +22,8 @@ public class TimeExtensionRequest implements Serializable {
     @JoinColumn(name = "readytest_id")
     ReadyTest test;
 
-    Principle principleHandled;
-
     Date dateInitiated;
-    Date handledByPrinciple;
+    Date dateHandledByPrinciple;
     String status;
     String description;
 
@@ -77,20 +75,20 @@ public class TimeExtensionRequest implements Serializable {
         this.dateInitiated = dateInitiated;
     }
 
-    public Date getHandledByPrinciple() {
-        return handledByPrinciple;
+    public Date getDateHandledByPrinciple() {
+        return dateHandledByPrinciple;
     }
 
-    public void setHandledByPrinciple(Date handledByPrinciple) {
-        this.handledByPrinciple = handledByPrinciple;
+    public void setDateHandledByPrinciple(Date dateHandledByPrinciple) {
+        this.dateHandledByPrinciple = dateHandledByPrinciple;
     }
 
     public Principle getPrincipleHandled() {
-        return principleHandled;
+        return principle;
     }
 
     public void setPrincipleHandled(Principle principleHandled) {
-        this.principleHandled = principleHandled;
+        this.principle = principleHandled;
     }
 
     public String getStatus() {
