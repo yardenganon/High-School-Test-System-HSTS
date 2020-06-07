@@ -185,7 +185,7 @@ public class TestsController implements Initializable {
         });
     }
 
-    public void receivedRespondFromServer(Response response) {
+    public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
     }

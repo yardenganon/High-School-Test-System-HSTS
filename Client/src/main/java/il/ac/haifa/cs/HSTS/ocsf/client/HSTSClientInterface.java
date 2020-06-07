@@ -77,7 +77,7 @@ public class HSTSClientInterface {
             // Getting questions asked for
             System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
             ((CreateTestController) guiControllers.get(CreateTestController.class.getSimpleName())).
-                    receivedRespondFromServer(serverResponse);
+                    receivedResponseFromServer(serverResponse);
         }
 
         if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())
@@ -92,13 +92,13 @@ public class HSTSClientInterface {
                 && guiControllers.get(TestsController.class.getSimpleName()) != null) {
             System.out.println("All testFacade received: " + serverResponse.getReturnedObject());
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
-                    receivedRespondFromServer(serverResponse);
+                    receivedResponseFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())
                 && guiControllers.get(TestsController.class.getSimpleName()) != null) {
             System.out.println("Test received: " + serverResponse.getReturnedObject());
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
-                    receivedRespondFromServer(serverResponse);
+                    receivedResponseFromServer(serverResponse);
         }
         if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName())
                 && guiControllers.get(EditQuestionController.class.getSimpleName()) != null)
@@ -109,6 +109,13 @@ public class HSTSClientInterface {
                 && guiControllers.get(CreateQuestionController.class.getSimpleName()) != null)
             ((CreateQuestionController) guiControllers.get(CreateQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(TestPushCommand.class.getSimpleName())
+                && guiControllers.get(CreateTestController.class.getSimpleName()) != null) {
+            System.out.println("Test received: " + serverResponse.getReturnedObject());
+            ((CreateTestController) guiControllers.get(CreateTestController.class.getSimpleName())).
+                    receivedResponseFromServer(serverResponse);
+        }
 
         if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())
                 && guiControllers.get(MakeExecuteTestController.class.getSimpleName()) != null)
