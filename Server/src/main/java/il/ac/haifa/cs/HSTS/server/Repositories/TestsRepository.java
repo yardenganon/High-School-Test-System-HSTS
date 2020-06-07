@@ -127,6 +127,8 @@ public class TestsRepository {
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
+            if(readyTest == null )
+                return readyTest;
             SessionFactoryGlobal.exceptionCaught(session, exception);
         } finally {
             SessionFactoryGlobal.closeSession(session);
@@ -164,6 +166,8 @@ public class TestsRepository {
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
+            if(answerableTest == null )
+                return answerableTest;
             SessionFactoryGlobal.exceptionCaught(session, exception);
         } finally {
             SessionFactoryGlobal.closeSession(session);

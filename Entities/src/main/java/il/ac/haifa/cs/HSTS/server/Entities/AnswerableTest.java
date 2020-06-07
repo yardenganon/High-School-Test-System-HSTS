@@ -45,8 +45,8 @@ public class AnswerableTest implements Serializable {
         this.timeStarted = new Date();
         this.answerableTestStatus = Status.TestNotActive;
 
-        test.addAnswerableTest(this);
-        student.addAnswerableTest(this);
+//        test.addAnswerableTest(this);
+//        student.addAnswerableTest(this);
     }
     public Set<Question> getQuestionsSet() {
         return this.test.getTest().getQuestionSet();
