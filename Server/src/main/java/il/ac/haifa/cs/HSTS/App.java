@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Repositories.QuestionsRepository;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -118,42 +119,42 @@ public class App {
             session.save(mathADV);
 
             Course mathDiscrete = new Course("DiscreteMath",subject,teacher);
-            mathADV.addStudent(student);
-            mathADV.addStudent(student1);
+            mathDiscrete.addStudent(student);
+            mathDiscrete.addStudent(student1);
             session.save(mathDiscrete);
 
             Course calculus = new Course("Calculus",subject,teacher);
-            mathADV.addStudent(student);
-            mathADV.addStudent(student3);
-            session.save(mathDiscrete);
+            calculus.addStudent(student);
+            calculus.addStudent(student3);
+            session.save(calculus);
 
             Course algebra = new Course("Algebra",subject,teacher);
-            mathADV.addStudent(student2);
-            mathADV.addStudent(student);
-            session.save(mathDiscrete);
+            algebra.addStudent(student2);
+            algebra.addStudent(student);
+            session.save(algebra);
 
             Course scienceADV = new Course("ScienceADV", subject2,teacher2);
             scienceADV.addStudent(student2);
             session.save(scienceADV);
 
             Course biology = new Course("Biology" ,subject2,teacher2);
-            scienceADV.addStudent(student);
-            scienceADV.addStudent(student2);
-            scienceADV.addStudent(student3);
-            scienceADV.addStudent(student1);
-            session.save(scienceADV);
+            biology.addStudent(student);
+            biology.addStudent(student2);
+            biology.addStudent(student3);
+            biology.addStudent(student1);
+            session.save(biology);
 
             Course physics = new Course("Physics" ,subject2,teacher2);
-            scienceADV.addStudent(student);
-            scienceADV.addStudent(student2);
-            scienceADV.addStudent(student1);
-            session.save(scienceADV);
+            physics.addStudent(student);
+            physics.addStudent(student2);
+            physics.addStudent(student1);
+            session.save(physics);
 
             Course probability = new Course("Probability",subject,teacher2);
-            scienceADV.addStudent(student3);
-            scienceADV.addStudent(student2);
-            scienceADV.addStudent(student1);
-            session.save(scienceADV);
+            probability.addStudent(student3);
+            probability.addStudent(student2);
+            probability.addStudent(student1);
+            session.save(probability);
 
             Test test = new Test(teacher,subject);
             test.addQuestion(question1,33);
@@ -167,6 +168,7 @@ public class App {
             ReadyTest readyTest = new ReadyTest(test, "1234", calculus, teacher);
             session.save(readyTest);
             AnswerableTest answerTest = new AnswerableTest(readyTest, student);
+            answerTest.setAnswerableTestStatus(Status.TestNotActive);
             session.save(answerTest);
             answerTest = new AnswerableTest(readyTest, student3);
             session.save(answerTest);

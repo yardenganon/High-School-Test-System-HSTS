@@ -1,16 +1,15 @@
 package il.ac.haifa.cs.HSTS.server.Repositories;
 
 import il.ac.haifa.cs.HSTS.server.Entities.*;
-import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
+import il.ac.haifa.cs.HSTS.server.Entities.Course;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
+import org.apache.poi.ss.formula.functions.T;
 import org.hibernate.Session;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.*;
 
 public class UsersRepository {
 
@@ -56,22 +55,32 @@ public class UsersRepository {
         return resultUser;
     }
 
-//    public Boolean checkIfstudentInCourse(Student student, String courseName){
-//        Boolean result = null;
-//        List<Course> coursesList;
-//        try{
-//            session = SessionFactoryGlobal.openSessionAndTransaction(session);
-//
-//            Query<Course> query = session.createQuery("select from il.ac.haifa.cs.HSTS.server.Entities.Student m where m.courses");
-//            coursesList = query.list();
-//
-//        } catch (Exception exception){
-//            SessionFactoryGlobal.exceptionCaught(session, exception);
-//        } finally {
-//            SessionFactoryGlobal.closeSession(session);
-//        }
-//        return result;
-//    }
+    public Boolean checkIfstudentInCourse(Student student, String courseName){
+        System.out.println(courseName);
+        Boolean result = false;
+        List<List<Course>> coursesListOfLists;
+        try{
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+
+            org.hibernate.query.Query<List<Course>> query = session.createQuery("select c from Course c join c.students s where s.id =: studentId");
+            query.setParameter("studentId", student.getId());
+            coursesListOfLists = query.list();
+
+            Set<List<Course>> set = new HashSet<>(coursesListOfLists);
+            for (Object c : set) {
+                Course course = (Course) c;
+                if (course.getCourseName().equals(courseName)){
+                    result = true;
+                }
+            }
+
+        } catch (Exception exception){
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return result;
+    }
 
     public List<Subject> getSubjectsListByUsername(String username){
         User resultTeacher = null;
