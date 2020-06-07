@@ -2,10 +2,14 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -80,6 +84,12 @@ public class TestInProgressController implements Initializable {
 
     private TestTimerTask testTimerTask;
 
+    private Response responseFromServer = null;
+
+    @FXML
+    void endTest(ActionEvent event) {
+        endTest();
+    }
 
 
     @Override
@@ -87,9 +97,12 @@ public class TestInProgressController implements Initializable {
         bundle = Bundle.getInstance();
         student = (Student) bundle.get("student");
         client = (HSTSClient) bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
+        client.getHstsClientInterface().addGUIController(this);
         // Dummy init
         //initDummyData();
         loadAnswerableTest();
+        testLable.setText(this.answerableTest.getTest().getTest().getIntroduction());
         initQuestionsFromAnswerableTest();
         initRadioButtons();
         initHBox();
@@ -106,6 +119,7 @@ public class TestInProgressController implements Initializable {
             System.out.println("Time is up....");
 
         // Send to check and update
+        sendAnswerableTestToServerForBackup(this.answerableTest);
 
     }
     public void initQuestionsFromAnswerableTest() {
@@ -328,6 +342,35 @@ public class TestInProgressController implements Initializable {
 
         AnswerableTest answerableTest = new AnswerableTest(readyTest, student);
         this.answerableTest = answerableTest;
+    }
+
+    public void sendAnswerableTestToServerForBackup(AnswerableTest answerableTest) {
+        Task<Response> task = new Task<Response>() {
+            @Override
+            protected Response call() throws Exception {
+                AnswerableTestUpdateCommand command = new AnswerableTestUpdateCommand(answerableTest);
+                client.getHstsClientInterface().sendCommandToServer(command);
+
+                while (responseFromServer == null)
+                    Thread.onSpinWait();
+
+                return responseFromServer;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            System.out.println(responseFromServer.getStatus());
+            AnswerableTest updatedAnswerableTest = (AnswerableTest)responseFromServer.getReturnedObject();
+            System.out.println(updatedAnswerableTest);
+            responseFromServer = null;
+
+            // Display test summary
+        });
+        new Thread(task).start();
+    }
+    public void receivedResponseFromServer(Response response) {
+        responseFromServer = response;
+        System.out.println("Command received in controller " + response);
     }
 }
 

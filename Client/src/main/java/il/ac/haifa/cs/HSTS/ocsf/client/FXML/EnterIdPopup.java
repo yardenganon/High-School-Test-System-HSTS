@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
 import il.ac.haifa.cs.HSTS.server.Entities.Student;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
@@ -71,9 +72,10 @@ public class EnterIdPopup implements Initializable {
                             if (testTimerTask !=null)
                                 testTimerTask.cancel();
                             bundle.remove("testTimerTask");
-                            // backup
-
-                            //System.exit(0);
+                            // backup\sent update answerableTest to server
+                            AnswerableTest answerableTest = (AnswerableTest) bundle.get("answerableTest");
+                            AnswerableTestUpdateCommand command = new AnswerableTestUpdateCommand(answerableTest);
+                            client.getHstsClientInterface().sendCommandToServer(command);
                         }
                     });
                 }

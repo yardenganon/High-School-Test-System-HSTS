@@ -134,6 +134,12 @@ public class HSTSClientInterface {
             ((CheckAnswerableTestController) guiControllers.get(CheckAnswerableTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
+        // Update answerableTest to TestInProgress
+        if (serverResponse.getRespondName().equals(AnswerableTestUpdateCommand.class.getSimpleName())
+                && guiControllers.get(TestInProgressController.class.getSimpleName()) != null)
+            ((TestInProgressController) guiControllers.get(TestInProgressController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
         if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName())
                 && guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()) != null)
         ((EnterExecutionCodePopup) guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()))
@@ -142,6 +148,7 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+
 
     }
 
