@@ -28,7 +28,7 @@ import java.util.*;
 public class TestInProgressController implements Initializable {
 
     @FXML
-    private Label questionTextLabel, questionNumberLabel, additionalTimeLabel, testLable;
+    private Label questionTextLabel, questionNumberLabel, additionalTimeLabel, testLable, bottomTestLable;
     @FXML
     private Label hoursLabel;
 
@@ -102,7 +102,7 @@ public class TestInProgressController implements Initializable {
         // Dummy init
         //initDummyData();
         loadAnswerableTest();
-        testLable.setText(this.answerableTest.getTest().getTest().getIntroduction());
+        loadIntroAndEpilogueText();
         initQuestionsFromAnswerableTest();
         initRadioButtons();
         initHBox();
@@ -111,6 +111,17 @@ public class TestInProgressController implements Initializable {
         notifyTestIsStarting();
         initTimer(answerableTest.getTest().getModifiedTime());
     }
+
+    public void loadIntroAndEpilogueText() {
+        String introduction = this.answerableTest.getTest().getTest().getIntroduction();
+        String epilogue = this.answerableTest.getTest().getTest().getEpilogue();
+        if (introduction != null)
+            testLable.setText(introduction);
+        if (epilogue !=null) {
+            bottomTestLable.setText(epilogue);
+        }
+    }
+
     public void endTest(){
         // endTestLogic
         if (this.testTimerTask != null){
