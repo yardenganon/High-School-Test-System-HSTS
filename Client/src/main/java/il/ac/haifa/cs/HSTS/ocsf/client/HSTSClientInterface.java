@@ -77,7 +77,7 @@ public class HSTSClientInterface {
             // Getting questions asked for
             System.out.println("subjects with question received: " + serverResponse.getReturnedObject());
             ((CreateTestController) guiControllers.get(CreateTestController.class.getSimpleName())).
-                    receivedResponseFromServer(serverResponse);
+                    receivedRespondFromServer(serverResponse);
         }
 
         if (serverResponse.getRespondName().equals(QuestionReadAllCommand.class.getSimpleName())
@@ -114,7 +114,7 @@ public class HSTSClientInterface {
                 && guiControllers.get(CreateTestController.class.getSimpleName()) != null) {
             System.out.println("Test received: " + serverResponse.getReturnedObject());
             ((CreateTestController) guiControllers.get(CreateTestController.class.getSimpleName())).
-                    receivedResponseFromServer(serverResponse);
+                    receivedRespondFromServer(serverResponse);
         }
 
         if (serverResponse.getRespondName().equals(TestReadByIdCommand.class.getSimpleName())
