@@ -18,7 +18,7 @@ public class UncheckedTestTable {
         return id;
     }
 
-    public String getcourseName() {
+    public String getCourseName() {
         return courseName;
     }
 
@@ -26,7 +26,7 @@ public class UncheckedTestTable {
         return studentName;
     }
 
-    public String getGrades() {
+    public String getGrade() {
         return grade;
     }
 

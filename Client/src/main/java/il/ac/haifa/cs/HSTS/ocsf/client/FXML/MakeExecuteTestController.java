@@ -185,8 +185,10 @@ public class MakeExecuteTestController implements Initializable {
 
             if (testTimeTextField.getText().isEmpty())
                 inputErrorTextField(testTimeTextField);
-            if (executionCodeTextField.getText().isEmpty())
+            if (executionCodeTextField.getText().isEmpty()) {
                 inputErrorTextField(executionCodeTextField);
+                executionCodeError = true;
+            }
             else executionCodeError = checkExecutionCode();
 
             if (executionCodeError)
@@ -218,8 +220,11 @@ public class MakeExecuteTestController implements Initializable {
             readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
             readyTest.setCode(executionCodeTextField.getText());
             readyTest.setActive(activeCheckBox.isSelected());
-            readyTest.setManual(activeCheckBox.isSelected());
+            readyTest.setManual(manualCheckBox.isSelected());
             readyTest.setModifiedPoints(updatedHashMap);
+
+            System.out.println("The hash is: " + updatedHashMap);
+
 
             Task<Response> task = new Task<Response>() {
                 @Override
@@ -303,7 +308,7 @@ public class MakeExecuteTestController implements Initializable {
         for (QuestionTableView question : questionTableView.getItems())
         {
             sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
-            updatedHashMap.put(question, columnPoints.getCellObservableValue(question).getValue());
+            updatedHashMap.put(question.getQuestion(), columnPoints.getCellObservableValue(question).getValue());
         }
         pointsLabel.setText(String.valueOf(sumOfPoints));
     }
