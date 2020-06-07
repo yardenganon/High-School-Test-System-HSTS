@@ -129,9 +129,15 @@ public class HSTSClientInterface {
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
-        if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName()))
+        if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName())
+                && guiControllers.get(CheckAnswerableTestController.class.getSimpleName()) != null)
             ((CheckAnswerableTestController) guiControllers.get(CheckAnswerableTestController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName())
+                && guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()) != null)
+        ((EnterExecutionCodePopup) guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()))
+                .receivedResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))

@@ -1,10 +1,11 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.MapChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,22 +17,19 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TestInProgressController implements Initializable {
 
     @FXML
-    private Label questionTextLabel, questionNumberLabel, courseLabel, testLable;
+    private Label questionTextLabel, questionNumberLabel, additionalTimeLabel, testLable;
     @FXML
     private Label hoursLabel;
 
+    @FXML
+    private Pane additionalTimePane;
     @FXML
     private Label minutesLabel;
 
@@ -58,6 +56,10 @@ public class TestInProgressController implements Initializable {
 
     final private ToggleGroup group = new ToggleGroup();
 
+    private Bundle bundle;
+    private Student student;
+    private HSTSClient client;
+
     private List<Label> questionsLabelsList;
     private List<Question> questionList;
     private Question questionSelected;
@@ -76,22 +78,35 @@ public class TestInProgressController implements Initializable {
     // ExtraTime in minutes
     private int extraTime;
 
+    private TestTimerTask testTimerTask;
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = Bundle.getInstance();
+        student = (Student) bundle.get("student");
+        client = (HSTSClient) bundle.get("client");
         // Dummy init
-        initDummyData();
+        //initDummyData();
+        loadAnswerableTest();
         initQuestionsFromAnswerableTest();
         initRadioButtons();
         initHBox();
         loadQuestion(1);
-        initTimer(answerableTest.getTest().getModifiedTime());
         initNumberOfQuestions();
+        notifyTestIsStarting();
+        initTimer(answerableTest.getTest().getModifiedTime());
     }
     public void endTest(){
         // endTestLogic
-        System.out.println("Time is up....");
+        if (this.testTimerTask != null){
+            testTimerTask.cancel();
+        } else
+            System.out.println("Time is up....");
+
+        // Send to check and update
+
     }
     public void initQuestionsFromAnswerableTest() {
         Set<Question> questionsSet = this.answerableTest.getQuestionsSet();
@@ -109,9 +124,11 @@ public class TestInProgressController implements Initializable {
         minutesLabel.setText(String.valueOf(minutes));
         secondsLabel.setText(String.valueOf(seconds));
         timer = new Timer();
-        timer.schedule(new updateTimeLabel(), 0, 1000);
+        this.testTimerTask = new TestTimerTask();
+        bundle.put("testTimerTask",this.testTimerTask);
+        timer.schedule(testTimerTask, 0, 1000);
     }
-    class updateTimeLabel extends TimerTask{
+    class TestTimerTask extends TimerTask{
         @Override
         public void run() {
             Platform.runLater(() ->{
@@ -119,6 +136,7 @@ public class TestInProgressController implements Initializable {
                 System.out.println("Hours: "+hours+ " Minutes: "+minutes+ " Seconds: "+seconds);
                 if (hours == (minutes) && minutes == (seconds) && seconds == (0)) {
                     this.cancel();
+                    testTimerTask = null;
                     endTest();
                 }
                 else if (minutes == (0) && seconds == (-1)) {
@@ -242,6 +260,27 @@ public class TestInProgressController implements Initializable {
 
     public void addExtraTime(int extraTime){
         this.extraTime = extraTime;
+        int additionalHours = extraTime / 60;
+        int additionalMinutes = extraTime % 60;
+        this.hours += additionalHours;
+        this.minutes += additionalMinutes;
+        additionalTimePane.setVisible(true);
+        additionalTimeLabel.setText("+ " + additionalMinutes+ " minutes");
+    }
+
+    public void notifyTestIsStarting() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Test is about to start");
+        alert.setHeaderText("Test Session");
+        alert.setContentText("Press enter to start the test");
+        alert.setResizable(true);
+        alert.getDialogPane().setPrefSize(300, 200);
+        Optional<ButtonType> result = alert.showAndWait();
+
+    }
+
+    public void loadAnswerableTest() {
+        answerableTest = (AnswerableTest) bundle.get("answerableTest");
     }
 
     public void initDummyData() {

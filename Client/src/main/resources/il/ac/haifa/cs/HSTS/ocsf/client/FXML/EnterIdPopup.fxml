@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="165.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.EnterIdPopup">
+    <children>
+        <Pane prefHeight="55.0" prefWidth="296.0" style="-fx-background-color: #143452;">
+            <children>
+                <Text fill="WHITE" layoutX="5.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter your ID number" wrappingWidth="286.5634765625">
+                    <font>
+                        <Font name="Calibri Light Italic" size="17.0" />
+                    </font>
+                </Text>
+            <Text fill="WHITE" layoutX="4.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Test is ready and will be started" wrappingWidth="286.5634765625">
+               <font>
+                  <Font name="Calibri Light Italic" size="17.0" />
+               </font>
+            </Text>
+            </children>
+        </Pane>
+        <TextField fx:id="idNumberTextField" layoutX="21.0" layoutY="81.0" prefHeight="49.0" prefWidth="203.0">
+            <font>
+                <Font name="Calibri Light Italic" size="27.0" />
+            </font>
+        </TextField>
+        <Label fx:id="statusLabel" layoutX="61.0" layoutY="59.0" prefHeight="17.0" prefWidth="163.0" textFill="RED">
+            <font>
+                <Font name="Calibri Light Italic" size="15.0" />
+            </font>
+        </Label>
+        <Button fx:id="enterIdNumberButton" layoutX="232.0" layoutY="81.0" mnemonicParsing="false" onAction="#startTestEvent" prefHeight="49.0" prefWidth="55.0" style="-fx-background-color: #143452;" text="Enter" textFill="WHITE">
+            <font>
+                <Font name="Calibri Light Italic" size="15.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
