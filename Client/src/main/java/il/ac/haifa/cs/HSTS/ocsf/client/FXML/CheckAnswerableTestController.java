@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestReadCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
@@ -15,11 +16,11 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.net.URL;
 import java.util.*;
 
@@ -55,16 +56,16 @@ public class CheckAnswerableTestController implements Initializable {
     private TableView<UncheckedAnswerableTest> questionsTableView;
 
     @FXML
-    private TableColumn<TestFacade, String> idColumn;
+    private TableColumn<UncheckedAnswerableTest, String> columnId;
 
     @FXML
-    private TableColumn<TestFacade, String> courseColumn;
+    private TableColumn<UncheckedAnswerableTest, String> columnQuestion;
 
     @FXML
-    private TableColumn<TestFacade, String> studentNameColumn;
+    private TableColumn<UncheckedAnswerableTest, String> columnStudentAnswer;
 
     @FXML
-    private TableColumn<TestFacade, String> gradeColumn;
+    private TableColumn<UncheckedAnswerableTest, String> columnCorrectAnswer;
 
     @FXML
     private TextField commentTextField;
@@ -78,7 +79,7 @@ public class CheckAnswerableTestController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
-        //idTest = (int) bundle.get("id");
+        idTest = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
         System.out.println(user);
@@ -92,7 +93,6 @@ public class CheckAnswerableTestController implements Initializable {
             protected Response call() throws Exception {
 
                 // Asking the full answerable test that was selected
-                idTest = 2;
                 CommandInterface command = new AnswerableTestReadCommand(idTest);
                 client.getHstsClientInterface().sendCommandToServer(command);
                 while (responseFromServer == null) {
@@ -102,9 +102,9 @@ public class CheckAnswerableTestController implements Initializable {
             }
         };
         task.setOnSucceeded(e -> {
-
                 answerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
 
+                gradeButton.setText(String.valueOf(answerableTest.getScore()));
                 idTextField.setText(String.valueOf(idTest));
                 studentNameButton.setText(answerableTest.getStudent().getFirst_name() + " " +
                         answerableTest.getStudent().getLast_name());
@@ -120,6 +120,11 @@ public class CheckAnswerableTestController implements Initializable {
         Set<Question> questionSet = answerableTest.getQuestionsSet();
         Map<Question, Integer> answers = answerableTest.getAnswers();
 
+        columnId.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("idQuestion"));
+        columnQuestion.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("question"));
+        columnStudentAnswer.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("studentAnswer"));
+        columnCorrectAnswer.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("correctAnswer"));
+
         questionsOL = FXCollections.observableArrayList();
         for (Question question : questionSet)
         {
@@ -130,7 +135,7 @@ public class CheckAnswerableTestController implements Initializable {
     }
 
     @FXML
-    void confirmTestRequest(ActionEvent event) {
+    public void confirmTestRequest(javafx.event.ActionEvent actionEvent) {
         boolean inputError = false;
 
         if (gradeButton.getText().isEmpty()) {
@@ -151,10 +156,11 @@ public class CheckAnswerableTestController implements Initializable {
                     protected Response call() throws Exception {
                         answerableTest.setTeacherComment(commentTextField.getText());
                         answerableTest.setScore(Integer.parseInt(gradeButton.getText()));
+                        answerableTest.setChecked(true);
 
                         // Asking to update that the test was checked
-                        //CommandInterface command = new updateAnswerableTest(answerableTest, teacher);
-                        //client.getHstsClientInterface().sendCommandToServer(command);
+                        CommandInterface command = new AnswerableTestUpdateCommand(answerableTest);
+                        client.getHstsClientInterface().sendCommandToServer(command);
 
                         while (responseFromServer == null) {
                             Thread.sleep(10);
@@ -164,15 +170,14 @@ public class CheckAnswerableTestController implements Initializable {
                 };
                 task.setOnSucceeded(e -> {
                     Alert successMessageAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successMessageAlert.setHeaderText("The test was kept successfully");
+                    successMessageAlert.setHeaderText("Success");
                     Optional<ButtonType> result = successMessageAlert.showAndWait();
 
                     // After the teacher presses OK, that screen will close
-                    if (result.isPresent() && result.get() != ButtonType.OK) {
-                        bundle.put("ifTestWasChecked", true);
-                        final Stage stage = (Stage) confirmTestButton.getScene().getWindow();
-                        stage.close();
-                    }
+
+                    bundle.put("ifTestWasChecked", Boolean.TRUE);
+                    final Stage stage = (Stage) confirmTestButton.getScene().getWindow();
+                    stage.close();
                 });
                 new Thread(task).start();
             }
@@ -193,6 +198,4 @@ public class CheckAnswerableTestController implements Initializable {
         System.out.println("Command received in controller " + response);
     }
 
-    public void confirmTestRequest(javafx.event.ActionEvent actionEvent) {
-    }
 }

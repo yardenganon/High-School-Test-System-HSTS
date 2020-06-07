@@ -101,7 +101,7 @@
                <children>
                   <TableView fx:id="questionsTableView" fixedCellSize="0.0" prefHeight="258.0" prefWidth="698.0">
                      <columns>
-                        <TableColumn fx:id="columnIdQuestion" editable="false" minWidth="0.0" prefWidth="42.39999485015869" text="Id" />
+                        <TableColumn fx:id="columnId" editable="false" minWidth="0.0" prefWidth="42.39999485015869" text="Id" />
                         <TableColumn fx:id="columnQuestion" editable="false" prefWidth="436.7999382019043" text="question" />
                         <TableColumn fx:id="columnStudentAnswer" editable="false" minWidth="0.0" prefWidth="107.20001220703125" text="Student Answer" />
                         <TableColumn fx:id="columnCorrectAnswer" editable="false" minWidth="0.0" prefWidth="114.4000244140625" text="Correct Answer   " />
@@ -122,7 +122,7 @@
                         <Insets left="5.0" top="15.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="commentTextField" prefHeight="70.0" prefWidth="623.0">
+                  <TextField fx:id="commentTextField" alignment="TOP_LEFT" prefHeight="70.0" prefWidth="623.0">
                      <HBox.margin>
                         <Insets left="27.0" top="13.0" />
                      </HBox.margin>

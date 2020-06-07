@@ -14,15 +14,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
-
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -89,6 +87,8 @@ public class MenuController implements Initializable {
 
     @FXML
     void goToCheckingTests(ActionEvent event) {
+        bundle.put("user", user);
+        bundle.put("client", client);
         Events.navigateCheckingTestsEvent(checkingTestsButton);
     }
 

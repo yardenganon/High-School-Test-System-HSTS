@@ -43,7 +43,7 @@ public class TestCheckingController implements Initializable {
     private ObservableList<UncheckedTestTable> questionsOL = null;
     private Teacher teacher;
     private int checkedTestId;
-    public boolean theTestWasChecked;
+    public boolean theTestWasChecked = false;
     UncheckedTestTable selectedTest;
 
 
@@ -141,7 +141,7 @@ public class TestCheckingController implements Initializable {
             theTestWasChecked = false;
             checkedTestId = Integer.parseInt(selectedTest.getId());
             System.out.println(selectedTest + " Is selected");
-            bundle.put("id", selectedTest.getId());
+            bundle.put("id", Integer.parseInt(selectedTest.getId()));
             bundle.put("client", client);
             bundle.put("user", user);
 
@@ -151,15 +151,14 @@ public class TestCheckingController implements Initializable {
             secondaryStage.setScene(scene);
             secondaryStage.setTitle("Check Answerable Test");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
-            secondaryStage.show();
-            /*
-            secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
-                theTestWasChecked = (boolean)bundle.get("ifTestWasChecked");
-                refreshList();
+            bundle.remove("ifTestWasChecked");
+            secondaryStage.showAndWait();
 
-            });
-
-             */
+            if (bundle.get("ifTestWasChecked") != null) {
+                theTestWasChecked = (boolean) bundle.get("ifTestWasChecked");
+                if (theTestWasChecked)
+                    refreshList();
+            }
         }
         else
         {
@@ -183,7 +182,6 @@ public class TestCheckingController implements Initializable {
 
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
-
         System.out.println("Command received in controller " + response);
     }
 
@@ -207,10 +205,9 @@ public class TestCheckingController implements Initializable {
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
             List<AnswerableTestFacade> listOfAnswerableTestFacade = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
-
             idColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("id"));
-            courseColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("course"));
-            studentNameColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("student name"));
+            courseColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("courseName"));
+            studentNameColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("studentName"));
             gradeColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("grade"));
 
             questionsOL = FXCollections.observableArrayList();
@@ -218,11 +215,16 @@ public class TestCheckingController implements Initializable {
 
             for (AnswerableTestFacade answerableTestFacade : listOfAnswerableTestFacade) {
                 sumOfTestsNeededToCheck++;
+                System.out.println("Unchecked num " + sumOfTestsNeededToCheck + ":");
+                System.out.println(String.valueOf(answerableTestFacade.getAnswerableTestId()) +
+                        answerableTestFacade.getCourseName() + answerableTestFacade.getFirstName() + answerableTestFacade.getLastName() +
+                        String.valueOf(answerableTestFacade.getScore()));
+
                 questionsOL.add(new UncheckedTestTable(String.valueOf(answerableTestFacade.getAnswerableTestId()),
-                        answerableTestFacade.getCourseName(), answerableTestFacade.getFirstName() +   answerableTestFacade.getLastName(),
+                        answerableTestFacade.getCourseName(), answerableTestFacade.getFirstName() + " " + answerableTestFacade.getLastName(),
                         String.valueOf(answerableTestFacade.getScore())));
             }
-            TestsTableView.setItems(questionsOL);
+            TestsTableView.getItems().addAll(questionsOL);
             numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
         });
         new Thread(task).start();
@@ -237,12 +239,12 @@ public class TestCheckingController implements Initializable {
         if (theTestWasChecked && selectedTest != null) {
             TestsTableView.getItems().remove(selectedTest);
             selectedTest = null;
-            theTestWasChecked = false;
+            sumOfTestsNeededToCheck--;
+            numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
         }
-        sumOfTestsNeededToCheck--;
-        numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
 
         progressIndicator.stop();
+        theTestWasChecked = false;
     }
 
     @FXML
