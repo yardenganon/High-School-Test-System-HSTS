@@ -55,6 +55,7 @@ public class Events {
             ioException.printStackTrace();
         }
         Stage stage = (Stage) button.getScene().getWindow();
+        stage.centerOnScreen();
         stage.setScene(scene);
         stage.setTitle("Menu");
     }
