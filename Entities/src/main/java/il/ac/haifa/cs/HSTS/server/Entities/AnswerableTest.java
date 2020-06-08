@@ -136,6 +136,7 @@ public class AnswerableTest implements Serializable {
     public String toString() {
         return "AnswerableTest{" +
                 "id=" + id +
+                ", answerableTestStatus=" + answerableTestStatus +
                 ", test=" + test +
                 ", student=" + student +
                 ", answers=" + answers +

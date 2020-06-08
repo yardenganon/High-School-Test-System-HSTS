@@ -254,7 +254,7 @@ public class TestsRepository {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             Query<AnswerableTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade(m.id, m.score, m.test.course.courseName, m.student.first_name, m.student.last_name)"
                     + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.answerableTestStatus =: notActive and m.test.modifierWriter.id =: teacherId and m.isChecked =: false2");
-            query.setParameter("notActive", Status.TestNotActive).setParameter("teacherId", teacher.getId()).setParameter("false2", false);
+            query.setParameter("notActive",Status.TestFinished).setParameter("teacherId", teacher.getId()).setParameter("false2", false);
             answerableTestsFacade = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);
