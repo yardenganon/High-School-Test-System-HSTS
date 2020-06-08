@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.TestToWordUnit;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -30,6 +31,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.awt.*;
 import java.io.File;
@@ -540,6 +542,12 @@ public class TestInProgressController implements Initializable {
             e.printStackTrace();
         }
         testSummaryStage.setScene(scene);
+        testSummaryStage.setOnHiding(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                Events.navigateMenuEvent(questionAnsweredLabel);
+            }
+        });
         testSummaryStage.initModality(Modality.APPLICATION_MODAL);
         bundle.put("testInProgressStage", (Stage) testLable.getScene().getWindow());
         testSummaryStage.show();
