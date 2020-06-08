@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -60,6 +62,14 @@ public class EnterExecutionCodePopup implements Initializable {
                 answerableTestRequest();
             }
         });
+        EventHandler<KeyEvent> nextEvent = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER)
+                        answerableTestRequest();
+            }
+        };
+        codeTextField.setOnKeyPressed(nextEvent);
 
     }
 

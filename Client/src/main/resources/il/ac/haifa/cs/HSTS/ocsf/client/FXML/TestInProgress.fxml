@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="592.0" prefWidth="1131.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestInProgressController">
+<AnchorPane fx:id="mainPane" prefHeight="592.0" prefWidth="1131.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestInProgressController">
    <children>
-      <AnchorPane fx:id="manualAnchorPane" layoutX="154.0" prefHeight="539.0" prefWidth="1001.0">
+      <AnchorPane fx:id="manualAnchorPane" disable="true" layoutX="154.0" prefHeight="539.0" prefWidth="1001.0" visible="false">
          <children>
             <HBox alignment="CENTER" layoutX="277.0" layoutY="97.0" prefHeight="49.0" prefWidth="349.0">
                <children>

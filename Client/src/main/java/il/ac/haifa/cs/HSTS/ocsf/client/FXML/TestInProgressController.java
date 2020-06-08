@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.TestToWordUnit;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
@@ -96,7 +97,7 @@ public class TestInProgressController implements Initializable {
     private Button submitTestBtn, questionAnsweredLabel;
 
     @FXML
-    private AnchorPane mainQuestionRubric;
+    private AnchorPane mainPane, mainQuestionRubric;
 
     @FXML
     private VBox mainVbox;
@@ -501,6 +502,8 @@ public class TestInProgressController implements Initializable {
     }
 
     public void sendAnswerableTestToServerForBackup(AnswerableTest answerableTest) {
+        CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(mainPane);
+        customProgressIndicator.start();
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
@@ -509,6 +512,7 @@ public class TestInProgressController implements Initializable {
 
                 while (responseFromServer == null)
                     Thread.onSpinWait();
+                customProgressIndicator.stop();
 
                 return responseFromServer;
             }
@@ -523,6 +527,7 @@ public class TestInProgressController implements Initializable {
             // Automatic test-check
 
             // Display test summary
+
             openSummaryWindow();
         });
         new Thread(task).start();
