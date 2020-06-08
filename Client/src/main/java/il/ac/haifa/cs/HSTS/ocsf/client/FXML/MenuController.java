@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -117,7 +118,10 @@ public class MenuController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                Stage menuStage = (Stage) helloLabel.getScene().getWindow();
+                bundle.put("menuStage",menuStage);
                 Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setScene(scene);
                 stage.show();
             }

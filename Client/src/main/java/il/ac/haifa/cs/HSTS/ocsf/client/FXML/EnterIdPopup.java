@@ -46,8 +46,7 @@ public class EnterIdPopup implements Initializable {
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
         // CodeExecutePopup put answerableTest in Bundle
-        answerableTest = (AnswerableTest) bundle.get("answerabletest");
-
+        answerableTest = (AnswerableTest) bundle.get("answerableTest");
     }
 
     public void startTestEvent() {
@@ -59,7 +58,7 @@ public class EnterIdPopup implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Stage stage = new Stage();
+            Stage stage = (Stage) statusLabel.getScene().getWindow();
             stage.setOnHiding(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent windowEvent) {
@@ -80,12 +79,17 @@ public class EnterIdPopup implements Initializable {
                     });
                 }
             });
-            //Stage stage = (Stage) idNumberTextField.getScene().getWindow();
             if (scene != null) {
                 stage.setScene(scene);
+                stage.centerOnScreen();
                 stage.show();
+                Stage menuStage = (Stage) bundle.get("menuStage");
+                menuStage.close();
+                bundle.remove("menuStage");
             }
         }
+        else
+            statusLabel.setText("Wrong ID number");
     }
     public Status checkIdNumber(){
         return (idNumberTextField.getText().equals(String.valueOf(user.getIdNumber())) ?

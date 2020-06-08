@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="219.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestSummary">
+   <children>
+      <Label layoutX="137.0" layoutY="26.0" text="Test is over" textFill="#143452">
+         <font>
+            <Font name="Calibri Light Italic" size="23.0" />
+         </font>
+      </Label>
+      <Button fx:id="returnToMenuBtn" layoutX="131.0" layoutY="129.0" mnemonicParsing="false" onAction="#returnToMenuEvent" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #143452;" text="Return to menu" textFill="WHITE" />
+      <Label layoutX="48.0" layoutY="73.0" text="Test details will be available after teacher's review" textFill="#143452">
+         <font>
+            <Font name="Calibri Light Italic" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

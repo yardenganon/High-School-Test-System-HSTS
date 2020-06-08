@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,7 +22,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -375,13 +379,32 @@ public class TestInProgressController implements Initializable {
             System.out.println(updatedAnswerableTest);
             responseFromServer = null;
 
+            // Automatic test-check
+
             // Display test summary
+            openSummaryWindow();
         });
         new Thread(task).start();
     }
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
+    }
+
+    public void openSummaryWindow() {
+        Stage testSummaryStage = new Stage();
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("TestSummary"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        testSummaryStage.setScene(scene);
+        testSummaryStage.initModality(Modality.APPLICATION_MODAL);
+        bundle.put("testInProgressStage",(Stage) testLable.getScene().getWindow());
+        testSummaryStage.show();
+
+
     }
 }
 
