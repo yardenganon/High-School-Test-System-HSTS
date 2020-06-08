@@ -5,6 +5,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -134,6 +135,14 @@ public class TestInProgressController implements Initializable {
             System.out.println("Time is up....");
 
         // Send to check and update
+        this.answerableTest.setAnswerableTestStatus(Status.TestFinished);
+        this.answerableTest.setTimeFinished(new Date());
+        // exam auto-review
+        ExamReview examReview = new ExamReview(answerableTest);
+        int grade = examReview.checkExam();
+        System.out.println(grade);
+        this.answerableTest.setScore(grade);
+
         sendAnswerableTestToServerForBackup(this.answerableTest);
 
     }
@@ -155,6 +164,7 @@ public class TestInProgressController implements Initializable {
         timer = new Timer();
         this.testTimerTask = new TestTimerTask();
         bundle.put("testTimerTask",this.testTimerTask);
+        this.answerableTest.setTimeStarted(new Date());
         timer.schedule(testTimerTask, 0, 1000);
     }
     class TestTimerTask extends TimerTask{
