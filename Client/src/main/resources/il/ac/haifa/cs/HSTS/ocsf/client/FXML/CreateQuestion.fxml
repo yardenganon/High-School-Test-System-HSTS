@@ -172,7 +172,7 @@
                </HBox>
             </children>
          </VBox>
-         <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Create Question" textFill="#143452">
+         <Label layoutX="424.0" layoutY="26.0" prefHeight="50.0" prefWidth="206.0" text="Create Question" textFill="#143452">
             <font>
                <Font name="System Bold" size="25.0" />
             </font>
