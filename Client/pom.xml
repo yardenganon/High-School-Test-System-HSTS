@@ -64,6 +64,11 @@
             <groupId>il.ac.haifa.cs.HSTS</groupId>
             <artifactId>Entities</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
