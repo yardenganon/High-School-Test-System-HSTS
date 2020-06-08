@@ -100,7 +100,7 @@ public class HSTSClientInterface {
             ((TestsController) guiControllers.get(TestsController.class.getSimpleName())).
                     receivedResponseFromServer(serverResponse);
         }
-        if (serverResponse.getRespondName().equals(QuestionUpdateCommand.class.getSimpleName())
+        if (serverResponse.getRespondName().equals(QuestionPushCommand.class.getSimpleName())
                 && guiControllers.get(EditQuestionController.class.getSimpleName()) != null)
             ((EditQuestionController) guiControllers.get(EditQuestionController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);

@@ -1,12 +1,11 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
-
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionUpdateCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionPushCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
 import il.ac.haifa.cs.HSTS.server.Entities.Subject;
@@ -17,16 +16,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditQuestionController implements Initializable {
 
     public User user;
+    private Teacher teacher;
     public Question question;
     private Response responseFromServer = null;
     private static boolean thereIsAnError = false;
@@ -96,87 +98,93 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void EditQuestion(ActionEvent event) throws InterruptedException {
-    	// If button text is "Edit Question"
-        if(editQuestionButton.getText().equals("Edit Question"))
-    	{
-    	    // Checking if there are permissions to edit the question
-    	    if (!question.getWriter().getUsername().equals(user.getUsername()))
-            {
-                Alert permissionsErrorAlert = new Alert(Alert.AlertType.ERROR);
-                permissionsErrorAlert.setHeaderText("You don't have the permissions to change that question");
-                permissionsErrorAlert.showAndWait();
-            }
-    	    else {
-                initializeQuestionDetails();
-                setDisableAndVisible(true);
-                ((Button) event.getSource()).setText("Confirm Changes");
-            }
-    	}
-    	// If button text is "Confirm Changes"
-    	else {
+        // If button text is "Edit Question"
+        if (editQuestionButton.getText().equals("Edit Question")) {
+            initializeQuestionDetails();
+            idTextField.setText("");
+            authorTextField.setText(teacher.getUsername());
+
+            setDisableAndVisible(true);
+            ((Button) event.getSource()).setText("Confirm Changes");
+        }
+        // If button text is "Confirm Changes"
+        else {
             Alert updateQuestionAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            updateQuestionAlert.setHeaderText("Are you sure you want to update the question?");
+            updateQuestionAlert.setHeaderText("Are you sure you want to create that question?");
             Optional<ButtonType> result = updateQuestionAlert.showAndWait();
-            if (result.isPresent() && result.get() != ButtonType.OK)
-                initializeQuestionDetails();
-            else {
+            {
+                if (result.isPresent() && result.get() == ButtonType.OK)
+                {
+                    // Input checking
+                    if (questionTextField.getText().isEmpty())
+                        inputError(questionTextField);
+                    if (answer1TextField.getText().isEmpty())
+                        inputError(answer1TextField);
+                    if (answer2TextField.getText().isEmpty())
+                        inputError(answer2TextField);
+                    if (answer3TextField.getText().isEmpty())
+                        inputError(answer3TextField);
+                    if (answer4TextField.getText().isEmpty())
+                        inputError(answer4TextField);
 
-                // Input checking
-                if (questionTextField.getText().isEmpty())
-                    inputError(questionTextField);
-                if (answer1TextField.getText().isEmpty())
-                    inputError(answer1TextField);
-                if (answer2TextField.getText().isEmpty())
-                    inputError(answer2TextField);
-                if (answer3TextField.getText().isEmpty())
-                    inputError(answer3TextField);
-                if (answer4TextField.getText().isEmpty())
-                    inputError(answer4TextField);
+                    if (!thereIsAnError) {
+                        // Updating question details if there are no input errors
+                        question.setQuestion(questionTextField.getText());
+                        question.setCorrectAnswer(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
+                        question.setAnswer(1, answer1TextField.getText());
+                        question.setAnswer(2, answer2TextField.getText());
+                        question.setAnswer(3, answer3TextField.getText());
+                        question.setAnswer(4, answer4TextField.getText());
 
-                if (!thereIsAnError) {
-                    // Updating question details if there are no input errors
-                    question.setQuestion(questionTextField.getText());
-                    question.setCorrectAnswer(Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()));
-                    question.setAnswer(1, answer1TextField.getText());
-                    question.setAnswer(2, answer2TextField.getText());
-                    question.setAnswer(3, answer3TextField.getText());
-                    question.setAnswer(4, answer4TextField.getText());
+                        progressIndicator = new CustomProgressIndicator(anchorPane);
+                        progressIndicator.start();
 
-                    progressIndicator = new CustomProgressIndicator(anchorPane);
-                    progressIndicator.start();
+                        responseFromServer = null;
+                        Task<Response> task = new Task<Response>() {
+                            @Override
+                            protected Response call() throws Exception {
 
-                    responseFromServer = null;
-                    Task<Response> task = new Task<Response>() {
-                        @Override
-                        protected Response call() throws Exception {
-                            CommandInterface command = new QuestionUpdateCommand(question);
-                            client.getHstsClientInterface().sendCommandToServer(command);
-                            // Waiting for server confirmation
-                            while (responseFromServer == null) {
-                                Thread.sleep(10);
+                                Subject selectedSubject = null;
+
+                                if (user instanceof Teacher) {
+                                    List<Subject> listOfSubject = teacher.getSubjects();
+                                    for (Subject subject : teacher.getSubjects()) {
+                                        if (subject.getSubjectName() == subjectComboBox.getSelectionModel().getSelectedItem()) {
+                                            selectedSubject = subject;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                CommandInterface command = new QuestionPushCommand(new Question(questionTextField.getText(),
+                                        answer1TextField.getText(), answer2TextField.getText(), answer3TextField.getText(),
+                                        answer4TextField.getText(), Integer.parseInt(correctAnswerComboBox.getSelectionModel().getSelectedItem()),
+                                        teacher, selectedSubject));
+
+                                client.getHstsClientInterface().sendCommandToServer(command);
+                                // Waiting for server confirmation
+                                while (responseFromServer == null) {
+                                    Thread.sleep(10);
+                                }
+                                return responseFromServer;
                             }
-                            return responseFromServer;
-                        }
-                    };
-                    task.setOnSucceeded(e -> {
-                        progressIndicator.stop();
-                        question = (Question) responseFromServer.getReturnedObject();
-                        initializeQuestionDetails();
-                        anchorPane.setDisable(false);
-                        Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
-                        updateSuccessAlert.setHeaderText("The question was successfully changed");
-                        updateSuccessAlert.showAndWait();
-                    });
-                    new Thread(task).start();
+                        };
+                        task.setOnSucceeded(e -> {
+                            progressIndicator.stop();
+                            question = (Question) responseFromServer.getReturnedObject();
+                            initializeQuestionDetails();
+                            anchorPane.setDisable(false);
+                            Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
+                            updateSuccessAlert.setHeaderText("The new question was successfully saved");
+                            updateSuccessAlert.showAndWait();
 
-
-
+                            ((Button) event.getSource()).setText("Edit Question");
+                            setDisableAndVisible(false);
+                        });
+                        new Thread(task).start();
+                    }
                 }
-                else thereIsAnError = false;
             }
-
-            ((Button) event.getSource()).setText("Edit Question");
-            setDisableAndVisible(false);
         }
     }
 
@@ -188,6 +196,8 @@ public class EditQuestionController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
+        if (user instanceof Teacher)
+            teacher = (Teacher) user;
         initializeQuestionDetails();
     }
     @FXML
@@ -274,7 +284,7 @@ public class EditQuestionController implements Initializable {
     private void setDisableAndVisible(boolean changeToDisableAndVisible)
     {
         questionTextField.setEditable(changeToDisableAndVisible);
-        subjectComboBox.setDisable(true);
+        subjectComboBox.setEditable(changeToDisableAndVisible);
         answer1TextField.setEditable(changeToDisableAndVisible);
         answer2TextField.setEditable(changeToDisableAndVisible);
         answer3TextField.setEditable(changeToDisableAndVisible);
@@ -287,5 +297,41 @@ public class EditQuestionController implements Initializable {
         textField.setText("Invalid input");
         textField.setStyle("-fx-text-inner-color: #ff0000;");
         thereIsAnError = true;
+    }
+
+    public void questionOnMouseClicked(MouseEvent mouseEvent) {
+        if (questionTextField.getText().equals("Invalid input"))
+            ResetField(questionTextField);
+    }
+    public void answer1OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer1TextField.getText().equals("Invalid input"))
+            ResetField(answer1TextField);
+    }
+    public void answer2OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer2TextField.getText().equals("Invalid input"))
+            ResetField(answer2TextField);
+    }
+    public void answer3OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer3TextField.getText().equals("Invalid input"))
+            ResetField(answer3TextField);
+    }
+    public void answer4OnMouseClicked(MouseEvent mouseEvent) {
+        if (answer4TextField.getText().equals("Invalid input"))
+            ResetField(answer4TextField);
+    }
+
+    public void ResetField(TextField textField)
+    {
+        textField.setText("");
+        textField.setStyle("-fx-text-inner-color: #000000;");
+    }
+
+    public void ResetRedColor()
+    {
+        questionTextField.setStyle("-fx-text-inner-color: #000000;");
+        answer1TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer2TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer3TextField.setStyle("-fx-text-inner-color: #000000;");
+        answer4TextField.setStyle("-fx-text-inner-color: #000000;");
     }
 }

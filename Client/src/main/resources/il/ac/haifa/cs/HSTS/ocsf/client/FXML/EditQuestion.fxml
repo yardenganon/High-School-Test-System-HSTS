@@ -27,7 +27,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <TextField fx:id="questionTextField" editable="false" prefHeight="25.0" prefWidth="402.0">
+               <TextField fx:id="questionTextField" editable="false" onMouseClicked="#questionOnMouseClicked" prefHeight="25.0" prefWidth="402.0">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -96,7 +96,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <TextField fx:id="answer1TextField" editable="false" prefHeight="25.0" prefWidth="452.0">
+               <TextField fx:id="answer1TextField" editable="false" onMouseClicked="#answer1OnMouseClicked" prefHeight="25.0" prefWidth="452.0">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -113,7 +113,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <TextField fx:id="answer2TextField" editable="false" prefHeight="25.0" prefWidth="420.0">
+               <TextField fx:id="answer2TextField" editable="false" onMouseClicked="#answer2OnMouseClicked" prefHeight="25.0" prefWidth="420.0">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -130,7 +130,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <TextField fx:id="answer3TextField" editable="false" prefHeight="25.0" prefWidth="435.0">
+               <TextField fx:id="answer3TextField" editable="false" onMouseClicked="#answer3OnMouseClicked" prefHeight="25.0" prefWidth="435.0">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -147,7 +147,7 @@
                      <Insets top="4.0" />
                   </HBox.margin>
                </Text>
-               <TextField fx:id="answer4TextField" editable="false" prefHeight="25.0" prefWidth="405.0">
+               <TextField fx:id="answer4TextField" editable="false" onMouseClicked="#answer4OnMouseClicked" prefHeight="25.0" prefWidth="405.0">
                   <HBox.margin>
                      <Insets left="30.0" />
                   </HBox.margin>
@@ -169,7 +169,7 @@
          </HBox>
       </children>
    </VBox>
-   <Label layoutX="380.0" layoutY="28.0" prefHeight="50.0" prefWidth="206.0" text="Question Details" textFill="#143452">
+   <Label layoutX="416.0" layoutY="30.0" prefHeight="50.0" prefWidth="206.0" text="Question Details" textFill="#143452">
       <font>
          <Font name="System Bold" size="25.0" />
       </font>
