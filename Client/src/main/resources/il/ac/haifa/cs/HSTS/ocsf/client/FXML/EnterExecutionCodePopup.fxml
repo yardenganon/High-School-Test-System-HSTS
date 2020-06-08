@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="161.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.EnterExecutionCodePopup">
+<AnchorPane fx:id="mainPane" prefHeight="161.0" prefWidth="296.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.EnterExecutionCodePopup">
    <children>
       <Pane prefHeight="55.0" prefWidth="296.0" style="-fx-background-color: #143452;">
          <children>

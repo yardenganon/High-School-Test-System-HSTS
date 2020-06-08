@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
 import il.ac.haifa.cs.HSTS.server.Entities.Student;
@@ -15,6 +16,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -29,6 +33,9 @@ public class EnterIdPopup implements Initializable {
 
     @FXML
     private Label statusLabel;
+
+    @FXML
+    private AnchorPane mainPane;
 
     @FXML
     private Button enterIdNumberButton;
@@ -47,6 +54,15 @@ public class EnterIdPopup implements Initializable {
         client.getHstsClientInterface().addGUIController(this);
         // CodeExecutePopup put answerableTest in Bundle
         answerableTest = (AnswerableTest) bundle.get("answerableTest");
+
+        EventHandler<KeyEvent> nextEvent = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER)
+                    startTestEvent();
+            }
+        };
+        idNumberTextField.setOnKeyPressed(nextEvent);
     }
 
     public void startTestEvent() {
@@ -90,6 +106,7 @@ public class EnterIdPopup implements Initializable {
         }
         else
             statusLabel.setText("Wrong ID number");
+
     }
     public Status checkIdNumber(){
         return (idNumberTextField.getText().equals(String.valueOf(user.getIdNumber())) ?

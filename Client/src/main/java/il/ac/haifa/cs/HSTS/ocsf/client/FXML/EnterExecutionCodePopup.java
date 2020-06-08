@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import com.mysql.cj.xdevapi.Client;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
 import il.ac.haifa.cs.HSTS.server.Entities.Question;
@@ -23,7 +24,10 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -37,6 +41,8 @@ public class EnterExecutionCodePopup implements Initializable {
     @FXML
     private TextField codeTextField;
 
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private Label statusLabel;
 
@@ -56,10 +62,20 @@ public class EnterExecutionCodePopup implements Initializable {
                 answerableTestRequest();
             }
         });
+        EventHandler<KeyEvent> nextEvent = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode() == KeyCode.ENTER)
+                        answerableTestRequest();
+            }
+        };
+        codeTextField.setOnKeyPressed(nextEvent);
 
     }
 
     public void answerableTestRequest() {
+        CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(mainPane);
+        customProgressIndicator.start();
         Task<Response> task = new Task() {
             @Override
             protected Object call() throws Exception {
@@ -80,6 +96,7 @@ public class EnterExecutionCodePopup implements Initializable {
             responseFromServer = task.getValue();
             System.out.println(responseFromServer);
             Status status = responseFromServer.getStatus();
+            customProgressIndicator.stop();
             if (status == Status.InvalidCode)
                 statusLabel.setText("Code Invalid, please check your code");
             else if (status == Status.PermissionDenied)
