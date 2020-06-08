@@ -24,7 +24,9 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class EnterExecutionCodePopup implements Initializable {
     Bundle bundle;
@@ -62,8 +64,8 @@ public class EnterExecutionCodePopup implements Initializable {
             @Override
             protected Object call() throws Exception {
                 responseFromServer = null;
-//                CommandInterface command = new RequestAnswerableTestCommand(codeTextField.getText(),(Student) user);
-                CommandInterface command = new AnswerableTestReadCommand(1);
+                CommandInterface command = new RequestAnswerableTestCommand(codeTextField.getText(),(Student) user);
+                //CommandInterface command = new AnswerableTestReadCommand(1);
                 client.getHstsClientInterface().sendCommandToServer(command);
                 System.out.println("Requesting AnswerableTest: "+command);
 
@@ -78,7 +80,15 @@ public class EnterExecutionCodePopup implements Initializable {
             responseFromServer = task.getValue();
             System.out.println(responseFromServer);
             Status status = responseFromServer.getStatus();
-            if (status == Status.Success) {
+            if (status == Status.InvalidCode)
+                statusLabel.setText("Code Invalid, please check your code");
+            else if (status == Status.PermissionDenied)
+                statusLabel.setText("Access denied, test does not belong to you");
+            else if (status == Status.TestNotActive)
+                statusLabel.setText("Test is not active");
+            else if (status == Status.TestFinished)
+                statusLabel.setText("Test session is already finished");
+            else if (status == Status.Success) {
                 Scene scene = null;
                 AnswerableTest answerableTest =
                         (AnswerableTest) responseFromServer.getReturnedObject();
@@ -88,7 +98,13 @@ public class EnterExecutionCodePopup implements Initializable {
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
-                Stage stage = new Stage();
+                Stage stage = (Stage) enterButton.getScene().getWindow();
+                stage.setOnHiding(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent windowEvent) {
+                        bundle.remove("answerableTest");
+                    }
+                });
                 stage.setScene(scene);
                 stage.show();
             }
