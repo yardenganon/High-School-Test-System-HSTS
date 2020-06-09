@@ -29,9 +29,9 @@ public class TestController implements ControllerInterface {
                 Boolean status = ((ReadyTestUpdateActivityCommand) command).getActive();
                 returnedObject = testsRepository.updateReadyTestActivity(readyTestId, status);
                 break;
-            case("ReadyTestFacadeReadByTeacherCommand"):
+            case("ReadyTestExtendedFacadeReadByTeacherCommand"):
                 returnedObject = testsRepository.getReadyTestsFacadeByTeacherId(
-                        ((ReadyTestFacadeReadByTeacherCommand)command).getTeacherId());
+                        ((ReadyTestExtendedFacadeReadByTeacherCommand)command).getTeacherId());
                 break;
             case("ReadyTestReadByIdCommand"):
                 returnedObject = testsRepository.getReadyTestById(((ReadyTestReadByIdCommand) command).getReadyTestId());
