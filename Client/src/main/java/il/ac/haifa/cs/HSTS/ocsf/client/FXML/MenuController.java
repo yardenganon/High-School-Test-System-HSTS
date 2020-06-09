@@ -11,6 +11,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -177,15 +178,15 @@ public class MenuController implements Initializable {
         }
     }
 
-    private void InitPrincipleMenu(Teacher teacher) {
+    private void InitPrincipleMenu(Principle principle) {
 
             // update time extension request table
             responseFromServer = null;
             Task<Response> task = new Task<Response>() {
                 @Override
                 protected Response call() throws Exception {
-                    //CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(teacher.getId());
-                    //client.getHstsClientInterface().sendCommandToServer(command);
+                    CommandInterface command = new TimeExtensionReadAllCommand();
+                    client.getHstsClientInterface().sendCommandToServer(command);
 
                     // Waiting for server confirmation
                     while (responseFromServer == null) {
@@ -202,12 +203,14 @@ public class MenuController implements Initializable {
                 timeExtensionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
                 descriptionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
 
-                //List<ReadyTestFacade> readyTestFacadeList = (List<ReadyTestFacade>) responseFromServer.getReturnedObject();
+                List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
 
                 questionsOL = FXCollections.observableArrayList();
 
-                for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
-                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
+                for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
+                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse(),
+                            timeExtensionRequest.getInitiator(), timeExtensionRequest.getTimeToAdd(),
+                            timeExtensionRequest.getDescription();
                 }
                 activeTestsTebleView.getItems().addAll(questionsOL);
             });
@@ -371,61 +374,88 @@ public class MenuController implements Initializable {
     }
 
     public void AcceptTimeExtension(ActionEvent actionEvent) {
-        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-        progressIndicator.start();
 
-        responseFromServer = null;
-        Task<Response> task = new Task<Response>() {
-            @Override
-            protected Response call() throws Exception {
+        TimeExtensionRequestTableView chosenRow = activeTestsTebleView.getSelectionModel().getSelectedItem();
+        if (chosenRow == null)
+        {
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("For accept time extension request you need to choose test and then press \"Accept\" button");
+            missingDetailsAlert.showAndWait();
+        }
+        else {
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
 
-                //CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(teacher.getId());
-                //client.getHstsClientInterface().sendCommandToServer(command);
+            responseFromServer = null;
+            Task<Response> task = new Task<Response>() {
+                @Override
+                protected Response call() throws Exception {
+                    TimeExtensionRequest timeExtensionRequest = new TimeExtensionRequest(teacher, currentReadyTest,
+                            chosenRow.getTimeExtensionReason(), Integer.parseInt(chosenRow.getTimeExtension()));
+                    timeExtensionRequest.setStatus(Status.TimeExtensionRequestApproved);
 
-                // Waiting for server confirmation
-                while (responseFromServer == null) {
-                    Thread.onSpinWait();
+                    CommandInterface command = new TimeExtensionRequestUpdateCommand(timeExtensionRequest);
+                    client.getHstsClientInterface().sendCommandToServer(command);
+
+                    // Waiting for server confirmation
+                    while (responseFromServer == null) {
+                        Thread.onSpinWait();
+                    }
+                    return responseFromServer;
                 }
-                return responseFromServer;
-            }
-        };
-        task.setOnSucceeded(e -> {
-            responseFromServer = task.getValue();
+            };
+            task.setOnSucceeded(e -> {
+                responseFromServer = task.getValue();
 
-            // להוריד מהטבלה
+                chosenRow
 
-            progressIndicator.stop();
-        });
-        new Thread(task).start();
+                progressIndicator.stop();
+            });
+            new Thread(task).start();
+        }
     }
 
     public void RejectTimeExtension(ActionEvent actionEvent) {
-        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-        progressIndicator.start();
+        TimeExtensionRequestTableView chosenRow = activeTestsTebleView.getSelectionModel().getSelectedItem();
+        if (chosenRow == null)
+        {
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("For accept time extension request you need to choose test and then press \"Accept\" button");
+            missingDetailsAlert.showAndWait();
+        }
+        else {
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
 
-        responseFromServer = null;
-        Task<Response> task = new Task<Response>() {
-            @Override
-            protected Response call() throws Exception {
+            responseFromServer = null;
+            Task<Response> task = new Task<Response>() {
+                @Override
+                protected Response call() throws Exception {
+                    TimeExtensionRequest timeExtensionRequest = new TimeExtensionRequest(teacher, currentReadyTest,
+                            chosenRow.getTimeExtensionReason(), Integer.parseInt(chosenRow.getTimeExtension()));
+                    timeExtensionRequest.setStatus(Status.TimeExtensionRequestDenied);
 
-                //CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(teacher.getId());
-                //client.getHstsClientInterface().sendCommandToServer(command);
+                    CommandInterface command = new TimeExtensionRequestUpdateCommand(timeExtensionRequest);
+                    client.getHstsClientInterface().sendCommandToServer(command);
 
-                // Waiting for server confirmation
-                while (responseFromServer == null) {
-                    Thread.onSpinWait();
+                    // Waiting for server confirmation
+                    while (responseFromServer == null) {
+                        Thread.onSpinWait();
+                    }
+                    return responseFromServer;
                 }
-                return responseFromServer;
-            }
-        };
-        task.setOnSucceeded(e -> {
-            responseFromServer = task.getValue();
+            };
+            task.setOnSucceeded(e -> {
+                responseFromServer = task.getValue();
 
-            // להוריד מהטבלה
+                ac
+                chosenRow
 
-            progressIndicator.stop();
-        });
-        new Thread(task).start();
+                progressIndicator.stop();
+            });
+            new Thread(task).start();
+        }
+    }
     }
 
     public void changeActivityRequest(ActionEvent actionEvent) {

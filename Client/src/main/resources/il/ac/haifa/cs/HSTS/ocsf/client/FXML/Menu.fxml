@@ -108,7 +108,7 @@
       </Pane>
       <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0">
          <children>
-            <TableView fx:id="timeExtensionRequstForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="603.0">
+            <TableView fx:id="timeExtensionRequestForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="603.0">
               <columns>
                 <TableColumn fx:id="courseNamePrincipleTV" prefWidth="75.0" text="Course" />
                 <TableColumn fx:id="teacherNamePrincipleTV" prefWidth="116.0" text="Teacher Name" />
