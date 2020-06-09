@@ -9,4 +9,6 @@ public enum Status {
     OpenRequest,
     Success,
     ServerException,
+    TimeExtensionRequestApproved,
+    TimeExtensionRequestDenied,
 }
