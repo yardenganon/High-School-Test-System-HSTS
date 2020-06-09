@@ -30,7 +30,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 
-public class CreateTestController implements Initializable, Serializable {
+public class CreateTestController implements Initializable {
 
     public User user;
     public Test test;
@@ -153,17 +153,17 @@ public class CreateTestController implements Initializable, Serializable {
         teacher = (Teacher) user;
 
         Subject subjectOfTest;
-
+        initializeTestDetails();
         if (testForEdit != null) {
-            subjectComboBox.getSelectionModel().select(testForEdit.getSubject().getSubjectName());
             subjectOfTest = testForEdit.getSubject();
+            subjectComboBox.getSelectionModel().select(subjectOfTest.getSubjectName());
         }
         else
             subjectOfTest = teacher.getSubjects().get(0);
+        System.out.println(subjectOfTest);
         System.out.println("print " + subjectOfTest);
         test = new Test(teacher, subjectOfTest);
 
-        initializeTestDetails();
         if (bundle.get("update") != null && (boolean) bundle.get("update")) {
             setIfEdit();
             bundle.remove("update");
@@ -292,11 +292,12 @@ public class CreateTestController implements Initializable, Serializable {
             for (Subject subject : teacher.getSubjects())
                 subjectComboBox.getItems().add(subject.getSubjectName());
             authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
-            subjectComboBox.getSelectionModel().selectFirst();
             if (bundle.get("update") == null){
                 subjectSelect(new ActionEvent());
                 subjectComboBox.setDisable(false);
             }
+            else
+                subjectComboBox.getSelectionModel().selectFirst();
             timeTextField.setText("");
             epilogueTextField.setText("");
             introductionTextField.setText("");
