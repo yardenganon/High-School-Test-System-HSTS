@@ -28,6 +28,9 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.getReadyTestsFacadeByTeacherId(
                         ((ReadyTestFacadeReadByTeacherCommand)command).getTeacherId());
                 break;
+            case("ReadyTestReadByIdCommand"):
+                returnedObject = testsRepository.getReadyTestById(((ReadyTestReadByIdCommand) command).getReadyTestId());
+                break;
             case("TestReadAllCommand") :
                 returnedObject = testsRepository.getAll();
                 break;
