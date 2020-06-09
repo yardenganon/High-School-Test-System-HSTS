@@ -115,6 +115,24 @@ public class TestsRepository {
         return newReadyTest;
     }
 
+    public ReadyTest updateReadyTestActivity(int readyTestId, Boolean status){
+        ReadyTest updatedReadyTest = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            Query<ReadyTest> query = session.createQuery("update il.ac.haifa.cs.HSTS.server.Entities.ReadyTest set isActive =: status where id =: testId");
+            query.setParameter("status", status).setParameter("testId", readyTestId);
+            query.executeUpdate();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+            updatedReadyTest = getReadyTestById(readyTestId);
+        }
+        return updatedReadyTest;
+    }
+
     public ReadyTestFacade getReadyTestsFacadeByExecutionCode(String readyTestCode){
         ReadyTestFacade readyTest = null;
         try {
