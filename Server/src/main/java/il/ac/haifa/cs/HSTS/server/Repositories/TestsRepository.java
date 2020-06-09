@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.server.Repositories;
 
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import il.ac.haifa.cs.HSTS.server.Services.SessionFactoryGlobal;
@@ -138,7 +139,7 @@ public class TestsRepository {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
+            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.code= :testCode");
             query.setParameter("testCode", readyTestCode);
             readyTest = query.getSingleResult();
@@ -154,12 +155,12 @@ public class TestsRepository {
         return readyTest;
     }
 
-    public List<ReadyTestFacade> getReadyTestsFacadeByTeacherId(int id){
-        List<ReadyTestFacade> readyTests = null;
+    public List<ReadyTestExtendedFacade> getReadyTestsFacadeByTeacherId(int id){
+        List<ReadyTestExtendedFacade> readyTests = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
+            Query<ReadyTestExtendedFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.modifierWriter.id= :teacherId");
             query.setParameter("teacherId", id);
             readyTests = query.list();
