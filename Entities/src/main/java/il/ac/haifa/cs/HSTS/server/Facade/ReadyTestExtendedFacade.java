@@ -5,7 +5,7 @@ import il.ac.haifa.cs.HSTS.server.Status.Status;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ReadyTestFacade implements Serializable {
+public class ReadyTestExtendedFacade implements Serializable {
     int id;
     String teacherWriter;
     String courseName;
@@ -14,11 +14,15 @@ public class ReadyTestFacade implements Serializable {
     private Boolean isManual;
     private Boolean isActive;
     private String code;
+    private int timeToAdd;
+    private String timeExtensionReason;
+    private Status timeExtensionRequestStatus;
 
-    public ReadyTestFacade(){}
+    public ReadyTestExtendedFacade(){}
 
-    public ReadyTestFacade(int id, String teacherWriter, String courseName, Date dateCreated,
-                           int time, Boolean isManual, Boolean isActive, String code) {
+    public ReadyTestExtendedFacade(int id, String teacherWriter, String courseName, Date dateCreated,
+                           int time, Boolean isManual, Boolean isActive, String code, int timeToAdd,
+                           String timeExtensionReason, Status timeExtensionRequestStatus) {
         System.out.println("in Facade Constructor");
         this.id = id;
         this.teacherWriter = teacherWriter;
@@ -28,18 +32,9 @@ public class ReadyTestFacade implements Serializable {
         this.isManual = isManual;
         this.code = code;
         this.courseName = courseName;
-    }
-
-    public int getTimeToAdd() {
-        return timeToAdd;
-    }
-
-    public String getTimeExtensionReason() {
-        return timeExtensionReason;
-    }
-
-    public Status getTimeExtensionRequestStatus() {
-        return timeExtensionRequestStatus;
+        this.timeToAdd = timeToAdd;
+        this.timeExtensionReason = timeExtensionReason;
+        this.timeExtensionRequestStatus = timeExtensionRequestStatus;
     }
 
     public int getId() {
@@ -66,6 +61,14 @@ public class ReadyTestFacade implements Serializable {
         this.courseName = courseName;
     }
 
+    //    public String getSubject() {
+//        return subject;
+//    }
+//
+//    public void setSubject(String subject) {
+//        this.subject = subject;
+//    }
+
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -73,6 +76,14 @@ public class ReadyTestFacade implements Serializable {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
+
+//    public int getNumberOfQuestions() {
+//        return numberOfQuestions;
+//    }
+//
+//    public void setNumberOfQuestions(int numberOfQuestions) {
+//        this.numberOfQuestions = numberOfQuestions;
+//    }
 
     public int getTime() {
         return time;
@@ -117,6 +128,9 @@ public class ReadyTestFacade implements Serializable {
                 ", isManual=" + isManual +
                 ", isActive=" + isActive +
                 ", code='" + code + '\'' +
+                ", time to add= " + timeToAdd +
+                ", reason= " + timeExtensionReason +
+                ", status= " + timeExtensionRequestStatus +
                 '}';
     }
 }
