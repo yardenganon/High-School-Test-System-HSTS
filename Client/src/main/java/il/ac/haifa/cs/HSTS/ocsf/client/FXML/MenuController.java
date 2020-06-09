@@ -8,9 +8,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.ReadyTestFacadeReadByTeacherCommand;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import javafx.collections.FXCollections;
@@ -104,10 +102,10 @@ public class MenuController implements Initializable {
     private TableColumn<TimeExtensionRequestTableView, String> columnStatus;
 
     @FXML
-    private TableColumn<TimeExtensionRequestTableView, ComboBox> columnActive;
+    private TableColumn<TimeExtensionRequestTableView, String> columnActive;
 
     @FXML
-    private TableView<TimeExtensionRequestTableView> timeExtensionRequstForPrincipleTV;
+    private TableView<TimeExtensionRequestTableView> timeExtensionRequestForPrincipleTV;
 
     @FXML
     private TableColumn<TimeExtensionRequestTableView, Integer> courseNamePrincipleTV;
@@ -122,10 +120,10 @@ public class MenuController implements Initializable {
     private TableColumn<TimeExtensionRequestTableView, String> descriptionPrincipleTV;
 
     @FXML
-    private Button acceptTmeExtensionButton;
+    private Button acceptTimeExtensionButton;
 
     @FXML
-    private Button rejectTmeExtensionButton;
+    private Button rejectTimeExtensionButton;
 
     @FXML
     void goToTests(ActionEvent event) throws IOException {
@@ -241,7 +239,7 @@ public class MenuController implements Initializable {
             columnTimeExtension.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
             columnTimeExtensionReason.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
             columnStatus.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("status"));
-            columnActive.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, ComboBox>("active"));
+            columnActive.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("active"));
 
             columnTimeExtensionReason.setCellFactory(TextFieldTableCell.forTableColumn());
             columnTimeExtension.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -250,8 +248,7 @@ public class MenuController implements Initializable {
             questionsOL = FXCollections.observableArrayList();
 
             for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
-                if (readyTestFacade.getActive() == true)
-                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
+                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
@@ -308,9 +305,11 @@ public class MenuController implements Initializable {
                 @Override
                 protected Response call() throws Exception {
 
-                    CommandInterface command = new (new TimeExtensionRequest(teacher, currentReadyTest, timeExtensionRequest.getTimeExtensionReason()));
+                    CommandInterface command = new RequestTimeExtensionCommand(new TimeExtensionRequest(teacher, currentReadyTest,
+                            timeExtensionRequest.getTimeExtensionReason(), Integer.parseInt(timeExtensionRequest.getTimeExtension())));
                     client.getHstsClientInterface().sendCommandToServer(command);
 
+                    System.out.println("here");
                     // Waiting for server confirmation
                     while (responseFromServer == null) {
                         Thread.onSpinWait();
@@ -332,11 +331,13 @@ public class MenuController implements Initializable {
     public void getReadyTest(int id)
     {
         responseFromServer = null;
+        currentReadyTest = null;
+
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
 
-                CommandInterface command = new ReadyTestByID(id);
+                CommandInterface command = new ReadyTestReadByIdCommand(id);
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
@@ -369,7 +370,7 @@ public class MenuController implements Initializable {
         changedColumn.setTimeExtensionReason(timeExtensionRequestTableViewStringCellEditEvent.getNewValue());
     }
 
-    public void AcceptTmeExtension(ActionEvent actionEvent) {
+    public void AcceptTimeExtension(ActionEvent actionEvent) {
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
         progressIndicator.start();
 
@@ -398,7 +399,7 @@ public class MenuController implements Initializable {
         new Thread(task).start();
     }
 
-    public void RejectTmeExtension(ActionEvent actionEvent) {
+    public void RejectTimeExtension(ActionEvent actionEvent) {
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
         progressIndicator.start();
 
@@ -426,4 +427,72 @@ public class MenuController implements Initializable {
         });
         new Thread(task).start();
     }
+
+    public void changeActivityRequest(ActionEvent actionEvent) {
+        TimeExtensionRequestTableView chosenCell = activeTestsTebleView.getSelectionModel().getSelectedItem();
+
+        responseFromServer = null;
+        currentReadyTest = null;
+
+        Task<Response> task = new Task<Response>() {
+            @Override
+            protected Response call() throws Exception {
+
+                CommandInterface command = new ReadyTestReadByIdCommand(chosenCell.getTestId());
+                client.getHstsClientInterface().sendCommandToServer(command);
+
+                // Waiting for server confirmation
+                while (responseFromServer == null) {
+                    Thread.onSpinWait();
+                }
+                return responseFromServer;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
+
+            updateActivityOfReadyTest(chosenCell);
+
+        });
+        new Thread(task).start();
+    }
+
+    private void updateActivityOfReadyTest(TimeExtensionRequestTableView chosenCell) {
+        responseFromServer = null;
+        Task<Response> task = new Task<Response>() {
+            @Override
+            protected Response call() throws Exception {
+
+                //CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest);
+                //client.getHstsClientInterface().sendCommandToServer(command);
+
+                // Waiting for server confirmation
+                while (responseFromServer == null) {
+                    Thread.onSpinWait();
+                }
+                return responseFromServer;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
+
+            if (chosenCell.getActive().equals("NO")) {
+                System.out.println("no button");
+                currentReadyTest.setActive(true);
+                chosenCell.setActive("YES");
+            }
+            else {
+                currentReadyTest.setActive(false);
+                chosenCell.setActive("NO");
+            }
+
+            activeTestsTebleView.refresh();
+
+        });
+        new Thread(task).start();
+
+    }
+
 }

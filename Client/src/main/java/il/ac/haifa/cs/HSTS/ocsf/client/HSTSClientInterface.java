@@ -160,7 +160,15 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(ReadyTestFacadeReadByTeacherCommand.class.getSimpleName()))
             ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-    }
+
+        if (serverResponse.getRespondName().equals(RequestTimeExtensionCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(ReadyTestReadByIdCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+        }
 
     public Map<String, Object> getGuiControllers() {
         return guiControllers;

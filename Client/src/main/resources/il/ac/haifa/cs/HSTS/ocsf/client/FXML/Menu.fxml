@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="843.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.MenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="880.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.MenuController">
    <children>
       <VBox prefHeight="649.0" prefWidth="248.0" style="-fx-background-color: #143452;">
          <children>
@@ -72,7 +72,7 @@
          </children>
       </AnchorPane>
 
-      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="649.0" prefWidth="595.0">
+      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="650.0" prefWidth="634.0" visible="false">
          <children>
             <Button fx:id="checkingTestsButton" layoutX="14.0" layoutY="601.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
                <font>
@@ -84,44 +84,49 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <TableView fx:id="activeTestsTebleView" editable="true" layoutX="18.0" layoutY="45.0" prefHeight="123.0" prefWidth="566.0">
+            <TableView fx:id="activeTestsTebleView" editable="true" layoutX="18.0" layoutY="45.0" prefHeight="158.0" prefWidth="595.0">
               <columns>
                  <TableColumn fx:id="columnId" prefWidth="29.60003662109375" text="Id" />
                 <TableColumn fx:id="columnCourse" prefWidth="88.0" text="Course" />
                 <TableColumn fx:id="columnTimeExtension" minWidth="0.0" onEditCommit="#onTimeExtensionWriting" prefWidth="104.800048828125" text="Time Extension" />
-                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="227.19992065429688" text="Time Extension Reason" />
-                 <TableColumn fx:id="columnStatus" prefWidth="59.199951171875" text="Status" />
-                 <TableColumn fx:id="columnActive" prefWidth="57.60009765625" text="Active" />
+                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="243.20001220703125" text="Time Extension Reason" />
+                 <TableColumn fx:id="columnStatus" prefWidth="71.199951171875" text="Status" />
+                 <TableColumn fx:id="columnActive" prefWidth="56.0" text="Active" />
               </columns>
             </TableView>
-            <Button fx:id="submitExtensionTimeRequestButton" layoutX="463.0" layoutY="174.0" mnemonicParsing="false" onAction="#submitExtensionTimeRequestOfTeacher" prefHeight="25.0" prefWidth="122.0" text="submit request" textFill="#143452">
+            <Button fx:id="submitExtensionTimeRequestButton" layoutX="491.0" layoutY="210.0" mnemonicParsing="false" onAction="#submitExtensionTimeRequestOfTeacher" prefHeight="25.0" prefWidth="122.0" text="Submit Request" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="changeActivityButton" layoutX="356.0" layoutY="210.0" mnemonicParsing="false" onAction="#changeActivityRequest" prefHeight="25.0" prefWidth="122.0" text="Change Activity" textFill="#143452">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="principlePane" layoutX="248.0" prefHeight="649.0" prefWidth="595.0" visible="false">
+      <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0">
          <children>
-            <TableView fx:id="timeExtensionRequstForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="566.0">
+            <TableView fx:id="timeExtensionRequstForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="603.0">
               <columns>
                 <TableColumn fx:id="courseNamePrincipleTV" prefWidth="75.0" text="Course" />
                 <TableColumn fx:id="teacherNamePrincipleTV" prefWidth="116.0" text="Teacher Name" />
                  <TableColumn fx:id="timeExtensionPrincipleTV" prefWidth="103.19992065429688" text="Time Extension" />
-                 <TableColumn fx:id="descriptionPrincipleTV" prefWidth="270.39996337890625" text="Description" />
+                 <TableColumn fx:id="descriptionPrincipleTV" prefWidth="307.79998779296875" text="Description" />
               </columns>
             </TableView>
-            <Label layoutX="166.0" layoutY="35.0" prefHeight="30.0" prefWidth="236.0" text="Time Extension request" textFill="#143452">
+            <Label layoutX="199.0" layoutY="35.0" prefHeight="30.0" prefWidth="236.0" text="Time Extension request" textFill="#143452">
                <font>
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
-            <Button fx:id="acceptTmeExtensionButton" layoutX="526.0" layoutY="250.0" mnemonicParsing="false" onAction="#AcceptTmeExtension" text="Accept" textFill="#143452">
+            <Button fx:id="AcceptTimeExtensionButton" layoutX="565.0" layoutY="250.0" mnemonicParsing="false" onAction="#AcceptTimeExtension" text="Accept" textFill="#143452">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="rejectTmeExtensionButton" layoutX="464.0" layoutY="250.0" mnemonicParsing="false" onAction="#RejectTmeExtension" prefHeight="25.0" prefWidth="55.0" text="reject" textFill="#143452">
+            <Button fx:id="rejectTimeExtensionButton" layoutX="502.0" layoutY="250.0" mnemonicParsing="false" onAction="#RejectTimeExtension" prefHeight="25.0" prefWidth="55.0" text="reject" textFill="#143452">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

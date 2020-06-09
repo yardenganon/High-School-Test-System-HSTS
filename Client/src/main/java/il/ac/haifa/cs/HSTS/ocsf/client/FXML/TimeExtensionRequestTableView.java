@@ -1,7 +1,6 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
-import javafx.scene.control.ComboBox;
 
 public class TimeExtensionRequestTableView {
 
@@ -11,7 +10,7 @@ public class TimeExtensionRequestTableView {
     private String timeExtensionReason;
     private String status;
     private String teacherUserName;
-    private ComboBox active;
+    private String active;
 
     public void setTestId(int testId) {
         this.testId = testId;
@@ -29,6 +28,21 @@ public class TimeExtensionRequestTableView {
         this.timeExtensionReason = timeExtensionReason;
     }
 
+    public void setTeacherUserName(String teacherUserName) {
+        this.teacherUserName = teacherUserName;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
+    public String getTeacherUserName() {
+        return teacherUserName;
+    }
+
+    public String getActive() {
+        return active;
+    }
 
     public int getTestId() {
         return testId;
@@ -61,13 +75,9 @@ public class TimeExtensionRequestTableView {
         this.timeExtension = "";
         this.timeExtensionReason = "";
         this.status = "";
-        active.getItems().clear();
-        active.getItems().add("Yes");
-        active.getItems().add("No");
-
-        if (isActive == true)
-            active.getSelectionModel().selectFirst();
-        else active.getSelectionModel().select(2);
+        if (isActive == Boolean.TRUE)
+            this.active = "YES";
+        else this.active = "NO";
     }
 
     public TimeExtensionRequestTableView(String courseName, Teacher teacher, String timeExtension, String timeExtensionReason)
