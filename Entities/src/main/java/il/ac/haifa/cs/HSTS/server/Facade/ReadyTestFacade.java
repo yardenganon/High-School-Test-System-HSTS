@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.HSTS.server.Facade;
 
+import il.ac.haifa.cs.HSTS.server.Status.Status;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,11 +14,15 @@ public class ReadyTestFacade implements Serializable {
     private Boolean isManual;
     private Boolean isActive;
     private String code;
+    private int timeToAdd;
+    private String timeExtensionReason;
+    private Status timeExtensionRequestStatus;
 
     public ReadyTestFacade(){}
 
     public ReadyTestFacade(int id, String teacherWriter, String courseName, Date dateCreated,
-                           int time, Boolean isManual, Boolean isActive, String code) {
+                           int time, Boolean isManual, Boolean isActive, String code, int timeToAdd,
+                           String timeExtensionReason, Status timeExtensionRequestStatus) {
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.dateCreated = dateCreated;
@@ -25,6 +31,9 @@ public class ReadyTestFacade implements Serializable {
         this.isManual = isManual;
         this.code = code;
         this.courseName = courseName;
+        this.timeToAdd = timeToAdd;
+        this.timeExtensionReason = timeExtensionReason;
+        this.timeExtensionRequestStatus = timeExtensionRequestStatus;
     }
 
     public int getId() {
@@ -118,6 +127,9 @@ public class ReadyTestFacade implements Serializable {
                 ", isManual=" + isManual +
                 ", isActive=" + isActive +
                 ", code='" + code + '\'' +
+                ", time to add= " + timeToAdd +
+                ", reason= " + timeExtensionReason +
+                ", status= " + timeExtensionRequestStatus +
                 '}';
     }
 }
