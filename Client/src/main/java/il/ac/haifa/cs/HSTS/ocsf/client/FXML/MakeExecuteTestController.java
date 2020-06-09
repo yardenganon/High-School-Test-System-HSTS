@@ -251,7 +251,15 @@ public class MakeExecuteTestController implements Initializable {
                 System.out.println(responseFromServer);
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
-                executeTestCreatedAlert.showAndWait();
+
+                Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
+                if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
+                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE)
+                {
+
+                }
+
+
             });
             new Thread(task).start();
 

@@ -178,44 +178,7 @@ public class MenuController implements Initializable {
         }
     }
 
-    private void InitPrincipleMenu(Principle principle) {
-
-            // update time extension request table
-            responseFromServer = null;
-            Task<Response> task = new Task<Response>() {
-                @Override
-                protected Response call() throws Exception {
-                    CommandInterface command = new TimeExtensionReadAllCommand();
-                    client.getHstsClientInterface().sendCommandToServer(command);
-
-                    // Waiting for server confirmation
-                    while (responseFromServer == null) {
-                        Thread.onSpinWait();
-                    }
-                    return responseFromServer;
-                }
-            };
-            task.setOnSucceeded(e -> {
-                responseFromServer = task.getValue();
-
-                courseNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, Integer>("courseName"));
-                timeExtensionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
-                descriptionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
-                teacherNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("teacherUserName"));
-
-                List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
-                System.out.println("the table is: " + timeExtensionRequestList);
-                questionsOL = FXCollections.observableArrayList();
-
-                for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
-                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse().getCourseName(),
-                            timeExtensionRequest.getInitiator(), String.valueOf(timeExtensionRequest.getTimeToAdd()),
-                            timeExtensionRequest.getDescription()));
-                }
-                timeExtensionRequestForPrincipleTV.getItems().addAll(questionsOL);
-            });
-            new Thread(task).start();
-    }
+    /* ---------------------- Teacher ---------------- */
 
     private void InitTeacherMenu(Teacher teacher) {
 
@@ -224,6 +187,7 @@ public class MenuController implements Initializable {
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
+                System.out.println(teacher.getId());
                 CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(teacher.getId());
                 client.getHstsClientInterface().sendCommandToServer(command);
 
@@ -251,33 +215,80 @@ public class MenuController implements Initializable {
             questionsOL = FXCollections.observableArrayList();
 
             for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
-                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(),
-                        readyTestFacade.TimeExtension, readyTestFacade.Description, readyTestFacade.status,  readyTestFacade.getActive()));
+                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), teacher,
+                        String.valueOf(readyTestFacade.getTimeToAdd()) , readyTestFacade.getTimeExtensionReason(), readyTestFacade.getTimeExtensionRequestStatus(),  readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
         new Thread(task).start();
     }
 
-    public void initStudentMenu() {
-        studentMenu.setVisible(true);
-        enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            Scene scene = null;
+
+    public void changeActivityRequest(ActionEvent actionEvent) {
+        TimeExtensionRequestTableView chosenCell = activeTestsTebleView.getSelectionModel().getSelectedItem();
+
+        responseFromServer = null;
+        currentReadyTest = null;
+
+        Task<Response> task = new Task<Response>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                try {
-                    scene = new Scene(MainClass.loadFXML("EnterExecutionCodePopup"));
-                } catch (IOException e) {
-                    e.printStackTrace();
+            protected Response call() throws Exception {
+
+                CommandInterface command = new ReadyTestReadByIdCommand(chosenCell.getTestId());
+                client.getHstsClientInterface().sendCommandToServer(command);
+                System.out.println(chosenCell.getTestId());
+
+                // Waiting for server confirmation
+                while (responseFromServer == null) {
+                    Thread.onSpinWait();
                 }
-                Stage menuStage = (Stage) helloLabel.getScene().getWindow();
-                bundle.put("menuStage",menuStage);
-                Stage stage = new Stage();
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.setScene(scene);
-                stage.show();
+                return responseFromServer;
             }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
+            updateActivityOfReadyTest(chosenCell);
+
         });
+        new Thread(task).start();
+    }
+
+    private void updateActivityOfReadyTest(TimeExtensionRequestTableView chosenCell) {
+        responseFromServer = null;
+        Task<Response> task = new Task<Response>() {
+            @Override
+            protected Response call() throws Exception {
+
+                System.out.println(chosenCell.getActive());
+                boolean updatedActivity = false;
+                if (chosenCell.getActive().equals("NO")) {
+                    updatedActivity = true;
+                    chosenCell.setActive(Boolean.TRUE);
+                }
+                else {
+                    updatedActivity = false;
+                    chosenCell.setActive(Boolean.FALSE);
+                }
+
+                activeTestsTebleView.refresh();
+
+                CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), updatedActivity);
+                client.getHstsClientInterface().sendCommandToServer(command);
+
+                // Waiting for server confirmation
+                while (responseFromServer == null) {
+                    Thread.onSpinWait();
+                }
+                return responseFromServer;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
+        });
+        new Thread(task).start();
+
     }
 
     public void submitExtensionTimeRequestOfTeacher(ActionEvent actionEvent) {
@@ -324,7 +335,7 @@ public class MenuController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
 
-                timeExtensionRequest.setStatus("submitted");
+                timeExtensionRequest.setStatus(Status.TestActive);
                 activeTestsTebleView.refresh();
 
                 progressIndicator.stop();
@@ -374,6 +385,50 @@ public class MenuController implements Initializable {
     public void onTimeExtensionReasonWriting(TableColumn.CellEditEvent<TimeExtensionRequestTableView, String> timeExtensionRequestTableViewStringCellEditEvent) {
         TimeExtensionRequestTableView changedColumn = activeTestsTebleView.getSelectionModel().getSelectedItem();
         changedColumn.setTimeExtensionReason(timeExtensionRequestTableViewStringCellEditEvent.getNewValue());
+    }
+
+    /* ---------------------- end Teacher ------------- */
+
+
+
+    /* ---------------------- Principle --------------- */
+
+    private void InitPrincipleMenu(Principle principle) {
+
+            // update time extension request table
+            responseFromServer = null;
+            Task<Response> task = new Task<Response>() {
+                @Override
+                protected Response call() throws Exception {
+                    CommandInterface command = new TimeExtensionReadAllCommand();
+                    client.getHstsClientInterface().sendCommandToServer(command);
+
+                    // Waiting for server confirmation
+                    while (responseFromServer == null) {
+                        Thread.onSpinWait();
+                    }
+                    return responseFromServer;
+                }
+            };
+            task.setOnSucceeded(e -> {
+                responseFromServer = task.getValue();
+
+                courseNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, Integer>("courseName"));
+                timeExtensionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
+                descriptionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
+                teacherNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("teacherUserName"));
+
+                List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
+                questionsOL = FXCollections.observableArrayList();
+
+                for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
+                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse().getCourseName(),
+                            timeExtensionRequest.getInitiator(), String.valueOf(timeExtensionRequest.getTimeToAdd()),
+                            timeExtensionRequest.getDescription()));
+                }
+                timeExtensionRequestForPrincipleTV.getItems().addAll(questionsOL);
+            });
+            new Thread(task).start();
     }
 
     public void AcceptTimeExtension(ActionEvent actionEvent) {
@@ -457,71 +512,36 @@ public class MenuController implements Initializable {
         }
     }
 
-    public void changeActivityRequest(ActionEvent actionEvent) {
-        TimeExtensionRequestTableView chosenCell = activeTestsTebleView.getSelectionModel().getSelectedItem();
 
-        responseFromServer = null;
-        currentReadyTest = null;
 
-        Task<Response> task = new Task<Response>() {
+    /* ---------------------- end Principle ------------- */
+
+
+
+    /* ---------------------- Student ------------------- */
+
+
+    public void initStudentMenu() {
+        studentMenu.setVisible(true);
+        enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            Scene scene = null;
             @Override
-            protected Response call() throws Exception {
-
-                CommandInterface command = new ReadyTestReadByIdCommand(chosenCell.getTestId());
-                client.getHstsClientInterface().sendCommandToServer(command);
-                System.out.println(chosenCell.getTestId());
-
-                // Waiting for server confirmation
-                while (responseFromServer == null) {
-                    Thread.onSpinWait();
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    scene = new Scene(MainClass.loadFXML("EnterExecutionCodePopup"));
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                return responseFromServer;
+                Stage menuStage = (Stage) helloLabel.getScene().getWindow();
+                bundle.put("menuStage",menuStage);
+                Stage stage = new Stage();
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.setScene(scene);
+                stage.show();
             }
-        };
-        task.setOnSucceeded(e -> {
-            responseFromServer = task.getValue();
-            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
-            updateActivityOfReadyTest(chosenCell);
-
         });
-        new Thread(task).start();
     }
 
-    private void updateActivityOfReadyTest(TimeExtensionRequestTableView chosenCell) {
-        responseFromServer = null;
-        Task<Response> task = new Task<Response>() {
-            @Override
-            protected Response call() throws Exception {
-
-                System.out.println(chosenCell.getActive());
-                boolean updatedActivity = false;
-                if (chosenCell.getActive().equals("NO")) {
-                    updatedActivity = true;
-                    chosenCell.setActive("YES");
-                }
-                else {
-                    updatedActivity = false;
-                    chosenCell.setActive("NO");
-                }
-
-                activeTestsTebleView.refresh();
-
-                CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), updatedActivity);
-                client.getHstsClientInterface().sendCommandToServer(command);
-
-                // Waiting for server confirmation
-                while (responseFromServer == null) {
-                    Thread.onSpinWait();
-                }
-                return responseFromServer;
-            }
-        };
-        task.setOnSucceeded(e -> {
-            responseFromServer = task.getValue();
-            currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
-        });
-        new Thread(task).start();
-
-    }
+    /* ---------------------- end Student ------------- */
 
 }

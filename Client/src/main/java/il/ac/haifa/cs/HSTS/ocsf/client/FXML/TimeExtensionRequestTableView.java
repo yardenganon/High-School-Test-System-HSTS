@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 public class TimeExtensionRequestTableView {
 
@@ -8,9 +9,9 @@ public class TimeExtensionRequestTableView {
     private String courseName;
     private String timeExtension;
     private String timeExtensionReason;
-    private String status;
+    private Status status;
     private String teacherUserName;
-    private String active;
+    private Boolean active;
 
     public void setTestId(int testId) {
         this.testId = testId;
@@ -32,7 +33,7 @@ public class TimeExtensionRequestTableView {
         this.teacherUserName = teacherUserName;
     }
 
-    public void setActive(String active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
@@ -40,7 +41,7 @@ public class TimeExtensionRequestTableView {
         return teacherUserName;
     }
 
-    public String getActive() {
+    public Boolean getActive() {
         return active;
     }
 
@@ -56,11 +57,11 @@ public class TimeExtensionRequestTableView {
         return timeExtension;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
@@ -68,7 +69,7 @@ public class TimeExtensionRequestTableView {
         return timeExtensionReason;
     }
 
-    public TimeExtensionRequestTableView(int testId, String courseName, String timeExtension, String timeExtensionReason, String status,  boolean isActive)
+    public TimeExtensionRequestTableView(int testId, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason, Status status, boolean isActive)
     {
         this.testId = testId;
         this.courseName = courseName;
@@ -80,11 +81,7 @@ public class TimeExtensionRequestTableView {
         this.timeExtensionReason = "";
         if (status != null)
             this.status = status;
-        else
-            this.status = "";
-        if (isActive == Boolean.TRUE)
-            this.active = "YES";
-        else this.active = "NO";
+        this.active = isActive;
     }
 
     public TimeExtensionRequestTableView(String courseName, Teacher teacher, String timeExtension, String timeExtensionReason)
@@ -95,7 +92,3 @@ public class TimeExtensionRequestTableView {
         this.teacherUserName = teacher.getUsername();
     }
 }
-
-timeExtension;
-private String timeExtensionReason;
-private String status;

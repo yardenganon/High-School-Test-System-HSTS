@@ -36,6 +36,18 @@ public class ReadyTestFacade implements Serializable {
         this.timeExtensionRequestStatus = timeExtensionRequestStatus;
     }
 
+    public int getTimeToAdd() {
+        return timeToAdd;
+    }
+
+    public String getTimeExtensionReason() {
+        return timeExtensionReason;
+    }
+
+    public Status getTimeExtensionRequestStatus() {
+        return timeExtensionRequestStatus;
+    }
+
     public int getId() {
         return id;
     }
