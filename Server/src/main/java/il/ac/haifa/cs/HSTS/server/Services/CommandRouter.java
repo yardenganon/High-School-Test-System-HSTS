@@ -25,12 +25,14 @@ public class CommandRouter {
         commandsMap.put(TestPushCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(ReadyTestFacadeReadByTeacherCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(CreateReadyTestCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(ReadyTestReadByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(PushAnswerableTestCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
+        commandsMap.put(RequestTimeExtensionCommand.class.getSimpleName(), controllers.get(4));
 
         System.out.println("Router initiated");
     }
