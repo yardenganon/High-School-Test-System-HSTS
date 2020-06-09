@@ -24,6 +24,11 @@ public class TestController implements ControllerInterface {
             case("CreateReadyTestCommand"):
                 returnedObject = testsRepository.pushReadyTest(((CreateReadyTestCommand) command).getReadyTest());
                 break;
+            case("ReadyTestUpdateActivityCommand"):
+                int readyTestId = ((ReadyTestUpdateActivityCommand) command).getReadyTestId();
+                Boolean status = ((ReadyTestUpdateActivityCommand) command).getActive();
+                returnedObject = testsRepository.updateReadyTestActivity(readyTestId, status);
+                break;
             case("ReadyTestFacadeReadByTeacherCommand"):
                 returnedObject = testsRepository.getReadyTestsFacadeByTeacherId(
                         ((ReadyTestFacadeReadByTeacherCommand)command).getTeacherId());
