@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS;
 
 import il.ac.haifa.cs.HSTS.server.AbstractServer;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.RequestTimeExtensionCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.ConnectionToClient;
 import il.ac.haifa.cs.HSTS.server.Controllers.*;
@@ -63,6 +64,7 @@ public class HSTSServer extends AbstractServer {
         controllers.add(new QuestionController());
         controllers.add(new TestController());
         controllers.add(new RequestAnswerableTestController());
+        controllers.add(new TimeExtensionController());
     }
 
     public static void main(String[] args) throws IOException {

@@ -1,8 +1,11 @@
 package il.ac.haifa.cs.HSTS.server.Entities;
 
+import il.ac.haifa.cs.HSTS.server.Status.Status;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 @Entity
 @Table(name = "timeExtensionRequests")
 public class TimeExtensionRequest implements Serializable {
@@ -18,24 +21,26 @@ public class TimeExtensionRequest implements Serializable {
     @JoinColumn(name = "principle_id")
     Principle principle;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "readytest_id")
     ReadyTest test;
 
     Date dateInitiated;
     Date dateHandledByPrinciple;
-    String status;
+    Status status;
     String description;
+    int timeToAdd;
 
-    public TimeExtensionRequest(Teacher initiator, ReadyTest test, String description) {
+    public TimeExtensionRequest(Teacher initiator, ReadyTest test, String description, int timeToAdd) {
         this.initiator = initiator;
         this.test = test;
         this.dateInitiated = new Date();
-        this.status = "Pending";
+        this.status = Status.OpenRequest;
         this.description = description;
+        this.timeToAdd = timeToAdd;
 
-        initiator.addTimeExtensionRequest(this);
-        test.addTimeExtensionRequest(this);
+//        initiator.addTimeExtensionRequest(this);
+//        test.addTimeExtensionRequest(this);
 
     }
 
@@ -91,11 +96,27 @@ public class TimeExtensionRequest implements Serializable {
         this.principle = principleHandled;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Principle getPrinciple() {
+        return principle;
+    }
+
+    public void setPrinciple(Principle principle) {
+        this.principle = principle;
+    }
+
+    public int getTimeToAdd() {
+        return timeToAdd;
+    }
+
+    public void setTimeToAdd(int timeToAdd) {
+        this.timeToAdd = timeToAdd;
     }
 }
