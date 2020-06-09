@@ -78,8 +78,17 @@
             </TableView>
             <HBox prefHeight="51.0" prefWidth="632.0">
                <children>
-                  <VBox prefHeight="70.0" prefWidth="462.0" />
+                  <VBox prefHeight="51.0" prefWidth="98.0" />
                   <Button fx:id="MakeExecuteTestButton" mnemonicParsing="false" onAction="#MakeExecuteTest" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #143452;" text="Make Execute Test" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <VBox prefHeight="51.0" prefWidth="98.0" />
+                  <Button fx:id="editTestButton" mnemonicParsing="false" onAction="#editTestRequest" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #143452;" text="Edit Test" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
