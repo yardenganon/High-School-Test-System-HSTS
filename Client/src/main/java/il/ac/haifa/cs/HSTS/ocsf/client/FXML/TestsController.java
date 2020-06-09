@@ -4,10 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.TestReadByIdCommand;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.TestsFacadeReadBySubjectCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
@@ -37,7 +34,7 @@ import java.util.ResourceBundle;
 public class TestsController implements Initializable {
 
     public User user;
-
+    public boolean flagOfDetails = false;
     private Response responseFromServer = null;
     private static List<TestFacade> testList = null;
     private ObservableList<TestFacade> testsOL = null;
@@ -96,6 +93,9 @@ public class TestsController implements Initializable {
     private Button addTestButton;
 
     @FXML
+    private Button editTestButton;
+
+    @FXML
     private ComboBox<String> subjectsComboBox;
 
     @FXML
@@ -113,7 +113,13 @@ public class TestsController implements Initializable {
 
     @FXML
     void goToAddTest(ActionEvent event) throws IOException {
-        Events.navigateCreateTestEvent(addTestButton);
+        if(user instanceof Teacher)
+            Events.navigateCreateTestEvent(addTestButton);
+        else{
+            Alert permissionsErrorAlert = new Alert(Alert.AlertType.ERROR);
+            permissionsErrorAlert.setHeaderText("You don't have the permissions to create a test");
+            permissionsErrorAlert.showAndWait();
+        }
     }
 
     @FXML
@@ -134,14 +140,15 @@ public class TestsController implements Initializable {
     @FXML
     void initializeTestsTable() {
         refreshList();
-
         TestsTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
+
             @Override
             public void handle(MouseEvent event) {
-                CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-                //progressIndicator.start();
                 TestFacade testSelected = TestsTableView.getSelectionModel().getSelectedItem();
-                if (testSelected != null && event.getClickCount() == 2) {
+                flagOfDetails = false;
+                if(event.getClickCount() == 2)
+                    flagOfDetails = true;
+                if (testSelected != null) {
                     Scene scene = null;
                     for (TestFacade test : testList) {
                         if (test.getId() == testSelected.getId()) {
@@ -158,7 +165,7 @@ public class TestsController implements Initializable {
                                             Thread.sleep(10);
 
                                     } else if (user instanceof Principle) {
-                                   /* responseFromServer = null;
+                                    responseFromServer = null;
 
                                     CommandInterface command = new TestReadAllCommand();
                                     client.getHstsClientInterface().sendCommandToServer(command);
@@ -166,7 +173,7 @@ public class TestsController implements Initializable {
                                     while (responseFromServer == null)
                                         Thread.sleep(10);
 
-                                    testList = (List<Test>) responseFromServer.getReturnedObject();*/
+                                    testList = (List<TestFacade>) responseFromServer.getReturnedObject();
                                     }
                                     return responseFromServer;
                                 }
@@ -174,8 +181,8 @@ public class TestsController implements Initializable {
                             task.setOnSucceeded(e -> {
                                 responseFromServer = task.getValue();
                                 selectedTest = (Test) responseFromServer.getReturnedObject();
-                                openTestDetailsWindow();
-                                //progressIndicator.stop();
+                                if (flagOfDetails == true)
+                                    openTestDetailsWindow();
                             });
                             new Thread(task).start();
                         }
@@ -212,28 +219,31 @@ public class TestsController implements Initializable {
             Teacher teacher = ((Teacher) user);
             for (Subject subject : teacher.getSubjects())
                 subjectsComboBox.getItems().add(subject.getSubjectName());
+            subjectsComboBox.getSelectionModel().select(subjectsComboBox.getItems().get(0));
         }
-        subjectsComboBox.getSelectionModel().select(subjectsComboBox.getItems().get(0));
     }
 
     public void openTestDetailsWindow() {
-        System.out.println(selectedTest + " Is selected");
-        bundle.put("test", selectedTest);
-        Scene scene = null;
-        try {
-            scene = new Scene(MainClass.loadFXML("TestDetails"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (selectedTest != null) {
+            System.out.println(selectedTest + " Is selected");
+            bundle.put("test", selectedTest);
+            Scene scene = null;
+            try {
+                scene = new Scene(MainClass.loadFXML("TestDetails"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Stage stage = (Stage) TestsTableView.getScene().getWindow();
+            Stage secondaryStage = new Stage();
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("Test Details");
+            secondaryStage.initModality(Modality.APPLICATION_MODAL);
+            secondaryStage.show();
+            secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
+                refreshList();
+                selectedTest = null;
+            });
         }
-        Stage stage = (Stage) TestsTableView.getScene().getWindow();
-        Stage secondaryStage = new Stage();
-        secondaryStage.setScene(scene);
-        secondaryStage.setTitle("Test Details");
-        secondaryStage.initModality(Modality.APPLICATION_MODAL);
-        secondaryStage.show();
-        secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
-            refreshList();
-        });
     }
 
     public void refreshList() {
@@ -253,15 +263,14 @@ public class TestsController implements Initializable {
                         Thread.sleep(10);
 
                 } else if (user instanceof Principle) {
-                   /* responseFromServer = null;
+                responseFromServer = null;
 
-                    CommandInterface command = new TestReadAllCommand();
-                    client.getHstsClientInterface().sendCommandToServer(command);
+                CommandInterface command = new TestReadAllCommand();
+                client.getHstsClientInterface().sendCommandToServer(command);
 
-                    while (responseFromServer == null)
-                        Thread.sleep(10);
-
-                    testList = (List<Test>) responseFromServer.getReturnedObject();*/
+                while (responseFromServer == null)
+                    Thread.sleep(10);
+                testList = (List<TestFacade>) responseFromServer.getReturnedObject();
                 }
                 return responseFromServer;
             }
@@ -320,9 +329,30 @@ public class TestsController implements Initializable {
         }
     }
 
-    public void editTestRequest(ActionEvent actionEvent) {
-    }
+    public void editTestRequest(ActionEvent actionEvent) throws IOException {
+            if (selectedTest != null) {
+                System.out.println(selectedTest + " Is selected");
+                bundle.put("test", selectedTest);
+                bundle.put("client", client);
+                bundle.put("user", user);
+                bundle.put("update", true);
 
-    public void confirmTestRequest(ActionEvent actionEvent) {
+                if (user instanceof Teacher) {
+                    Events.navigateCreateTestEvent(editTestButton);
+                }
+                else
+                {
+                    Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+                    needChooseTestAlert.setHeaderText("You doesn't have the permissions to edit a test" );
+                    Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+                }
+                selectedTest = null;
+            }
+            else
+            {
+                Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+                needChooseTestAlert.setHeaderText("In order to edit a test you need to select a test and then press \"Edit Test\" button" );
+                Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+            }
     }
 }

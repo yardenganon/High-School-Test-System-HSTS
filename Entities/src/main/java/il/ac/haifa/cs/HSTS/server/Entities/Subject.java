@@ -17,13 +17,13 @@ public class Subject implements Serializable {
     int numberOfQuestions;
     String subjectName;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Question> questions;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Course> courses;
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "subject")
+    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "subject")
     List<Test> tests;
-    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "subjects",cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     List<Teacher> teachers;
 
 

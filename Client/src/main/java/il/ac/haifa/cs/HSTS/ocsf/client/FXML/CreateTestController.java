@@ -22,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
+import org.greenrobot.eventbus.MainThreadSupport;
 
 import javax.crypto.spec.PSource;
 import java.io.IOException;
@@ -33,10 +34,10 @@ public class CreateTestController implements Initializable, Serializable {
 
     public User user;
     public Test test;
+    public Test testForEdit = null;
     private List<Question> questionList = null;
     private Response responseFromServer = null;
     private ObservableList<String> questionsOL = null;
-    //Map<Question, Integer> questionPointsMap = new HashMap<>();
     private static boolean thereIsAnError = false;
     private Integer sumOfPoints = 0;
     private Subject subjectSelected = null;
@@ -148,9 +149,25 @@ public class CreateTestController implements Initializable, Serializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
+        testForEdit = (Test) bundle.get("test");
         teacher = (Teacher) user;
-        test = new Test(teacher, teacher.getSubjects().get(0));
+
+        Subject subjectOfTest;
+
+        if (testForEdit != null) {
+            subjectComboBox.getSelectionModel().select(testForEdit.getSubject().getSubjectName());
+            subjectOfTest = testForEdit.getSubject();
+        }
+        else
+            subjectOfTest = teacher.getSubjects().get(0);
+        System.out.println("print " + subjectOfTest);
+        test = new Test(teacher, subjectOfTest);
+
         initializeTestDetails();
+        if (bundle.get("update") != null && (boolean) bundle.get("update")) {
+            setIfEdit();
+            bundle.remove("update");
+        }
         questionsListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -199,19 +216,11 @@ public class CreateTestController implements Initializable, Serializable {
             // If there are no input errors, request for creating test will be sent to the server
             if (!thereIsAnError) {
                 // setting the test data
-                test.setSubject(subjectSelected);
                 test.setCommentForTeachers(commentTextField.getText());
                 test.setEpilogue(epilogueTextField.getText());
                 test.setIntroduction(introductionTextField.getText());
                 test.setTime(Integer.parseInt(timeTextField.getText()));
-                Set<Question> questionsOfTest = null;
-                /*for (Question q : questionPointsMap.keySet())
-                {
-                    System.out.println("question of test: " + q);
-                    test.getQuestionSet().add(q);
-                    test.setPointsToQuestion(q, questionPointsMap.get(q));
-                }*/
-                System.out.println("test: "+ test);
+                System.out.println("test after update: "+ test);
                 CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
                 progressIndicator.start();
 
@@ -284,7 +293,10 @@ public class CreateTestController implements Initializable, Serializable {
                 subjectComboBox.getItems().add(subject.getSubjectName());
             authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
             subjectComboBox.getSelectionModel().selectFirst();
-            subjectSelect(new ActionEvent());
+            if (bundle.get("update") == null){
+                subjectSelect(new ActionEvent());
+                subjectComboBox.setDisable(false);
+            }
             timeTextField.setText("");
             epilogueTextField.setText("");
             introductionTextField.setText("");
@@ -303,10 +315,6 @@ public class CreateTestController implements Initializable, Serializable {
             protected Response call() throws Exception {
                 if (user instanceof Teacher) {
                     List<Subject> subjects = new ArrayList<Subject>();
-                    String subjectSelectedType = subjectComboBox.getSelectionModel().getSelectedItem();
-                    for (Subject sub : teacher.getSubjects())
-                        if (sub.getSubjectName().equals(subjectSelected))
-                            subjectSelected = sub;
                     subjects.add(subjectSelected);
                     responseFromServer = null;
                     CommandInterface command = new QuestionReadBySubjectCommand(subjects);
@@ -383,6 +391,7 @@ public class CreateTestController implements Initializable, Serializable {
             for (Question quest : questionList) {
                 if (quest.getQuestion().equals(questionSelected)) {
                     questionChosenToAdd = quest;
+                    System.out.println(quest);
                     break;
                 }
             }
@@ -397,6 +406,7 @@ public class CreateTestController implements Initializable, Serializable {
             for (Question quest : questionList) {
                 if (quest.getId() == questionSelected.getId()) {
                     questionChosenToRemove = quest;
+                    System.out.println("question to remove: " + quest);
                     break;
                 }
             }
@@ -408,8 +418,14 @@ public class CreateTestController implements Initializable, Serializable {
     @FXML
     void addQuestion(MouseEvent event) {
         if (questionChosenToAdd != null) {
+            System.out.println("test before add: " +test.getQuestionSet());
+            for (Question q : test.getQuestionSet())
+                if (questionChosenToAdd.getId() == q.getId()) {
+                    questionChosenToAdd = q;
+                    System.out.println("GOTCHA");
+                }
             test.getQuestionSet().add(questionChosenToAdd);
-            test.getPoints().put(questionChosenToAdd, 0);
+            test.setPointsToQuestion(questionChosenToAdd, 0);
 
             questionsListView.getItems().remove(questionsListView.getSelectionModel().getSelectedItem());
             idColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
@@ -430,7 +446,7 @@ public class CreateTestController implements Initializable, Serializable {
 
             questionsTableView.getItems().add(questionAdded);
 
-            System.out.println("question: " + questionChosenToAdd);
+            System.out.println("all questions in set: " + test.getQuestionSet());
             System.out.println("all questions in points map: " + test.getPoints());
             //mapQuestions.put(questionAdded, questionChosenToAdd);
 
@@ -442,9 +458,18 @@ public class CreateTestController implements Initializable, Serializable {
     @FXML
     void removeQuestion(MouseEvent event) {
         if (questionChosenToRemove != null) {
-            test.getPoints().remove(questionChosenToRemove);
+            System.out.println("test before remove: " +test.getQuestionSet());
+            System.out.println("question to remove now: " + questionChosenToRemove);
+            for (Question q : test.getQuestionSet())
+                if (questionChosenToRemove.getId() == q.getId()) {
+                    questionChosenToRemove = q;
+                    System.out.println("GOTCHA");
+                }
+            System.out.println("set before removal: " + test.getQuestionSet());
             test.getQuestionSet().remove(questionChosenToRemove);
-
+            test.getPoints().remove(questionChosenToRemove);
+            System.out.println("set after removal: " + test.getQuestionSet());
+            System.out.println("set after remove now: " + test.getQuestionSet());
             QuestionOfTestTableView currentQuestion = questionsTableView.getSelectionModel().getSelectedItem();
             questionsTableView.getItems().remove(currentQuestion);
             questionsListView.getItems().add(questionChosenToRemove.getQuestion());
@@ -457,7 +482,8 @@ public class CreateTestController implements Initializable, Serializable {
             questionsListView.getItems().addAll(questionsRemovalObs);
             sumOfPoints -= Integer.parseInt(currentQuestion.getPoints());
             SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
-            System.out.println("question: " + questionChosenToRemove);
+
+            System.out.println("all questions in set: " + test.getQuestionSet());
             System.out.println("all questions in points map: " + test.getPoints());
             questionsRemovalObs.removeAll();
 
@@ -484,4 +510,100 @@ public class CreateTestController implements Initializable, Serializable {
         SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
     }
 
+    public void setIfEdit() {
+        authorTextField.setText(teacher.getFirst_name() + " " + teacher.getLast_name());
+        if (testForEdit != null)
+        {
+            subjectSelected = testForEdit.getSubject();
+            System.out.println("here I want to see: " + testForEdit.getSubject());
+            subjectComboBox.setDisable(true);
+            commentTextField.setText(testForEdit.getCommentForTeachers());
+            epilogueTextField.setText(testForEdit.getEpilogue());
+            introductionTextField.setText(testForEdit.getIntroduction());
+            timeTextField.setText(testForEdit.getTime().toString());
+
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
+            questionsListView.getItems().clear();
+            questionsTableView.getItems().clear();
+            Task<Response> task = new Task<Response>() {
+                @Override
+                protected Response call() throws Exception {
+                    if (user instanceof Teacher) {
+                        List<Subject> subjects = new ArrayList<Subject>();
+                        System.out.println("subject of test: " + testForEdit.getSubject());
+                        subjects.add(testForEdit.getSubject());
+                        responseFromServer = null;
+                        CommandInterface command = new QuestionReadBySubjectCommand(subjects);
+                        client.getHstsClientInterface().sendCommandToServer(command);
+
+                        while (responseFromServer == null)
+                            Thread.sleep(10);
+                    } else if (user instanceof Principle) {/*
+                    responseFromServer = null;
+
+                    CommandInterface command = new QuestionReadAllCommand();
+                    client.getHstsClientInterface().sendCommandToServer(command);
+
+                    while (responseFromServer == null)
+                        Thread.sleep(10);
+
+                    questionList = (List<Question>) responseFromServer.getReturnedObject();*/
+                    }
+                    return responseFromServer;
+                }
+            };
+            task.setOnSucceeded(e-> {
+                responseFromServer = task.getValue();
+                progressIndicator.stop();
+                questionList = (List<Question>) responseFromServer.getReturnedObject();
+                System.out.println("response from server: " + questionList);
+                questionsOL = FXCollections.observableArrayList();
+                questionsOL.removeAll();
+                for (Question quest : questionList) {
+                    boolean flag = false;
+                    for (Question q: testForEdit.getQuestionSet())
+                        if(quest.getId() == q.getId()) {
+                            flag = true;
+                            test.getQuestionSet().add(quest);
+                            test.setPointsToQuestion(quest, testForEdit.getPoints().get(q));
+                        }
+                    if (flag == false)
+                        questionsOL.add(quest.getQuestion());
+                }
+                System.out.println("set first " + test.getQuestionSet());
+                FXCollections.sort(questionsOL);
+                questionsListView.getItems().addAll(questionsOL);
+
+                System.out.println("set of question " + testForEdit.getQuestionSet());
+                for (Question q : testForEdit.getQuestionSet()) {
+                    System.out.println("question inside: " + q);
+                    idColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
+                    questionColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("question"));
+                    answer1Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer1"));
+                    answer2Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer2"));
+                    answer3Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer3"));
+                    answer4Column.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("answer4"));
+                    correctAnswerColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("correctAnswer"));
+                    pointsColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("points"));
+                    pointsColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+
+                    QuestionOfTestTableView questionAdded = new QuestionOfTestTableView(q.getId(),
+                            q.getQuestion(), q.getAnswer(1),
+                            q.getAnswer(2), q.getAnswer(3),
+                            q.getAnswer(4), q.getCorrectAnswer(),
+                            testForEdit.getPoints().get(q).toString());
+
+                    System.out.println(test.getQuestionSet());
+                    questionsTableView.getItems().add(questionAdded);
+                    sumOfPoints = 0;
+                    for (QuestionOfTestTableView quest : questionsTableView.getItems()){
+                        sumOfPoints += Integer.parseInt(quest.getPoints());
+                    }
+                    SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
+                }
+            });
+            new Thread(task).start();
+        }
+    }
 }
