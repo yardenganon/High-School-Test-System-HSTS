@@ -173,7 +173,7 @@ public class MenuController implements Initializable {
         else if (user instanceof Principle)
         {
             principle = (Principle) user;
-            InitPrincipleMenu(teacher);
+            InitPrincipleMenu(principle);
             principlePane.setVisible(true);
         }
     }
@@ -199,20 +199,20 @@ public class MenuController implements Initializable {
                 responseFromServer = task.getValue();
 
                 courseNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, Integer>("courseName"));
-                teacherNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("teacherUserName"));
                 timeExtensionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
                 descriptionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
+                teacherNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("teacherUserName"));
 
                 List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
-
+                System.out.println("the table is: " + timeExtensionRequestList);
                 questionsOL = FXCollections.observableArrayList();
 
                 for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
-                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse(),
-                            timeExtensionRequest.getInitiator(), timeExtensionRequest.getTimeToAdd(),
-                            timeExtensionRequest.getDescription();
+                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse().getCourseName(),
+                            timeExtensionRequest.getInitiator(), String.valueOf(timeExtensionRequest.getTimeToAdd()),
+                            timeExtensionRequest.getDescription()));
                 }
-                activeTestsTebleView.getItems().addAll(questionsOL);
+                timeExtensionRequestForPrincipleTV.getItems().addAll(questionsOL);
             });
             new Thread(task).start();
     }
@@ -251,7 +251,8 @@ public class MenuController implements Initializable {
             questionsOL = FXCollections.observableArrayList();
 
             for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
-                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
+                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(),
+                        readyTestFacade.TimeExtension, readyTestFacade.Description, readyTestFacade.status,  readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
@@ -300,6 +301,7 @@ public class MenuController implements Initializable {
             // Request for ready test
             getReadyTest(timeExtensionRequest.getTestId());
 
+
             CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
             progressIndicator.start();
 
@@ -312,7 +314,6 @@ public class MenuController implements Initializable {
                             timeExtensionRequest.getTimeExtensionReason(), Integer.parseInt(timeExtensionRequest.getTimeExtension())));
                     client.getHstsClientInterface().sendCommandToServer(command);
 
-                    System.out.println("here");
                     // Waiting for server confirmation
                     while (responseFromServer == null) {
                         Thread.onSpinWait();
@@ -324,6 +325,8 @@ public class MenuController implements Initializable {
                 responseFromServer = task.getValue();
 
                 timeExtensionRequest.setStatus("submitted");
+                activeTestsTebleView.refresh();
+
                 progressIndicator.stop();
             });
             new Thread(task).start();
@@ -375,7 +378,7 @@ public class MenuController implements Initializable {
 
     public void AcceptTimeExtension(ActionEvent actionEvent) {
 
-        TimeExtensionRequestTableView chosenRow = activeTestsTebleView.getSelectionModel().getSelectedItem();
+        TimeExtensionRequestTableView chosenRow = timeExtensionRequestForPrincipleTV.getSelectionModel().getSelectedItem();
         if (chosenRow == null)
         {
             Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
@@ -407,7 +410,7 @@ public class MenuController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
 
-                chosenRow
+                timeExtensionRequestForPrincipleTV.getItems().remove(chosenRow);
 
                 progressIndicator.stop();
             });
@@ -416,14 +419,12 @@ public class MenuController implements Initializable {
     }
 
     public void RejectTimeExtension(ActionEvent actionEvent) {
-        TimeExtensionRequestTableView chosenRow = activeTestsTebleView.getSelectionModel().getSelectedItem();
-        if (chosenRow == null)
-        {
+        TimeExtensionRequestTableView chosenRow = timeExtensionRequestForPrincipleTV.getSelectionModel().getSelectedItem();
+        if (chosenRow == null) {
             Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
             missingDetailsAlert.setHeaderText("For accept time extension request you need to choose test and then press \"Accept\" button");
             missingDetailsAlert.showAndWait();
-        }
-        else {
+        } else {
             CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
             progressIndicator.start();
 
@@ -448,14 +449,12 @@ public class MenuController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
 
-                ac
-                chosenRow
+                timeExtensionRequestForPrincipleTV.getItems().remove(chosenRow);
 
                 progressIndicator.stop();
             });
             new Thread(task).start();
         }
-    }
     }
 
     public void changeActivityRequest(ActionEvent actionEvent) {
@@ -470,6 +469,7 @@ public class MenuController implements Initializable {
 
                 CommandInterface command = new ReadyTestReadByIdCommand(chosenCell.getTestId());
                 client.getHstsClientInterface().sendCommandToServer(command);
+                System.out.println(chosenCell.getTestId());
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
@@ -481,7 +481,6 @@ public class MenuController implements Initializable {
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
             currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
-
             updateActivityOfReadyTest(chosenCell);
 
         });
@@ -494,8 +493,21 @@ public class MenuController implements Initializable {
             @Override
             protected Response call() throws Exception {
 
-                //CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest);
-                //client.getHstsClientInterface().sendCommandToServer(command);
+                System.out.println(chosenCell.getActive());
+                boolean updatedActivity = false;
+                if (chosenCell.getActive().equals("NO")) {
+                    updatedActivity = true;
+                    chosenCell.setActive("YES");
+                }
+                else {
+                    updatedActivity = false;
+                    chosenCell.setActive("NO");
+                }
+
+                activeTestsTebleView.refresh();
+
+                CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), updatedActivity);
+                client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
@@ -507,19 +519,6 @@ public class MenuController implements Initializable {
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
             currentReadyTest = (ReadyTest) responseFromServer.getReturnedObject();
-
-            if (chosenCell.getActive().equals("NO")) {
-                System.out.println("no button");
-                currentReadyTest.setActive(true);
-                chosenCell.setActive("YES");
-            }
-            else {
-                currentReadyTest.setActive(false);
-                chosenCell.setActive("NO");
-            }
-
-            activeTestsTebleView.refresh();
-
         });
         new Thread(task).start();
 

@@ -106,7 +106,7 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0">
+      <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0" visible="false">
          <children>
             <TableView fx:id="timeExtensionRequestForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="603.0">
               <columns>
