@@ -3,7 +3,6 @@ package il.ac.haifa.cs.HSTS.server.Controllers;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.RequestTimeExtensionCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-
 import il.ac.haifa.cs.HSTS.server.Repositories.TimeExtensionRepository;
 import il.ac.haifa.cs.HSTS.server.Status.Status;
 
@@ -25,6 +24,11 @@ public class TimeExtensionController implements ControllerInterface{
             case("RequestTimeExtensionCommand"):
                 returnedObject = timeExtensionRepository.pushTimeExtensionRequest(((RequestTimeExtensionCommand) command).getTimeExtensionRequest());
                 break;
+            case("TimeExtensionReadAllCommand"):
+                returnedObject = timeExtensionRepository.getAllTimeExtensions();
+                break;
+            default:
+                System.out.println("Error - Command not found in controller");
         }
         serverMessage.setReturnedObject(returnedObject);
         serverMessage.setDateHandled(new Date());
