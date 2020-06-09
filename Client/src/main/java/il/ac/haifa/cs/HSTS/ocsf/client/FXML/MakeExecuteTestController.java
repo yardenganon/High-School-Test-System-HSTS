@@ -76,6 +76,12 @@ public class MakeExecuteTestController implements Initializable {
     @FXML
     private CheckBox manualCheckBox;
 
+    @FXML
+    private Button acceptTmeExtentionButton;
+
+    @FXML
+    private Button rejectTmeExtentionButton;
+
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
@@ -142,7 +148,6 @@ public class MakeExecuteTestController implements Initializable {
             pointsLabel.setText(String.valueOf(sumOfPoints));
 
             initializeQuestionDetails();
-
         });
         new Thread(task).start();
     }

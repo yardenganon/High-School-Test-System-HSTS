@@ -157,6 +157,9 @@ public class HSTSClientInterface {
                     .receivedResponseFromServer(serverResponse);
 
 
+        if (serverResponse.getRespondName().equals(ReadyTestFacadeReadByTeacherCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
     }
 
     public Map<String, Object> getGuiControllers() {

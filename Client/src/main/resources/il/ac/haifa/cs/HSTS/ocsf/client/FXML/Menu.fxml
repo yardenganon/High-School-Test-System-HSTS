@@ -79,18 +79,53 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
+            <Label layoutX="223.0" layoutY="10.0" prefHeight="35.0" prefWidth="166.0" text="Active Tests" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <TableView fx:id="activeTestsTebleView" editable="true" layoutX="18.0" layoutY="45.0" prefHeight="123.0" prefWidth="566.0">
+              <columns>
+                 <TableColumn fx:id="columnId" prefWidth="29.60003662109375" text="Id" />
+                <TableColumn fx:id="columnCourse" prefWidth="88.0" text="Course" />
+                <TableColumn fx:id="columnTimeExtension" minWidth="0.0" onEditCommit="#onTimeExtensionWriting" prefWidth="104.800048828125" text="Time Extension" />
+                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="258.3999938964844" text="Time Extension Reason" />
+                 <TableColumn fx:id="columnStatus" prefWidth="51.5999755859375" text="Status" />
+                 <TableColumn fx:id="Active" prefWidth="31.5999755859375" text="Status" />
+              </columns>
+            </TableView>
+            <Button fx:id="submitExtensionTimeRequestButton" layoutX="463.0" layoutY="174.0" mnemonicParsing="false" onAction="#submitExtensionTimeRequestOfTeacher" prefHeight="25.0" prefWidth="122.0" text="submit request" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
-      <TableView layoutX="287.0" layoutY="58.0" prefHeight="123.0" prefWidth="531.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="455.1999694824219" text="C2" />
-        </columns>
-      </TableView>
-      <Label layoutX="480.0" layoutY="22.0" prefHeight="35.0" prefWidth="166.0" text="Active Tests" textFill="#143452">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Label>
+      <Pane fx:id="principlePane" layoutX="248.0" prefHeight="649.0" prefWidth="595.0">
+         <children>
+            <TableView fx:id="timeExtensionRequstForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="566.0">
+              <columns>
+                <TableColumn fx:id="courseNamePrincipleTV" prefWidth="75.0" text="Course" />
+                <TableColumn fx:id="teacherNamePrincipleTV" prefWidth="116.0" text="Teacher Name" />
+                 <TableColumn fx:id="timeExtensionPrincipleTV" prefWidth="103.19992065429688" text="Time Extension" />
+                 <TableColumn fx:id="descriptionPrincipleTV" prefWidth="270.39996337890625" text="Description" />
+              </columns>
+            </TableView>
+            <Label layoutX="166.0" layoutY="35.0" prefHeight="30.0" prefWidth="236.0" text="Time Extension request" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="acceptTmeExtensionButton" layoutX="526.0" layoutY="250.0" mnemonicParsing="false" onAction="#AcceptTmeExtension" text="Accept" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="rejectTmeExtensionButton" layoutX="464.0" layoutY="250.0" mnemonicParsing="false" onAction="#RejectTmeExtension" prefHeight="25.0" prefWidth="55.0" text="reject" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children></Pane>
    </children>
 </AnchorPane>
