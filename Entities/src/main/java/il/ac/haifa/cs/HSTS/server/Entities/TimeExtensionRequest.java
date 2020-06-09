@@ -38,10 +38,9 @@ public class TimeExtensionRequest implements Serializable {
         this.status = Status.OpenRequest;
         this.description = description;
         this.timeToAdd = timeToAdd;
+    }
 
-//        initiator.addTimeExtensionRequest(this);
-//        test.addTimeExtensionRequest(this);
-
+    public TimeExtensionRequest() {
     }
 
     public String getDescription() {
