@@ -33,6 +33,7 @@ public class CommandRouter {
         commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
         commandsMap.put(RequestTimeExtensionCommand.class.getSimpleName(), controllers.get(4));
+        commandsMap.put(TimeExtensionReadAllCommand.class.getSimpleName(), controllers.get(4));
 
         System.out.println("Router initiated");
     }

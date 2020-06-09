@@ -9,6 +9,8 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TimeExtensionRepository {
     private static Session session;
@@ -50,5 +52,29 @@ public class TimeExtensionRepository {
             SessionFactoryGlobal.closeSession(session);
         }
         return timeExtensionRequest;
+    }
+
+    public List<TimeExtensionRequest> getAllTimeExtensions(){
+        List<TimeExtensionRequest> timeExtensionRequestsList = new ArrayList<>();
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<TimeExtensionRequest> criteriaQuery = builder.createQuery(TimeExtensionRequest.class);
+            Root<TimeExtensionRequest> rootEntry = criteriaQuery.from(TimeExtensionRequest.class);
+            CriteriaQuery<TimeExtensionRequest> allCriteriaQuery = criteriaQuery.select(rootEntry);
+            Query allQuery = session.createQuery(allCriteriaQuery);
+            timeExtensionRequestsList.addAll(allQuery.getResultList());
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+
+            SessionFactoryGlobal.closeSession(session);
+        }
+        System.out.println("Time Extension List From Repository:");
+        System.out.println(timeExtensionRequestsList);
+        return timeExtensionRequestsList;
     }
 }
