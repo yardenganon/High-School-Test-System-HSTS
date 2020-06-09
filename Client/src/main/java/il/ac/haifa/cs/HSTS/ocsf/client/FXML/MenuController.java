@@ -104,6 +104,9 @@ public class MenuController implements Initializable {
     private TableColumn<TimeExtensionRequestTableView, String> columnStatus;
 
     @FXML
+    private TableColumn<TimeExtensionRequestTableView, ComboBox> columnActive;
+
+    @FXML
     private TableView<TimeExtensionRequestTableView> timeExtensionRequstForPrincipleTV;
 
     @FXML
@@ -205,10 +208,9 @@ public class MenuController implements Initializable {
 
                 questionsOL = FXCollections.observableArrayList();
 
-                //for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
-                //    if (readyTestFacade.getActive() == true)
-                //        questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName()));
-                //}
+                for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
+                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
+                }
                 activeTestsTebleView.getItems().addAll(questionsOL);
             });
             new Thread(task).start();
@@ -239,6 +241,8 @@ public class MenuController implements Initializable {
             columnTimeExtension.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
             columnTimeExtensionReason.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
             columnStatus.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("status"));
+            columnActive.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, ComboBox>("active"));
+
             columnTimeExtensionReason.setCellFactory(TextFieldTableCell.forTableColumn());
             columnTimeExtension.setCellFactory(TextFieldTableCell.forTableColumn());
 
@@ -247,7 +251,7 @@ public class MenuController implements Initializable {
 
             for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
                 if (readyTestFacade.getActive() == true)
-                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName()));
+                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
@@ -304,7 +308,7 @@ public class MenuController implements Initializable {
                 @Override
                 protected Response call() throws Exception {
 
-                    CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(new TimeExtensionRequest(teacher, currentReadyTest, timeExtensionRequest.getTimeExtensionReason());
+                    CommandInterface command = new (new TimeExtensionRequest(teacher, currentReadyTest, timeExtensionRequest.getTimeExtensionReason()));
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     // Waiting for server confirmation

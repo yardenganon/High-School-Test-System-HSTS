@@ -72,7 +72,7 @@
          </children>
       </AnchorPane>
 
-      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="649.0" prefWidth="595.0" visible="false">
+      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="649.0" prefWidth="595.0">
          <children>
             <Button fx:id="checkingTestsButton" layoutX="14.0" layoutY="601.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
                <font>
@@ -89,9 +89,9 @@
                  <TableColumn fx:id="columnId" prefWidth="29.60003662109375" text="Id" />
                 <TableColumn fx:id="columnCourse" prefWidth="88.0" text="Course" />
                 <TableColumn fx:id="columnTimeExtension" minWidth="0.0" onEditCommit="#onTimeExtensionWriting" prefWidth="104.800048828125" text="Time Extension" />
-                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="258.3999938964844" text="Time Extension Reason" />
-                 <TableColumn fx:id="columnStatus" prefWidth="51.5999755859375" text="Status" />
-                 <TableColumn fx:id="Active" prefWidth="31.5999755859375" text="Status" />
+                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="227.19992065429688" text="Time Extension Reason" />
+                 <TableColumn fx:id="columnStatus" prefWidth="59.199951171875" text="Status" />
+                 <TableColumn fx:id="columnActive" prefWidth="57.60009765625" text="Active" />
               </columns>
             </TableView>
             <Button fx:id="submitExtensionTimeRequestButton" layoutX="463.0" layoutY="174.0" mnemonicParsing="false" onAction="#submitExtensionTimeRequestOfTeacher" prefHeight="25.0" prefWidth="122.0" text="submit request" textFill="#143452">
@@ -101,7 +101,7 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="principlePane" layoutX="248.0" prefHeight="649.0" prefWidth="595.0">
+      <Pane fx:id="principlePane" layoutX="248.0" prefHeight="649.0" prefWidth="595.0" visible="false">
          <children>
             <TableView fx:id="timeExtensionRequstForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="566.0">
               <columns>

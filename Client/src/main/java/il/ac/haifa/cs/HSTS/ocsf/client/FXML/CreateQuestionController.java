@@ -163,7 +163,6 @@ public class CreateQuestionController implements Initializable {
                     responseFromServer = task.getValue();
                     progressIndicator.stop();
                     question = (Question) responseFromServer.getReturnedObject();
-                    System.out.println("yes");
                     anchorPane.setDisable(false);
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
                     updateSuccessAlert.setHeaderText("The question was successfully created");
