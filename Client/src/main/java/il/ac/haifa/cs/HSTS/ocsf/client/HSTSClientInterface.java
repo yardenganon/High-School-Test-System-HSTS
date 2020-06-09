@@ -151,6 +151,11 @@ public class HSTSClientInterface {
                 && guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()) != null)
         ((EnterExecutionCodePopup) guiControllers.get(EnterExecutionCodePopup.class.getSimpleName()))
                 .receivedResponseFromServer(serverResponse);
+        // Extra time request
+        if (serverResponse.getRespondName().equals(TimeExtensionStatusCommand.class.getSimpleName())
+                && guiControllers.get(TestInProgressController.class.getSimpleName()) != null)
+            ((TestInProgressController) guiControllers.get(TestInProgressController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))

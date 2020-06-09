@@ -1,12 +1,18 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import com.google.cloud.storage.BlobId;
+import com.google.cloud.storage.BlobInfo;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.TestToWordUnit;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TimeExtensionStatusCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Status.Status;
 import javafx.application.Platform;
@@ -38,10 +44,15 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TestInProgressController implements Initializable {
+    private final String PROJECT_ID = "hsts-278212";
+    private final String UNIQUE_BUCKET_NAME = "hsts-278212.appspot.com";
 
     @FXML
     private Label questionTextLabel, questionNumberLabel, additionalTimeLabel, testLable, bottomTestLable;
@@ -135,6 +146,12 @@ public class TestInProgressController implements Initializable {
 
     private String fullPath = null;
 
+    private boolean isExtraTimeAdded = false;
+
+    private Response timeExtensionResponseFromServer = null;
+
+    private TimeExtensionRequest timeExtensionRequest = null;
+
     @FXML
     void endTest(ActionEvent event) {
         endTest();
@@ -167,7 +184,69 @@ public class TestInProgressController implements Initializable {
     }
 
     public void uploadEvent() {
+        String projectId = PROJECT_ID;
+        String bucketName = UNIQUE_BUCKET_NAME;
+        String objectName = "TEST123";
+        String filePath = linkLabel.getText();
+            // The ID of your GCP project
+            // String projectId = "your-project-id";
 
+            // The ID of your GCS bucket
+            // String bucketName = "your-unique-bucket-name";
+
+            // The ID of your GCS object
+            // String objectName = "your-object-name";
+
+            // The path to your file to upload
+            // String filePath = "path/to/your/file"
+
+            Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
+            BlobId blobId = BlobId.of(bucketName, objectName);
+            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+        try {
+            storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(
+                    "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+
+    }
+
+    public void timeExtensionThread() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    // Check if there is TimeExtensionRequest every 20 sec
+                    // command
+                    CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
+                    client.getHstsClientInterface().sendCommandToServer(command);
+                        // busywait
+                    while (timeExtensionResponseFromServer == null)
+                        Thread.onSpinWait();
+                    // get respond returned object into timeExtensionRequest
+
+                    if (timeExtensionResponseFromServer.getStatus() == Status.TimeExtensionRequestApproved) {
+                        timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
+                        int timeToAdd = timeExtensionRequest.getTimeToAdd();
+                        addExtraTime(timeToAdd);
+                        break;
+                    }
+                    // Check every 1-minute
+                    try {
+                        Thread.sleep(1000*60);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void timeExtensionResponseFromServer(Response response){
+        timeExtensionResponseFromServer = response;
     }
 
     @Override
@@ -187,13 +266,25 @@ public class TestInProgressController implements Initializable {
             initHBox();
             loadQuestion(1);
             initNumberOfQuestions();
-            notifyTestIsStarting();
 
         } else {
             changePanes();
             makeManualTest();
         }
-        initTimer(answerableTest.getTest().getModifiedTime());
+        notifyTestIsStarting();
+        calculateTimeDiff();
+        //initTimer(answerableTest.getTest().getModifiedTime());
+    }
+
+    public void calculateTimeDiff() {
+        long modifiedTime = this.answerableTest.getTest().getModifiedTime();
+        long timePassed = getDateDiff(this.answerableTest.getTimeStarted(),new Date(),TimeUnit.MINUTES);
+        System.out.println("Modified time: " + modifiedTime + " Time left: "+timePassed);
+        if (timePassed > modifiedTime)
+              endTest();
+        else {
+            initTimer((int)(modifiedTime-timePassed));
+        }
     }
 
     public void makeManualTest() {
@@ -202,6 +293,7 @@ public class TestInProgressController implements Initializable {
             testToWordUnit = new TestToWordUnit(answerableTest.getTest(), answerableTest.getStudent());
             fullPath = testToWordUnit.getFilePath();
             linkLabel.setText(fullPath);
+            textField.setText(fullPath);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -282,7 +374,6 @@ public class TestInProgressController implements Initializable {
         timer = new Timer();
         this.testTimerTask = new TestTimerTask();
         bundle.put("testTimerTask", this.testTimerTask);
-        this.answerableTest.setTimeStarted(new Date());
         timer.schedule(testTimerTask, 0, 1000);
     }
 
@@ -427,6 +518,11 @@ public class TestInProgressController implements Initializable {
         questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
     }
 
+    public long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
+        long diffInMillies = date2.getTime() - date1.getTime();
+        return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    }
+
     public void addExtraTime(int extraTime) {
         this.extraTime = extraTime;
         int additionalHours = extraTime / 60;
@@ -439,9 +535,16 @@ public class TestInProgressController implements Initializable {
 
     public void notifyTestIsStarting() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Test is about to start");
-        alert.setHeaderText("Test Session");
-        alert.setContentText("Press enter to start the test");
+        if (this.answerableTest.getTimeStarted() == null) {
+            alert.setTitle("Test is about to start");
+            alert.setHeaderText("Test Session");
+            alert.setContentText("Press enter to start the test");
+        }
+        else {
+            alert.setTitle("Test is already started");
+            alert.setHeaderText("Test Session");
+            alert.setContentText("Press enter to get back to the session");
+        }
         alert.setResizable(true);
         alert.getDialogPane().setPrefSize(300, 200);
         Optional<ButtonType> result = alert.showAndWait();
@@ -452,6 +555,9 @@ public class TestInProgressController implements Initializable {
         answerableTest = (AnswerableTest) bundle.get("answerableTest");
         if (answerableTest.getTest().getManual() == true)
             isManualTest = true;
+        if (answerableTest.getTimeStarted() == null)
+            this.answerableTest.setTimeStarted(new Date());
+
     }
 
     public void initDummyData() {

@@ -43,8 +43,8 @@ public class ReadyTest implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "readyTest")
     List<AnswerableManualTest> answerableManualTests;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
-    List<TimeExtensionRequest> timeExtensionRequests;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
+    TimeExtensionRequest timeExtensionRequest;
 
     public ReadyTest(){}
 
@@ -64,13 +64,19 @@ public class ReadyTest implements Serializable {
 
         this.answerableTests = new ArrayList<AnswerableTest>();
         this.answerableManualTests = new ArrayList<AnswerableManualTest>();
-        this.timeExtensionRequests = new ArrayList<TimeExtensionRequest>();
-
         /*
         course.addReadyTest(this);
         test.addReadyTest(this);
         modifierWriter.addReadyTest(this);
          */
+    }
+
+    public TimeExtensionRequest getTimeExtensionRequest() {
+        return timeExtensionRequest;
+    }
+
+    public void setTimeExtensionRequest(TimeExtensionRequest timeExtensionRequest) {
+        this.timeExtensionRequest = timeExtensionRequest;
     }
 
     public Boolean getManual() {
@@ -79,10 +85,6 @@ public class ReadyTest implements Serializable {
 
     public void setManual(Boolean manual) {
         isManual = manual;
-    }
-
-    public void addTimeExtensionRequest(TimeExtensionRequest request) {
-        this.timeExtensionRequests.add(request);
     }
 
     public void addAnswerableManualTest(AnswerableManualTest answerableManualTest) {

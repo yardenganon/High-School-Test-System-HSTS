@@ -138,7 +138,7 @@ public class TestsRepository {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code)"
+            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.code= :testCode");
             query.setParameter("testCode", readyTestCode);
             readyTest = query.getSingleResult();
@@ -159,7 +159,7 @@ public class TestsRepository {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code)"
+            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.modifierWriter.id= :teacherId");
             query.setParameter("teacherId", id);
             readyTests = query.list();
