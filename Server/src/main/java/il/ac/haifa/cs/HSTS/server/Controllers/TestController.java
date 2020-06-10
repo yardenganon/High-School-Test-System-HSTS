@@ -30,7 +30,7 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.updateReadyTestActivity(readyTestId, status);
                 break;
             case("ReadyTestExtendedFacadeReadByTeacherCommand"):
-                returnedObject = testsRepository.getReadyTestsFacadeByTeacherId(
+                returnedObject = testsRepository.getReadyTestsExtendedFacadeByTeacherId(
                         ((ReadyTestExtendedFacadeReadByTeacherCommand)command).getTeacherId());
                 break;
             case("ReadyTestReadByIdCommand"):
