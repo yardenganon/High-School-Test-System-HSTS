@@ -13,6 +13,9 @@ public class TimeExtensionRequestTableView {
     private String teacherUserName;
     private Boolean active;
 
+    public TimeExtensionRequestTableView(int id, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason, String status, Boolean active) {
+    }
+
     public void setTestId(int testId) {
         this.testId = testId;
     }
@@ -69,7 +72,7 @@ public class TimeExtensionRequestTableView {
         return timeExtensionReason;
     }
 
-    public TimeExtensionRequestTableView(int testId, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason, Status status, boolean isActive)
+    public TimeExtensionRequestTableView(int testId, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason,Status status, boolean isActive)
     {
         this.testId = testId;
         this.courseName = courseName;
@@ -79,8 +82,6 @@ public class TimeExtensionRequestTableView {
         if (getTimeExtensionReason() != null)
             this.timeExtensionReason = timeExtensionReason;
         this.timeExtensionReason = "";
-        if (status != null)
-            this.status = status;
         this.active = isActive;
     }
 

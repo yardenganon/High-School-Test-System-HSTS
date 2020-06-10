@@ -171,6 +171,7 @@ public class TestsRepository {
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
+        System.out.println("Ready test is:" + readyTests);
         return readyTests;
     }
     /* ----------------------------------------------AnswerableTest-------------------------------------------- */

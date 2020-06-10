@@ -32,9 +32,16 @@ public class ReadyTestExtendedFacade implements Serializable {
         this.isManual = isManual;
         this.code = code;
         this.courseName = courseName;
-        this.timeToAdd = timeToAdd;
-        this.timeExtensionReason = timeExtensionReason;
-        this.timeExtensionRequestStatus = timeExtensionRequestStatus;
+        if (timeToAdd != Integer.parseInt(null))
+            this.timeToAdd = timeToAdd;
+        else this.timeToAdd = 0;
+        if (timeExtensionReason != null)
+            this.timeExtensionReason = timeExtensionReason;
+        this.timeExtensionReason = "";
+        if (timeExtensionRequestStatus != null)
+            this.timeExtensionRequestStatus = timeExtensionRequestStatus;
+        else this.timeExtensionRequestStatus = Status.InvalidCode;
+
     }
 
     public int getId() {
@@ -132,5 +139,17 @@ public class ReadyTestExtendedFacade implements Serializable {
                 ", reason= " + timeExtensionReason +
                 ", status= " + timeExtensionRequestStatus +
                 '}';
+    }
+
+    public int getTimeToAdd() {
+        return timeToAdd;
+    }
+
+    public String getTimeExtensionReason() {
+        return timeExtensionReason;
+    }
+
+    public Status getTimeExtensionRequestStatus() {
+        return timeExtensionRequestStatus;
     }
 }

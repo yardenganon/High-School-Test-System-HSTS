@@ -1,7 +1,5 @@
 package il.ac.haifa.cs.HSTS.server.Facade;
 
-import il.ac.haifa.cs.HSTS.server.Status.Status;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,17 +28,6 @@ public class ReadyTestFacade implements Serializable {
         this.courseName = courseName;
     }
 
-    public int getTimeToAdd() {
-        return timeToAdd;
-    }
-
-    public String getTimeExtensionReason() {
-        return timeExtensionReason;
-    }
-
-    public Status getTimeExtensionRequestStatus() {
-        return timeExtensionRequestStatus;
-    }
 
     public int getId() {
         return id;

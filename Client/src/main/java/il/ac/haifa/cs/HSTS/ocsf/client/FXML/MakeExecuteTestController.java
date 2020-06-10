@@ -254,9 +254,9 @@ public class MakeExecuteTestController implements Initializable {
 
                 Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
                 if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
-                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE)
+                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE))
                 {
-
+                    //לסגור את המסך כאן
                 }
 
 

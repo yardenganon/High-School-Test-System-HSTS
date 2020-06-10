@@ -10,6 +10,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Status.Status;
 import javafx.collections.FXCollections;
@@ -187,8 +188,7 @@ public class MenuController implements Initializable {
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
-                System.out.println(teacher.getId());
-                CommandInterface command = new ReadyTestFacadeReadByTeacherCommand(teacher.getId());
+                CommandInterface command = new ReadyTestExtendedFacadeReadByTeacherCommand(teacher.getId());
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
@@ -211,12 +211,32 @@ public class MenuController implements Initializable {
             columnTimeExtensionReason.setCellFactory(TextFieldTableCell.forTableColumn());
             columnTimeExtension.setCellFactory(TextFieldTableCell.forTableColumn());
 
-            readyTestFacadeList = (List<ReadyTestFacade>) responseFromServer.getReturnedObject();
+            List<Object> listOfFacadTests = (List<Object>) responseFromServer.getReturnedObject();
+
+            List<ReadyTestExtendedFacade> readyTestFacadeExtendedList = (List<ReadyTestExtendedFacade>)listOfFacadTests.get(0);
+            List<ReadyTestFacade> reasyTestFacadeList = (List<ReadyTestFacade>) listOfFacadTests.get(0);;
+
             questionsOL = FXCollections.observableArrayList();
 
-            for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
+            for (ReadyTestExtendedFacade readyTestExtendedFacade : readyTestFacadeExtendedList) {
+                questionsOL.add(new TimeExtensionRequestTableView(readyTestExtendedFacade.getId(), readyTestExtendedFacade.getCourseName(), teacher,
+                        String.valueOf(readyTestExtendedFacade.getTimeToAdd()) , readyTestExtendedFacade.getTimeExtensionReason(), readyTestExtendedFacade.getTimeExtensionRequestStatus(),  readyTestExtendedFacade.getActive()));
+            }
+            activeTestsTebleView.getItems().addAll(questionsOL);
+
+            boolean foundedInFacadTestsList = false;
+            questionsOL = FXCollections.observableArrayList();
+            foundedInFacadTestsList = false;
+            for (ReadyTestFacade readyTestFacade : reasyTestFacadeList) {
+                for (ReadyTestExtendedFacade readyTestExtendedFacade : readyTestFacadeExtendedList) {
+                    if (readyTestExtendedFacade.getId() == readyTestFacade.getId()) {
+                        foundedInFacadTestsList = true;
+                        break;
+                    }
+                }
+            if (!foundedInFacadTestsList)
                 questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), teacher,
-                        String.valueOf(readyTestFacade.getTimeToAdd()) , readyTestFacade.getTimeExtensionReason(), readyTestFacade.getTimeExtensionRequestStatus(),  readyTestFacade.getActive()));
+                        "", "" , null,  readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
