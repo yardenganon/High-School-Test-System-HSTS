@@ -7,6 +7,7 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.TimeExtensionStatusCommand;
 import il.ac.haifa.cs.HSTS.server.Controllers.RequestAnswerableTestController;
 import il.ac.haifa.cs.HSTS.server.Controllers.TimeExtensionController;
 import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
 import il.ac.haifa.cs.HSTS.server.Repositories.TimeExtensionRepository;
@@ -28,12 +29,27 @@ public class AppTest {
         TimeExtensionController timeExtensionController = new TimeExtensionController();
 
         Teacher teacher = (Teacher) usersRepository.login("yaffa_hamuza", "1234");
+        ReadyTest  readyTest = testsRepository.getReadyTestById(2);
 
-        ReadyTest readyTest = testsRepository.getReadyTestById(1);
-        TimeExtensionRequest timeExtensionRequest = new TimeExtensionRequest(teacher, readyTest, "suck my D", 100);
-        timeExtensionRequest = timeExtensionRepository.pushTimeExtensionRequest(timeExtensionRequest);
-        System.out.println("-----------------------");
-        System.out.println(timeExtensionRequest);
-        System.out.println("-----------------------");
+        TimeExtensionRequest ter = new TimeExtensionRequest(teacher, readyTest, "", 100);
+        ter = timeExtensionRepository.pushTimeExtensionRequest(ter);
+        System.out.println("------------------Time Extension Entity-----------------------");
+        System.out.println(ter);
+        System.out.println("-----------------------------------------");
+
+        readyTest = testsRepository.getReadyTestById(5);
+        TimeExtensionRequest ter1 = new TimeExtensionRequest(teacher, readyTest, "", 200);
+        ter1 = timeExtensionRepository.pushTimeExtensionRequest(ter1);
+
+        //System.out.println("---------------Extenden Facade List--------------------------");
+        //System.out.println(testsRepository.getReadyTestsFacadeByTeacherId(teacher.getId()));
+        //System.out.println(testsRepository.getReadyTestsFacadeByTeacherId(teacher.getId()));
+        //System.out.println(testsRepository.getReadyTestsExtendedFacadeByTeacherId(teacher.getId()));
+        List<Object> objectList = testsRepository.getReadyTestsExtendedFacadeByTeacherId(teacher.getId());
+        List<ReadyTestExtendedFacade> readyTestExtendedFacades = (List<ReadyTestExtendedFacade>) objectList.get(0);
+        List<ReadyTestFacade> readyTestFacades = (List<ReadyTestFacade>) objectList.get(1);
+        System.out.println(readyTestExtendedFacades);
+        System.out.println(readyTestFacades);
+
     }
 }
