@@ -155,7 +155,7 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(TimeExtensionStatusCommand.class.getSimpleName())
                 && guiControllers.get(TestInProgressController.class.getSimpleName()) != null)
             ((TestInProgressController) guiControllers.get(TestInProgressController.class.getSimpleName()))
-                    .receivedResponseFromServer(serverResponse);
+                    .timeExtensionResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))

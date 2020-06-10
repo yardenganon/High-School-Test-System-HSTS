@@ -215,34 +215,38 @@ public class TestInProgressController implements Initializable {
     }
 
     public void timeExtensionThread() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    // Check if there is TimeExtensionRequest every 20 sec
-                    // command
-                    CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
-                    client.getHstsClientInterface().sendCommandToServer(command);
-                        // busywait
-                    while (timeExtensionResponseFromServer == null)
-                        Thread.onSpinWait();
-                    // get respond returned object into timeExtensionRequest
+        Thread thread = new Thread(() ->{
+            while (true){
+                // Check if there is TimeExtensionRequest every 20 sec
+                // command
+                System.out.println("On TE Thread");
+                CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
+                client.getHstsClientInterface().sendCommandToServer(command);
+                // busyWait
+                while (timeExtensionResponseFromServer == null)
+                    Thread.onSpinWait();
+                System.out.println("Response arrived TE Thread");
+                // get respond returned object into timeExtensionRequest
 
-                    if (timeExtensionResponseFromServer.getStatus() == Status.TimeExtensionRequestApproved) {
-                        timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
-                        int timeToAdd = timeExtensionRequest.getTimeToAdd();
-                        addExtraTime(timeToAdd);
-                        break;
-                    }
-                    // Check every 1-minute
-                    try {
-                        Thread.sleep(1000*60);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                if (timeExtensionResponseFromServer.getStatus() == Status.TimeExtensionRequestApproved) {
+                    System.out.println("TE Approved, adding time TE Thread");
+                    timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
+                    int timeToAdd = timeExtensionRequest.getTimeToAdd();
+                    addExtraTime(timeToAdd);
+                    System.out.println("TE Approved, additional time has been added TE Thread");
+                    break;
+                }
+                // Check every 1-minute
+                try {
+                    System.out.println("TE Thread going to sleep for a minute");
+                    Thread.sleep(1000*60);
+                    System.out.println("TE Thread woke up from a minute");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });
+        thread.start();
     }
 
     public void timeExtensionResponseFromServer(Response response){
@@ -273,6 +277,7 @@ public class TestInProgressController implements Initializable {
         }
         notifyTestIsStarting();
         calculateTimeDiff();
+        timeExtensionThread();
         //initTimer(answerableTest.getTest().getModifiedTime());
     }
 
