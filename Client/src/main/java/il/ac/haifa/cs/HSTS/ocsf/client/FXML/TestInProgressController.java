@@ -253,7 +253,7 @@ public class TestInProgressController implements Initializable {
                 // Check every 1-minute
                 try {
                     System.out.println("TE Thread going to sleep for a minute");
-                    Thread.sleep(1000*60);
+                    Thread.sleep(1000*10);
                     System.out.println("TE Thread woke up from a minute");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
