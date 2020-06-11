@@ -70,6 +70,7 @@ public class EnterIdPopup implements Initializable {
         if (status.equals(Status.Success)){
             Scene scene = null;
             try {
+                client.getHstsClientInterface().getGuiControllers().clear();
                 scene = new Scene(MainClass.loadFXML("TestInProgress"));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,6 +83,8 @@ public class EnterIdPopup implements Initializable {
                         @Override
                         public void run() {
                             System.out.println("Test is closed, creating a backup...");
+                            boolean running = (boolean) bundle.get("runningStatus");
+                            running = false;
                             TestInProgressController.TestTimerTask testTimerTask =
                                     ((TestInProgressController.TestTimerTask) bundle.get("testTimerTask"));
                             if (testTimerTask !=null)
@@ -96,10 +99,10 @@ public class EnterIdPopup implements Initializable {
                 }
             });
             if (scene != null) {
+                Stage menuStage = (Stage) bundle.get("menuStage");
                 stage.setScene(scene);
                 stage.centerOnScreen();
                 stage.show();
-                Stage menuStage = (Stage) bundle.get("menuStage");
                 menuStage.close();
                 bundle.remove("menuStage");
             }
