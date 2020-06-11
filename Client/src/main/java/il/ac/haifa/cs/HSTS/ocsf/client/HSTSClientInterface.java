@@ -162,7 +162,30 @@ public class HSTSClientInterface {
                     .receivedResponseFromServer(serverResponse);
 
 
-    }
+        if (serverResponse.getRespondName().equals(ReadyTestExtendedFacadeReadByTeacherCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(RequestTimeExtensionCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(ReadyTestReadByIdCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(TimeExtensionRequestUpdateCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+            .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(TimeExtensionReadAllCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(ReadyTestUpdateActivityCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+}
 
     public Map<String, Object> getGuiControllers() {
         return guiControllers;
