@@ -2,13 +2,12 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestReadCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest;
-import il.ac.haifa.cs.HSTS.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -78,6 +77,8 @@ public class CheckAnswerableTestController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+//        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+//        progressIndicator.start();
         bundle = Bundle.getInstance();
         idTest = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
@@ -85,6 +86,7 @@ public class CheckAnswerableTestController implements Initializable {
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
         initializeAnswerableTest();
+        //progressIndicator.stop();
     }
 
     private void initializeAnswerableTest() {
@@ -132,6 +134,17 @@ public class CheckAnswerableTestController implements Initializable {
                     String.valueOf(answers.get(question)), String.valueOf(question.getCorrectAnswer())));
         }
         questionsTableView.setItems(questionsOL);
+
+        if (user instanceof Teacher) {
+            commentTextField.setEditable(true);
+            confirmTestButton.setVisible(true);
+            gradeButton.setEditable(true);
+        }
+        if (user instanceof Student) {
+            confirmTestButton.setVisible(false);
+            commentTextField.setEditable(false);
+            gradeButton.setEditable(false);
+        }
     }
 
     @FXML

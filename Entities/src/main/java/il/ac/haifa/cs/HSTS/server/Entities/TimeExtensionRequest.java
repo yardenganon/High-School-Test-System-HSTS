@@ -122,4 +122,11 @@ public class TimeExtensionRequest implements Serializable {
     public void setTimeToAdd(int timeToAdd) {
         this.timeToAdd = timeToAdd;
     }
+
+    @Override
+    public String toString() {
+        return "TimeExtensionRequest{" +
+                "status=" + status +
+                '}';
+    }
 }

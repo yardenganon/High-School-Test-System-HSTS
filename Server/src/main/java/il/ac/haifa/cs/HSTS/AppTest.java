@@ -29,8 +29,40 @@ public class AppTest {
         TimeExtensionRepository timeExtensionRepository = new TimeExtensionRepository();
         TimeExtensionController timeExtensionController = new TimeExtensionController();
 
-        Student student = (Student ) usersRepository.login("ohad_fridman", "1234");
+        Teacher teacher = (Teacher) usersRepository.login("yaffa_hamuza", "1234");
+        ReadyTest readyTest = testsRepository.getReadyTestById(1);
+        ReadyTest readyTest2 = testsRepository.getReadyTestById(3);
 
-        System.out.println(testsRepository.getAnswerableTestsFacadeByStudentId(student));
+        TimeExtensionRequest ter = new TimeExtensionRequest(teacher, readyTest, "kacha", 100);
+        ter = timeExtensionRepository.pushTimeExtensionRequest(ter);
+
+        System.out.println(ter);
+
+        TimeExtensionRequest ter1 = new TimeExtensionRequest(teacher, readyTest2, "lama", 100);
+        ter1 = timeExtensionRepository.pushTimeExtensionRequest(ter1);
+
+        System.out.println(ter1);
+
+       // System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
+
+        //List<TimeExtensionRequest> list = timeExtensionRepository.getAll();
+
+       // ter = list.get(0);
+        ter.setStatus(Status.PermissionDenied);
+        ter = timeExtensionRepository.updateTimeExtensionRequest(ter);
+        System.out.println("updated:" + ter);
+
+       // System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
+
+        //System.out.println("---------------Extenden Facade List--------------------------");
+        //System.out.println(testsRepository.getReadyTestsFacadeByTeacherId(teacher.getId()));
+        //System.out.println(testsRepository.getReadyTestsFacadeByTeacherId(teacher.getId()));
+        //System.out.println(testsRepository.getReadyTestsExtendedFacadeByTeacherId(teacher.getId()));
+//        List<Object> objectList = testsRepository.getReadyTestsExtendedFacadeByTeacherId(teacher.getId());
+//        List<ReadyTestExtendedFacade> readyTestExtendedFacades = (List<ReadyTestExtendedFacade>) objectList.get(0);
+//        List<ReadyTestFacade> readyTestFacades = (List<ReadyTestFacade>) objectList.get(1);
+//        System.out.println(readyTestExtendedFacades);
+//        System.out.println(readyTestFacades);
+
     }
 }

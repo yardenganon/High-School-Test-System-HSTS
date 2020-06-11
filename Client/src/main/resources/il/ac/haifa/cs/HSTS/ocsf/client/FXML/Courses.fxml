@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="761.0" prefWidth="884.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CoursesController">
+   <children>
+      <VBox layoutX="29.0" layoutY="83.0" prefHeight="640.0" prefWidth="844.0">
+         <children>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="id" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="idTextField" editable="false" prefHeight="26.0" prefWidth="767.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Teacher" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="teacherTextField" editable="false" prefHeight="26.0" prefWidth="781.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="subjectTextField" editable="false" prefHeight="26.0" prefWidth="770.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="average" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="averageTextField" editable="false" prefHeight="26.0" prefWidth="806.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="std" wrappingWidth="47.58310890197754">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="stdTextField" editable="false" prefHeight="26.0" prefWidth="766.0">
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox prefHeight="187.0" prefWidth="844.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="students list" wrappingWidth="74.78312110900879">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TableView fx:id="questionsTableView" prefHeight="246.0" prefWidth="793.0">
+                     <columns>
+                        <TableColumn fx:id="idColumn" editable="false" prefWidth="148.80001372098923" text="id" />
+                        <TableColumn fx:id="nameColumn" editable="false" prefWidth="161.6000213623047" text="name" />
+                        <TableColumn fx:id="avgColumn" editable="false" minWidth="0.0" prefWidth="138.40005493164062" text="average" />
+                        <TableColumn fx:id="stdColumn" editable="false" minWidth="0.0" prefWidth="163.20001220703125" text="std" />
+                     </columns>
+                  </TableView>
+               </children>
+            </HBox>
+            <HBox prefHeight="262.0" prefWidth="844.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="students list" wrappingWidth="74.78312110900879">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <BarChart fx:id="studentsBarChart" prefHeight="259.0" prefWidth="770.0" title="Students Average">
+                    <xAxis>
+                      <CategoryAxis fx:id="gradesChart" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="numberOfStudentsChart" prefHeight="172.0" prefWidth="28.0" side="LEFT" upperBound="90.0" />
+                    </yAxis>
+                  </BarChart>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Label layoutX="29.0" layoutY="14.0" prefHeight="50.0" prefWidth="206.0" text="Course Details" textFill="#143452">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
