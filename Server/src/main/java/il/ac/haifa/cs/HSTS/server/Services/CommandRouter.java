@@ -29,6 +29,7 @@ public class CommandRouter {
         commandsMap.put(ReadyTestUpdateActivityCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(PushAnswerableTestCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestReadCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestsFacadeReadByStudentCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
