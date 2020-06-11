@@ -43,16 +43,16 @@ public class AppTest {
 
         System.out.println(ter1);
 
-        System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
+       // System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
 
-        List<TimeExtensionRequest> list = timeExtensionRepository.getAll();
+        //List<TimeExtensionRequest> list = timeExtensionRepository.getAll();
 
-        ter = list.get(0);
+       // ter = list.get(0);
         ter.setStatus(Status.PermissionDenied);
         ter = timeExtensionRepository.updateTimeExtensionRequest(ter);
         System.out.println("updated:" + ter);
 
-        System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
+       // System.out.println("All Time Ex: " + timeExtensionRepository.getAll());
 
         //System.out.println("---------------Extenden Facade List--------------------------");
         //System.out.println(testsRepository.getReadyTestsFacadeByTeacherId(teacher.getId()));

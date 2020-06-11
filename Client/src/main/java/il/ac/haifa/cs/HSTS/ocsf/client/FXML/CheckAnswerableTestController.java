@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestReadCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
@@ -76,6 +77,8 @@ public class CheckAnswerableTestController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+//        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+//        progressIndicator.start();
         bundle = Bundle.getInstance();
         idTest = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
@@ -83,6 +86,7 @@ public class CheckAnswerableTestController implements Initializable {
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
         initializeAnswerableTest();
+        //progressIndicator.stop();
     }
 
     private void initializeAnswerableTest() {

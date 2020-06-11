@@ -4,10 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateByIdCommand;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadCommand;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.Student;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
@@ -36,6 +33,8 @@ import java.util.ResourceBundle;
 public class TestCheckingController implements Initializable {
 
     public User user;
+    public Text gpaLabel;
+    public Label gpaResultLabel;
     private Student student;
     private Response responseFromServer = null;
     private static List<AnswerableTestFacade> testList = null;
@@ -43,6 +42,7 @@ public class TestCheckingController implements Initializable {
     private Bundle bundle;
     private HSTSClient client;
     int sumOfTestsNeededToCheck = 0;
+    double sumOfGrades = 0;
     private ObservableList<UncheckedTestTable> questionsOL = null;
     private Teacher teacher;
     private int checkedTestId;
@@ -167,6 +167,9 @@ public class TestCheckingController implements Initializable {
                 if (theTestWasChecked)
                     refreshList();
             }
+
+//            if (student != null)
+//                refreshList();
         }
         else
         {
@@ -186,6 +189,7 @@ public class TestCheckingController implements Initializable {
         bundle = Bundle.getInstance();
         user = (User) bundle.get("user");
         client = (HSTSClient) bundle.get("client");
+        client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
         if (user instanceof Teacher) {
@@ -219,15 +223,21 @@ public class TestCheckingController implements Initializable {
                     titleLabel.setText("Test Checking");
                     editTestButton.setText("Edit Test");
                     confirmTestButton.setVisible(true);
-                    numberOfTestsLabel.setText("Number Of Tests To Check:");
+                    numberOfTestsLabel.setVisible(true);
+                    numberOfTestsToCheckButton.setVisible(true);
+                    gpaLabel.setVisible(false);
+                    gpaResultLabel.setVisible(false);
                     studentNameColumn.setVisible(true);
                 }
                 else if (student != null) {
-                    command = null;
+                    command = new AnswerableTestsFacadeReadByStudentCommand(student);
                     titleLabel.setText("My Tests");
                     editTestButton.setText("Watch Test");
                     confirmTestButton.setVisible(false);
-                    numberOfTestsLabel.setText("GPA:");
+                    numberOfTestsLabel.setVisible(false);
+                    numberOfTestsToCheckButton.setVisible(false);
+                    gpaLabel.setVisible(true);
+                    gpaResultLabel.setVisible(true);
                     studentNameColumn.setVisible(false);
                 }
                 else
@@ -252,6 +262,7 @@ public class TestCheckingController implements Initializable {
 
             questionsOL = FXCollections.observableArrayList();
             sumOfTestsNeededToCheck = 0;
+            sumOfGrades = 0;
 
             for (AnswerableTestFacade answerableTestFacade : listOfAnswerableTestFacade) {
                 sumOfTestsNeededToCheck++;
@@ -260,20 +271,28 @@ public class TestCheckingController implements Initializable {
                         answerableTestFacade.getCourseName() + answerableTestFacade.getFirstName() + answerableTestFacade.getLastName() +
                         String.valueOf(answerableTestFacade.getScore()));
 
+                if (student != null)
+                    sumOfGrades += answerableTestFacade.getScore();
+
                 questionsOL.add(new UncheckedTestTable(String.valueOf(answerableTestFacade.getAnswerableTestId()),
                         answerableTestFacade.getCourseName(), answerableTestFacade.getFirstName() + " " + answerableTestFacade.getLastName(),
                         String.valueOf(answerableTestFacade.getScore())));
             }
             TestsTableView.getItems().addAll(questionsOL);
-            numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
+
+            if (teacher != null)
+                numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
+            else
+                if (student != null)
+                    gpaResultLabel.setText(String.format("%.2f", sumOfGrades / sumOfTestsNeededToCheck));
         });
         new Thread(task).start();
     }
 
     public void refreshList() {
         // Update the number of remaining tests to check
-        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-        progressIndicator.start();
+//        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+//        progressIndicator.start();
 
         // Remove checked test cell from the table
         if (theTestWasChecked && selectedTest != null) {
@@ -283,7 +302,7 @@ public class TestCheckingController implements Initializable {
             numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
         }
 
-        progressIndicator.stop();
+        //progressIndicator.stop();
         theTestWasChecked = false;
     }
 
