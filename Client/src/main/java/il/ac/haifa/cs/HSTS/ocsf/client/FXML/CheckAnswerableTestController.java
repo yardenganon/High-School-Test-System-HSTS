@@ -105,7 +105,8 @@ public class CheckAnswerableTestController implements Initializable {
         };
         task.setOnSucceeded(e -> {
                 answerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
-
+                if (user instanceof Student)
+                    commentTextField.setText(answerableTest.getTeacherComment());
                 gradeButton.setText(String.valueOf(answerableTest.getScore()));
                 idTextField.setText(String.valueOf(idTest));
                 studentNameButton.setText(answerableTest.getStudent().getFirst_name() + " " +
