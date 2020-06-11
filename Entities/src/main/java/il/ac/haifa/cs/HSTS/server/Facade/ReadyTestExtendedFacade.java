@@ -23,7 +23,7 @@ public class ReadyTestExtendedFacade implements Serializable {
     public ReadyTestExtendedFacade(int id, String teacherWriter, String courseName, Date dateCreated,
                            int time, Boolean isManual, Boolean isActive, String code, int timeToAdd,
                            String timeExtensionReason, Status timeExtensionRequestStatus) {
-        System.out.println("in Facade Constructor");
+        System.out.println("in ReadyTestFacadeExtended Constructor");
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.dateCreated = dateCreated;
@@ -61,14 +61,6 @@ public class ReadyTestExtendedFacade implements Serializable {
         this.courseName = courseName;
     }
 
-    //    public String getSubject() {
-//        return subject;
-//    }
-//
-//    public void setSubject(String subject) {
-//        this.subject = subject;
-//    }
-
     public Date getDateCreated() {
         return dateCreated;
     }
@@ -76,14 +68,6 @@ public class ReadyTestExtendedFacade implements Serializable {
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
-
-//    public int getNumberOfQuestions() {
-//        return numberOfQuestions;
-//    }
-//
-//    public void setNumberOfQuestions(int numberOfQuestions) {
-//        this.numberOfQuestions = numberOfQuestions;
-//    }
 
     public int getTime() {
         return time;

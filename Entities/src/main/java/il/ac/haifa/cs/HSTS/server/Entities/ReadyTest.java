@@ -43,7 +43,7 @@ public class ReadyTest implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "readyTest")
     List<AnswerableManualTest> answerableManualTests;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "test")
     TimeExtensionRequest timeExtensionRequest;
 
     public ReadyTest(){}
