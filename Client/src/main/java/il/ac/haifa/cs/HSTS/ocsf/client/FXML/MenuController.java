@@ -132,6 +132,9 @@ public class MenuController implements Initializable {
     private Button rejectTimeExtensionButton;
 
     @FXML
+    private Label successPrincipleButton;
+
+    @FXML
     void goToTests(ActionEvent event) throws IOException {
         Events.navigateTestsEvent(goToTestsButton);
     }
@@ -496,6 +499,7 @@ public class MenuController implements Initializable {
                 responseFromServer = task.getValue();
 
                 timeExtensionRequestForPrincipleTV.getItems().remove(chosenRow);
+                successPrincipleButton.setText("Time Extension Request Approved");
 
                 progressIndicator.stop();
             });
@@ -542,6 +546,7 @@ public class MenuController implements Initializable {
                 responseFromServer = task.getValue();
 
                 timeExtensionRequestForPrincipleTV.getItems().remove(chosenRow);
+                successPrincipleButton.setText("Time Extension Request Rejected");
 
                 progressIndicator.stop();
             });

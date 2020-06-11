@@ -106,7 +106,7 @@
             </Button>
          </children>
       </Pane>
-      <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0">
+      <Pane fx:id="principlePane" layoutX="244.0" layoutY="1.0" prefHeight="650.0" prefWidth="633.0" visible="false">
          <children>
             <TableView fx:id="timeExtensionRequestForPrincipleTV" layoutX="16.0" layoutY="65.0" prefHeight="178.0" prefWidth="603.0">
               <columns>
@@ -127,12 +127,12 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Button fx:id="rejectTimeExtensionButton" layoutX="502.0" layoutY="250.0" mnemonicParsing="false" onAction="#RejectTimeExtension" prefHeight="25.0" prefWidth="55.0" text="reject" textFill="#143452">
+            <Button fx:id="rejectTimeExtensionButton" layoutX="502.0" layoutY="250.0" mnemonicParsing="false" onAction="#RejectTimeExtension" prefHeight="25.0" prefWidth="55.0" text="Reject" textFill="#143452">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
-            <Label layoutX="16.0" layoutY="254.0" prefHeight="17.0" prefWidth="142.0" textFill="#143452">
+            <Label fx:id="successPrincipleButton" layoutX="16.0" layoutY="254.0" prefHeight="17.0" prefWidth="270.0" textFill="#143452">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
