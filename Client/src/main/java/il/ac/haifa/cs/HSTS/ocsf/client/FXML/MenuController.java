@@ -52,6 +52,9 @@ public class MenuController implements Initializable {
     private Label helloLabel;
 
     @FXML
+    private Pane teacherPane;
+
+    @FXML
     private Button coursesButton;
 
     @FXML
@@ -78,7 +81,10 @@ public class MenuController implements Initializable {
     private Button checkingTestsButton;
 
     @FXML
-    private Pane teacherPane;
+    private Button myTestButton;
+
+    @FXML
+    private Button myCoursesButton;
 
     @FXML
     private Pane principlePane;
@@ -175,6 +181,7 @@ public class MenuController implements Initializable {
             teacher = (Teacher) user;
             InitTeacherMenu(teacher);
             teacherPane.setVisible(true);
+            myTestButton.setVisible(false);
         }
         else if (user instanceof Student)
             initStudentMenu();
@@ -573,6 +580,7 @@ public class MenuController implements Initializable {
 
     public void initStudentMenu() {
         studentMenu.setVisible(true);
+        myTestButton.setVisible(true);
         enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             Scene scene = null;
             @Override
@@ -592,6 +600,15 @@ public class MenuController implements Initializable {
         });
     }
 
+    @FXML
+    void showMyCourses(ActionEvent event) {
+
+    }
+
+    @FXML
+    void showMyTests(ActionEvent event) {
+       Events.navigateCheckingTestsEvent(myTestButton);
+    }
     /* ---------------------- end Student ------------- */
 
 }
