@@ -155,14 +155,37 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(TimeExtensionStatusCommand.class.getSimpleName())
                 && guiControllers.get(TestInProgressController.class.getSimpleName()) != null)
             ((TestInProgressController) guiControllers.get(TestInProgressController.class.getSimpleName()))
-                    .receivedResponseFromServer(serverResponse);
+                    .timeExtensionResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestUpdateByIdCommand.class.getSimpleName()))
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
 
-    }
+        if (serverResponse.getRespondName().equals(ReadyTestExtendedFacadeReadByTeacherCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(RequestTimeExtensionCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(ReadyTestReadByIdCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(TimeExtensionRequestUpdateCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+            .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(TimeExtensionReadAllCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(ReadyTestUpdateActivityCommand.class.getSimpleName()))
+            ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+}
 
     public Map<String, Object> getGuiControllers() {
         return guiControllers;

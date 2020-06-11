@@ -152,6 +152,8 @@ public class TestInProgressController implements Initializable {
 
     private TimeExtensionRequest timeExtensionRequest = null;
 
+    private volatile boolean running = true;
+
     @FXML
     void endTest(ActionEvent event) {
         endTest();
@@ -215,34 +217,40 @@ public class TestInProgressController implements Initializable {
     }
 
     public void timeExtensionThread() {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    // Check if there is TimeExtensionRequest every 20 sec
-                    // command
-                    CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
-                    client.getHstsClientInterface().sendCommandToServer(command);
-                        // busywait
-                    while (timeExtensionResponseFromServer == null)
-                        Thread.onSpinWait();
-                    // get respond returned object into timeExtensionRequest
 
-                    if (timeExtensionResponseFromServer.getStatus() == Status.TimeExtensionRequestApproved) {
-                        timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
-                        int timeToAdd = timeExtensionRequest.getTimeToAdd();
-                        addExtraTime(timeToAdd);
-                        break;
-                    }
-                    // Check every 1-minute
-                    try {
-                        Thread.sleep(1000*60);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        Thread thread = new Thread(() ->{
+            while (running){
+                // Check if there is TimeExtensionRequest every 20 sec
+                // command
+                System.out.println("On TE Thread");
+                CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
+                client.getHstsClientInterface().sendCommandToServer(command);
+                // busyWait
+                while (timeExtensionResponseFromServer == null)
+                    Thread.onSpinWait();
+                System.out.println("Response arrived TE Thread");
+                // get respond returned object into timeExtensionRequest
+
+                if (timeExtensionResponseFromServer.getStatus() == Status.Approved) {
+                    System.out.println("TE Approved, adding time TE Thread");
+                    timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
+                    int timeToAdd = timeExtensionRequest.getTimeToAdd();
+                    addExtraTime(timeToAdd);
+                    System.out.println("TE Approved, additional time has been added TE Thread");
+                    break;
+                }
+                // Check every 1-minute
+                try {
+                    System.out.println("TE Thread going to sleep for a minute");
+                    Thread.sleep(1000*60);
+                    System.out.println("TE Thread woke up from a minute");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
+            System.out.println("TE Thread has been disabled");
         });
+        thread.start();
     }
 
     public void timeExtensionResponseFromServer(Response response){
@@ -256,11 +264,13 @@ public class TestInProgressController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
+        bundle.put("runningStatus",running);
+        System.out.println("In init: " + client.getHstsClientInterface().getGuiControllers().get(TestInProgressController.class.getSimpleName()));
         // Dummy init
         //initDummyData();
         loadAnswerableTest();
         loadIntroAndEpilogueText();
-        if (isManualTest == false) {
+        if (!isManualTest) {
             initQuestionsFromAnswerableTest();
             initRadioButtons();
             initHBox();
@@ -273,6 +283,7 @@ public class TestInProgressController implements Initializable {
         }
         notifyTestIsStarting();
         calculateTimeDiff();
+        timeExtensionThread();
         //initTimer(answerableTest.getTest().getModifiedTime());
     }
 
@@ -345,7 +356,7 @@ public class TestInProgressController implements Initializable {
         System.out.println(grade);
         this.answerableTest.setScore(grade);
 
-        sendAnswerableTestToServerForBackup(this.answerableTest);
+        sendAnswerableTestToServerForBackup();
 
     }
 
@@ -514,6 +525,10 @@ public class TestInProgressController implements Initializable {
 
     public void initNumberOfQuestions() {
         numberOfQuestionsAnswered = 0;
+        for (Question question : answerableTest.getQuestionsSet()){
+            if (answerableTest.getQuestionsSet().contains(question))
+                numberOfQuestionsAnswered++;
+        }
         numberOfQuestions = questionList.size();
         questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
     }
@@ -607,24 +622,26 @@ public class TestInProgressController implements Initializable {
         this.answerableTest = answerableTest;
     }
 
-    public void sendAnswerableTestToServerForBackup(AnswerableTest answerableTest) {
+    public void sendAnswerableTestToServerForBackup() {
         CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(mainPane);
         customProgressIndicator.start();
+        client.getHstsClientInterface().addGUIController(this);
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
                 AnswerableTestUpdateCommand command = new AnswerableTestUpdateCommand(answerableTest);
                 client.getHstsClientInterface().sendCommandToServer(command);
 
-                while (responseFromServer == null)
-                    Thread.onSpinWait();
-                customProgressIndicator.stop();
+                while (responseFromServer == null) {
+                    Thread.sleep(10);
+                }
 
                 return responseFromServer;
             }
         };
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
+            customProgressIndicator.stop();
             System.out.println(responseFromServer.getStatus());
             AnswerableTest updatedAnswerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
             System.out.println(updatedAnswerableTest);
@@ -645,6 +662,7 @@ public class TestInProgressController implements Initializable {
     }
 
     public void openSummaryWindow() {
+        running = false;
         Stage testSummaryStage = new Stage();
         Scene scene = null;
         try {

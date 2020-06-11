@@ -1,7 +1,5 @@
 package il.ac.haifa.cs.HSTS.server.Facade;
 
-import il.ac.haifa.cs.HSTS.server.Status.Status;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,7 +17,7 @@ public class ReadyTestFacade implements Serializable {
 
     public ReadyTestFacade(int id, String teacherWriter, String courseName, Date dateCreated,
                            int time, Boolean isManual, Boolean isActive, String code) {
-        System.out.println("in Facade Constructor");
+        System.out.println("in ReadyTestFacade Constructor");
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.dateCreated = dateCreated;
@@ -29,6 +27,7 @@ public class ReadyTestFacade implements Serializable {
         this.code = code;
         this.courseName = courseName;
     }
+
 
     public int getId() {
         return id;

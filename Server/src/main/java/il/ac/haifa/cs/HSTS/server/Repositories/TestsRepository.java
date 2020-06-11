@@ -155,15 +155,15 @@ public class TestsRepository {
         return readyTest;
     }
 
-    public List<ReadyTestExtendedFacade> getReadyTestsFacadeByTeacherId(int id){
-        List<ReadyTestExtendedFacade> readyTests = null;
+    public List<ReadyTestFacade> getReadyTestsFacadeByTeacherId(int id){
+        List<ReadyTestFacade> readyTest = null;
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            Query<ReadyTestExtendedFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
+            Query<ReadyTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code)"
                     + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.modifierWriter.id= :teacherId");
             query.setParameter("teacherId", id);
-            readyTests = query.list();
+            readyTest = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
@@ -171,7 +171,31 @@ public class TestsRepository {
         } finally {
             SessionFactoryGlobal.closeSession(session);
         }
-        return readyTests;
+        return readyTest;
+    }
+
+    public List<Object> getReadyTestsExtendedFacadeByTeacherId(int id){
+        List<ReadyTestExtendedFacade> extendedReadyTests = null;
+        List<ReadyTestFacade> readyTest;
+        List<Object> listOfLists = new ArrayList<>();
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+
+            Query<ReadyTestExtendedFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.ReadyTestExtendedFacade(m.id,m.modifierWriter.username,m.course.courseName,m.dateCreated,m.modifiedTime,m.isManual,m.isActive,m.code,m.timeExtensionRequest.timeToAdd,m.timeExtensionRequest.description,m.timeExtensionRequest.status)"
+                    + " from il.ac.haifa.cs.HSTS.server.Entities.ReadyTest m where m.modifierWriter.id= :teacherId");
+            query.setParameter("teacherId", id);
+            extendedReadyTests = query.list();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            readyTest = getReadyTestsFacadeByTeacherId(id);
+            listOfLists.add(extendedReadyTests);
+            listOfLists.add(readyTest);
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return listOfLists;
     }
     /* ----------------------------------------------AnswerableTest-------------------------------------------- */
     public AnswerableTest getAnswerableTestByStudent(Student student, ReadyTestFacade readyTestFacade){

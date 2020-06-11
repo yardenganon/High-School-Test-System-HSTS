@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimeExtensionRepository {
@@ -53,27 +52,23 @@ public class TimeExtensionRepository {
     }
 
     public List<TimeExtensionRequest> getAllTimeExtensions(){
-        List<TimeExtensionRequest> timeExtensionRequestsList = new ArrayList<>();
-        try {
+        List<TimeExtensionRequest> timeExtensionRequestList = null;
+        try{
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<TimeExtensionRequest> criteriaQuery = builder.createQuery(TimeExtensionRequest.class);
-            Root<TimeExtensionRequest> rootEntry = criteriaQuery.from(TimeExtensionRequest.class);
-            CriteriaQuery<TimeExtensionRequest> allCriteriaQuery = criteriaQuery.select(rootEntry);
-            Query allQuery = session.createQuery(allCriteriaQuery);
-            timeExtensionRequestsList.addAll(allQuery.getResultList());
+            Query<TimeExtensionRequest> query = session.createQuery("from il.ac.haifa.cs.HSTS.server.Entities.TimeExtensionRequest m where m.status =: status");
+            query.setParameter("status", Status.OpenRequest);
+            timeExtensionRequestList = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
-            SessionFactoryGlobal.exceptionCaught(session,exception);
+            if(timeExtensionRequestList == null )
+                return timeExtensionRequestList;
+            SessionFactoryGlobal.exceptionCaught(session, exception);
         } finally {
-
             SessionFactoryGlobal.closeSession(session);
         }
-        System.out.println("Time Extension List From Repository:");
-        System.out.println(timeExtensionRequestsList);
-        return timeExtensionRequestsList;
+        return timeExtensionRequestList;
     }
 
     public TimeExtensionRequest updateTimeExtensionRequest(TimeExtensionRequest timeExtensionRequest) {
@@ -98,7 +93,7 @@ public class TimeExtensionRepository {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             Query<TimeExtensionRequest> query = session.createQuery("from il.ac.haifa.cs.HSTS.server.Entities.TimeExtensionRequest m where m.status =: status and m.test.id =: testId");
-            query.setParameter("status", Status.TimeExtensionRequestApproved).setParameter("testId", readyTestId);
+            query.setParameter("status", Status.Approved).setParameter("testId", readyTestId);
             timeExtensionRequest = query.getSingleResult();
 
             SessionFactoryGlobal.closeTransaction(session);

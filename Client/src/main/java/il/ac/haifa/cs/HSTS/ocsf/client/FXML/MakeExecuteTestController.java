@@ -76,6 +76,12 @@ public class MakeExecuteTestController implements Initializable {
     @FXML
     private CheckBox manualCheckBox;
 
+    @FXML
+    private Button acceptTmeExtentionButton;
+
+    @FXML
+    private Button rejectTmeExtentionButton;
+
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
@@ -142,7 +148,6 @@ public class MakeExecuteTestController implements Initializable {
             pointsLabel.setText(String.valueOf(sumOfPoints));
 
             initializeQuestionDetails();
-
         });
         new Thread(task).start();
     }
@@ -246,7 +251,15 @@ public class MakeExecuteTestController implements Initializable {
                 System.out.println(responseFromServer);
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
-                executeTestCreatedAlert.showAndWait();
+
+                Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
+                if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
+                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE))
+                {
+                    //לסגור את המסך כאן
+                }
+
+
             });
             new Thread(task).start();
 

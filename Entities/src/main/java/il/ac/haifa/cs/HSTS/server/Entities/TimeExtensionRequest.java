@@ -21,7 +21,7 @@ public class TimeExtensionRequest implements Serializable {
     @JoinColumn(name = "principle_id")
     Principle principle;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "readytest_id")
     ReadyTest test;
 
@@ -30,6 +30,10 @@ public class TimeExtensionRequest implements Serializable {
     Status status;
     String description;
     int timeToAdd;
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public TimeExtensionRequest(Teacher initiator, ReadyTest test, String description, int timeToAdd) {
         this.initiator = initiator;
