@@ -17,7 +17,7 @@ public class ReadyTestFacade implements Serializable {
 
     public ReadyTestFacade(int id, String teacherWriter, String courseName, Date dateCreated,
                            int time, Boolean isManual, Boolean isActive, String code) {
-        System.out.println("in Facade Constructor");
+        System.out.println("in ReadyTestFacade Constructor");
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.dateCreated = dateCreated;
