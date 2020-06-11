@@ -18,6 +18,7 @@ public class TimeExtensionRequestTableView {
     private Status status;
     private String teacherUserName;
     private Boolean active;
+    private Teacher teacher;
 
 
     public void setTestId(int testId) {
@@ -80,12 +81,11 @@ public class TimeExtensionRequestTableView {
     {
         this.testId = testId;
         this.courseName = courseName;
-        if (timeExtension != null)
-            this.timeExtension = timeExtension;
-        else this.timeExtension = "";
-        if (getTimeExtensionReason() != null)
-            this.timeExtensionReason = timeExtensionReason;
-        this.timeExtensionReason = "";
+        this.teacher = teacher;
+        this.timeExtension = timeExtension;
+        this.timeExtensionReason = timeExtensionReason;
+        if (status != null)
+            this.status = status;
         this.active = isActive;
     }
 
