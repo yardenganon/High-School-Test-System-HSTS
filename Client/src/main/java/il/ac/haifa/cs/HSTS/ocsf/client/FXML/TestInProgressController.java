@@ -152,6 +152,8 @@ public class TestInProgressController implements Initializable {
 
     private TimeExtensionRequest timeExtensionRequest = null;
 
+    private volatile boolean running = true;
+
     @FXML
     void endTest(ActionEvent event) {
         endTest();
@@ -215,8 +217,9 @@ public class TestInProgressController implements Initializable {
     }
 
     public void timeExtensionThread() {
+
         Thread thread = new Thread(() ->{
-            while (true){
+            while (running){
                 // Check if there is TimeExtensionRequest every 20 sec
                 // command
                 System.out.println("On TE Thread");
@@ -245,6 +248,7 @@ public class TestInProgressController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            System.out.println("TE Thread has been disabled");
         });
         thread.start();
     }
@@ -260,11 +264,13 @@ public class TestInProgressController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
+        bundle.put("runningStatus",running);
+        System.out.println("In init: " + client.getHstsClientInterface().getGuiControllers().get(TestInProgressController.class.getSimpleName()));
         // Dummy init
         //initDummyData();
         loadAnswerableTest();
         loadIntroAndEpilogueText();
-        if (isManualTest == false) {
+        if (!isManualTest) {
             initQuestionsFromAnswerableTest();
             initRadioButtons();
             initHBox();
@@ -350,7 +356,7 @@ public class TestInProgressController implements Initializable {
         System.out.println(grade);
         this.answerableTest.setScore(grade);
 
-        sendAnswerableTestToServerForBackup(this.answerableTest);
+        sendAnswerableTestToServerForBackup();
 
     }
 
@@ -519,6 +525,10 @@ public class TestInProgressController implements Initializable {
 
     public void initNumberOfQuestions() {
         numberOfQuestionsAnswered = 0;
+        for (Question question : answerableTest.getQuestionsSet()){
+            if (answerableTest.getQuestionsSet().contains(question))
+                numberOfQuestionsAnswered++;
+        }
         numberOfQuestions = questionList.size();
         questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
     }
@@ -612,24 +622,26 @@ public class TestInProgressController implements Initializable {
         this.answerableTest = answerableTest;
     }
 
-    public void sendAnswerableTestToServerForBackup(AnswerableTest answerableTest) {
+    public void sendAnswerableTestToServerForBackup() {
         CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(mainPane);
         customProgressIndicator.start();
+        client.getHstsClientInterface().addGUIController(this);
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
                 AnswerableTestUpdateCommand command = new AnswerableTestUpdateCommand(answerableTest);
                 client.getHstsClientInterface().sendCommandToServer(command);
 
-                while (responseFromServer == null)
-                    Thread.onSpinWait();
-                customProgressIndicator.stop();
+                while (responseFromServer == null) {
+                    Thread.sleep(10);
+                }
 
                 return responseFromServer;
             }
         };
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
+            customProgressIndicator.stop();
             System.out.println(responseFromServer.getStatus());
             AnswerableTest updatedAnswerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
             System.out.println(updatedAnswerableTest);
@@ -650,6 +662,7 @@ public class TestInProgressController implements Initializable {
     }
 
     public void openSummaryWindow() {
+        running = false;
         Stage testSummaryStage = new Stage();
         Scene scene = null;
         try {

@@ -29,5 +29,4 @@ public class UncheckedTestTable {
     public String getGrade() {
         return grade;
     }
-
 }

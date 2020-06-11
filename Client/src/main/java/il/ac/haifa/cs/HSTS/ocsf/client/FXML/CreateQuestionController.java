@@ -21,7 +21,6 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -108,6 +107,8 @@ public class CreateQuestionController implements Initializable {
         /* If the teacher clicks OK, question details will be sent to the server after input checking */
         if (result.isPresent() && result.get() == ButtonType.OK)
         {
+            thereIsAnError = false;
+
             // Input checking of TextField
             if (questionTextField.getText().isEmpty())
                 inputErrorTextField(questionTextField);
@@ -127,7 +128,6 @@ public class CreateQuestionController implements Initializable {
                 Subject selectedSubject = null;
                 if (user instanceof Teacher) {
                     Teacher teacher = ((Teacher) user);
-                    List<Subject> listOfSubject = teacher.getSubjects();
                     for (Subject subject : teacher.getSubjects())
                     {
                         if (subject.getSubjectName() == subjectComboBox.getSelectionModel().getSelectedItem())
@@ -151,6 +151,7 @@ public class CreateQuestionController implements Initializable {
                     protected Response call() throws Exception {
                         CommandInterface command = new QuestionPushCommand(question);
                         client.getHstsClientInterface().sendCommandToServer(command);
+
                         // Waiting for server confirmation
                         while (responseFromServer == null) {
                             Thread.onSpinWait();
@@ -162,7 +163,6 @@ public class CreateQuestionController implements Initializable {
                     responseFromServer = task.getValue();
                     progressIndicator.stop();
                     question = (Question) responseFromServer.getReturnedObject();
-                    initializeQuestionDetails();
                     anchorPane.setDisable(false);
                     Alert updateSuccessAlert = new Alert(Alert.AlertType.INFORMATION);
                     updateSuccessAlert.setHeaderText("The question was successfully created");
