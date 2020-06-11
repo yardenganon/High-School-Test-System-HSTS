@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MenuController implements Initializable {
+public class Temp implements Initializable {
 
     private HSTSClient client;
     public User user;
@@ -107,12 +107,12 @@ public class MenuController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
-       if (user instanceof Teacher) {
-           teacherPane.setVisible(true);
-           myTestButton.setVisible(false);
-       }
+        if (user instanceof Teacher) {
+            teacherPane.setVisible(true);
+            myTestButton.setVisible(false);
+        }
 
-       if (user instanceof Student)
+        if (user instanceof Student)
             initStudentMenu();
     }
     public void initStudentMenu() {
@@ -144,6 +144,6 @@ public class MenuController implements Initializable {
 
     @FXML
     void showMyTests(ActionEvent event) {
-       Events.navigateCheckingTestsEvent(myTestButton);
+        Events.navigateCheckingTestsEvent(myTestButton);
     }
 }

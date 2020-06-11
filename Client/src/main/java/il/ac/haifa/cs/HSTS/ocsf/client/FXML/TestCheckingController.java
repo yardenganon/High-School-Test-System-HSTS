@@ -8,6 +8,7 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestUpdateByIdComma
 import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.Entities.Student;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
@@ -22,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -34,6 +36,7 @@ import java.util.ResourceBundle;
 public class TestCheckingController implements Initializable {
 
     public User user;
+    private Student student;
     private Response responseFromServer = null;
     private static List<AnswerableTestFacade> testList = null;
     private ObservableList<UncheckedTestTable> testsOL = null;
@@ -46,6 +49,8 @@ public class TestCheckingController implements Initializable {
     public boolean theTestWasChecked = false;
     UncheckedTestTable selectedTest;
 
+    @FXML
+    private Label titleLabel;
 
     @FXML
     private AnchorPane anchorPane;
@@ -64,6 +69,9 @@ public class TestCheckingController implements Initializable {
 
     @FXML
     private Button aboutButton;
+
+    @FXML
+    private Text numberOfTestsLabel;
 
     @FXML
     private Button logoutButton;
@@ -151,10 +159,10 @@ public class TestCheckingController implements Initializable {
             secondaryStage.setScene(scene);
             secondaryStage.setTitle("Check Answerable Test");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
-            bundle.remove("ifTestWasChecked");
+            if (teacher != null) bundle.remove("ifTestWasChecked");
             secondaryStage.showAndWait();
 
-            if (bundle.get("ifTestWasChecked") != null) {
+            if (teacher != null && bundle.get("ifTestWasChecked") != null) {
                 theTestWasChecked = (boolean) bundle.get("ifTestWasChecked");
                 if (theTestWasChecked)
                     refreshList();
@@ -162,8 +170,13 @@ public class TestCheckingController implements Initializable {
         }
         else
         {
+            String output;
+            if (student != null)
+                output = "You need to select a test and then press \"Watch Test\" button";
+            else
+                output = "You need to select a test and then press \"Edit Test\" button";
             Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-            needChooseTestAlert.setHeaderText("For test editing you need to select a test and then push \"Edit Test\" button");
+            needChooseTestAlert.setHeaderText(output);
             Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }
@@ -175,8 +188,14 @@ public class TestCheckingController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
-        if (user instanceof Teacher)
+        if (user instanceof Teacher) {
             teacher = (Teacher) user;
+            student = null;
+        }
+        if (user instanceof Student) {
+            student = (Student) user;
+            teacher = null;
+        }
         initializeTestsTable();
     }
 
@@ -194,8 +213,29 @@ public class TestCheckingController implements Initializable {
             protected Response call() throws Exception {
 
                     // Asking unchecked tests of the teacher from server
-                    CommandInterface command = new AnswerableTestsFacadeReadCommand(teacher);
+                CommandInterface command;
+                if (teacher != null) {
+                    command = new AnswerableTestsFacadeReadCommand(teacher);
+                    titleLabel.setText("Test Checking");
+                    editTestButton.setText("Edit Test");
+                    confirmTestButton.setVisible(true);
+                    numberOfTestsLabel.setText("Number Of Tests To Check:");
+                    studentNameColumn.setVisible(true);
+                }
+                else if (student != null) {
+                    command = null;
+                    titleLabel.setText("My Tests");
+                    editTestButton.setText("Watch Test");
+                    confirmTestButton.setVisible(false);
+                    numberOfTestsLabel.setText("GPA:");
+                    studentNameColumn.setVisible(false);
+                }
+                else
+                {
+                    command = null;
+                }
                     client.getHstsClientInterface().sendCommandToServer(command);
+
                     while (responseFromServer == null) {
                         Thread.sleep(10);
                     }
@@ -207,7 +247,7 @@ public class TestCheckingController implements Initializable {
             List<AnswerableTestFacade> listOfAnswerableTestFacade = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
             idColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("id"));
             courseColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("courseName"));
-            studentNameColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("studentName"));
+            if (teacher != null) studentNameColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("studentName"));
             gradeColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("grade"));
 
             questionsOL = FXCollections.observableArrayList();

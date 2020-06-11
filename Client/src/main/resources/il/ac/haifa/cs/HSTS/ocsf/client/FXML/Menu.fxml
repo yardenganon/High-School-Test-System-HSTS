@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="843.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.MenuController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="843.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.MenuController">
    <children>
       <VBox prefHeight="649.0" prefWidth="248.0" style="-fx-background-color: #143452;">
          <children>
@@ -68,11 +74,55 @@
 
       <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="649.0" prefWidth="595.0" visible="false">
          <children>
-            <Button fx:id="checkingTestsButton" layoutX="14.0" layoutY="601.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
+            <Button fx:id="checkingTestsButton" layoutX="8.0" layoutY="615.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
+         </children>
+      </Pane>
+      <Pane layoutX="259.0" layoutY="236.0" prefHeight="247.0" prefWidth="574.0">
+         <children>
+            <HBox layoutX="-6.0" layoutY="7.0" prefHeight="38.0" prefWidth="574.0">
+               <children>
+                  <Label prefHeight="38.0" prefWidth="75.0" text="Panel">
+                     <font>
+                        <Font name="Calibri Light Italic" size="24.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="240.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
+               <children>
+                  <Button fx:id="myTestButton" mnemonicParsing="false" onAction="#showMyTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Tests" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="myCoursesButton" mnemonicParsing="false" onAction="#showMyCourses" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Courses" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="60.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="60.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </Pane>
    </children>
