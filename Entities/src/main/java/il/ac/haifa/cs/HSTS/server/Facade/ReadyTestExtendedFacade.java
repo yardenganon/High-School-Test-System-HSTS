@@ -23,7 +23,7 @@ public class ReadyTestExtendedFacade implements Serializable {
     public ReadyTestExtendedFacade(int id, String teacherWriter, String courseName, Date dateCreated,
                            int time, Boolean isManual, Boolean isActive, String code, int timeToAdd,
                            String timeExtensionReason, Status timeExtensionRequestStatus) {
-        System.out.println("in Facade Constructor");
+        System.out.println("in Extended Facade Constructor");
         this.id = id;
         this.teacherWriter = teacherWriter;
         this.dateCreated = dateCreated;
@@ -32,15 +32,9 @@ public class ReadyTestExtendedFacade implements Serializable {
         this.isManual = isManual;
         this.code = code;
         this.courseName = courseName;
-        if (timeToAdd != Integer.parseInt(null))
-            this.timeToAdd = timeToAdd;
-        else this.timeToAdd = 0;
-        if (timeExtensionReason != null)
-            this.timeExtensionReason = timeExtensionReason;
-        this.timeExtensionReason = "";
-        if (timeExtensionRequestStatus != null)
-            this.timeExtensionRequestStatus = timeExtensionRequestStatus;
-        else this.timeExtensionRequestStatus = Status.InvalidCode;
+        this.timeToAdd = timeToAdd;
+        this.timeExtensionReason = timeExtensionReason;
+        this.timeExtensionRequestStatus = timeExtensionRequestStatus;
 
     }
 

@@ -214,7 +214,7 @@ public class MenuController implements Initializable {
             List<Object> listOfFacadTests = (List<Object>) responseFromServer.getReturnedObject();
 
             List<ReadyTestExtendedFacade> readyTestFacadeExtendedList = (List<ReadyTestExtendedFacade>)listOfFacadTests.get(0);
-            List<ReadyTestFacade> reasyTestFacadeList = (List<ReadyTestFacade>) listOfFacadTests.get(0);;
+            List<ReadyTestFacade> readyTestFacadeList = (List<ReadyTestFacade>) listOfFacadTests.get(1);;
 
             questionsOL = FXCollections.observableArrayList();
 
@@ -227,16 +227,16 @@ public class MenuController implements Initializable {
             boolean foundedInFacadTestsList = false;
             questionsOL = FXCollections.observableArrayList();
             foundedInFacadTestsList = false;
-            for (ReadyTestFacade readyTestFacade : reasyTestFacadeList) {
+            for (ReadyTestFacade readyTestFacade : readyTestFacadeList) {
                 for (ReadyTestExtendedFacade readyTestExtendedFacade : readyTestFacadeExtendedList) {
                     if (readyTestExtendedFacade.getId() == readyTestFacade.getId()) {
                         foundedInFacadTestsList = true;
                         break;
                     }
                 }
-            if (!foundedInFacadTestsList)
-                questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), teacher,
-                        "", "" , null,  readyTestFacade.getActive()));
+                if (!foundedInFacadTestsList)
+                    questionsOL.add(new TimeExtensionRequestTableView(readyTestFacade.getId(), readyTestFacade.getCourseName(), teacher,
+                            "", "", null, readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
         });
@@ -280,21 +280,18 @@ public class MenuController implements Initializable {
             @Override
             protected Response call() throws Exception {
 
-                System.out.println(chosenCell.getActive());
-                boolean updatedActivity = false;
-                if (chosenCell.getActive().equals("NO")) {
-                    updatedActivity = true;
+                if (chosenCell.getActive() == Boolean.FALSE) {
                     chosenCell.setActive(Boolean.TRUE);
+                    CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), true);
+                    client.getHstsClientInterface().sendCommandToServer(command);
                 }
                 else {
-                    updatedActivity = false;
                     chosenCell.setActive(Boolean.FALSE);
+                    CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), false);
+                    client.getHstsClientInterface().sendCommandToServer(command);
                 }
 
                 activeTestsTebleView.refresh();
-
-                CommandInterface command = new ReadyTestUpdateActivityCommand(currentReadyTest.getId(), updatedActivity);
-                client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
@@ -328,10 +325,8 @@ public class MenuController implements Initializable {
         }
         else
         {
-
             // Request for ready test
             getReadyTest(timeExtensionRequest.getTestId());
-
 
             CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
             progressIndicator.start();
@@ -355,7 +350,7 @@ public class MenuController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
 
-                timeExtensionRequest.setStatus(Status.TestActive);
+                timeExtensionRequest.setStatus(Status.OpenRequest);
                 activeTestsTebleView.refresh();
 
                 progressIndicator.stop();
@@ -440,12 +435,18 @@ public class MenuController implements Initializable {
 
                 List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
                 questionsOL = FXCollections.observableArrayList();
+                System.out.println(timeExtensionRequestList);
 
                 for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
+                    //System.out.println(timeExtensionRequest.getTest().getCourse().getCourseName());
+                    System.out.println(timeExtensionRequest.getInitiator());
+                    System.out.println(String.valueOf(timeExtensionRequest.getTimeToAdd()));
+                    System.out.println(timeExtensionRequest.getDescription());
                     questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse().getCourseName(),
                             timeExtensionRequest.getInitiator(), String.valueOf(timeExtensionRequest.getTimeToAdd()),
                             timeExtensionRequest.getDescription()));
                 }
+
                 timeExtensionRequestForPrincipleTV.getItems().addAll(questionsOL);
             });
             new Thread(task).start();

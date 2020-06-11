@@ -13,8 +13,6 @@ public class TimeExtensionRequestTableView {
     private String teacherUserName;
     private Boolean active;
 
-    public TimeExtensionRequestTableView(int id, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason, String status, Boolean active) {
-    }
 
     public void setTestId(int testId) {
         this.testId = testId;
