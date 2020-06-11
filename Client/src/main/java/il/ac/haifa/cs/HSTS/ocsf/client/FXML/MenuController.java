@@ -46,6 +46,7 @@ public class MenuController implements Initializable {
     private ObservableList<TimeExtensionRequestTableView> questionsOL = null;
     List<ReadyTestFacade> readyTestFacadeList;
     private ReadyTest currentReadyTest;
+    List<TimeExtensionRequest> timeExtensionRequestList;
 
     @FXML
     private Label helloLabel;
@@ -108,6 +109,9 @@ public class MenuController implements Initializable {
 
     @FXML
     private TableView<TimeExtensionRequestTableView> timeExtensionRequestForPrincipleTV;
+
+    @FXML
+    private TableColumn<TimeExtensionRequestTableView, Integer> IdPrincipleTV;
 
     @FXML
     private TableColumn<TimeExtensionRequestTableView, Integer> courseNamePrincipleTV;
@@ -428,21 +432,18 @@ public class MenuController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
 
+                IdPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, Integer>("id"));
                 courseNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, Integer>("courseName"));
                 timeExtensionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtension"));
                 descriptionPrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("timeExtensionReason"));
                 teacherNamePrincipleTV.setCellValueFactory(new PropertyValueFactory<TimeExtensionRequestTableView, String>("teacherUserName"));
 
-                List<TimeExtensionRequest> timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
+                timeExtensionRequestList = (List<TimeExtensionRequest>) responseFromServer.getReturnedObject();
                 questionsOL = FXCollections.observableArrayList();
                 System.out.println(timeExtensionRequestList);
 
                 for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
-                    //System.out.println(timeExtensionRequest.getTest().getCourse().getCourseName());
-                    System.out.println(timeExtensionRequest.getInitiator());
-                    System.out.println(String.valueOf(timeExtensionRequest.getTimeToAdd()));
-                    System.out.println(timeExtensionRequest.getDescription());
-                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getTest().getCourse().getCourseName(),
+                    questionsOL.add(new TimeExtensionRequestTableView(timeExtensionRequest.getId(), timeExtensionRequest.getTest().getCourse().getCourseName(),
                             timeExtensionRequest.getInitiator(), String.valueOf(timeExtensionRequest.getTimeToAdd()),
                             timeExtensionRequest.getDescription()));
                 }
@@ -469,11 +470,18 @@ public class MenuController implements Initializable {
             Task<Response> task = new Task<Response>() {
                 @Override
                 protected Response call() throws Exception {
-                    TimeExtensionRequest timeExtensionRequest = new TimeExtensionRequest(teacher, currentReadyTest,
-                            chosenRow.getTimeExtensionReason(), Integer.parseInt(chosenRow.getTimeExtension()));
-                    timeExtensionRequest.setStatus(Status.TimeExtensionRequestApproved);
 
-                    CommandInterface command = new TimeExtensionRequestUpdateCommand(timeExtensionRequest);
+                    TimeExtensionRequest selectedTimeExtension = null;
+                    for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
+                        if (timeExtensionRequest.getId() == chosenRow.getId()) {
+                            selectedTimeExtension = timeExtensionRequest;
+                            break;
+                        }
+                    }
+
+                    selectedTimeExtension.setStatus(Status.TimeExtensionRequestApproved);
+
+                    CommandInterface command = new TimeExtensionRequestUpdateCommand(selectedTimeExtension);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     // Waiting for server confirmation
@@ -498,7 +506,7 @@ public class MenuController implements Initializable {
         TimeExtensionRequestTableView chosenRow = timeExtensionRequestForPrincipleTV.getSelectionModel().getSelectedItem();
         if (chosenRow == null) {
             Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
-            missingDetailsAlert.setHeaderText("For accept time extension request you need to choose test and then press \"Accept\" button");
+            missingDetailsAlert.setHeaderText("For reject time extension request you need to choose test and then press \"Reject\" button");
             missingDetailsAlert.showAndWait();
         } else {
             CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
@@ -508,11 +516,18 @@ public class MenuController implements Initializable {
             Task<Response> task = new Task<Response>() {
                 @Override
                 protected Response call() throws Exception {
-                    TimeExtensionRequest timeExtensionRequest = new TimeExtensionRequest(teacher, currentReadyTest,
-                            chosenRow.getTimeExtensionReason(), Integer.parseInt(chosenRow.getTimeExtension()));
-                    timeExtensionRequest.setStatus(Status.TimeExtensionRequestDenied);
 
-                    CommandInterface command = new TimeExtensionRequestUpdateCommand(timeExtensionRequest);
+                    TimeExtensionRequest selectedTimeExtension = null;
+                    for (TimeExtensionRequest timeExtensionRequest : timeExtensionRequestList) {
+                        if (timeExtensionRequest.getId() == chosenRow.getId()) {
+                            selectedTimeExtension = timeExtensionRequest;
+                            break;
+                        }
+                    }
+
+                    selectedTimeExtension.setStatus(Status.TimeExtensionRequestDenied);
+
+                    CommandInterface command = new TimeExtensionRequestUpdateCommand(selectedTimeExtension);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     // Waiting for server confirmation

@@ -5,6 +5,12 @@ import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 public class TimeExtensionRequestTableView {
 
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
     private int testId;
     private String courseName;
     private String timeExtension;
@@ -83,8 +89,9 @@ public class TimeExtensionRequestTableView {
         this.active = isActive;
     }
 
-    public TimeExtensionRequestTableView(String courseName, Teacher teacher, String timeExtension, String timeExtensionReason)
+    public TimeExtensionRequestTableView(int Id, String courseName, Teacher teacher, String timeExtension, String timeExtensionReason)
     {
+        this.id = Id;
         this.courseName = courseName;
         this.timeExtension = timeExtension;
         this.timeExtensionReason = timeExtensionReason;
