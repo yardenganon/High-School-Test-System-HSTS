@@ -231,7 +231,7 @@ public class TestInProgressController implements Initializable {
                 System.out.println("Response arrived TE Thread");
                 // get respond returned object into timeExtensionRequest
 
-                if (timeExtensionResponseFromServer.getStatus() == Status.TimeExtensionRequestApproved) {
+                if (timeExtensionResponseFromServer.getStatus() == Status.Approved) {
                     System.out.println("TE Approved, adding time TE Thread");
                     timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
                     int timeToAdd = timeExtensionRequest.getTimeToAdd();

@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TimeExtensionRepository {
@@ -94,7 +93,7 @@ public class TimeExtensionRepository {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             Query<TimeExtensionRequest> query = session.createQuery("from il.ac.haifa.cs.HSTS.server.Entities.TimeExtensionRequest m where m.status =: status and m.test.id =: testId");
-            query.setParameter("status", Status.TimeExtensionRequestApproved).setParameter("testId", readyTestId);
+            query.setParameter("status", Status.Approved).setParameter("testId", readyTestId);
             timeExtensionRequest = query.getSingleResult();
 
             SessionFactoryGlobal.closeTransaction(session);

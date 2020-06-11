@@ -89,9 +89,9 @@
                  <TableColumn fx:id="columnId" prefWidth="29.60003662109375" text="Id" />
                 <TableColumn fx:id="columnCourse" prefWidth="88.0" text="Course" />
                 <TableColumn fx:id="columnTimeExtension" minWidth="0.0" onEditCommit="#onTimeExtensionWriting" prefWidth="104.800048828125" text="Time Extension" />
-                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="243.20001220703125" text="Time Extension Reason" />
-                 <TableColumn fx:id="columnStatus" prefWidth="71.199951171875" text="Status" />
-                 <TableColumn fx:id="columnActive" prefWidth="56.0" text="Active" />
+                 <TableColumn fx:id="columnTimeExtensionReason" onEditCommit="#onTimeExtensionReasonWriting" prefWidth="204.80001831054688" text="Time Extension Reason" />
+                 <TableColumn fx:id="columnStatus" prefWidth="102.39996337890625" text="Status" />
+                 <TableColumn fx:id="columnActive" prefWidth="65.5999755859375" text="Active" />
               </columns>
             </TableView>
             <Button fx:id="submitExtensionTimeRequestButton" layoutX="491.0" layoutY="210.0" mnemonicParsing="false" onAction="#submitExtensionTimeRequestOfTeacher" prefHeight="25.0" prefWidth="122.0" text="Submit Request" textFill="#143452">
