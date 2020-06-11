@@ -348,6 +348,7 @@ public class TestInProgressController implements Initializable {
             System.out.println("Time is up....");
 
         // Send to check and update
+        running = false;
         this.answerableTest.setAnswerableTestStatus(Status.TestFinished);
         this.answerableTest.setTimeFinished(new Date());
         // exam auto-review
