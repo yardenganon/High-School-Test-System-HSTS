@@ -21,7 +21,7 @@ public class TimeExtensionRequest implements Serializable {
     @JoinColumn(name = "principle_id")
     Principle principle;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "readytest_id")
     ReadyTest test;
 
