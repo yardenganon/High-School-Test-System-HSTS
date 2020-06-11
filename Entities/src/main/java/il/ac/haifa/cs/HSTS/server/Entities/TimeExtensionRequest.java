@@ -31,6 +31,10 @@ public class TimeExtensionRequest implements Serializable {
     String description;
     int timeToAdd;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public TimeExtensionRequest(Teacher initiator, ReadyTest test, String description, int timeToAdd) {
         this.initiator = initiator;
         this.test = test;
