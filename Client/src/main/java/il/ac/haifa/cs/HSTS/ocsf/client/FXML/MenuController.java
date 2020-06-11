@@ -342,6 +342,7 @@ public class MenuController implements Initializable {
 
                     CommandInterface command = new RequestTimeExtensionCommand(new TimeExtensionRequest(teacher, currentReadyTest,
                             timeExtensionRequest.getTimeExtensionReason(), Integer.parseInt(timeExtensionRequest.getTimeExtension())));
+
                     client.getHstsClientInterface().sendCommandToServer(command);
 
                     // Waiting for server confirmation
