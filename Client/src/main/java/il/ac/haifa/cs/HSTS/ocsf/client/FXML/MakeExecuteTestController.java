@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CreateReadyTestCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -38,7 +39,8 @@ public class MakeExecuteTestController implements Initializable {
     private String codeErrorMessage = "Execution code should consist of two letters and then two digits";
     private String pointsErrorMessage = "Questions points should sum to 100 or more";
     ReadyTest readyTest;
-    HashMap updatedHashMap = new HashMap<>();
+    Map<Question, Integer> updatedHashMap;
+    Teacher teacher;
 
     @FXML
     private AnchorPane anchorPane;
@@ -108,7 +110,7 @@ public class MakeExecuteTestController implements Initializable {
         readyTest.setActive(true);
         readyTest.setManual(false);
         readyTest.setModifiedTime(test.getTime());
-
+        updatedHashMap = readyTest.getTest().getPoints();
         testTimeTextField.setText(String.valueOf(selectedTest.getTime()));
     }
 
@@ -137,12 +139,11 @@ public class MakeExecuteTestController implements Initializable {
 
             questionsOL = FXCollections.observableArrayList();
             Set<Question> questionList = test.getQuestionSet();
-            updatedHashMap.clear();
+
             for (Question quest : questionList) {
                 int points = test.getPoints().get(quest);
                 questionsOL.add(new QuestionTableView(quest.getQuestion(), String.valueOf(points)));
-                sumOfPoints += test.getPoints().get(quest);
-                updatedHashMap.put(quest, points);
+                sumOfPoints += points;
             }
             questionTableView.setItems(questionsOL);
             pointsLabel.setText(String.valueOf(sumOfPoints));
@@ -170,6 +171,7 @@ public class MakeExecuteTestController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         selectedTest = (TestFacade) bundle.get("test");
         user = (User) bundle.get("user");
+        teacher = (Teacher) user;
         client.getHstsClientInterface().addGUIController(this);
         ShowQuestionList();
     }
@@ -222,19 +224,42 @@ public class MakeExecuteTestController implements Initializable {
                 errorAlert.showAndWait();
         } else {
 
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
+
             readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
             readyTest.setCode(executionCodeTextField.getText());
             readyTest.setActive(activeCheckBox.isSelected());
             readyTest.setManual(manualCheckBox.isSelected());
-            readyTest.setModifiedPoints(updatedHashMap);
 
-            System.out.println("The hash is: " + updatedHashMap);
+            Course selectedCourse = null;
+            for (Course course : teacher.getCourses())
+            {
+                if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
+                    selectedCourse = course;
+                    System.out.println("The course is: " + selectedCourse);
+                    break;
+                }
+            }
+            readyTest.setCourse(selectedCourse);
 
+            for (Question updatedQuestion : updatedHashMap.keySet())
+            {
+                for (Question question : readyTest.getTest().getPoints().keySet()) {
+                    if (question.getQuestion() == updatedQuestion.getQuestion()) {
+                        readyTest.getTest().getPoints().put(question, updatedHashMap.get(updatedQuestion));
+                        System.out.println("The new point is " + updatedHashMap.get(updatedQuestion));
+                        break;
+                    }
+                }
+            }
+            readyTest.setModifiedPoints(readyTest.getTest().getPoints());
 
             Task<Response> task = new Task<Response>() {
                 @Override
                 protected Response call() throws Exception {
                     responseFromServer = null;
+
                     CommandInterface command = new CreateReadyTestCommand(readyTest);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
@@ -248,6 +273,7 @@ public class MakeExecuteTestController implements Initializable {
             };
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
+                progressIndicator.stop();
                 System.out.println(responseFromServer);
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
@@ -317,11 +343,22 @@ public class MakeExecuteTestController implements Initializable {
         changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
 
         sumOfPoints = 0;
-        updatedHashMap.clear();
+        Question selectedQuestion = null;
         for (QuestionTableView question : questionTableView.getItems())
         {
-            sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
-            updatedHashMap.put(question.getQuestion(), columnPoints.getCellObservableValue(question).getValue());
+            selectedQuestion = null;
+            for (Question quest : updatedHashMap.keySet())
+            {
+                if (quest.getQuestion() == question.getQuestion())
+                {
+                    selectedQuestion = quest;
+                    break;
+                }
+            }
+            if (selectedQuestion != null) {
+                sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
+                updatedHashMap.put(selectedQuestion, Integer.parseInt(columnPoints.getCellObservableValue(question).getValue()));
+            }
         }
         pointsLabel.setText(String.valueOf(sumOfPoints));
     }
