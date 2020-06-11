@@ -81,13 +81,27 @@ public class MenuController implements Initializable {
     private Button checkingTestsButton;
 
     @FXML
-    private Button myTestButton;
+    private Button myTestTeacherButton;
 
     @FXML
-    private Button myCoursesButton;
+    private Button myCoursesTeacherButton;
 
     @FXML
     private Pane principlePane;
+
+    @FXML
+    private Button myTestStudentButton;
+
+    @FXML
+    private Button myCoursesStudentButton;
+
+    @FXML
+    private Label successPrincipleButton;
+
+    @FXML
+    private Button myTestPrincipleButton;
+
+
 
     @FXML
     private Button submitExtensionTimeRequestButton;
@@ -137,8 +151,6 @@ public class MenuController implements Initializable {
     @FXML
     private Button rejectTimeExtensionButton;
 
-    @FXML
-    private Label successPrincipleButton;
 
     @FXML
     void goToTests(ActionEvent event) throws IOException {
@@ -181,7 +193,7 @@ public class MenuController implements Initializable {
             teacher = (Teacher) user;
             InitTeacherMenu(teacher);
             teacherPane.setVisible(true);
-            myTestButton.setVisible(false);
+            myTestStudentButton.setVisible(false);
         }
         else if (user instanceof Student)
             initStudentMenu();
@@ -580,7 +592,7 @@ public class MenuController implements Initializable {
 
     public void initStudentMenu() {
         studentMenu.setVisible(true);
-        myTestButton.setVisible(true);
+        myTestStudentButton.setVisible(true);
         enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             Scene scene = null;
             @Override
@@ -600,15 +612,25 @@ public class MenuController implements Initializable {
         });
     }
 
-    @FXML
-    void showMyCourses(ActionEvent event) {
-
+    public void showMyTestsStudent(ActionEvent actionEvent) {
+        Events.navigateCheckingTestsEvent(myTestStudentButton);
     }
 
-    @FXML
-    void showMyTests(ActionEvent event) {
-       Events.navigateCheckingTestsEvent(myTestButton);
+    public void showMyCoursesStudent(ActionEvent actionEvent) {
+    }
+
+    public void showMyTestsTeacher(ActionEvent actionEvent) {
+    }
+
+    public void showMyCoursesTeacher(ActionEvent actionEvent) {
+    }
+
+    public void showTestsPrinciple(ActionEvent actionEvent) {
+    }
+
+    public void showCoursesPrinciple(ActionEvent actionEvent) {
     }
     /* ---------------------- end Student ------------- */
+
 
 }
