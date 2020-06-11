@@ -154,6 +154,8 @@ public class TestInProgressController implements Initializable {
 
     private volatile boolean running = true;
 
+
+
     @FXML
     void endTest(ActionEvent event) {
         endTest();
@@ -217,7 +219,7 @@ public class TestInProgressController implements Initializable {
     }
 
     public void timeExtensionThread() {
-
+        client.getHstsClientInterface().addGUIController(this);
         Thread thread = new Thread(() ->{
             while (running){
                 // Check if there is TimeExtensionRequest every 20 sec
@@ -229,13 +231,22 @@ public class TestInProgressController implements Initializable {
                 while (timeExtensionResponseFromServer == null)
                     Thread.onSpinWait();
                 System.out.println("Response arrived TE Thread");
+                if (timeExtensionResponseFromServer.getReturnedObject() != null)
+                    timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
                 // get respond returned object into timeExtensionRequest
-
-                if (timeExtensionResponseFromServer.getStatus() == Status.Approved) {
+                System.out.println(timeExtensionResponseFromServer);
+                if (timeExtensionResponseFromServer.getReturnedObject() != null &&
+                        ((TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject())
+                                .getStatus() == Status.Approved) {
                     System.out.println("TE Approved, adding time TE Thread");
                     timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
-                    int timeToAdd = timeExtensionRequest.getTimeToAdd();
-                    addExtraTime(timeToAdd);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            int timeToAdd = timeExtensionRequest.getTimeToAdd();
+                            addExtraTime(timeToAdd);
+                        }
+                    });
                     System.out.println("TE Approved, additional time has been added TE Thread");
                     break;
                 }
@@ -546,6 +557,7 @@ public class TestInProgressController implements Initializable {
         this.hours += additionalHours;
         this.minutes += additionalMinutes;
         additionalTimePane.setVisible(true);
+        additionalTimePane.setDisable(false);
         additionalTimeLabel.setText("+ " + additionalMinutes + " minutes");
     }
 
