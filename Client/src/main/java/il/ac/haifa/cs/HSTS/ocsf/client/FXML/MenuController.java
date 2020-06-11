@@ -629,6 +629,7 @@ public class MenuController implements Initializable {
     }
 
     public void showTestsPrinciple(ActionEvent actionEvent) {
+        Events.navigateReadyTestsToPrincipleEvent(myTestPrincipleButton);
     }
 
     public void showCoursesPrinciple(ActionEvent actionEvent) {

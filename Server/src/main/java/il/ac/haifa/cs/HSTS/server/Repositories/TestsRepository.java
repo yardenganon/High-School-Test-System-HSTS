@@ -309,6 +309,24 @@ public class TestsRepository {
         return answerableTestsFacade;
     }
 
+    public List<AnswerableTestFacade> getAnswerableTestsFacadeByStudentId(Student student){
+        List<AnswerableTestFacade> answerableTestsFacade = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            Query<AnswerableTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade(m.id, m.score, m.test.course.courseName, m.student.first_name, m.student.last_name)"
+                    + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.answerableTestStatus =: status and m.student.id =: studentId and m.isChecked =: true");
+            query.setParameter("status",Status.TestFinished).setParameter("studentId", student.getId()).setParameter("true", true);
+            answerableTestsFacade = query.list();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return answerableTestsFacade;
+    }
+
     //should be deleted, there is a generic class of sessions
     public List<Test> getAll() {
         List<Test> testList = new ArrayList<Test>();

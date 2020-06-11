@@ -139,7 +139,7 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="confirmTestButton" layoutX="550.0" layoutY="587.0" mnemonicParsing="false" onAction="#confirmTestRequest" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
+      <Button fx:id="confirmTestButton" layoutX="550.0" layoutY="587.0" mnemonicParsing="false" onAction="#confirmTestRequest" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE" visible="false">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
