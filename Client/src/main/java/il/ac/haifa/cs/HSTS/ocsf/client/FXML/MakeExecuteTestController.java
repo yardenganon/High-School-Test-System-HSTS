@@ -237,16 +237,10 @@ public class MakeExecuteTestController implements Initializable {
             {
                 if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
                     selectedCourse = course;
-                    System.out.println("The course is: " + selectedCourse.getCourseName());
                     break;
                 }
             }
             readyTest.setCourse(selectedCourse);
-
-            //readyTest.setModifiedPoints(readyTest.getTest().getPoints());
-            for (Question quest : readyTest.getTest().getQuestionSet())
-                System.out.println(readyTest.getTest().getPoints().get(quest));
-            System.out.println("yessss");
 
             Task<Response> task = new Task<Response>() {
                 @Override
@@ -267,7 +261,7 @@ public class MakeExecuteTestController implements Initializable {
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
                 progressIndicator.stop();
-                System.out.println(responseFromServer);
+
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
 
@@ -345,7 +339,6 @@ public class MakeExecuteTestController implements Initializable {
                 readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
             }
             sumOfPoints += readyTest.getTest().getPoints().get(quest);
-            System.out.println(sumOfPoints);
         }
         changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
         pointsLabel.setText(String.valueOf(sumOfPoints));
