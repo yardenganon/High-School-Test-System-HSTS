@@ -129,7 +129,7 @@
                               <Insets left="5.0" top="15.0" />
                            </HBox.margin>
                         </Text>
-                        <TextField fx:id="commentTextField" alignment="TOP_LEFT" editable="false" prefHeight="48.0" prefWidth="574.0">
+                        <TextField fx:id="commentTextField" alignment="TOP_LEFT" disable="true" editable="false" prefHeight="48.0" prefWidth="574.0">
                            <HBox.margin>
                               <Insets left="27.0" top="13.0" />
                            </HBox.margin>
@@ -156,7 +156,7 @@
                   <Font name="System Bold" size="11.0" />
                </font>
             </Text>
-            <TextField fx:id="gradeButton" editable="false" layoutX="98.0" layoutY="584.0" prefHeight="26.0" prefWidth="87.0" />
+            <TextField fx:id="gradeButton" disable="true" editable="false" layoutX="98.0" layoutY="584.0" prefHeight="26.0" prefWidth="87.0" />
          </children>
       </AnchorPane>
    </children>

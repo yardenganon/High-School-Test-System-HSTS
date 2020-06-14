@@ -34,6 +34,57 @@ class AnswerableTestDetails implements Initializable {
     private int testId;
     private ObservableList<UncheckedAnswerableTest> questionsOL = null;
 
+    @FXML
+    private AnchorPane anchorPane;
+
+    @FXML
+    private TextField idTextField;
+
+    @FXML
+    private TextField studentNameButton;
+
+    @FXML
+    private TextField startTimeButton;
+
+    @FXML
+    private TextField endTimeButton;
+
+    @FXML
+    private TableView<UncheckedAnswerableTest> questionsTableView;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> columnId;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> columnQuestion;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> answer1Column;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> answer2Column;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> answer3Column;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> answer4Column;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> columnStudentAnswer;
+
+    @FXML
+    private TableColumn<UncheckedAnswerableTest, String> columnCorrectAnswer;
+
+    @FXML
+    private TextField commentTextField;
+
+    @FXML
+    private Button confirmTestButton;
+
+    @FXML
+    private TextField gradeButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
@@ -102,56 +153,4 @@ class AnswerableTestDetails implements Initializable {
         }
         questionsTableView.setItems(questionsOL);
     }
-
-    @FXML
-    private AnchorPane anchorPane;
-
-    @FXML
-    private TextField idTextField;
-
-    @FXML
-    private TextField studentNameButton;
-
-    @FXML
-    private TextField startTimeButton;
-
-    @FXML
-    private TextField endTimeButton;
-
-    @FXML
-    private TableView<UncheckedAnswerableTest> questionsTableView;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> columnId;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> columnQuestion;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> answer1Column;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> answer2Column;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> answer3Column;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> answer4Column;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> columnStudentAnswer;
-
-    @FXML
-    private TableColumn<UncheckedAnswerableTest, String> columnCorrectAnswer;
-
-    @FXML
-    private TextField commentTextField;
-
-    @FXML
-    private Button confirmTestButton;
-
-    @FXML
-    private TextField gradeButton;
-
 }

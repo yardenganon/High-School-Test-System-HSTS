@@ -3,23 +3,25 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CourseReadAllFacadeCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.Course;
 import il.ac.haifa.cs.HSTS.server.Entities.Principle;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
-import javafx.collections.FXCollections;
+import il.ac.haifa.cs.HSTS.server.Facade.CourseFacade;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -112,7 +114,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         {
             InitPrincipleCourses();
         }
-        coursesComboBox.getSelectionModel().selectFirst();
     }
 
     private void InitPrincipleCourses() {
@@ -123,7 +124,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             protected Response call() throws Exception {
 
                 // command for getting all courses
-                CommandInterface command = new AnswerableTestsFacadeReadCommand();
+                CommandInterface command = new CourseReadAllFacadeCommand();
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
@@ -139,8 +140,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             coursesListOfPrinciple = (List<CourseFacade>) responseFromServer.getReturnedObject();
 
             for (CourseFacade courseFacade : coursesListOfPrinciple)
-                coursesComboBox.getItems().add(courseFacade.getCourseName());
-
+                coursesComboBox.getItems().add(courseFacade.getName());
         });
         new Thread(task).start();
     }
@@ -155,6 +155,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             protected Response call() throws Exception {
                 String courseName = coursesComboBox.getSelectionModel().getSelectedItem();
 
+                /*
                 // לחפש את הקורס ברשימה
                 for ()
                 // לשנות את זה לcommand חדש שמקבל את המבחנים
@@ -165,13 +166,15 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
                     Thread.onSpinWait();
-                }
+                    }
+                    */
+
                 return responseFromServer;
             }
         };
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
-
+/*
             List<CourseFacade> answerableTestFacadeList = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
 
             columnAnswerableTestId.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, Integer>("answerableTestId"));
@@ -183,7 +186,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
                 questionsOL.add(new AnswerableTestFacade(answerableTestFacade.getAnswerableTestId(),
                         answerableTestFacade.getFirstName(), answerableTestFacade.getLastName(),
                         answerableTestFacade.getScore()));
-
+*/
             answerableTestsTableView.setItems(questionsOL);
         });
         new Thread(task).start();
@@ -219,7 +222,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
 
     }
 
-    public void OnShowTestsButtonPressed(ActionEvent actionEvent) {
+    public void OnShowTestsButtonPressed(ActionEvent actionEvent) throws IOException {
         AnswerableTestFacade selectedTest =  answerableTestsTableView.getSelectionModel().getSelectedItem();
         if (selectedTest == null)
         {
@@ -232,7 +235,15 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             bundle.put("Client", client);
             bundle.put("Id", selectedTest.getAnswerableTestId());
 
-            // להקפיץ פופאפ
+            System.out.println(selectedTest + " Is selected");
+
+            Scene scene = new Scene(MainClass.loadFXML("TeacherAndPrincipleAnswerableTests"));
+            Stage stage = (Stage) showTestsButton.getScene().getWindow();
+            Stage secondaryStage = new Stage();
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("Teacher And Principle Answerable Tests");
+            secondaryStage.initModality(Modality.APPLICATION_MODAL);
+            secondaryStage.show();
         }
     }
 }
