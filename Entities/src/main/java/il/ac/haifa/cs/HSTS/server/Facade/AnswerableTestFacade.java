@@ -19,6 +19,14 @@ public class AnswerableTestFacade implements Serializable {
         this.lastName = lastName;
     }
 
+    public AnswerableTestFacade(Integer answerableTestId, String firstName,
+                                String lastName, int score) {
+        this.answerableTestId = answerableTestId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.score = score;
+    }
+
     public Integer getAnswerableTestId() {
         return answerableTestId;
     }

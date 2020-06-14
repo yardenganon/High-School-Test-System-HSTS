@@ -195,8 +195,7 @@ public class MakeExecuteTestController implements Initializable {
             if (executionCodeTextField.getText().isEmpty()) {
                 inputErrorTextField(executionCodeTextField);
                 executionCodeError = true;
-            }
-            else executionCodeError = checkExecutionCode();
+            } else executionCodeError = checkExecutionCode();
 
             if (executionCodeError)
                 thereIsAnError = true;
@@ -205,80 +204,76 @@ public class MakeExecuteTestController implements Initializable {
                 thereIsAnError = true;
                 pointsSumError = true;
             }
-        }
 
-        if (thereIsAnError) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            boolean needToShowAlert = true;
+            if (thereIsAnError) {
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                boolean needToShowAlert = true;
 
-            if (executionCodeError && pointsSumError)
-                errorAlert.setHeaderText("1. " + codeErrorMessage + "\n" + "2. " + pointsErrorMessage);
-            else if (executionCodeError)
-                errorAlert.setHeaderText(codeErrorMessage);
-            else if (pointsSumError)
-                errorAlert.setHeaderText(pointsErrorMessage);
-            else
-                needToShowAlert = false;
+                if (executionCodeError && pointsSumError)
+                    errorAlert.setHeaderText("1. " + codeErrorMessage + "\n" + "2. " + pointsErrorMessage);
+                else if (executionCodeError)
+                    errorAlert.setHeaderText(codeErrorMessage);
+                else if (pointsSumError)
+                    errorAlert.setHeaderText(pointsErrorMessage);
+                else
+                    needToShowAlert = false;
 
-            if (needToShowAlert)
-                errorAlert.showAndWait();
-        } else {
+                if (needToShowAlert)
+                    errorAlert.showAndWait();
+            } else {
 
-            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-            progressIndicator.start();
+                CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+                progressIndicator.start();
 
-            readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
-            readyTest.setCode(executionCodeTextField.getText());
-            readyTest.setActive(activeCheckBox.isSelected());
-            readyTest.setManual(manualCheckBox.isSelected());
+                readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
+                readyTest.setCode(executionCodeTextField.getText());
+                readyTest.setActive(activeCheckBox.isSelected());
+                readyTest.setManual(manualCheckBox.isSelected());
 
-            Course selectedCourse = null;
-            for (Course course : teacher.getCourses())
-            {
-                if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
-                    selectedCourse = course;
-                    break;
+                Course selectedCourse = null;
+                for (Course course : teacher.getCourses()) {
+                    if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
+                        selectedCourse = course;
+                        break;
+                    }
                 }
-            }
-            readyTest.setCourse(selectedCourse);
+                readyTest.setCourse(selectedCourse);
 
-            Task<Response> task = new Task<Response>() {
-                @Override
-                protected Response call() throws Exception {
-                    responseFromServer = null;
+                Task<Response> task = new Task<Response>() {
+                    @Override
+                    protected Response call() throws Exception {
+                        responseFromServer = null;
 
-                    CommandInterface command = new CreateReadyTestCommand(readyTest);
-                    client.getHstsClientInterface().sendCommandToServer(command);
+                        CommandInterface command = new CreateReadyTestCommand(readyTest);
+                        client.getHstsClientInterface().sendCommandToServer(command);
 
-                    // Waiting for server confirmation
-                    while (responseFromServer == null) {
-                        Thread.sleep(10);
+                        // Waiting for server confirmation
+                        while (responseFromServer == null) {
+                            Thread.sleep(10);
+                        }
+
+                        return responseFromServer;
+                    }
+                };
+                task.setOnSucceeded(e -> {
+                    responseFromServer = task.getValue();
+                    progressIndicator.stop();
+
+                    Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
+                    executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
+
+                    Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
+                    if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
+                            resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE ||
+                            resultButton.get() == ButtonType.FINISH || resultButton.get() == ButtonType.APPLY ||
+                            resultButton.get() == ButtonType.NO)) {
+                        final Stage stage = (Stage) confirmTestButton1.getScene().getWindow();
+                        stage.close();
                     }
 
-                    return responseFromServer;
-                }
-            };
-            task.setOnSucceeded(e -> {
-                responseFromServer = task.getValue();
-                progressIndicator.stop();
-
-                Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
-                executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
-
-                Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
-                if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
-                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE ||
-                        resultButton.get() == ButtonType.FINISH || resultButton.get() == ButtonType.APPLY ||
-                        resultButton.get() == ButtonType.NO))
-                {
-                    final Stage stage = (Stage) confirmTestButton1.getScene().getWindow();
-                    stage.close();
-                }
-
-            });
-            new Thread(task).start();
-
-
+                });
+                new Thread(task).start();
+            }
         }
     }
 
