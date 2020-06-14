@@ -4,7 +4,6 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Repositories.TestsRepository;
 import il.ac.haifa.cs.HSTS.server.Status.Status;
-
 import java.util.Date;
 
 public class TestController implements ControllerInterface {
@@ -80,6 +79,7 @@ public class TestController implements ControllerInterface {
                 String courseName = ((AnswerableTestsFacadeReadByCourseAndStudentCommand) command).getCourseName();
                 int studentId = ((AnswerableTestsFacadeReadByCourseAndStudentCommand) command).getStudentId();
                 returnedObject = testsRepository.getAnswerableTestsFacadeByCourseAndStudent(courseName, studentId);
+                break;
             default:
                 System.out.println("Error - Command not found in controller");
         }
