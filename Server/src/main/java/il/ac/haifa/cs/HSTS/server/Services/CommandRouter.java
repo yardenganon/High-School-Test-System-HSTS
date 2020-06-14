@@ -35,6 +35,7 @@ public class CommandRouter {
         commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestsFacadeReadByCourseCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestsFacadeReadByCourseAndStudentCommand.class.getSimpleName(), controllers.get(2));
 
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
         commandsMap.put(RequestTimeExtensionCommand.class.getSimpleName(), controllers.get(4));
