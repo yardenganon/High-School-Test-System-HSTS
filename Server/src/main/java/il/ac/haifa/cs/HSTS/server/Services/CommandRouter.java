@@ -38,6 +38,7 @@ public class CommandRouter {
         commandsMap.put(TimeExtensionReadAllCommand.class.getSimpleName(), controllers.get(4));
         commandsMap.put(TimeExtensionRequestUpdateCommand.class.getSimpleName(), controllers.get(4));
         commandsMap.put(TimeExtensionStatusCommand.class.getSimpleName(), controllers.get(4));
+        commandsMap.put(CourseReadAllFacadeCommand.class.getSimpleName(), controllers.get(5));
 
         System.out.println("Router initiated");
     }
