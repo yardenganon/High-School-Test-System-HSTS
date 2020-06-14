@@ -72,6 +72,10 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.getAnswerableTestsFacadeByStudentId(
                         ((AnswerableTestsFacadeReadByStudentCommand) command).getStudent());
                 break;
+            case("AnswerableTestsFacadeReadByCourseCommand"):
+                returnedObject = testsRepository.getAnswerableTestsFacadeByCourseName(
+                        ((AnswerableTestsFacadeReadByCourseCommand) command).getCourseName());
+                break;
             default:
                 System.out.println("Error - Command not found in controller");
         }
