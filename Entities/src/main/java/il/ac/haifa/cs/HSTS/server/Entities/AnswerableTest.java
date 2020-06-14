@@ -4,6 +4,7 @@ import il.ac.haifa.cs.HSTS.server.Status.Status;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.*;
 
 @Entity
@@ -34,6 +35,7 @@ public class AnswerableTest implements Serializable {
     private Boolean isChecked;
     private String teacherComment;
     private Status answerableTestStatus;
+    private URL url;
 
     public AnswerableTest() {
     }
@@ -44,10 +46,17 @@ public class AnswerableTest implements Serializable {
         this.answers = new HashMap<>();
         this.timeStarted = new Date();
         this.answerableTestStatus = Status.TestNotActive;
-
-//        test.addAnswerableTest(this);
-//        student.addAnswerableTest(this);
+        this.isChecked = false;
     }
+
+    public URL getUrl() {
+        return url;
+    }
+
+    public void setUrl(URL url) {
+        this.url = url;
+    }
+
     public Set<Question> getQuestionsSet() {
         return this.test.getTest().getQuestionSet();
     }

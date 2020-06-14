@@ -58,7 +58,7 @@ public class CheckAnswerableTestController implements Initializable {
     private TableColumn<UncheckedAnswerableTest, String> columnId;
 
     @FXML
-    private TableColumn<UncheckedAnswerableTest, String> columnQuestion;
+    private TableColumn<UncheckedAnswerableTest, String> columnQuestion, answer4Column , answer3Column,answer2Column,answer1Column;
 
     @FXML
     private TableColumn<UncheckedAnswerableTest, String> columnStudentAnswer;
@@ -105,7 +105,8 @@ public class CheckAnswerableTestController implements Initializable {
         };
         task.setOnSucceeded(e -> {
                 answerableTest = (AnswerableTest) responseFromServer.getReturnedObject();
-
+                if (user instanceof Student)
+                    commentTextField.setText(answerableTest.getTeacherComment());
                 gradeButton.setText(String.valueOf(answerableTest.getScore()));
                 idTextField.setText(String.valueOf(idTest));
                 studentNameButton.setText(answerableTest.getStudent().getFirst_name() + " " +
@@ -126,12 +127,17 @@ public class CheckAnswerableTestController implements Initializable {
         columnQuestion.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("question"));
         columnStudentAnswer.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("studentAnswer"));
         columnCorrectAnswer.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("correctAnswer"));
+        answer1Column.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("answer1"));
+        answer2Column.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("answer2"));
+        answer3Column.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("answer3"));
+        answer4Column.setCellValueFactory(new PropertyValueFactory<UncheckedAnswerableTest, String>("answer4"));
 
         questionsOL = FXCollections.observableArrayList();
         for (Question question : questionSet)
         {
             questionsOL.add(new UncheckedAnswerableTest(String.valueOf(question.getId()), question.getQuestion(),
-                    String.valueOf(answers.get(question)), String.valueOf(question.getCorrectAnswer())));
+                    String.valueOf(answers.get(question)), String.valueOf(question.getCorrectAnswer()),question.getAnswer(1),
+                    question.getAnswer(2),question.getAnswer(3),question.getAnswer(4)));
         }
         questionsTableView.setItems(questionsOL);
 

@@ -1,5 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
+import com.google.auth.Credentials;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
@@ -42,6 +44,7 @@ import javafx.stage.WindowEvent;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -146,6 +149,8 @@ public class TestInProgressController implements Initializable {
 
     private String fullPath = null;
 
+    private String manualTestFileName = null;
+
     private boolean isExtraTimeAdded = false;
 
     private Response timeExtensionResponseFromServer = null;
@@ -188,33 +193,60 @@ public class TestInProgressController implements Initializable {
     }
 
     public void uploadEvent() {
-        String projectId = PROJECT_ID;
-        String bucketName = UNIQUE_BUCKET_NAME;
-        String objectName = "TEST123";
-        String filePath = linkLabel.getText();
-            // The ID of your GCP project
-            // String projectId = "your-project-id";
+        // Pass authentication credentials
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                Storage storage = null;
+                try {
+                    System.out.println(new File("").getAbsolutePath());
+                    String path = new File(("")).getAbsolutePath();
+                    System.out.println(path + "\\FXML\\GoogleCloudCreds\\HSTS-aa9bed24b973.json");
+                    Credentials credentials = GoogleCredentials
+                            .fromStream(new FileInputStream(path + "\\src\\main\\resources\\il\\ac\\haifa\\cs\\HSTS\\ocsf\\client\\FXML\\GoogleCloudCreds\\HSTS-aa9bed24b973.json"));
+                    storage = StorageOptions.newBuilder().setCredentials(credentials)
+                            .setProjectId("114618954393906762898").build().getService();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-            // The ID of your GCS bucket
-            // String bucketName = "your-unique-bucket-name";
+                String projectId = PROJECT_ID;
+                String bucketName = UNIQUE_BUCKET_NAME;
+                String objectName = manualTestFileName;
+                String filePath = linkLabel.getText();
+                // The ID of your GCP project
+                // String projectId = "your-project-id";
 
-            // The ID of your GCS object
-            // String objectName = "your-object-name";
+                // The ID of your GCS bucket
+                // String bucketName = "your-unique-bucket-name";
 
-            // The path to your file to upload
-            // String filePath = "path/to/your/file"
+                // The ID of your GCS object
+                // String objectName = "your-object-name";
 
-            Storage storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-            BlobId blobId = BlobId.of(bucketName, objectName);
-            BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        try {
-            storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                // The path to your file to upload
+                // String filePath = "path/to/your/file"
 
-        System.out.println(
-                    "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+                //storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
+                BlobId blobId = BlobId.of(bucketName, objectName);
+                BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+                URL url = null;
+                try {
+                    storage.create(blobInfo, Files.readAllBytes(Paths.get(filePath)));
+                    System.out.println(storage.get(blobId));
+                    String link = "https://storage.cloud.google.com/"+UNIQUE_BUCKET_NAME+"/"+objectName;
+                    url = new URL(link);
+                    System.out.println(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                // save url into db
+                answerableTest.setUrl(url);
+                System.out.println(
+                        "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
+
+            }
+        });
 
     }
 
@@ -228,8 +260,19 @@ public class TestInProgressController implements Initializable {
                 CommandInterface command = new TimeExtensionStatusCommand(answerableTest.getTest().getId());
                 client.getHstsClientInterface().sendCommandToServer(command);
                 // busyWait
-                while (timeExtensionResponseFromServer == null)
-                    Thread.onSpinWait();
+                while (timeExtensionResponseFromServer == null) {
+                    for (int i = 0 ; i < 2 ;i++) {
+                        try {
+                            if (timeExtensionResponseFromServer == null) {
+                                Thread.sleep(1000*5);
+                            }
+                            else break;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
                 System.out.println("Response arrived TE Thread");
                 if (timeExtensionResponseFromServer.getReturnedObject() != null)
                     timeExtensionRequest = (TimeExtensionRequest) timeExtensionResponseFromServer.getReturnedObject();
@@ -253,7 +296,7 @@ public class TestInProgressController implements Initializable {
                 // Check every 1-minute
                 try {
                     System.out.println("TE Thread going to sleep for a minute");
-                    Thread.sleep(1000*60);
+                    Thread.sleep(1000*10);
                     System.out.println("TE Thread woke up from a minute");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -307,6 +350,8 @@ public class TestInProgressController implements Initializable {
         else {
             initTimer((int)(modifiedTime-timePassed));
         }
+        if (this.hours < 0)
+            endTest();
     }
 
     public void makeManualTest() {
@@ -314,6 +359,7 @@ public class TestInProgressController implements Initializable {
         try {
             testToWordUnit = new TestToWordUnit(answerableTest.getTest(), answerableTest.getStudent());
             fullPath = testToWordUnit.getFilePath();
+            manualTestFileName = testToWordUnit.getFileName();
             linkLabel.setText(fullPath);
             textField.setText(fullPath);
         } catch (Exception exception) {
