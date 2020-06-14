@@ -170,7 +170,8 @@ public class HSTSClientInterface {
                     .receivedResponseFromServer(serverResponse);
 
 
-        if (serverResponse.getRespondName().equals(ReadyTestExtendedFacadeReadByTeacherCommand.class.getSimpleName()))
+        if (serverResponse.getRespondName().equals(ReadyTestExtendedFacadeReadByTeacherCommand.class.getSimpleName())
+                && guiControllers.get(MenuController.class.getSimpleName()) != null)
             ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
