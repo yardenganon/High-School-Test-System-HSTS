@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
@@ -110,7 +111,6 @@ public class MakeExecuteTestController implements Initializable {
         readyTest.setActive(true);
         readyTest.setManual(false);
         readyTest.setModifiedTime(test.getTime());
-        updatedHashMap = readyTest.getTest().getPoints();
         testTimeTextField.setText(String.valueOf(selectedTest.getTime()));
     }
 
@@ -237,23 +237,16 @@ public class MakeExecuteTestController implements Initializable {
             {
                 if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
                     selectedCourse = course;
-                    System.out.println("The course is: " + selectedCourse);
+                    System.out.println("The course is: " + selectedCourse.getCourseName());
                     break;
                 }
             }
             readyTest.setCourse(selectedCourse);
 
-            for (Question updatedQuestion : updatedHashMap.keySet())
-            {
-                for (Question question : readyTest.getTest().getPoints().keySet()) {
-                    if (question.getQuestion() == updatedQuestion.getQuestion()) {
-                        readyTest.getTest().getPoints().put(question, updatedHashMap.get(updatedQuestion));
-                        System.out.println("The new point is " + updatedHashMap.get(updatedQuestion));
-                        break;
-                    }
-                }
-            }
-            readyTest.setModifiedPoints(readyTest.getTest().getPoints());
+            //readyTest.setModifiedPoints(readyTest.getTest().getPoints());
+            for (Question quest : readyTest.getTest().getQuestionSet())
+                System.out.println(readyTest.getTest().getPoints().get(quest));
+            System.out.println("yessss");
 
             Task<Response> task = new Task<Response>() {
                 @Override
@@ -280,11 +273,13 @@ public class MakeExecuteTestController implements Initializable {
 
                 Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
                 if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
-                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE))
+                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE ||
+                        resultButton.get() == ButtonType.FINISH || resultButton.get() == ButtonType.APPLY ||
+                        resultButton.get() == ButtonType.NO))
                 {
-                    //לסגור את המסך כאן
+                    final Stage stage = (Stage) confirmTestButton1.getScene().getWindow();
+                    stage.close();
                 }
-
 
             });
             new Thread(task).start();
@@ -318,12 +313,12 @@ public class MakeExecuteTestController implements Initializable {
         ResetRedColorAndText(executionCodeTextField);
         String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        String firstchar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
-        String secondchar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
+        String firstChar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
+        String secondChar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
         String firstRandomNum = String.valueOf((int) (Math.random() * (10)));
         String secondRandom = String.valueOf((int) (Math.random() * (10)));
 
-        executionCodeTextField.setText(firstchar + secondchar + firstRandomNum + secondRandom);
+        executionCodeTextField.setText(firstChar + secondChar + firstRandomNum + secondRandom);
     }
 
     @FXML
@@ -340,26 +335,19 @@ public class MakeExecuteTestController implements Initializable {
 
     public void changePoints(TableColumn.CellEditEvent<QuestionTableView, String> questionTableViewStringCellEditEvent) {
         QuestionTableView changedColumn = questionTableView.getSelectionModel().getSelectedItem();
-        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
 
         sumOfPoints = 0;
-        Question selectedQuestion = null;
-        for (QuestionTableView question : questionTableView.getItems())
+        for (Question quest : readyTest.getTest().getQuestionSet())
         {
-            selectedQuestion = null;
-            for (Question quest : updatedHashMap.keySet())
+            if (quest.getQuestion() == changedColumn.getQuestion())
             {
-                if (quest.getQuestion() == question.getQuestion())
-                {
-                    selectedQuestion = quest;
-                    break;
-                }
+                readyTest.getTest().getPoints().remove(quest);
+                readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
             }
-            if (selectedQuestion != null) {
-                sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
-                updatedHashMap.put(selectedQuestion, Integer.parseInt(columnPoints.getCellObservableValue(question).getValue()));
-            }
+            sumOfPoints += readyTest.getTest().getPoints().get(quest);
+            System.out.println(sumOfPoints);
         }
+        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
         pointsLabel.setText(String.valueOf(sumOfPoints));
     }
 }

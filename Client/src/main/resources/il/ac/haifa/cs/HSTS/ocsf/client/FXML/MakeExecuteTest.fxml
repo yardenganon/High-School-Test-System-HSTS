@@ -130,7 +130,7 @@
             </Text>
             <Label fx:id="pointsLabel" layoutX="515.0" layoutY="500.0" prefHeight="15.0" prefWidth="39.0" />
             <CheckBox fx:id="activeCheckBox" layoutX="25.0" layoutY="527.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="94.0" selected="true" text="Active Test" />
-            <CheckBox fx:id="manualCheckBox" layoutX="25.0" layoutY="552.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="94.0" selected="true" text="Manual Test" />
+            <CheckBox fx:id="manualCheckBox" layoutX="25.0" layoutY="552.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="94.0" text="Manual Test" />
          </children>
       </AnchorPane>
    </children>
