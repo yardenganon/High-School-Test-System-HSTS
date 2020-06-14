@@ -11,16 +11,19 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 public class TestToWordUnit {
-    String filePath = null;
+   private String filePath = null;
+   private String fileName = null;
+
 
     public TestToWordUnit(ReadyTest readyTest, Student student) throws Exception {
         String path = new File("").getAbsolutePath();
         System.out.println(path);
-        String fileName = (path + "testid_" + readyTest.getId() +
+        fileName = "testid_" + readyTest.getId() +
                 "courseid_" + readyTest.getCourse().getId() +
                 "teacher_" + readyTest.getModifierWriter().getUsername() +
-                "student_" + student.getFirst_name() + ".docx");
-        filePath = fileName;
+                "student_" + student.getUsername()+ ".docx";
+
+        filePath = path +"\\"+ fileName;
         // Blank doc
         XWPFDocument document = new XWPFDocument();
 
@@ -85,7 +88,11 @@ public class TestToWordUnit {
         this.filePath = filePath;
     }
 
-    public static void main(String[] args) {
+    public String getFileName() {
+        return fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 }
