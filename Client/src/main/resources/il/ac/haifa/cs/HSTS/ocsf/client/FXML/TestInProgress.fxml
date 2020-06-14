@@ -87,9 +87,21 @@
                   <Font name="Calibri Light" size="13.0" />
                </font>
             </Label>
-            <TextField fx:id="textField" layoutX="217.0" layoutY="301.0" prefHeight="25.0" prefWidth="463.0" />
-            <Button fx:id="browseButton" layoutX="693.0" layoutY="301.0" mnemonicParsing="false" onAction="#browseEvent" style="-fx-background-color: #143452;" text="Browse" textFill="WHITE" />
+            <TextField fx:id="textField" disable="true" layoutX="217.0" layoutY="301.0" prefHeight="25.0" prefWidth="463.0" />
+            <Label layoutX="242.0" layoutY="386.0" text="Please do not change file name and do not relocate file." textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Label>
+            <Label layoutX="282.0" layoutY="425.0" text="Do not forget to press Upload before Submit" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font></Label>
             <Button fx:id="uploadButton" layoutX="422.0" layoutY="343.0" mnemonicParsing="false" onAction="#uploadEvent" style="-fx-background-color: #143452;" text="Upload" textFill="WHITE" />
+            <Label layoutX="333.0" layoutY="210.0" text="Press on the link below to open file" textFill="#143452">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
       <HBox fx:id="bottomHBox" alignment="TOP_RIGHT" layoutY="539.0" prefHeight="53.0" prefWidth="1154.0" style="-fx-background-color: #143452;">
