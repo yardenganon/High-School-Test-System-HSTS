@@ -319,7 +319,7 @@ public class TestsController implements Initializable {
             secondaryStage.setScene(scene);
             secondaryStage.setTitle("Make Execute Test");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
-            secondaryStage.show();
+            secondaryStage.showAndWait();
         }
         else
         {
@@ -327,6 +327,16 @@ public class TestsController implements Initializable {
             needChooseTestAlert.setHeaderText("For making execute test you need to select a test and then push \"Make Execute Test\" button" );
             Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
+
+        if (selectedTest != null) {
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
+
+            refreshList();
+
+            progressIndicator.stop();
+        }
+
     }
 
     public void editTestRequest(ActionEvent actionEvent) throws IOException {
@@ -348,10 +358,9 @@ public class TestsController implements Initializable {
                 }
                 selectedTest = null;
             }
-            else
-            {
+            else {
                 Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-                needChooseTestAlert.setHeaderText("In order to edit a test you need to select a test and then press \"Edit Test\" button" );
+                needChooseTestAlert.setHeaderText("In order to edit a test you need to select a test and then press \"Edit Test\" button");
                 Optional<ButtonType> result = needChooseTestAlert.showAndWait();
             }
     }
