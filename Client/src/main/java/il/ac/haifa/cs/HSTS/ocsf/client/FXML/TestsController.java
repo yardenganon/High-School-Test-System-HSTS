@@ -272,6 +272,9 @@ public class TestsController implements Initializable {
             secondaryStage.setTitle("Make Execute Test");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
             secondaryStage.show();
+            secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
+                refreshList();
+            });
         }
         else
         {
@@ -384,6 +387,12 @@ public class TestsController implements Initializable {
                     new Thread(task).start();
                 }
             }
+        }
+        else
+        {
+            Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+            needChooseTestAlert.setHeaderText("In order to watch a test you need to select a test and then press \"Watch Test\" button" );
+            Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }
 }
