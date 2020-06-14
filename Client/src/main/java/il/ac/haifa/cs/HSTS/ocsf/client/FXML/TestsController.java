@@ -35,6 +35,8 @@ public class TestsController implements Initializable {
 
     public User user;
     public boolean flagOfDetails = false;
+    private TestFacade testSelected = null;
+    public Button watchTestButton;
     private Response responseFromServer = null;
     private static List<TestFacade> testList = null;
     private ObservableList<TestFacade> testsOL = null;
@@ -140,56 +142,6 @@ public class TestsController implements Initializable {
     @FXML
     void initializeTestsTable() {
         refreshList();
-        TestsTableView.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                TestFacade testSelected = TestsTableView.getSelectionModel().getSelectedItem();
-                flagOfDetails = false;
-                if(event.getClickCount() == 2)
-                    flagOfDetails = true;
-                if (testSelected != null) {
-                    Scene scene = null;
-                    for (TestFacade test : testList) {
-                        if (test.getId() == testSelected.getId()) {
-                            testList = new ArrayList<TestFacade>();
-                            Task<Response> task = new Task<Response>() {
-                                @Override
-                                protected Response call() throws Exception {
-                                    if (user instanceof Teacher) {
-                                        responseFromServer = null;
-                                        CommandInterface command = new TestReadByIdCommand(test.getId());
-                                        client.getHstsClientInterface().sendCommandToServer(command);
-
-                                        while (responseFromServer == null)
-                                            Thread.sleep(10);
-
-                                    } else if (user instanceof Principle) {
-                                    responseFromServer = null;
-
-                                    CommandInterface command = new TestReadAllCommand();
-                                    client.getHstsClientInterface().sendCommandToServer(command);
-
-                                    while (responseFromServer == null)
-                                        Thread.sleep(10);
-
-                                    testList = (List<TestFacade>) responseFromServer.getReturnedObject();
-                                    }
-                                    return responseFromServer;
-                                }
-                            };
-                            task.setOnSucceeded(e -> {
-                                responseFromServer = task.getValue();
-                                selectedTest = (Test) responseFromServer.getReturnedObject();
-                                if (flagOfDetails == true)
-                                    openTestDetailsWindow();
-                            });
-                            new Thread(task).start();
-                        }
-                    }
-                }
-            }
-        });
     }
 
     public void receivedResponseFromServer(Response response) {
@@ -330,29 +282,108 @@ public class TestsController implements Initializable {
     }
 
     public void editTestRequest(ActionEvent actionEvent) throws IOException {
-            if (selectedTest != null) {
-                System.out.println(selectedTest + " Is selected");
-                bundle.put("test", selectedTest);
-                bundle.put("client", client);
-                bundle.put("user", user);
-                bundle.put("update", true);
+        testSelected = TestsTableView.getSelectionModel().getSelectedItem();
+        if (testSelected != null) {
+            for (TestFacade test : testList) {
+                if (test.getId() == testSelected.getId()) {
+                    testList = new ArrayList<TestFacade>();
+                    Task<Response> task = new Task<Response>() {
+                        @Override
+                        protected Response call() throws Exception {
+                            if (user instanceof Teacher) {
+                                responseFromServer = null;
+                                CommandInterface command = new TestReadByIdCommand(test.getId());
+                                client.getHstsClientInterface().sendCommandToServer(command);
 
-                if (user instanceof Teacher) {
-                    Events.navigateCreateTestEvent(editTestButton);
+                                while (responseFromServer == null)
+                                    Thread.sleep(10);
+
+                            } else if (user instanceof Principle) {
+                                responseFromServer = null;
+
+                                CommandInterface command = new TestReadAllCommand();
+                                client.getHstsClientInterface().sendCommandToServer(command);
+
+                                while (responseFromServer == null)
+                                    Thread.sleep(10);
+
+                                testList = (List<TestFacade>) responseFromServer.getReturnedObject();
+                            }
+                            return responseFromServer;
+                        }
+                    };
+                    task.setOnSucceeded(e -> {
+                        responseFromServer = task.getValue();
+                        selectedTest = (Test) responseFromServer.getReturnedObject();
+                        System.out.println(selectedTest + " Is selected");
+                        bundle.put("test", selectedTest);
+                        bundle.put("client", client);
+                        bundle.put("user", user);
+                        bundle.put("update", true);
+
+                        if (user instanceof Teacher) {
+                            Events.navigateCreateTestEvent(editTestButton);
+                        }
+                        else
+                        {
+                            Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+                            needChooseTestAlert.setHeaderText("You doesn't have the permissions to edit a test" );
+                            Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+                        }
+                        selectedTest = null;
+                    });
+                    new Thread(task).start();
                 }
-                else
-                {
-                    Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-                    needChooseTestAlert.setHeaderText("You doesn't have the permissions to edit a test" );
-                    Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+            }
+        }
+        else
+        {
+            Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+            needChooseTestAlert.setHeaderText("In order to edit a test you need to select a test and then press \"Edit Test\" button" );
+            Optional<ButtonType> result = needChooseTestAlert.showAndWait();
+        }
+    }
+
+    @FXML
+    void watchTest(ActionEvent event) {
+        testSelected = TestsTableView.getSelectionModel().getSelectedItem();
+        if (testSelected != null) {
+            for (TestFacade test : testList) {
+                if (test.getId() == testSelected.getId()) {
+                    testList = new ArrayList<TestFacade>();
+                    Task<Response> task = new Task<Response>() {
+                        @Override
+                        protected Response call() throws Exception {
+                            if (user instanceof Teacher) {
+                                responseFromServer = null;
+                                CommandInterface command = new TestReadByIdCommand(test.getId());
+                                client.getHstsClientInterface().sendCommandToServer(command);
+
+                                while (responseFromServer == null)
+                                    Thread.sleep(10);
+
+                            } else if (user instanceof Principle) {
+                                responseFromServer = null;
+
+                                CommandInterface command = new TestReadAllCommand();
+                                client.getHstsClientInterface().sendCommandToServer(command);
+
+                                while (responseFromServer == null)
+                                    Thread.sleep(10);
+
+                                testList = (List<TestFacade>) responseFromServer.getReturnedObject();
+                            }
+                            return responseFromServer;
+                        }
+                    };
+                    task.setOnSucceeded(e -> {
+                        responseFromServer = task.getValue();
+                        selectedTest = (Test) responseFromServer.getReturnedObject();
+                        openTestDetailsWindow();
+                    });
+                    new Thread(task).start();
                 }
-                selectedTest = null;
             }
-            else
-            {
-                Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-                needChooseTestAlert.setHeaderText("In order to edit a test you need to select a test and then press \"Edit Test\" button" );
-                Optional<ButtonType> result = needChooseTestAlert.showAndWait();
-            }
+        }
     }
 }

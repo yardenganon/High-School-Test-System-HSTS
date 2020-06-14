@@ -79,7 +79,7 @@
             <HBox prefHeight="51.0" prefWidth="632.0">
                <children>
                   <VBox prefHeight="51.0" prefWidth="98.0" />
-                  <Button fx:id="MakeExecuteTestButton" mnemonicParsing="false" onAction="#MakeExecuteTest" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #143452;" text="Make Execute Test" textFill="WHITE">
+                  <Button fx:id="MakeExecuteTestButton" mnemonicParsing="false" onAction="#MakeExecuteTest" prefHeight="34.0" prefWidth="197.0" style="-fx-background-color: #143452;" text="Make Execute Test" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
@@ -88,12 +88,20 @@
                      </HBox.margin>
                   </Button>
                   <VBox prefHeight="51.0" prefWidth="98.0" />
-                  <Button fx:id="editTestButton" mnemonicParsing="false" onAction="#editTestRequest" prefHeight="34.0" prefWidth="163.0" style="-fx-background-color: #143452;" text="Edit Test" textFill="WHITE">
+                  <Button fx:id="watchTestButton" mnemonicParsing="false" onAction="#watchTest" prefHeight="34.0" prefWidth="178.0" style="-fx-background-color: #143452;" text="Watch Test" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="14.0" />
                      </font>
                      <HBox.margin>
-                        <Insets top="5.0" />
+                        <Insets right="50.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="editTestButton" mnemonicParsing="false" onAction="#editTestRequest" prefHeight="34.0" prefWidth="182.0" style="-fx-background-color: #143452;" text="Edit Test" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="30.0" top="5.0" />
                      </HBox.margin>
                   </Button>
                </children>
