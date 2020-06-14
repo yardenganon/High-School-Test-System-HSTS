@@ -620,6 +620,9 @@ public class MenuController implements Initializable {
     }
 
     public void showMyTestsTeacher(ActionEvent actionEvent) {
+        bundle.put("user", user);
+        bundle.put("client", client);
+        Events.navigateAnswerableTestsEvent(myTestTeacherButton);
     }
 
     public void showMyCoursesTeacher(ActionEvent actionEvent) {

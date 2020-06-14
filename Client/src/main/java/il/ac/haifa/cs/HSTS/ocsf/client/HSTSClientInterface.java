@@ -132,7 +132,8 @@ public class HSTSClientInterface {
                     .receivedResponseFromServer(serverResponse);
 
 
-        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName()))
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName())
+                && guiControllers.get(TestCheckingController.class.getSimpleName()) != null)
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
@@ -192,7 +193,12 @@ public class HSTSClientInterface {
         if (serverResponse.getRespondName().equals(ReadyTestUpdateActivityCommand.class.getSimpleName()))
             ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
-}
+
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName())
+            && guiControllers.get(TeacherAnswerableTestsController.class.getSimpleName()) != null)
+            ((TeacherAnswerableTestsController) guiControllers.get(TeacherAnswerableTestsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+    }
 
     public Map<String, Object> getGuiControllers() {
         return guiControllers;

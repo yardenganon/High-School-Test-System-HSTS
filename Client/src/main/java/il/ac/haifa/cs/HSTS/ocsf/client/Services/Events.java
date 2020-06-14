@@ -109,8 +109,19 @@ public class Events {
         stage.setTitle("Test Checking");
     }
 
-    public static void navigateReadyTestsToPrincipleEvent(Button button)
-    {
+    public static void navigateAnswerableTestsEvent(Button button) {
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("TeacherAnswerableTests"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Teacher Answerable Tests");
+    }
+
+    public static void navigateReadyTestsToPrincipleEvent(Button button) {
         Scene scene = null;
         try {
             scene = new Scene(MainClass.loadFXML("ReadyTestsToPrinciple"));
@@ -119,6 +130,6 @@ public class Events {
         }
         Stage stage = (Stage) button.getScene().getWindow();
         stage.setScene(scene);
-        stage.setTitle("Test Checking");
+        stage.setTitle("Ready Tests To Principle");
     }
 }

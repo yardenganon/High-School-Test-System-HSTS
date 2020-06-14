@@ -2,6 +2,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CreateReadyTestCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -18,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.*;
@@ -38,7 +40,8 @@ public class MakeExecuteTestController implements Initializable {
     private String codeErrorMessage = "Execution code should consist of two letters and then two digits";
     private String pointsErrorMessage = "Questions points should sum to 100 or more";
     ReadyTest readyTest;
-    HashMap updatedHashMap = new HashMap<>();
+    Map<Question, Integer> updatedHashMap;
+    Teacher teacher;
 
     @FXML
     private AnchorPane anchorPane;
@@ -108,7 +111,6 @@ public class MakeExecuteTestController implements Initializable {
         readyTest.setActive(true);
         readyTest.setManual(false);
         readyTest.setModifiedTime(test.getTime());
-
         testTimeTextField.setText(String.valueOf(selectedTest.getTime()));
     }
 
@@ -137,12 +139,11 @@ public class MakeExecuteTestController implements Initializable {
 
             questionsOL = FXCollections.observableArrayList();
             Set<Question> questionList = test.getQuestionSet();
-            updatedHashMap.clear();
+
             for (Question quest : questionList) {
                 int points = test.getPoints().get(quest);
                 questionsOL.add(new QuestionTableView(quest.getQuestion(), String.valueOf(points)));
-                sumOfPoints += test.getPoints().get(quest);
-                updatedHashMap.put(quest, points);
+                sumOfPoints += points;
             }
             questionTableView.setItems(questionsOL);
             pointsLabel.setText(String.valueOf(sumOfPoints));
@@ -170,6 +171,7 @@ public class MakeExecuteTestController implements Initializable {
         client = (HSTSClient) bundle.get("client");
         selectedTest = (TestFacade) bundle.get("test");
         user = (User) bundle.get("user");
+        teacher = (Teacher) user;
         client.getHstsClientInterface().addGUIController(this);
         ShowQuestionList();
     }
@@ -222,19 +224,29 @@ public class MakeExecuteTestController implements Initializable {
                 errorAlert.showAndWait();
         } else {
 
+            CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+            progressIndicator.start();
+
             readyTest.setModifiedTime(Integer.parseInt(testTimeTextField.getText()));
             readyTest.setCode(executionCodeTextField.getText());
             readyTest.setActive(activeCheckBox.isSelected());
             readyTest.setManual(manualCheckBox.isSelected());
-            readyTest.setModifiedPoints(updatedHashMap);
 
-            System.out.println("The hash is: " + updatedHashMap);
-
+            Course selectedCourse = null;
+            for (Course course : teacher.getCourses())
+            {
+                if (coursesComboBox.getSelectionModel().getSelectedItem() == course.getCourseName()) {
+                    selectedCourse = course;
+                    break;
+                }
+            }
+            readyTest.setCourse(selectedCourse);
 
             Task<Response> task = new Task<Response>() {
                 @Override
                 protected Response call() throws Exception {
                     responseFromServer = null;
+
                     CommandInterface command = new CreateReadyTestCommand(readyTest);
                     client.getHstsClientInterface().sendCommandToServer(command);
 
@@ -248,17 +260,20 @@ public class MakeExecuteTestController implements Initializable {
             };
             task.setOnSucceeded(e -> {
                 responseFromServer = task.getValue();
-                System.out.println(responseFromServer);
+                progressIndicator.stop();
+
                 Alert executeTestCreatedAlert = new Alert(Alert.AlertType.INFORMATION);
                 executeTestCreatedAlert.setHeaderText("Ready test was successfully created");
 
                 Optional<ButtonType> resultButton = executeTestCreatedAlert.showAndWait();
                 if (resultButton.isPresent() && (resultButton.get() == ButtonType.OK ||
-                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE))
+                        resultButton.get() == ButtonType.CANCEL || resultButton.get() == ButtonType.CLOSE ||
+                        resultButton.get() == ButtonType.FINISH || resultButton.get() == ButtonType.APPLY ||
+                        resultButton.get() == ButtonType.NO))
                 {
-                    //לסגור את המסך כאן
+                    final Stage stage = (Stage) confirmTestButton1.getScene().getWindow();
+                    stage.close();
                 }
-
 
             });
             new Thread(task).start();
@@ -292,12 +307,12 @@ public class MakeExecuteTestController implements Initializable {
         ResetRedColorAndText(executionCodeTextField);
         String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        String firstchar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
-        String secondchar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
+        String firstChar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
+        String secondChar = String.valueOf(alphabet.charAt((int) (Math.random() * 52)));
         String firstRandomNum = String.valueOf((int) (Math.random() * (10)));
         String secondRandom = String.valueOf((int) (Math.random() * (10)));
 
-        executionCodeTextField.setText(firstchar + secondchar + firstRandomNum + secondRandom);
+        executionCodeTextField.setText(firstChar + secondChar + firstRandomNum + secondRandom);
     }
 
     @FXML
@@ -314,15 +329,18 @@ public class MakeExecuteTestController implements Initializable {
 
     public void changePoints(TableColumn.CellEditEvent<QuestionTableView, String> questionTableViewStringCellEditEvent) {
         QuestionTableView changedColumn = questionTableView.getSelectionModel().getSelectedItem();
-        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
 
         sumOfPoints = 0;
-        updatedHashMap.clear();
-        for (QuestionTableView question : questionTableView.getItems())
+        for (Question quest : readyTest.getTest().getQuestionSet())
         {
-            sumOfPoints += Integer.parseInt(columnPoints.getCellObservableValue(question).getValue());
-            updatedHashMap.put(question.getQuestion(), columnPoints.getCellObservableValue(question).getValue());
+            if (quest.getQuestion() == changedColumn.getQuestion())
+            {
+                readyTest.getTest().getPoints().remove(quest);
+                readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
+            }
+            sumOfPoints += readyTest.getTest().getPoints().get(quest);
         }
+        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
         pointsLabel.setText(String.valueOf(sumOfPoints));
     }
 }
