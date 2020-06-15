@@ -12,16 +12,24 @@ import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 public class CheckAnswerableTestController implements Initializable {
 
@@ -37,7 +45,13 @@ public class CheckAnswerableTestController implements Initializable {
     private ObservableList<UncheckedAnswerableTest> questionsOL = null;
 
     @FXML
+    private HBox hboxOfTableView;
+
+    @FXML
     private AnchorPane anchorPane;
+
+    @FXML
+    private Button openFileButton;
 
     @FXML
     private TextField idTextField;
@@ -77,8 +91,6 @@ public class CheckAnswerableTestController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-//        progressIndicator.start();
         bundle = Bundle.getInstance();
         idTest = (int) bundle.get("id");
         client = (HSTSClient) bundle.get("client");
@@ -86,10 +98,21 @@ public class CheckAnswerableTestController implements Initializable {
         System.out.println(user);
         client.getHstsClientInterface().addGUIController(this);
         initializeAnswerableTest();
-        //progressIndicator.stop();
     }
 
     private void initializeAnswerableTest() {
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+        if (user instanceof Teacher) {
+            commentTextField.setEditable(true);
+            confirmTestButton.setVisible(true);
+            gradeButton.setEditable(true);
+        }
+        if (user instanceof Student) {
+            confirmTestButton.setVisible(false);
+            commentTextField.setEditable(false);
+            gradeButton.setEditable(false);
+        }
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
@@ -114,7 +137,20 @@ public class CheckAnswerableTestController implements Initializable {
                 startTimeButton.setText(answerableTest.getTimeStarted().toString());
                 endTimeButton.setText(answerableTest.getTimeFinished().toString());
                 gradeButton.setText(String.valueOf(answerableTest.getScore()));
-                initializeQuestionTable();
+                if (answerableTest.getUrl() == null) {
+                    initializeQuestionTable();
+                    openFileButton.setVisible(false);
+                    hboxOfTableView.setPrefHeight(258.0);
+                    hboxOfTableView.setPrefWidth(692.0);
+                }
+                else{
+                    hboxOfTableView.setVisible(true);
+                    hboxOfTableView.setPrefHeight(0);
+                    hboxOfTableView.setPrefWidth(0);
+                    questionsTableView.setVisible(false);
+                    openFileButton.setVisible(true);
+                }
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }
@@ -140,17 +176,6 @@ public class CheckAnswerableTestController implements Initializable {
                     question.getAnswer(2),question.getAnswer(3),question.getAnswer(4)));
         }
         questionsTableView.setItems(questionsOL);
-
-        if (user instanceof Teacher) {
-            commentTextField.setEditable(true);
-            confirmTestButton.setVisible(true);
-            gradeButton.setEditable(true);
-        }
-        if (user instanceof Student) {
-            confirmTestButton.setVisible(false);
-            commentTextField.setEditable(false);
-            gradeButton.setEditable(false);
-        }
     }
 
     @FXML
@@ -217,4 +242,23 @@ public class CheckAnswerableTestController implements Initializable {
         System.out.println("Command received in controller " + response);
     }
 
+    @FXML
+    public void openFileRequest(ActionEvent actionEvent) {
+        // Open file here
+        try {
+            //constructor of file class having file as argument
+            System.out.println(answerableTest.getUrl());
+            File file = new File(String.valueOf(answerableTest.getUrl()));
+            System.out.println(file.getAbsolutePath());
+            if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+            {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(answerableTest.getUrl().toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
