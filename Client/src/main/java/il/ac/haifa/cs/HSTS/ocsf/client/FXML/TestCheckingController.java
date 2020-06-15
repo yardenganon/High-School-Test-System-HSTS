@@ -5,9 +5,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
-import il.ac.haifa.cs.HSTS.server.Entities.Student;
-import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.Entities.*;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -48,6 +47,7 @@ public class TestCheckingController implements Initializable {
     private int checkedTestId;
     public boolean theTestWasChecked = false;
     UncheckedTestTable selectedTest;
+    String courseFromComboBox = null;
 
     @FXML
     private Label titleLabel;
@@ -90,6 +90,9 @@ public class TestCheckingController implements Initializable {
 
     @FXML
     private TableColumn<UncheckedTestTable, String> studentNameColumn;
+
+    @FXML
+    private ComboBox<String> coursesComboBox;
 
     @FXML
     private TableColumn<UncheckedTestTable, String> gradeColumn;
@@ -200,7 +203,8 @@ public class TestCheckingController implements Initializable {
             student = (Student) user;
             teacher = null;
         }
-        initializeTestsTable();
+        initializeCoursesComboBox();
+        courseSelect(new ActionEvent());
     }
 
     public void receivedResponseFromServer(Response response) {
@@ -208,16 +212,14 @@ public class TestCheckingController implements Initializable {
         System.out.println("Command received in controller " + response);
     }
 
-    @FXML
-    void initializeTestsTable() {
-        // insert all the tests to the table
-
+    void refreshTable(){
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
 
-                    // Asking unchecked tests of the teacher from server
-                CommandInterface command;
+                CommandInterface command = null;
                 if (teacher != null) {
                     command = new AnswerableTestsFacadeReadCommand(teacher);
                     titleLabel.setText("Test Checking");
@@ -230,7 +232,11 @@ public class TestCheckingController implements Initializable {
                     studentNameColumn.setVisible(true);
                 }
                 else if (student != null) {
-                    command = new AnswerableTestsFacadeReadByStudentCommand(student);
+                    System.out.println("course combo box: " + courseFromComboBox);
+                    if (courseFromComboBox.equals("All"))
+                        command = new AnswerableTestsFacadeReadByStudentCommand(student);
+                    else
+                        command = new AnswerableTestsFacadeReadByCourseAndStudentCommand(student.getId(), courseFromComboBox);
                     titleLabel.setText("My Tests");
                     editTestButton.setText("Watch Test");
                     confirmTestButton.setVisible(false);
@@ -240,21 +246,20 @@ public class TestCheckingController implements Initializable {
                     gpaResultLabel.setVisible(true);
                     studentNameColumn.setVisible(false);
                 }
-                else
-                {
-                    command = null;
-                }
-                    client.getHstsClientInterface().sendCommandToServer(command);
+                client.getHstsClientInterface().sendCommandToServer(command);
 
-                    while (responseFromServer == null) {
-                        Thread.sleep(10);
-                    }
-                    return responseFromServer;
+                while (responseFromServer == null) {
+                    Thread.onSpinWait();
                 }
+                System.out.println("now what?: " + responseFromServer);
+                return responseFromServer;
+            }
         };
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
+            progressIndicator.stop();
             List<AnswerableTestFacade> listOfAnswerableTestFacade = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
+            System.out.println("now what2?: " + listOfAnswerableTestFacade);
             idColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("id"));
             courseColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("courseName"));
             if (teacher != null) studentNameColumn.setCellValueFactory(new PropertyValueFactory<UncheckedTestTable, String>("studentName"));
@@ -278,13 +283,15 @@ public class TestCheckingController implements Initializable {
                         answerableTestFacade.getCourseName(), answerableTestFacade.getFirstName() + " " + answerableTestFacade.getLastName(),
                         String.valueOf(answerableTestFacade.getScore())));
             }
-            TestsTableView.getItems().addAll(questionsOL);
+            TestsTableView.setItems(questionsOL);
 
             if (teacher != null)
                 numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
             else
-                if (student != null)
-                    gpaResultLabel.setText(String.format("%.2f", sumOfGrades / sumOfTestsNeededToCheck));
+            if (student != null)
+                gpaResultLabel.setText(String.format("%.2f", sumOfGrades / sumOfTestsNeededToCheck));
+
+            responseFromServer = null;
         });
         new Thread(task).start();
     }
@@ -329,5 +336,25 @@ public class TestCheckingController implements Initializable {
     @FXML
     void logout(ActionEvent event) throws IOException {
         Events.navigateLogoutEvent(logoutButton);
+    }
+
+    public void initializeCoursesComboBox(){
+        if (student != null) {
+            coursesComboBox.setVisible(true);
+            coursesComboBox.getItems().add("All");
+            for (Course course : student.getCourses())
+                coursesComboBox.getItems().add(course.getCourseName());
+            coursesComboBox.getSelectionModel().select(coursesComboBox.getItems().get(0));
+        }
+        else if (teacher != null) {
+            coursesComboBox.setVisible(false);
+        }
+    }
+
+    @FXML
+    void courseSelect(ActionEvent event) {
+        courseFromComboBox = coursesComboBox.getSelectionModel().getSelectedItem();
+        TestsTableView.getItems().clear();
+        refreshTable();
     }
 }

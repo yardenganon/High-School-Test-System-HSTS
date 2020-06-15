@@ -43,6 +43,7 @@ public class HSTSServer extends AbstractServer {
 
                 responseMessage = commandRouter.handleRequest(commandFromClient);
                 System.out.println("got back from DB");
+                System.out.println("aaa: " +responseMessage.getReturnedObject());
                 System.out.println(responseMessage.getReturnedObjectName());
             } catch (Exception e) {
                 responseMessage = new Response(Status.ServerException);

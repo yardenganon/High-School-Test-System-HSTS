@@ -19,6 +19,7 @@ public class CommandRouter {
         commandsMap.put(QuestionUpdateCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(QuestionReadAllCommand.class.getSimpleName(), controllers.get(1));
         commandsMap.put(QuestionPushCommand.class.getSimpleName(), controllers.get(1));
+
         commandsMap.put(TestReadAllCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestReadByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(TestsFacadeReadBySubjectCommand.class.getSimpleName(), controllers.get(2));
@@ -33,11 +34,16 @@ public class CommandRouter {
         commandsMap.put(AnswerableTestUpdateByIdCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestUpdateCommand.class.getSimpleName(), controllers.get(2));
         commandsMap.put(AnswerableTestsFacadeReadCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestsFacadeReadByCourseCommand.class.getSimpleName(), controllers.get(2));
+        commandsMap.put(AnswerableTestsFacadeReadByCourseAndStudentCommand.class.getSimpleName(), controllers.get(2));
+
         commandsMap.put(RequestAnswerableTestCommand.class.getSimpleName(), controllers.get(3));
+
         commandsMap.put(RequestTimeExtensionCommand.class.getSimpleName(), controllers.get(4));
         commandsMap.put(TimeExtensionReadAllCommand.class.getSimpleName(), controllers.get(4));
         commandsMap.put(TimeExtensionRequestUpdateCommand.class.getSimpleName(), controllers.get(4));
         commandsMap.put(TimeExtensionStatusCommand.class.getSimpleName(), controllers.get(4));
+
         commandsMap.put(CourseReadAllFacadeCommand.class.getSimpleName(), controllers.get(5));
 
         System.out.println("Router initiated");

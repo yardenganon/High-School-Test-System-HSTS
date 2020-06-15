@@ -204,6 +204,11 @@ public class HSTSClientInterface {
                 && guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()) != null)
             ((TeacherAndPrincipleAnswerableTestsController) guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadByCourseAndStudentCommand.class.getSimpleName())
+                && guiControllers.get(TestCheckingController.class.getSimpleName()) != null)
+            ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
     }
 
     public Map<String, Object> getGuiControllers() {
