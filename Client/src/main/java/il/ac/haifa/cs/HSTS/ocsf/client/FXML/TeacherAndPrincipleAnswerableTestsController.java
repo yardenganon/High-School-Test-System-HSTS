@@ -3,6 +3,7 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadByCourseCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CourseReadAllFacadeCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
@@ -12,6 +13,7 @@ import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
 import il.ac.haifa.cs.HSTS.server.Facade.CourseFacade;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -19,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -39,8 +42,8 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     private Teacher teacher = null;
     private Principle principle = null;
     private ObservableList<AnswerableTestFacade> questionsOL = null;
-    private List<CourseFacade> coursesListOfPrinciple;
-    private Set<Course> coursesListOfTeacher;
+    private List<CourseFacade> coursesListOfPrinciple = null;
+    private Set<Course> coursesListOfTeacher = null;
 
     @FXML
     private AnchorPane anchorPane;
@@ -151,42 +154,62 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         responseFromServer = null;
 
         Task<Response> task = new Task<Response>() {
+
             @Override
             protected Response call() throws Exception {
+
                 String courseName = coursesComboBox.getSelectionModel().getSelectedItem();
 
-                /*
-                // לחפש את הקורס ברשימה
-                for ()
-                // לשנות את זה לcommand חדש שמקבל את המבחנים
+                CourseFacade selectedCourseFacade = null;
+                Course selectedCourse = null;
 
-                CommandInterface command = new AnswerableTestsFacadeReadCommand();
+                if (coursesListOfPrinciple != null) {
+                    for (CourseFacade courseFacade : coursesListOfPrinciple)
+                        if (courseFacade.getName() == courseName) {
+                            selectedCourseFacade = courseFacade;
+                            break;
+                        }
+                } else if (coursesListOfTeacher != null) {
+                    for (Course course : coursesListOfTeacher)
+                        if (course.getCourseName() == courseName) {
+                            selectedCourse = course;
+                            break;
+                        }
+                }
+
+                CommandInterface command = null;
+                if (selectedCourseFacade != null) {
+                    command = new AnswerableTestsFacadeReadByCourseCommand(selectedCourseFacade.getName());
+                } else if (selectedCourse != null) {
+                    command = new AnswerableTestsFacadeReadByCourseCommand(selectedCourse.getCourseName());
+                }
+
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
                     Thread.onSpinWait();
-                    }
-                    */
+                }
 
                 return responseFromServer;
             }
         };
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
-/*
-            List<CourseFacade> answerableTestFacadeList = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
 
             columnAnswerableTestId.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, Integer>("answerableTestId"));
-            columnStudentName.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, String>("firstName + lastName"));
+            columnStudentName.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, String>("fullName"));
             columnGrade.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, Integer>("score"));
+            List<AnswerableTestFacade> answerableTestFacadeList = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
 
             questionsOL = FXCollections.observableArrayList();
-            for (AnswerableTestFacade answerableTestFacade : answerableTestFacadeList)
+
+            for (AnswerableTestFacade answerableTestFacade : answerableTestFacadeList) {
                 questionsOL.add(new AnswerableTestFacade(answerableTestFacade.getAnswerableTestId(),
                         answerableTestFacade.getFirstName(), answerableTestFacade.getLastName(),
                         answerableTestFacade.getScore()));
-*/
+            }
+
             answerableTestsTableView.setItems(questionsOL);
         });
         new Thread(task).start();
@@ -232,18 +255,26 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         }
         else
         {
-            bundle.put("Client", client);
-            bundle.put("Id", selectedTest.getAnswerableTestId());
+            bundle.put("client", client);
+            bundle.put("id", selectedTest.getAnswerableTestId());
 
             System.out.println(selectedTest + " Is selected");
+            Scene scene = new Scene(MainClass.loadFXML("AnswerableTestDetails"));
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.show();
 
-            Scene scene = new Scene(MainClass.loadFXML("TeacherAndPrincipleAnswerableTests"));
+            /*
+            Scene scene = new Scene(MainClass.loadFXML("AnswerableTestDetails"));
             Stage stage = (Stage) showTestsButton.getScene().getWindow();
             Stage secondaryStage = new Stage();
             secondaryStage.setScene(scene);
-            secondaryStage.setTitle("Teacher And Principle Answerable Tests");
+            secondaryStage.setTitle("Answerable Test Details");
             secondaryStage.initModality(Modality.APPLICATION_MODAL);
             secondaryStage.show();
+
+             */
         }
     }
 }

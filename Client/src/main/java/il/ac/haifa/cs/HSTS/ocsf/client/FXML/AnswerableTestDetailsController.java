@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-class AnswerableTestDetails implements Initializable {
+public class AnswerableTestDetailsController implements Initializable {
 
     private Response responseFromServer = null;
     private ObservableList<AnswerableTestFacade> testsOL = null;
@@ -89,7 +89,7 @@ class AnswerableTestDetails implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         bundle = Bundle.getInstance();
         client = (HSTSClient) bundle.get("client");
-        testId = (Integer)bundle.get("Id");
+        testId = (Integer)bundle.get("id");
         client.getHstsClientInterface().addGUIController(this);
 
         getAnswerableTest();
@@ -118,9 +118,10 @@ class AnswerableTestDetails implements Initializable {
 
             AnswerableTest answerableTest = (AnswerableTest)responseFromServer.getReturnedObject();
 
+            // Setting test details
             idTextField.setText(String.valueOf(answerableTest.getId()));
             studentNameButton.setText(answerableTest.getStudent().getFirst_name()
-            + answerableTest.getStudent().getLast_name());
+                    + " " + answerableTest.getStudent().getLast_name());
             startTimeButton.setText(answerableTest.getTimeStarted().toString());
             endTimeButton.setText(answerableTest.getTimeFinished().toString());
             commentTextField.setText(answerableTest.getTeacherComment());
@@ -151,6 +152,13 @@ class AnswerableTestDetails implements Initializable {
                     String.valueOf(answers.get(question)), String.valueOf(question.getCorrectAnswer()), question.getAnswer(1),
                     question.getAnswer(2), question.getAnswer(3), question.getAnswer(4)));
         }
+        System.out.println("The answers are :" + answerableTest.getAnswers());
         questionsTableView.setItems(questionsOL);
+        questionsTableView.getSortOrder().add(columnId);
+    }
+
+    public void receivedResponseFromServer(Response response) {
+        responseFromServer = response;
+        System.out.println("Command received in controller " + response);
     }
 }
