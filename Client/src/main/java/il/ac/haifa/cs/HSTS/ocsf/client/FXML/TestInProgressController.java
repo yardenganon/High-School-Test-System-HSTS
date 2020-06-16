@@ -153,6 +153,8 @@ public class TestInProgressController implements Initializable {
 
     private boolean isExtraTimeAdded = false;
 
+    private boolean uploadFlag = false;
+
     private Response timeExtensionResponseFromServer = null;
 
     private TimeExtensionRequest timeExtensionRequest = null;
@@ -163,7 +165,18 @@ public class TestInProgressController implements Initializable {
 
     @FXML
     void endTest(ActionEvent event) {
-        endTest();
+        if (uploadFlag || !isManualTest) {
+            endTest();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("ALERT");
+            alert.setHeaderText("Upload test please");
+            alert.setContentText("Please upload the test before submitting");
+            alert.setResizable(true);
+            alert.getDialogPane().setPrefSize(300, 200);
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
 
@@ -188,15 +201,15 @@ public class TestInProgressController implements Initializable {
 
     }
 
-    public void browseEvent() {
-
-    }
-
     public void uploadEvent() {
+        uploadFlag = true;
+
         // Pass authentication credentials
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                CustomProgressIndicator customProgressIndicator = new CustomProgressIndicator(manualAnchorPane);
+                customProgressIndicator.start();
                 Storage storage = null;
                 try {
                     System.out.println(new File("").getAbsolutePath());
@@ -251,6 +264,8 @@ public class TestInProgressController implements Initializable {
 
                 // save url into db
                 answerableTest.setUrl(url);
+
+                customProgressIndicator.stop();
                 System.out.println(
                         "File " + filePath + " uploaded to bucket " + bucketName + " as " + objectName);
 

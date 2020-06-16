@@ -353,9 +353,36 @@ public class MenuController implements Initializable {
             missingDetailsAlert.setHeaderText("For submit time extension request the test needs to be active");
             missingDetailsAlert.showAndWait();
         }
+        else if (timeExtensionRequest.getStatus() == Status.OpenRequest)
+        {
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("Extension request already submitted");
+            missingDetailsAlert.showAndWait();
+        }
         else {
-            // Request for ready test
-            getReadyTest(timeExtensionRequest.getTestId(), timeExtensionRequest);
+
+            boolean legalTime = true;
+            String timeExtentionInput = timeExtensionRequest.getTimeExtension();
+            for (int i=0; i < timeExtentionInput.length(); i++)
+            {
+                System.out.println(timeExtentionInput.charAt(i));
+                if (timeExtentionInput.charAt(i) >= 'A' && timeExtentionInput.charAt(i) <= 'z')
+                {
+                    legalTime = false;
+                    break;
+                }
+            }
+
+            if (!legalTime)
+            {
+                Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+                missingDetailsAlert.setHeaderText("Extension Time field need to contain only numbers");
+                missingDetailsAlert.showAndWait();
+            }
+            else {
+                // Request for ready test
+                getReadyTest(timeExtensionRequest.getTestId(), timeExtensionRequest);
+            }
         }
     }
 
@@ -389,6 +416,10 @@ public class MenuController implements Initializable {
             activeTestsTebleView.refresh();
 
             progressIndicator.stop();
+
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.INFORMATION);
+            missingDetailsAlert.setHeaderText("The request was successfully submitted");
+            missingDetailsAlert.showAndWait();
         });
         new Thread(task).start();
     }
@@ -629,7 +660,7 @@ public class MenuController implements Initializable {
     }
 
     public void showTestsPrinciple(ActionEvent actionEvent) {
-        Events.navigateReadyTestsToPrincipleEvent(myTestPrincipleButton);
+        Events.navigateAnswerableTestsEvent(myTestPrincipleButton);
     }
 
     public void showCoursesPrinciple(ActionEvent actionEvent) {
