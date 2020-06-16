@@ -112,13 +112,13 @@ public class Events {
     public static void navigateAnswerableTestsEvent(Button button) {
         Scene scene = null;
         try {
-            scene = new Scene(MainClass.loadFXML("TeacherAnswerableTests"));
+            scene = new Scene(MainClass.loadFXML("TeacherAndPrincipleAnswerableTests"));
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
         Stage stage = (Stage) button.getScene().getWindow();
         stage.setScene(scene);
-        stage.setTitle("Teacher Answerable Tests");
+        stage.setTitle("Teacher And Principle Answerable Tests");
     }
 
     public static void navigateReadyTestsToPrincipleEvent(Button button) {

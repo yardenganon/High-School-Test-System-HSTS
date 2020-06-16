@@ -196,14 +196,30 @@ public class HSTSClientInterface {
                     .receivedResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadCommand.class.getSimpleName())
-            && guiControllers.get(TeacherAnswerableTestsController.class.getSimpleName()) != null)
-            ((TeacherAnswerableTestsController) guiControllers.get(TeacherAnswerableTestsController.class.getSimpleName()))
+            && guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()) != null)
+            ((TeacherAndPrincipleAnswerableTestsController) guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(CourseReadAllFacadeCommand.class.getSimpleName())
+                && guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()) != null)
+            ((TeacherAndPrincipleAnswerableTestsController) guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
         if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadByCourseAndStudentCommand.class.getSimpleName())
                 && guiControllers.get(TestCheckingController.class.getSimpleName()) != null)
             ((TestCheckingController) guiControllers.get(TestCheckingController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadByCourseCommand.class.getSimpleName())
+                && guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()) != null)
+            ((TeacherAndPrincipleAnswerableTestsController) guiControllers.get(TeacherAndPrincipleAnswerableTestsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
+        if (serverResponse.getRespondName().equals(AnswerableTestReadCommand.class.getSimpleName())
+                && guiControllers.get(AnswerableTestDetailsController.class.getSimpleName()) != null)
+            ((AnswerableTestDetailsController) guiControllers.get(AnswerableTestDetailsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
     }
 
     public Map<String, Object> getGuiControllers() {
