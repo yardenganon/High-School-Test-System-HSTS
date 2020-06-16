@@ -76,6 +76,26 @@ public class TestsRepository {
         }
         return results;
     }
+
+    public List<TestFacade> getTestsFacadeByTeacher(Teacher teacher) {
+        List<TestFacade> results = null;
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+
+            Query<TestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.TestFacade(m.id,m.writer.username,m.subject.subjectName,m.dateCreated,m.questionList.size,m.time)"
+                    + " from il.ac.haifa.cs.HSTS.server.Entities.Test m where m.writer.first_name= :name");
+            query.setParameter("name",teacher.getFirst_name());
+            results = query.list();
+
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session, exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+        return results;
+    }
+
     /* ----------------------------------------------ReadyTest-------------------------------------------- */
     public ReadyTest getReadyTestById(int id) {
         ReadyTest readyTest = null;
