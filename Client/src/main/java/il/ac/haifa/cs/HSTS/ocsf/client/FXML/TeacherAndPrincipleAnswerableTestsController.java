@@ -204,10 +204,12 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
 
             questionsOL = FXCollections.observableArrayList();
 
-            for (AnswerableTestFacade answerableTestFacade : answerableTestFacadeList) {
-                questionsOL.add(new AnswerableTestFacade(answerableTestFacade.getAnswerableTestId(),
-                        answerableTestFacade.getFirstName(), answerableTestFacade.getLastName(),
-                        answerableTestFacade.getScore()));
+            if (answerableTestFacadeList.size()>0) {
+                for (AnswerableTestFacade answerableTestFacade : answerableTestFacadeList) {
+                    questionsOL.add(new AnswerableTestFacade(answerableTestFacade.getAnswerableTestId(),
+                            answerableTestFacade.getFirstName(), answerableTestFacade.getLastName(),
+                            answerableTestFacade.getScore()));
+                }
             }
 
             answerableTestsTableView.setItems(questionsOL);
