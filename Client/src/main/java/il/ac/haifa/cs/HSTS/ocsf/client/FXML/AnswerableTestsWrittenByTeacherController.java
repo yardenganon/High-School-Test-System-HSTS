@@ -4,16 +4,15 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadByCourseCommand;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadByTeacherCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
-import il.ac.haifa.cs.HSTS.server.CommandInterface.CourseReadAllFacadeCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.Entities.Course;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestFacadeReadAllByTeacherCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.Principle;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
 import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
-import il.ac.haifa.cs.HSTS.server.Facade.CourseFacade;
+import il.ac.haifa.cs.HSTS.server.Facade.TestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -31,9 +30,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
 
-public class TeacherAndPrincipleAnswerableTestsController implements Initializable {
+public class AnswerableTestsWrittenByTeacherController implements Initializable {
 
     public User user;
     private Response responseFromServer = null;
@@ -43,8 +41,8 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     private Teacher teacher = null;
     private Principle principle = null;
     private ObservableList<AnswerableTestFacade> questionsOL = null;
-    private List<CourseFacade> coursesListOfPrinciple = null;
-    private Set<Course> coursesListOfTeacher = null;
+    private List<TestFacade> testsFacadeList  = null;
+    TestFacade selectedTestFacade = null;
 
     @FXML
     private AnchorPane anchorPane;
@@ -89,39 +87,24 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     private Button showTestsButton;
 
     @FXML
-    private ComboBox<String> coursesComboBox;
+    private ComboBox<String> testsComboBox;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        //CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        //progressIndicator.start();
         bundle = Bundle.getInstance();
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
         client.getHstsClientInterface().addGUIController(this);
-        if (user instanceof  Teacher)
+        if (user instanceof  Teacher) {
             teacher = (Teacher) user;
-        else if (user instanceof Principle)
-            principle = (Principle) user;
-        initializeComboBox();
-    }
-
-    private void initializeComboBox() {
-
-        coursesComboBox.getItems().clear();
-        if (teacher != null) {
-            for (Course course : teacher.getCourses())
-            {
-                coursesComboBox.getItems().add(course.getCourseName());
-            }
-            coursesListOfTeacher = teacher.getCourses();
-        }
-        else if (principle != null)
-        {
-            InitPrincipleCourses();
+            InitAnswerableTestsWrittenByTeacher();
         }
     }
 
-    private void InitPrincipleCourses() {
+
+    private void InitAnswerableTestsWrittenByTeacher() {
         responseFromServer = null;
 
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
@@ -131,8 +114,8 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             @Override
             protected Response call() throws Exception {
 
-                // command for getting all courses
-                CommandInterface command = new CourseReadAllFacadeCommand();
+                // command for getting all answerable tests written by teacher
+                CommandInterface command = new TestFacadeReadAllByTeacherCommand(teacher);
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
@@ -145,10 +128,13 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
 
-            coursesListOfPrinciple = (List<CourseFacade>) responseFromServer.getReturnedObject();
+            testsFacadeList = (List<TestFacade>) responseFromServer.getReturnedObject();
 
-            for (CourseFacade courseFacade : coursesListOfPrinciple)
-                coursesComboBox.getItems().add(courseFacade.getName());
+            if (testsFacadeList != null) {
+                for (TestFacade testFacade : testsFacadeList)
+                    testsComboBox.getItems().add(testFacade.getSubject() + " " +
+                            testFacade.getId() + " " + testFacade.getDateCreated());
+            }
 
             progressIndicator.stop();
         });
@@ -158,42 +144,35 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
 
     @FXML
     private void OnChangeSubject() {
-        responseFromServer = null;
 
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
         progressIndicator.start();
+
+        responseFromServer = null;
+
+        String testName = testsComboBox.getSelectionModel().getSelectedItem();
+
+        if (testName != null) {
+            if (testsFacadeList != null) {
+                for (TestFacade testFacade : testsFacadeList)
+                    if ((testFacade.getSubject() + " " + testFacade.getId() +
+                            " " + testFacade.getDateCreated()).equals(testName)) {
+                        selectedTestFacade = testFacade;
+                        break;
+                    }
+            }
+        }
+
+        System.out.println(selectedTestFacade.getId());
 
         Task<Response> task = new Task<Response>() {
 
             @Override
             protected Response call() throws Exception {
 
-                String courseName = coursesComboBox.getSelectionModel().getSelectedItem();
 
-                CourseFacade selectedCourseFacade = null;
-                Course selectedCourse = null;
-
-                if (coursesListOfPrinciple != null) {
-                    for (CourseFacade courseFacade : coursesListOfPrinciple)
-                        if (courseFacade.getName() == courseName) {
-                            selectedCourseFacade = courseFacade;
-                            break;
-                        }
-                } else if (coursesListOfTeacher != null) {
-                    for (Course course : coursesListOfTeacher)
-                        if (course.getCourseName() == courseName) {
-                            selectedCourse = course;
-                            break;
-                        }
-                }
-
-                CommandInterface command = null;
-                if (selectedCourseFacade != null) {
-                    command = new AnswerableTestsFacadeReadByCourseCommand(selectedCourseFacade.getName());
-                } else if (selectedCourse != null) {
-                    command = new AnswerableTestsFacadeReadByCourseCommand(selectedCourse.getCourseName());
-                }
-
+                // new command for getting all answerableTests
+                CommandInterface command = new AnswerableTestsFacadeReadByTeacherCommand(teacher, selectedTestFacade.getId());
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
@@ -210,11 +189,12 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
             columnAnswerableTestId.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, Integer>("answerableTestId"));
             columnStudentName.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, String>("fullName"));
             columnGrade.setCellValueFactory(new PropertyValueFactory<AnswerableTestFacade, Integer>("score"));
+
             List<AnswerableTestFacade> answerableTestFacadeList = (List<AnswerableTestFacade>) responseFromServer.getReturnedObject();
 
             questionsOL = FXCollections.observableArrayList();
 
-            if (answerableTestFacadeList.size()>0) {
+            if (answerableTestFacadeList.size() > 0) {
                 for (AnswerableTestFacade answerableTestFacade : answerableTestFacadeList) {
                     questionsOL.add(new AnswerableTestFacade(answerableTestFacade.getAnswerableTestId(),
                             answerableTestFacade.getFirstName(), answerableTestFacade.getLastName(),
@@ -259,7 +239,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     }
 
     public void OnShowTestsButtonPressed(ActionEvent actionEvent) throws IOException {
-
         AnswerableTestFacade selectedTest =  answerableTestsTableView.getSelectionModel().getSelectedItem();
         if (selectedTest == null)
         {

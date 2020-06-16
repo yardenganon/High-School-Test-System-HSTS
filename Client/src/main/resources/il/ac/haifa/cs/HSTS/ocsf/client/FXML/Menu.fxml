@@ -110,7 +110,7 @@
          </children>
       </AnchorPane>
 
-      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="650.0" prefWidth="634.0" visible="false">
+      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="650.0" prefWidth="634.0">
          <children>
             <Button fx:id="checkingTestsButton" layoutX="8.0" layoutY="615.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
                <font>
@@ -166,12 +166,20 @@
                               <Insets />
                            </HBox.margin>
                         </Button>
+                        <Button fx:id="myAssociatedTestsButton" mnemonicParsing="false" onAction="#showMyAssociatedTestsTeacher" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Associated Tests" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </Button>
                         <Button fx:id="myCoursesTeacherButton" mnemonicParsing="false" onAction="#showMyCoursesTeacher" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Courses" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="14.0" />
                            </font>
                            <HBox.margin>
-                              <Insets left="60.0" />
+                              <Insets left="50.0" />
                            </HBox.margin>
                         </Button>
                      </children>
