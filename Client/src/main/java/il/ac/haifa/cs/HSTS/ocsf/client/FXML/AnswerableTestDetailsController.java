@@ -122,8 +122,10 @@ public class AnswerableTestDetailsController implements Initializable {
             idTextField.setText(String.valueOf(answerableTest.getId()));
             studentNameButton.setText(answerableTest.getStudent().getFirst_name()
                     + " " + answerableTest.getStudent().getLast_name());
-            startTimeButton.setText(answerableTest.getTimeStarted().toString());
-            endTimeButton.setText(answerableTest.getTimeFinished().toString());
+            if (answerableTest.getTimeStarted() != null)
+                startTimeButton.setText(answerableTest.getTimeStarted().toString());
+            if (answerableTest.getTimeFinished() != null)
+                endTimeButton.setText(answerableTest.getTimeFinished().toString());
             commentTextField.setText(answerableTest.getTeacherComment());
             gradeButton.setText(String.valueOf(answerableTest.getScore()));
 

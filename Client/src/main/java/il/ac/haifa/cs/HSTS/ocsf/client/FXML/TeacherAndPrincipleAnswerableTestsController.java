@@ -242,7 +242,7 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     }
 
     public void goToQuestions(ActionEvent actionEvent) {
-
+        Events.navigateQuestionsEvent(goToQuestionsButton);
     }
 
     public void OnShowTestsButtonPressed(ActionEvent actionEvent) throws IOException {
