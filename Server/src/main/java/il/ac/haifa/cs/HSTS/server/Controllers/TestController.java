@@ -42,6 +42,10 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.getTestById(
                         ((TestReadByIdCommand)command).getId());
                 break;
+            case("TestFacadeReadAllByTeacherCommand"):
+                returnedObject = testsRepository.getTestsFacadeByTeacher(
+                        ((TestFacadeReadAllByTeacherCommand) command).getTeacher());
+                break;
             case("TestsFacadeReadBySubjectCommand") :
                 returnedObject = testsRepository.getTestsFacadeBySubject(
                         ((TestsFacadeReadBySubjectCommand) command).getSubjectName());
@@ -51,13 +55,16 @@ public class TestController implements ControllerInterface {
                         ((TestPushCommand)command).getNewTest());
                 break;
             case("AnswerableTestReadCommand"):
-                returnedObject = testsRepository.getAnswerableTestById(((AnswerableTestReadCommand) command).getAnswerableTestId());
+                returnedObject = testsRepository.getAnswerableTestById(
+                        ((AnswerableTestReadCommand) command).getAnswerableTestId());
                 break;
             case("PushAnswerableTestCommand"):
-                returnedObject = testsRepository.pushAnswerableTest(((PushAnswerableTestCommand)command).getAnswerableTest());
+                returnedObject = testsRepository.pushAnswerableTest(
+                        ((PushAnswerableTestCommand)command).getAnswerableTest());
                 break;
             case("AnswerableTestUpdateCommand"):
-                returnedObject = testsRepository.updateAnswerableTest(((AnswerableTestUpdateCommand) command).getAnswerableTest());
+                returnedObject = testsRepository.updateAnswerableTest(
+                        ((AnswerableTestUpdateCommand) command).getAnswerableTest());
                 break;
             case("AnswerableTestUpdateByIdCommand"):
                 int id = ((AnswerableTestUpdateByIdCommand) command).getAnswerableTestId();
@@ -65,7 +72,8 @@ public class TestController implements ControllerInterface {
                 returnedObject = testsRepository.updateAnswerableTestById(id, teacher);
                 break;
             case("AnswerableTestsFacadeReadCommand"):
-                returnedObject = testsRepository.getAnswerableTestsFacade(((AnswerableTestsFacadeReadCommand) command).getTeacher());
+                returnedObject = testsRepository.getAnswerableTestsFacade(
+                        ((AnswerableTestsFacadeReadCommand) command).getTeacher());
                 break;
             case("AnswerableTestsFacadeReadByStudentCommand"):
                 returnedObject = testsRepository.getAnswerableTestsFacadeByStudentId(
