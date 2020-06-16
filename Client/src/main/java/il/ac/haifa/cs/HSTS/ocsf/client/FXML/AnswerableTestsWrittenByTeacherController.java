@@ -4,6 +4,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.AnswerableTestsFacadeReadByTeacherCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.TestFacadeReadAllByTeacherCommand;
@@ -41,6 +42,7 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
     private Principle principle = null;
     private ObservableList<AnswerableTestFacade> questionsOL = null;
     private List<TestFacade> testsFacadeList  = null;
+    TestFacade selectedTestFacade = null;
 
     @FXML
     private AnchorPane anchorPane;
@@ -148,27 +150,30 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
 
         responseFromServer = null;
 
+        String testName = testsComboBox.getSelectionModel().getSelectedItem();
+
+        if (testName != null) {
+            if (testsFacadeList != null) {
+                for (TestFacade testFacade : testsFacadeList)
+                    if ((testFacade.getSubject() + " " + testFacade.getId() +
+                            " " + testFacade.getDateCreated()).equals(testName)) {
+                        selectedTestFacade = testFacade;
+                        break;
+                    }
+            }
+        }
+
+        System.out.println(selectedTestFacade.getId());
+
         Task<Response> task = new Task<Response>() {
 
             @Override
             protected Response call() throws Exception {
 
-                String testName = testsComboBox.getSelectionModel().getSelectedItem();
-
-                TestFacade selectedTestFacade = null;
-
-                if (testsFacadeList  != null) {
-                    for (TestFacade testFacade : testsFacadeList )
-                        if (testFacade.getSubject() + " " + testFacade.getId() +
-                                " " + testFacade.getDateCreated() == testName) {
-                            selectedTestFacade = testFacade;
-                            break;
-                        }
-                }
 
                 // new command for getting all answerableTests
-                //CommandInterface command = new AnswerableTestsFacadeReadByCourseCommand(selectedTestFacade);
-                //client.getHstsClientInterface().sendCommandToServer(command);
+                CommandInterface command = new AnswerableTestsFacadeReadByTeacherCommand(teacher, selectedTestFacade.getId());
+                client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
