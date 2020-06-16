@@ -151,6 +151,14 @@ public class MenuController implements Initializable {
     @FXML
     private Button rejectTimeExtensionButton;
 
+    @FXML
+    private Button myAssociatedTestsButton;
+
+    @FXML
+    void showMyAssociatedTestsTeacher(ActionEvent event) {
+        Events.navigateAssociatedTestsToTeacher(myAssociatedTestsButton);
+    }
+
 
     @FXML
     void goToTests(ActionEvent event) throws IOException {

@@ -94,9 +94,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        //CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
-        //progressIndicator.start();
-
         bundle = Bundle.getInstance();
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
@@ -106,8 +103,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         else if (user instanceof Principle)
             principle = (Principle) user;
         initializeComboBox();
-
-        //progressIndicator.stop();
     }
 
     private void initializeComboBox() {
@@ -128,6 +123,9 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
 
     private void InitPrincipleCourses() {
         responseFromServer = null;
+
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
 
         Task<Response> task = new Task<Response>() {
             @Override
@@ -151,6 +149,8 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
 
             for (CourseFacade courseFacade : coursesListOfPrinciple)
                 coursesComboBox.getItems().add(courseFacade.getName());
+
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }

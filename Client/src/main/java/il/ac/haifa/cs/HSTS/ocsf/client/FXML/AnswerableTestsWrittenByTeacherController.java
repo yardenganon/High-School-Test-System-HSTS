@@ -2,8 +2,11 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.CustomProgressIndicator;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
+import il.ac.haifa.cs.HSTS.server.CommandInterface.TestFacadeReadAllByTeacherCommand;
 import il.ac.haifa.cs.HSTS.server.Entities.Principle;
 import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
@@ -102,13 +105,16 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
     private void InitAnswerableTestsWrittenByTeacher() {
         responseFromServer = null;
 
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
 
                 // command for getting all answerable tests written by teacher
-                //CommandInterface command = new TestReadAllByTeacherCommand(teacher);
-                //client.getHstsClientInterface().sendCommandToServer(command);
+                CommandInterface command = new TestFacadeReadAllByTeacherCommand(teacher);
+                client.getHstsClientInterface().sendCommandToServer(command);
 
                 // Waiting for server confirmation
                 while (responseFromServer == null) {
@@ -127,6 +133,8 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
                     testsComboBox.getItems().add(testFacade.getSubject() + " " +
                             testFacade.getId() + " " + testFacade.getDateCreated());
             }
+
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }
@@ -134,6 +142,10 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
 
     @FXML
     private void OnChangeSubject() {
+
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
         responseFromServer = null;
 
         Task<Response> task = new Task<Response>() {
@@ -186,6 +198,7 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
             }
 
             answerableTestsTableView.setItems(questionsOL);
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }

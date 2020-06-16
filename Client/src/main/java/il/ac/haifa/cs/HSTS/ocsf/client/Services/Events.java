@@ -132,4 +132,16 @@ public class Events {
         stage.setScene(scene);
         stage.setTitle("Ready Tests To Principle");
     }
+
+    public static void navigateAssociatedTestsToTeacher(Button button) {
+        Scene scene = null;
+        try {
+            scene = new Scene(MainClass.loadFXML("AnswerableTestsWrittenByTeacher"));
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        Stage stage = (Stage) button.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setTitle("Answerable Tests Written By Teacher");
+    }
 }
