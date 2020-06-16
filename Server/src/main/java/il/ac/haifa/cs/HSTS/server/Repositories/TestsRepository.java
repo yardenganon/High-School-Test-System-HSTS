@@ -332,8 +332,8 @@ public class TestsRepository {
         try {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
             Query<AnswerableTestFacade> query = session.createQuery("select new il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade(m.id, m.score, m.test.course.courseName, m.student.first_name, m.student.last_name)"
-                    + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.test.course.courseName =: name");
-            query.setParameter("name",courseName);
+                    + "from il.ac.haifa.cs.HSTS.server.Entities.AnswerableTest m where m.test.course.courseName =: name and m.isChecked =: true");
+            query.setParameter("name",courseName).setParameter("true", true);
             answerableTestsFacade = query.list();
 
             SessionFactoryGlobal.closeTransaction(session);
