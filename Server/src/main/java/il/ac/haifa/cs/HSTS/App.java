@@ -39,7 +39,7 @@ public class App {
             session = SessionFactoryGlobal.openSessionAndTransaction(session);
 
             /* Insert data here */
-            Teacher teacher = new Teacher("Yaffa_Hamuza","1234","yaffa@gmail.com","Yaffa","Hamuza","female");
+            Teacher teacher = new Teacher("Yaffa_Hamuza","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","yaffa@gmail.com","Yaffa","Hamuza","female");
             session.save(teacher);
             Subject subject = new Subject("Mathematics");
             subject.addTeacher(teacher);
@@ -66,7 +66,7 @@ public class App {
             session.save(question14);
             session.save(question15);
 
-                Teacher teacher2 = new Teacher("Joel_Nakaka","1234","ynak@gmail.com","Joel","Nakaka","male");
+                Teacher teacher2 = new Teacher("Joel_Nakaka","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","ynak@gmail.com","Joel","Nakaka","male");
             session.save(teacher2);
             Subject subject2 = new Subject("Science");
             subject.addTeacher(teacher2);
@@ -97,14 +97,14 @@ public class App {
 
             questionsRepository= new QuestionsRepository();
 
-            Principle principle = new Principle("nitza_patiti","1234","nitza_patiti@gmail.com",
+            Principle principle = new Principle("nitza_patiti","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","nitza_patiti@gmail.com",
                     "Nitza","Patiti","Female");
             session.save(principle);
 
-            Student student = new Student("yoav_ben_haim","1234","yovavi@gmail.com","Yoav","Ben Haim","Male");
-            Student student1 = new Student("yarden_ganon","1234","yardenganon@gmail.com","Yarden","Ganon","Male");
-            Student student2 = new Student("daniel_levi","1234","levidaniel@gmail.com","Daniel","Levi","Female");
-            Student student3 = new Student("ohad_fridman","1234","ohadfridman@gmail.com","Ohad","Fridman","Male");
+            Student student = new Student("yoav_ben_haim","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","yovavi@gmail.com","Yoav","Ben Haim","Male");
+            Student student1 = new Student("yarden_ganon","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","yardenganon@gmail.com","Yarden","Ganon","Male");
+            Student student2 = new Student("daniel_levi","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","levidaniel@gmail.com","Daniel","Levi","Female");
+            Student student3 = new Student("ohad_fridman","03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4","ohadfridman@gmail.com","Ohad","Fridman","Male");
 
             session.save(student);
             session.save(student1);

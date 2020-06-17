@@ -23,6 +23,7 @@ public abstract class User implements Serializable {
     private String gender;
     private Date date_of_signup;
     private Date date_of_last_login;
+    private Boolean isLoggedIn;
 
     public User(String username, String password, String email, String first_name, String last_name, String gender) {
         this.username = username;
@@ -34,6 +35,7 @@ public abstract class User implements Serializable {
         this.gender = gender;
         this.date_of_signup = new Date();
         this.date_of_last_login = new Date();
+        this.isLoggedIn = false;
     }
 
     public int getId() {
@@ -41,6 +43,14 @@ public abstract class User implements Serializable {
     }
 
     public User(){}
+
+    public Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
 
     public Date getDate_of_signup() {
         return date_of_signup;

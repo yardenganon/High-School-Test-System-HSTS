@@ -55,6 +55,20 @@ public class UsersRepository {
         return resultUser;
     }
 
+    public void logoutLogin(User user, Boolean bool) {
+        try {
+            session = SessionFactoryGlobal.openSessionAndTransaction(session);
+            /* Insert data here */
+            user.setLoggedIn(bool);
+            session.update(user);
+            SessionFactoryGlobal.closeTransaction(session);
+        } catch (Exception exception) {
+            SessionFactoryGlobal.exceptionCaught(session,exception);
+        } finally {
+            SessionFactoryGlobal.closeSession(session);
+        }
+    }
+
     public Boolean checkIfstudentInCourse(Student student, String courseName){
         System.out.println(courseName);
         Boolean result = false;

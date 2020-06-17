@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.boot.archive.scan.spi.ScanEnvironment;
 
+import static il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface.saveStateBeforeLogout;
+
 public class MainClass extends Application {
 
 	private static Scene scene;
@@ -42,6 +44,7 @@ public class MainClass extends Application {
     }
     @Override
     public void stop() throws Exception {
+        saveStateBeforeLogout();
         super.stop();
         client.closeConnection();
     }
