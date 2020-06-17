@@ -224,6 +224,9 @@ public class MenuController implements Initializable {
 
     private void InitTeacherMenu(Teacher teacher) {
 
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
         // update the active tests table
         responseFromServer = null;
         Task<Response> task = new Task<Response>() {
@@ -283,6 +286,8 @@ public class MenuController implements Initializable {
                             "", "", null, readyTestFacade.getActive()));
             }
             activeTestsTebleView.getItems().addAll(questionsOL);
+
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }
@@ -391,7 +396,7 @@ public class MenuController implements Initializable {
             if (!legalTime)
             {
                 Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
-                missingDetailsAlert.setHeaderText("Extension Time field need to contain only numbers");
+                missingDetailsAlert.setHeaderText("Extension Time field needs to contain only numbers");
                 missingDetailsAlert.showAndWait();
             }
             else {
@@ -491,6 +496,9 @@ public class MenuController implements Initializable {
 
     private void InitPrincipleMenu(Principle principle) {
 
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
             // update time extension request table
             responseFromServer = null;
             Task<Response> task = new Task<Response>() {
@@ -526,6 +534,7 @@ public class MenuController implements Initializable {
                 }
 
                 timeExtensionRequestForPrincipleTV.getItems().addAll(questionsOL);
+                progressIndicator.stop();
             });
             new Thread(task).start();
     }
@@ -637,12 +646,14 @@ public class MenuController implements Initializable {
 
 
     public void initStudentMenu() {
+
         studentMenu.setVisible(true);
         myTestStudentButton.setVisible(true);
         enterCodeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             Scene scene = null;
             @Override
             public void handle(MouseEvent mouseEvent) {
+
                 try {
                     scene = new Scene(MainClass.loadFXML("EnterExecutionCodePopup"));
                 } catch (IOException e) {
@@ -654,8 +665,10 @@ public class MenuController implements Initializable {
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setScene(scene);
                 stage.show();
+
             }
         });
+
     }
 
     public void showMyTestsStudent(ActionEvent actionEvent) {

@@ -11,13 +11,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -279,7 +277,7 @@ public class TestsController implements Initializable {
         else
         {
             Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
-            needChooseTestAlert.setHeaderText("For making execute test you need to select a test and then push \"Make Execute Test\" button" );
+            needChooseTestAlert.setHeaderText("In order to execute a test you need to select a test and then press \"Make Execute Test\" button" );
             Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }

@@ -211,7 +211,7 @@ public class CreateQuestionController implements Initializable {
 
     @FXML
     void goToTests(ActionEvent event) {
-
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML
@@ -226,6 +226,7 @@ public class CreateQuestionController implements Initializable {
 
     public void initializeQuestionDetails()
     {
+
         if (user instanceof Teacher) {
             teacher = ((Teacher) user);
             subjectComboBox.getItems().clear();
@@ -243,6 +244,7 @@ public class CreateQuestionController implements Initializable {
 
         resetFields();
         helloLabel.setText("Hello " + user.getFirst_name());
+
     }
 
     public void inputErrorTextField(TextField textField)

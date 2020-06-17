@@ -3,12 +3,16 @@ package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.Entities.*;
+import il.ac.haifa.cs.HSTS.server.Entities.Question;
+import il.ac.haifa.cs.HSTS.server.Entities.Test;
+import il.ac.haifa.cs.HSTS.server.Entities.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
@@ -81,12 +85,15 @@ public class TestFullDetailsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
         bundle = Bundle.getInstance();
         test = (Test) bundle.get("test");
         client = (HSTSClient)bundle.get("client");
         //client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
+
         initializeTestDetails();
     }
 
@@ -96,6 +103,7 @@ public class TestFullDetailsController implements Initializable {
     }
     public void initializeTestDetails()
     {
+
         authorTextField.setText(test.getWriter().getUsername());
         idTextField.setText(String.valueOf(test.getId()));
         subjectTextField.setText(test.getSubject().getSubjectName());

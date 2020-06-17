@@ -16,9 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -198,19 +197,26 @@ public class AnswerableTestDetailsController implements Initializable {
     public void openFileRequest(ActionEvent actionEvent) {
         // Open file here
         try {
-            //constructor of file class having file as argument
-            System.out.println(answerableTest.getUrl());
-            File file = new File(String.valueOf(answerableTest.getUrl()));
-            System.out.println(file.getAbsolutePath());
-            if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
-            {
-                System.out.println("not supported");
-                return;
+
+            if (answerableTest.getUrl() == null) {
+                Alert successMessageAlert = new Alert(Alert.AlertType.ERROR);
+                successMessageAlert.setHeaderText("The test has not been uploaded yet");
+                successMessageAlert.showAndWait();
+            } else {
+                //constructor of file class having file as argument
+                System.out.println(answerableTest.getUrl());
+                File file = new File(String.valueOf(answerableTest.getUrl()));
+                System.out.println(file.getAbsolutePath());
+                if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+                {
+                    System.out.println("not supported");
+                    return;
+                }
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(answerableTest.getUrl().toURI());
             }
-            Desktop desktop = Desktop.getDesktop();
-            desktop.browse(answerableTest.getUrl().toURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch(Exception e){
+                e.printStackTrace();
+            }
     }
 }

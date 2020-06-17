@@ -115,6 +115,7 @@ public class EditQuestionController implements Initializable {
             {
                 if (result.isPresent() && result.get() == ButtonType.OK)
                 {
+
                     // Input checking
                     if (questionTextField.getText().isEmpty())
                         inputError(questionTextField);
@@ -244,6 +245,9 @@ public class EditQuestionController implements Initializable {
     }
     public void initializeQuestionDetails()
     {
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
         if (user instanceof Teacher) {
             Teacher teacher = ((Teacher) user);
             subjectComboBox.getItems().clear();
@@ -279,6 +283,8 @@ public class EditQuestionController implements Initializable {
         answer4TextField.setText(question.getAnswer(4));
         correctAnswerComboBox.getSelectionModel().select(String.valueOf(question.getCorrectAnswer()));
         helloLabel.setText("Hello " + user.getFirst_name());
+
+        progressIndicator.stop();
     }
 
     private void setDisableAndVisible(boolean changeToDisableAndVisible)
