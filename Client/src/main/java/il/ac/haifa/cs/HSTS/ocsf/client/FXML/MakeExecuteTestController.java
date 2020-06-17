@@ -115,6 +115,10 @@ public class MakeExecuteTestController implements Initializable {
     }
 
     public void ShowQuestionList() {
+
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
@@ -149,6 +153,7 @@ public class MakeExecuteTestController implements Initializable {
             pointsLabel.setText(String.valueOf(sumOfPoints));
 
             initializeQuestionDetails();
+            progressIndicator.stop();
         });
         new Thread(task).start();
     }
