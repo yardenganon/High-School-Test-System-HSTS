@@ -110,7 +110,7 @@
          </children>
       </AnchorPane>
 
-      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="650.0" prefWidth="634.0">
+      <Pane fx:id="teacherPane" layoutX="248.0" layoutY="1.0" prefHeight="650.0" prefWidth="634.0" visible="false">
          <children>
             <Button fx:id="checkingTestsButton" layoutX="8.0" layoutY="615.0" mnemonicParsing="false" onAction="#goToCheckingTests" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Checking Tests" textFill="WHITE">
                <font>

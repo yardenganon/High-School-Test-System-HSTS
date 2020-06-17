@@ -12,6 +12,7 @@ import il.ac.haifa.cs.HSTS.server.Facade.AnswerableTestFacade;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,7 +21,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 
+import java.awt.*;
+import java.io.File;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -29,11 +33,18 @@ import java.util.Set;
 public class AnswerableTestDetailsController implements Initializable {
 
     private Response responseFromServer = null;
+    private AnswerableTest answerableTest = null;
     private ObservableList<AnswerableTestFacade> testsOL = null;
     private Bundle bundle;
     private HSTSClient client;
     private int testId;
     private ObservableList<UncheckedAnswerableTest> questionsOL = null;
+
+    @FXML
+    private Button openFileButton;
+
+    @FXML
+    private HBox hboxOfTableView;
 
     @FXML
     private AnchorPane anchorPane;
@@ -122,7 +133,7 @@ public class AnswerableTestDetailsController implements Initializable {
         task.setOnSucceeded(e -> {
             responseFromServer = task.getValue();
 
-            AnswerableTest answerableTest = (AnswerableTest)responseFromServer.getReturnedObject();
+            answerableTest = (AnswerableTest)responseFromServer.getReturnedObject();
 
             // Setting test details
             idTextField.setText(String.valueOf(answerableTest.getId()));
@@ -135,7 +146,19 @@ public class AnswerableTestDetailsController implements Initializable {
             commentTextField.setText(answerableTest.getTeacherComment());
             gradeButton.setText(String.valueOf(answerableTest.getScore()));
 
-            initializeQuestionTable(answerableTest);
+            if (answerableTest.getUrl() == null) {
+                initializeQuestionTable(answerableTest);
+                openFileButton.setVisible(false);
+                hboxOfTableView.setPrefHeight(258.0);
+                hboxOfTableView.setPrefWidth(692.0);
+            }
+            else{
+                hboxOfTableView.setVisible(true);
+                hboxOfTableView.setPrefHeight(0);
+                hboxOfTableView.setPrefWidth(0);
+                questionsTableView.setVisible(false);
+                openFileButton.setVisible(true);
+            }
             progressIndicator.stop();
 
         });
@@ -169,5 +192,25 @@ public class AnswerableTestDetailsController implements Initializable {
     public void receivedResponseFromServer(Response response) {
         responseFromServer = response;
         System.out.println("Command received in controller " + response);
+    }
+
+    @FXML
+    public void openFileRequest(ActionEvent actionEvent) {
+        // Open file here
+        try {
+            //constructor of file class having file as argument
+            System.out.println(answerableTest.getUrl());
+            File file = new File(String.valueOf(answerableTest.getUrl()));
+            System.out.println(file.getAbsolutePath());
+            if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+            {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            desktop.browse(answerableTest.getUrl().toURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

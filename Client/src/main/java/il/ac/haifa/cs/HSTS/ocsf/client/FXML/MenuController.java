@@ -201,15 +201,22 @@ public class MenuController implements Initializable {
             teacher = (Teacher) user;
             InitTeacherMenu(teacher);
             teacherPane.setVisible(true);
-            myTestStudentButton.setVisible(false);
+            studentMenu.setVisible(false);
+            principlePane.setVisible(false);
         }
-        else if (user instanceof Student)
+        else if (user instanceof Student) {
             initStudentMenu();
+            studentMenu.setVisible(true);
+            teacherPane.setVisible(false);
+            principlePane.setVisible(false);
+        }
         else if (user instanceof Principle)
         {
             principle = (Principle) user;
             InitPrincipleMenu(principle);
             principlePane.setVisible(true);
+            studentMenu.setVisible(false);
+            teacherPane.setVisible(false);
         }
     }
 
