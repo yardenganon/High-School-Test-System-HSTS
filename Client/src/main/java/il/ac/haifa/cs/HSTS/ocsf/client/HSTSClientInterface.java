@@ -1,7 +1,11 @@
 package il.ac.haifa.cs.HSTS.ocsf.client;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.*;
+import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.*;
+import il.ac.haifa.cs.HSTS.server.Entities.User;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +18,7 @@ public class HSTSClientInterface {
     private Map<String, Object> guiControllers;
     private boolean isRunning;
     private Thread loopThread;
+    private static Response logoutResponse = null;
 
     public HSTSClientInterface(HSTSClient client) {
         this.client = client;
@@ -229,6 +234,8 @@ public class HSTSClientInterface {
                 && guiControllers.get(AnswerableTestsWrittenByTeacherController.class.getSimpleName()) != null)
             ((AnswerableTestsWrittenByTeacherController) guiControllers.get(AnswerableTestsWrittenByTeacherController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
+        if (serverResponse.getRespondName().equals(LogoutCommand.class.getSimpleName()))
+            logoutResponse = serverResponse;
 
     }
 
@@ -237,8 +244,23 @@ public class HSTSClientInterface {
     }
 
     public void closeConnection() {
+
         System.out.println("Connection closed.");
         System.exit(0);
+    }
+
+    public static void saveStateBeforeLogout(){
+        System.out.println("Saving user's state...");
+        User user = (User) Bundle.getInstance().get("user");
+        HSTSClient client = (HSTSClient) Bundle.getInstance().get("client");
+
+                CommandInterface command = new LogoutCommand(user);
+                client.getHstsClientInterface().sendCommandToServer(command);
+
+                while (logoutResponse == null)
+                    Thread.onSpinWait();
+                System.out.println("Logout response received");
+                logoutResponse = null;
     }
 
     public static void main(String[] args) throws IOException {

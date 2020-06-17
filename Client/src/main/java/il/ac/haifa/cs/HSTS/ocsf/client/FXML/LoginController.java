@@ -1,4 +1,5 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.FXML;
+import com.google.common.hash.Hashing;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClient;
 import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 import il.ac.haifa.cs.HSTS.ocsf.client.Services.Bundle;
@@ -8,6 +9,7 @@ import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.LoginCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
 import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.Status.Status;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,6 +33,7 @@ import javafx.stage.Stage;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -74,7 +77,7 @@ public class LoginController implements Initializable {
         // Creating command here and send it to client
         errorLB.setVisible(false);
         String username = usernameTF.getCharacters().toString();
-        String password = passwordTF.getCharacters().toString();
+        String password = Hashing.sha256().hashString(passwordTF.getCharacters().toString(), StandardCharsets.UTF_8).toString();
 
         if (username.isBlank() || password.isBlank()) {
             errorLB.setVisible(true);
@@ -104,9 +107,13 @@ public class LoginController implements Initializable {
             responseFromServer = task.getValue();
             user = (User) responseFromServer.getReturnedObject();
             if (user == null) {
-                errorLB.setText("Username and/or password are incorrect");
-                errorLB.setVisible(true);
-
+                if (responseFromServer.getStatus() == Status.Denied) {
+                    errorLB.setText("User already logged in");
+                    errorLB.setVisible(true);
+                } else {
+                    errorLB.setText("Username and/or password are incorrect");
+                    errorLB.setVisible(true);
+                }
                 customProgressIndicator.stop();
             }
             else {

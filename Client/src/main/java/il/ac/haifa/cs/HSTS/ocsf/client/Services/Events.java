@@ -1,6 +1,7 @@
 package il.ac.haifa.cs.HSTS.ocsf.client.Services;
 
 import il.ac.haifa.cs.HSTS.ocsf.client.FXML.MainClass;
+import il.ac.haifa.cs.HSTS.ocsf.client.HSTSClientInterface;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class Events {
 
     public static void navigateLogoutEvent(Button button) {
+        if (Bundle.getInstance().get("user") != null) {
+            HSTSClientInterface.saveStateBeforeLogout();
+        }
         Bundle.getInstance().remove("user");
         Scene scene = null;
         try {
