@@ -230,6 +230,11 @@ public class HSTSClientInterface {
             ((AnswerableTestsWrittenByTeacherController) guiControllers.get(AnswerableTestsWrittenByTeacherController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
+        if (serverResponse.getRespondName().equals(SubjectReadAllCommand.class.getSimpleName())
+                && guiControllers.get(TestsController.class.getSimpleName()) != null)
+            ((TestsController) guiControllers.get(TestsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
         if (serverResponse.getRespondName().equals(AnswerableTestsFacadeReadByTeacherCommand.class.getSimpleName())
                 && guiControllers.get(AnswerableTestsWrittenByTeacherController.class.getSimpleName()) != null)
             ((AnswerableTestsWrittenByTeacherController) guiControllers.get(AnswerableTestsWrittenByTeacherController.class.getSimpleName()))

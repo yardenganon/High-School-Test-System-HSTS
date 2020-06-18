@@ -32,6 +32,7 @@ import java.util.ResourceBundle;
 public class TestsController implements Initializable {
 
     public User user;
+    private List<Subject> subjectList = null;
     public boolean flagOfDetails = false;
     private TestFacade testSelected = null;
     public Button watchTestButton;
@@ -139,7 +140,7 @@ public class TestsController implements Initializable {
 
     @FXML
     void initializeTestsTable() {
-        refreshList();
+        //refreshList();
     }
 
     public void receivedResponseFromServer(Response response) {
@@ -158,6 +159,16 @@ public class TestsController implements Initializable {
         initializeUser();
         initializeSubjectsComboBox();
         initializeTestsTable();
+        if (user instanceof Teacher){
+            editTestButton.setVisible(true);
+            addTestButton.setVisible(true);
+            MakeExecuteTestButton.setVisible(true);
+        }
+        if (user instanceof Principle){
+            editTestButton.setVisible(false);
+            addTestButton.setVisible(false);
+            MakeExecuteTestButton.setVisible(false);
+        }
     }
 
     public void initializeUser() {
@@ -165,11 +176,15 @@ public class TestsController implements Initializable {
     }
 
     public void initializeSubjectsComboBox() {
+        subjectsComboBox.getItems().add("Select subject");
         if (user instanceof Teacher) {
             Teacher teacher = ((Teacher) user);
             for (Subject subject : teacher.getSubjects())
                 subjectsComboBox.getItems().add(subject.getSubjectName());
             subjectsComboBox.getSelectionModel().select(subjectsComboBox.getItems().get(0));
+        }
+        if (user instanceof Principle){
+            getAllSubjects();
         }
     }
 
@@ -196,32 +211,47 @@ public class TestsController implements Initializable {
         }
     }
 
-    public void refreshList() {
+    public void getAllSubjects(){
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
         progressIndicator.start();
-        testList = new ArrayList<TestFacade>();
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
-                if (user instanceof Teacher) {
-                    subjectSelected = subjectsComboBox.getSelectionModel().getSelectedItem();
-                    responseFromServer = null;
-                    CommandInterface command = new TestsFacadeReadBySubjectCommand(subjectSelected);
-                    client.getHstsClientInterface().sendCommandToServer(command);
-
-                    while (responseFromServer == null)
-                        Thread.sleep(10);
-
-                } else if (user instanceof Principle) {
                 responseFromServer = null;
-
-                CommandInterface command = new TestReadAllCommand();
+                CommandInterface command = new SubjectReadAllCommand();
                 client.getHstsClientInterface().sendCommandToServer(command);
 
                 while (responseFromServer == null)
                     Thread.sleep(10);
-                testList = (List<TestFacade>) responseFromServer.getReturnedObject();
-                }
+                return responseFromServer;
+            }
+        };
+        task.setOnSucceeded(e -> {
+            responseFromServer = task.getValue();
+            progressIndicator.stop();
+            System.out.println("hello");
+            subjectList = (List<Subject>) responseFromServer.getReturnedObject();
+            for (Subject sub : subjectList)
+                subjectsComboBox.getItems().add(sub.getSubjectName());
+            subjectsComboBox.getSelectionModel().select(subjectsComboBox.getItems().get(0));
+        });
+        new Thread(task).start();
+    }
+
+    public void refreshList() {
+        CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
+        progressIndicator.start();
+        Task<Response> task = new Task<Response>() {
+            @Override
+            protected Response call() throws Exception {
+                subjectSelected = subjectsComboBox.getSelectionModel().getSelectedItem();
+                responseFromServer = null;
+                CommandInterface command = new TestsFacadeReadBySubjectCommand(subjectSelected);
+                client.getHstsClientInterface().sendCommandToServer(command);
+
+                while (responseFromServer == null)
+                    Thread.sleep(10);
+
                 return responseFromServer;
             }
         };
@@ -355,25 +385,12 @@ public class TestsController implements Initializable {
                     Task<Response> task = new Task<Response>() {
                         @Override
                         protected Response call() throws Exception {
-                            if (user instanceof Teacher) {
-                                responseFromServer = null;
-                                CommandInterface command = new TestReadByIdCommand(test.getId());
-                                client.getHstsClientInterface().sendCommandToServer(command);
+                            responseFromServer = null;
+                            CommandInterface command = new TestReadByIdCommand(test.getId());
+                            client.getHstsClientInterface().sendCommandToServer(command);
 
-                                while (responseFromServer == null)
-                                    Thread.sleep(10);
-
-                            } else if (user instanceof Principle) {
-                                responseFromServer = null;
-
-                                CommandInterface command = new TestReadAllCommand();
-                                client.getHstsClientInterface().sendCommandToServer(command);
-
-                                while (responseFromServer == null)
-                                    Thread.sleep(10);
-
-                                testList = (List<TestFacade>) responseFromServer.getReturnedObject();
-                            }
+                            while (responseFromServer == null)
+                                Thread.sleep(10);
                             return responseFromServer;
                         }
                     };
