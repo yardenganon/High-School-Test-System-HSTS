@@ -50,6 +50,9 @@ public class TestCheckingController implements Initializable {
     String courseFromComboBox = null;
 
     @FXML
+    private Button goToTestsButton;
+
+    @FXML
     private Label titleLabel;
 
     @FXML
@@ -60,9 +63,6 @@ public class TestCheckingController implements Initializable {
 
     @FXML
     private Button goToMenuButton;
-
-    @FXML
-    private Button goToCoursesButton;
 
     @FXML
     private Button goToQuestionsButton;
@@ -195,13 +195,21 @@ public class TestCheckingController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         helloLabel.setText("Hello " + user.getFirst_name());
-        if (user instanceof Teacher) {
+        if (user instanceof Teacher || user instanceof Principle) {
             teacher = (Teacher) user;
             student = null;
+            goToQuestionsButton.setText("Questions");
+            logoutButton.setVisible(true);
+            aboutButton.setVisible(true);
+            goToTestsButton.setVisible(true);
         }
         if (user instanceof Student) {
             student = (Student) user;
             teacher = null;
+            goToQuestionsButton.setText("Logout");
+            logoutButton.setVisible(false);
+            aboutButton.setVisible(false);
+            goToTestsButton.setVisible(false);
         }
         initializeCoursesComboBox();
         courseSelect(new ActionEvent());
@@ -218,7 +226,7 @@ public class TestCheckingController implements Initializable {
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
-
+                responseFromServer = null;
                 CommandInterface command = null;
                 if (teacher != null) {
                     command = new AnswerableTestsFacadeReadCommand(teacher);
@@ -290,8 +298,6 @@ public class TestCheckingController implements Initializable {
             else
             if (student != null)
                 gpaResultLabel.setText(String.format("%.2f", sumOfGrades / sumOfTestsNeededToCheck));
-
-            responseFromServer = null;
         });
         new Thread(task).start();
     }
@@ -319,18 +325,16 @@ public class TestCheckingController implements Initializable {
     }
 
     @FXML
-    void goToCourses(ActionEvent event) throws IOException {
-
-    }
-
-    @FXML
     void goToMenu(ActionEvent event) throws IOException {
         Events.navigateMenuEvent(goToMenuButton);
     }
 
     @FXML
     void goToQuestions(ActionEvent event) throws IOException {
-        Events.navigateQuestionsEvent(goToQuestionsButton);
+        if (user instanceof Teacher)
+            Events.navigateQuestionsEvent(goToQuestionsButton);
+        if (user instanceof Student)
+            Events.navigateLogoutEvent(goToQuestionsButton);
     }
 
     @FXML
@@ -349,6 +353,11 @@ public class TestCheckingController implements Initializable {
         else if (teacher != null) {
             coursesComboBox.setVisible(false);
         }
+    }
+
+    @FXML
+    void goToTests(ActionEvent event) throws IOException {
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML

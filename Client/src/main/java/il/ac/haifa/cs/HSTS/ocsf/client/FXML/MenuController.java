@@ -172,7 +172,10 @@ public class MenuController implements Initializable {
 
     @FXML
     void showQuestions(ActionEvent event) throws IOException {
-        Events.navigateQuestionsEvent(showQuestionButton);
+        if (user instanceof Teacher || user instanceof Principle)
+            Events.navigateQuestionsEvent(showQuestionButton);
+        else
+            Events.navigateLogoutEvent(showQuestionButton);
     }
 
     @FXML
@@ -203,12 +206,20 @@ public class MenuController implements Initializable {
             teacherPane.setVisible(true);
             studentMenu.setVisible(false);
             principlePane.setVisible(false);
+            showQuestionButton.setText("Questions");
+            logoutButton.setVisible(true);
+            goToTestsButton.setVisible(true);
+            aboutButton.setVisible(true);
         }
         else if (user instanceof Student) {
             initStudentMenu();
             studentMenu.setVisible(true);
             teacherPane.setVisible(false);
             principlePane.setVisible(false);
+            showQuestionButton.setText("Logout");
+            logoutButton.setVisible(false);
+            goToTestsButton.setVisible(false);
+            aboutButton.setVisible(false);
         }
         else if (user instanceof Principle)
         {
@@ -217,6 +228,10 @@ public class MenuController implements Initializable {
             principlePane.setVisible(true);
             studentMenu.setVisible(false);
             teacherPane.setVisible(false);
+            showQuestionButton.setText("Questions");
+            logoutButton.setVisible(true);
+            goToTestsButton.setVisible(true);
+            aboutButton.setVisible(true);
         }
     }
 

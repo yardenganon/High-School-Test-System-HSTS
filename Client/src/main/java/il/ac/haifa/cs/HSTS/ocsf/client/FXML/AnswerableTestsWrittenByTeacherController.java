@@ -57,9 +57,6 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
     private Button goToMenuButton;
 
     @FXML
-    private Button goToCoursesButton;
-
-    @FXML
     private Button goToQuestionsButton;
 
     @FXML
@@ -96,6 +93,7 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
         bundle = Bundle.getInstance();
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
+        helloLabel.setText("Hello " + user.getFirst_name());
         client.getHstsClientInterface().addGUIController(this);
         if (user instanceof  Teacher) {
             teacher = (Teacher) user;
@@ -105,15 +103,13 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
 
 
     private void InitAnswerableTestsWrittenByTeacher() {
-        responseFromServer = null;
-
         CustomProgressIndicator progressIndicator = new CustomProgressIndicator(anchorPane);
         progressIndicator.start();
 
         Task<Response> task = new Task<Response>() {
             @Override
             protected Response call() throws Exception {
-
+                responseFromServer = null;
                 // command for getting all answerable tests written by teacher
                 CommandInterface command = new TestFacadeReadAllByTeacherCommand(teacher);
                 client.getHstsClientInterface().sendCommandToServer(command);
@@ -227,8 +223,6 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
     void logout(ActionEvent event) throws IOException {
         Events.navigateLogoutEvent(logoutButton);
     }
-
-    public void goToCourses(ActionEvent actionEvent) {}
 
     public void goToMenu(ActionEvent actionEvent) {
         Events.navigateMenuEvent(goToMenuButton);

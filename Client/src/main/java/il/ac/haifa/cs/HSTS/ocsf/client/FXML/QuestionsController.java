@@ -181,7 +181,6 @@ public class QuestionsController implements Initializable {
         client.getHstsClientInterface().addGUIController(this);
         initializeUser();
         initializeQuestionsTable();
-
     }
 
     public void initializeUser() {
