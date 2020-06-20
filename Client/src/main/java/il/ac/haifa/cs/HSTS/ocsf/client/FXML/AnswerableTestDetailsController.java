@@ -55,6 +55,9 @@ public class AnswerableTestDetailsController implements Initializable {
     private TextField studentNameButton;
 
     @FXML
+    private Button confirmTestButton;
+
+    @FXML
     private TextField startTimeButton;
 
     @FXML
@@ -89,9 +92,6 @@ public class AnswerableTestDetailsController implements Initializable {
 
     @FXML
     private TextField commentTextField;
-
-    @FXML
-    private Button confirmTestButton;
 
     @FXML
     private TextField gradeButton;

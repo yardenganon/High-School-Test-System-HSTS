@@ -13,7 +13,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="1159.0" style="-fx-background-color: #D0D0D0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.CheckAnswerableTestController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="639.0" prefWidth="1159.0" style="-fx-background-color: #D0D0D0;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.AnswerableTestDetailsController">
    <children>
       <VBox layoutX="14.0" layoutY="92.0" prefHeight="491.0" prefWidth="1134.0">
          <children>
@@ -141,7 +141,7 @@
                         <Insets left="5.0" top="15.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="commentTextField" alignment="TOP_LEFT" prefHeight="48.0" prefWidth="574.0">
+                  <TextField fx:id="commentTextField" alignment="TOP_LEFT" editable="false" prefHeight="48.0" prefWidth="574.0">
                      <HBox.margin>
                         <Insets left="27.0" top="13.0" />
                      </HBox.margin>
@@ -158,16 +158,11 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <Button fx:id="confirmTestButton" layoutX="550.0" layoutY="587.0" mnemonicParsing="false" onAction="#confirmTestRequest" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Confirm Test" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font>
-      </Button>
       <Text fill="#1434529e" layoutX="20.0" layoutY="601.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Grade" wrappingWidth="47.58310890197754">
          <font>
             <Font name="System Bold" size="11.0" />
          </font>
       </Text>
-      <TextField fx:id="gradeButton" layoutX="98.0" layoutY="584.0" onMouseClicked="#gradeOnClick" prefHeight="26.0" prefWidth="87.0" />
+      <TextField fx:id="gradeButton" editable="false" layoutX="98.0" layoutY="584.0" prefHeight="26.0" prefWidth="87.0" />
    </children>
 </AnchorPane>

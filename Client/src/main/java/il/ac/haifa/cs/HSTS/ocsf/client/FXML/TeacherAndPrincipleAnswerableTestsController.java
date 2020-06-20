@@ -98,10 +98,15 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
         client = (HSTSClient) bundle.get("client");
         user = (User) bundle.get("user");
         client.getHstsClientInterface().addGUIController(this);
-        if (user instanceof  Teacher)
+        helloLabel.setText("Hello " + user.getFirst_name());
+        if (user instanceof  Teacher) {
             teacher = (Teacher) user;
-        else if (user instanceof Principle)
+            principle = null;
+        }
+        else if (user instanceof Principle) {
             principle = (Principle) user;
+            teacher = null;
+        }
         initializeComboBox();
     }
 
@@ -247,8 +252,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     void logout(ActionEvent event) throws IOException {
         Events.navigateLogoutEvent(logoutButton);
     }
-
-    public void goToCourses(ActionEvent actionEvent) {}
 
     public void goToMenu(ActionEvent actionEvent) {
         Events.navigateMenuEvent(goToMenuButton);
