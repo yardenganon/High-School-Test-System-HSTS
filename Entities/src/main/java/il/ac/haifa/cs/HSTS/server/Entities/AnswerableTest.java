@@ -14,11 +14,11 @@ public class AnswerableTest implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "test_id")
     ReadyTest test;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "student_id")
     Student student;
 
@@ -47,6 +47,7 @@ public class AnswerableTest implements Serializable {
         this.timeStarted = new Date();
         this.answerableTestStatus = Status.TestNotActive;
         this.isChecked = false;
+        this.score = 0;
     }
 
     public URL getUrl() {
