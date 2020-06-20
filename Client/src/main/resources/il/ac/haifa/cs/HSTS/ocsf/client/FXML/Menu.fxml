@@ -36,11 +36,6 @@
                   </ImageView>
                </children>
             </Pane>
-            <Button fx:id="coursesButton" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Courses" textFill="WHITE">
-               <font>
-                  <Font name="Calibri Bold" size="17.0" />
-               </font>
-            </Button>
             <Button fx:id="showQuestionButton" blendMode="SCREEN" mnemonicParsing="false" onAction="#showQuestions" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Questions" textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="17.0" />
@@ -93,14 +88,6 @@
                            </font>
                            <HBox.margin>
                               <Insets />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="myCoursesStudentButton" mnemonicParsing="false" onAction="#showMyCoursesStudent" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Courses" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="60.0" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -174,14 +161,6 @@
                               <Insets left="50.0" />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="myCoursesTeacherButton" mnemonicParsing="false" onAction="#showMyCoursesTeacher" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Courses" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="50.0" />
-                           </HBox.margin>
-                        </Button>
                      </children>
                   </HBox>
                </children>
@@ -241,14 +220,6 @@
                            </font>
                            <HBox.margin>
                               <Insets />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="myCoursesPrincipleButton" mnemonicParsing="false" onAction="#showCoursesPrinciple" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Courses" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="60.0" />
                            </HBox.margin>
                         </Button>
                      </children>

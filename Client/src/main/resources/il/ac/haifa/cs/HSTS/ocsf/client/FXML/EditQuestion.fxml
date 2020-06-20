@@ -225,11 +225,6 @@
                <Font name="Calibri Bold" size="17.0" />
             </font>
          </Button>
-         <Button fx:id="goToCoursesButton" blendMode="SCREEN" mnemonicParsing="false" onAction="#goToCourses" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Courses" textFill="WHITE">
-            <font>
-               <Font name="Calibri Bold" size="17.0" />
-            </font>
-         </Button>
          <Button fx:id="goToQuestionsButton" blendMode="SCREEN" layoutX="10.0" layoutY="294.0" mnemonicParsing="false" onAction="#goToQuestions" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Questions" textFill="WHITE">
             <font>
                <Font name="Calibri Bold" size="17.0" />
