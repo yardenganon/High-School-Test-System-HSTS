@@ -331,16 +331,21 @@ public class MakeExecuteTestController implements Initializable {
         QuestionTableView changedColumn = questionTableView.getSelectionModel().getSelectedItem();
 
         sumOfPoints = 0;
-        for (Question quest : readyTest.getTest().getQuestionSet())
-        {
-            if (quest.getQuestion() == changedColumn.getQuestion())
-            {
-                readyTest.getTest().getPoints().remove(quest);
-                readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
+        if (Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()) > 0) {
+            changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
+
+            for (Question quest : readyTest.getTest().getQuestionSet()) {
+                if (quest.getQuestion() == changedColumn.getQuestion()) {
+                    readyTest.getTest().getPoints().remove(quest);
+                    readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
+                }
+                sumOfPoints += readyTest.getTest().getPoints().get(quest);
             }
-            sumOfPoints += readyTest.getTest().getPoints().get(quest);
+            pointsLabel.setText(String.valueOf(sumOfPoints));
         }
-        changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
-        pointsLabel.setText(String.valueOf(sumOfPoints));
+
+        else changedColumn.setPoints(questionTableViewStringCellEditEvent.getOldValue());
+
+        questionTableView.refresh();
     }
 }
