@@ -26,7 +26,7 @@ public class Course implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"))
     List<Student> students;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "course")
+    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY, mappedBy = "course")
     List<ReadyTest> readyTests;
 
     public Course () {}

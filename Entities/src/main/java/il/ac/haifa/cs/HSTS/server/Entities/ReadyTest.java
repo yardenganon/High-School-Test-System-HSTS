@@ -37,7 +37,7 @@ public class ReadyTest implements Serializable {
     @JoinColumn(name = "modifierteacher_id")
     private Teacher modifierWriter;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "test")
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY, mappedBy = "test")
     List<AnswerableTest> answerableTests;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "readyTest")
