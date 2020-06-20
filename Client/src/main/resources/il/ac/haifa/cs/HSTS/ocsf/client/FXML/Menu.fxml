@@ -80,7 +80,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
+                  <HBox alignment="CENTER" layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
                      <children>
                         <Button fx:id="myTestStudentButton" mnemonicParsing="false" onAction="#showMyTestsStudent" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Tests" textFill="WHITE">
                            <font>
@@ -143,7 +143,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
+                  <HBox alignment="CENTER" layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
                      <children>
                         <Button fx:id="myTestTeacherButton" mnemonicParsing="false" onAction="#showMyTestsTeacher" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="My Tests" textFill="WHITE">
                            <font>
@@ -212,7 +212,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
+                  <HBox alignment="CENTER" layoutY="66.0" prefHeight="38.0" prefWidth="574.0">
                      <children>
                         <Button fx:id="myTestPrincipleButton" mnemonicParsing="false" onAction="#showTestsPrinciple" prefHeight="35.0" prefWidth="155.0" style="-fx-background-color: #143452;" text="Tests" textFill="WHITE">
                            <font>
