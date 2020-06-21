@@ -90,9 +90,6 @@ public class CreateQuestionController implements Initializable {
     private Button goToTestsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Button logoutButton;
 
     private CustomProgressIndicator progressIndicator;

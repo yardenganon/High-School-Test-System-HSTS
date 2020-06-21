@@ -61,9 +61,6 @@ public class TestsController implements Initializable {
     private Button goToQuestionsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Button logoutButton;
 
     @FXML

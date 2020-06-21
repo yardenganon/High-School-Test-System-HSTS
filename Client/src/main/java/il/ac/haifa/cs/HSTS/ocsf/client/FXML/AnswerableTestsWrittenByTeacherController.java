@@ -63,9 +63,6 @@ public class AnswerableTestsWrittenByTeacherController implements Initializable 
     private Button goToTestsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Button logoutButton;
 
     @FXML
