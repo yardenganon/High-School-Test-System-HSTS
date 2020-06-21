@@ -178,6 +178,10 @@ public class QuestionsController implements Initializable {
         client.getHstsClientInterface().addGUIController(this);
         initializeUser();
         initializeQuestionsTable();
+        if (user instanceof Principle)
+            addQuestionButton.setVisible(false);
+        if (user instanceof Teacher)
+            addQuestionButton.setVisible(true);
     }
 
     public void initializeUser() {
