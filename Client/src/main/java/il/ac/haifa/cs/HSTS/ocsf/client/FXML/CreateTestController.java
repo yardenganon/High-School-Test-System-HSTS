@@ -192,12 +192,16 @@ public class CreateTestController implements Initializable {
             if (timeTextField.getText().isEmpty())
                 inputErrorTextField(timeTextField);
             try {
-                Integer.parseInt(timeTextField.getText());
+                int timeNumber = Integer.parseInt(timeTextField.getText());
+                if (timeNumber <= 0 || timeNumber > 180)
+                    inputErrorTextField(timeTextField);
             }
             catch (NumberFormatException e) {
                 //Not an integer
                 inputErrorTextField(timeTextField);
             }
+
+
             if (Integer.parseInt(SumOfPointsLabel.getText()) < 100)
             {
                 errorLabel.setFill(Color.RED);
@@ -415,7 +419,8 @@ public class CreateTestController implements Initializable {
                 }
             test.getQuestionSet().add(questionChosenToAdd);
             test.setPointsToQuestion(questionChosenToAdd, 1);
-
+            sumOfPoints += 1;
+            SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
             questionsListView.getItems().remove(questionsListView.getSelectionModel().getSelectedItem());
             idColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
             questionColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("question"));
