@@ -47,9 +47,9 @@
          </children>
       </VBox>
 
-      <AnchorPane fx:id="studentMenu" layoutX="248.0" prefHeight="650.0" prefWidth="634.0">
+      <AnchorPane fx:id="studentMenu" layoutX="248.0" prefHeight="650.0" prefWidth="634.0" visible="false">
          <children>
-            <Pane layoutX="30.0" layoutY="281.0" prefHeight="284.0" prefWidth="574.0" visible="false">
+            <Pane layoutX="30.0" layoutY="281.0" prefHeight="284.0" prefWidth="574.0">
                <children>
                   <HBox alignment="CENTER" layoutY="38.0" prefHeight="227.0" prefWidth="574.0">
                      <children>
