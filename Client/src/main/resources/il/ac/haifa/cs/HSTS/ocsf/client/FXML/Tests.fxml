@@ -53,9 +53,9 @@
                   <TableColumn fx:id="columnId" prefWidth="35.99998474121094" text="id" />
                   <TableColumn fx:id="columnAuthor" prefWidth="94.39996337890625" text="author" />
                   <TableColumn fx:id="columnSubject" prefWidth="124.79998779296875" text="subject" />
-                  <TableColumn fx:id="columnCreationDate" prefWidth="195.99993896484375" text="creation date" />
-                  <TableColumn fx:id="columnQuestionsNumber" prefWidth="126.4000244140625" text="number of questions" />
-                  <TableColumn fx:id="columnTime" prefWidth="55.2000732421875" text="time" />
+                  <TableColumn fx:id="columnCreationDate" prefWidth="135.33334350585938" text="creation date" />
+                  <TableColumn fx:id="columnQuestionsNumber" prefWidth="181.3333740234375" text="number of questions" />
+                  <TableColumn fx:id="columnTime" prefWidth="52.0" text="time" />
                </columns>
             </TableView>
             <HBox prefHeight="51.0" prefWidth="632.0">
