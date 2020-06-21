@@ -29,6 +29,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -47,6 +48,9 @@ public class MenuController implements Initializable {
     List<ReadyTestFacade> readyTestFacadeList;
     private ReadyTest currentReadyTest;
     List<TimeExtensionRequest> timeExtensionRequestList;
+
+    @FXML
+    private Button testDetailsButton;
 
     @FXML
     private Label helloLabel;
@@ -97,8 +101,6 @@ public class MenuController implements Initializable {
 
     @FXML
     private Button myTestPrincipleButton;
-
-
 
     @FXML
     private Button submitExtensionTimeRequestButton;
@@ -160,11 +162,6 @@ public class MenuController implements Initializable {
     @FXML
     void goToTests(ActionEvent event) throws IOException {
         Events.navigateTestsEvent(goToTestsButton);
-    }
-
-    @FXML
-    void about(ActionEvent event) {
-        Events.aboutWindowEvent();
     }
 
     @FXML
@@ -678,6 +675,32 @@ public class MenuController implements Initializable {
             }
         });
 
+    }
+
+    @FXML
+    void testDetailsRequest(ActionEvent event) {
+        TimeExtensionRequestTableView selectedTest = activeTestsTebleView.getSelectionModel().getSelectedItem();
+        if (selectedTest != null) {
+            System.out.println(selectedTest + " Is selected");
+            bundle.put("readyTest", selectedTest);
+            bundle.put("readyTestFlag", true);
+            Scene scene = null;
+            try {
+                scene = new Scene(MainClass.loadFXML("TestDetails"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Stage stage = (Stage) activeTestsTebleView.getScene().getWindow();
+            Stage secondaryStage = new Stage();
+            secondaryStage.setScene(scene);
+            secondaryStage.setTitle("Test Details");
+            secondaryStage.initModality(Modality.APPLICATION_MODAL);
+            secondaryStage.show();
+            secondaryStage.setOnCloseRequest((WindowEvent event1) -> {
+                activeTestsTebleView.getItems().clear();
+                InitTeacherMenu(teacher);
+            });
+        }
     }
 
     public void showMyTestsStudent(ActionEvent actionEvent) {

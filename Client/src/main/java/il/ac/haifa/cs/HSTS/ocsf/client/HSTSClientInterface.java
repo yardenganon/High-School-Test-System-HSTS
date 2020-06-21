@@ -188,6 +188,10 @@ public class HSTSClientInterface {
             ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
                     .receivedResponseFromServer(serverResponse);
 
+        if (serverResponse.getRespondName().equals(ReadyTestReadByIdCommand.class.getSimpleName()))
+            ((TestFullDetailsController) guiControllers.get(TestFullDetailsController.class.getSimpleName()))
+                    .receivedResponseFromServer(serverResponse);
+
         if (serverResponse.getRespondName().equals(TimeExtensionRequestUpdateCommand.class.getSimpleName()))
             ((MenuController) guiControllers.get(MenuController.class.getSimpleName()))
             .receivedResponseFromServer(serverResponse);
