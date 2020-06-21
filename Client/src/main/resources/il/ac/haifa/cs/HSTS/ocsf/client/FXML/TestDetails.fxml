@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="900.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestFullDetailsController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="1132.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestFullDetailsController">
    <children>
-      <VBox layoutX="29.0" layoutY="83.0" prefHeight="538.0" prefWidth="844.0">
+      <VBox layoutX="29.0" layoutY="83.0" prefHeight="538.0" prefWidth="1090.0">
          <children>
             <HBox prefHeight="43.0" prefWidth="476.0">
                <children>
@@ -19,7 +19,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="idTextField" editable="false" prefHeight="26.0" prefWidth="767.0">
+                  <TextField fx:id="idTextField" editable="false" prefHeight="26.0" prefWidth="1027.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -36,7 +36,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="781.0">
+                  <TextField fx:id="authorTextField" editable="false" prefHeight="26.0" prefWidth="1042.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -53,7 +53,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="subjectTextField" editable="false" prefHeight="26.0" prefWidth="770.0">
+                  <TextField fx:id="subjectTextField" editable="false" prefHeight="26.0" prefWidth="1059.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -70,7 +70,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="dateCreatedTextField" editable="false" prefHeight="26.0" prefWidth="806.0">
+                  <TextField fx:id="dateCreatedTextField" editable="false" prefHeight="26.0" prefWidth="1044.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -87,7 +87,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="introTextField" editable="false" prefHeight="26.0" prefWidth="766.0">
+                  <TextField fx:id="introTextField" editable="false" prefHeight="26.0" prefWidth="1036.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -104,7 +104,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="epliogueTextField" editable="false" prefHeight="26.0" prefWidth="777.0">
+                  <TextField fx:id="epliogueTextField" editable="false" prefHeight="26.0" prefWidth="1079.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -121,7 +121,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="commentTextField" editable="false" prefHeight="26.0" prefWidth="788.0">
+                  <TextField fx:id="commentTextField" editable="false" prefHeight="26.0" prefWidth="1100.0">
                      <HBox.margin>
                         <Insets left="30.0" />
                      </HBox.margin>
@@ -138,7 +138,7 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="timeTextField" editable="false" prefHeight="26.0" prefWidth="767.0" />
+                  <TextField fx:id="timeTextField" editable="false" prefHeight="26.0" prefWidth="1126.0" />
                </children>
             </HBox>
             <HBox prefHeight="182.0" prefWidth="595.0">
@@ -151,23 +151,23 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TableView fx:id="questionsTableView" prefHeight="166.0" prefWidth="769.0">
+                  <TableView fx:id="questionsTableView" prefHeight="182.0" prefWidth="1070.0">
                      <columns>
                         <TableColumn fx:id="columnId" editable="false" prefWidth="20" text="id" />
-                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="223.19991606473923" text="question" />
-                        <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="90.40007019042969" text="answer1" />
-                         <TableColumn fx:id="columnAnswer2" editable="false" minWidth="0.0" prefWidth="112.80001831054688" text="answer2" />
-                         <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="118.39996337890625" text="answer3" />
-                         <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="104.7999267578125" text="answer4" />
-                         <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="45.5999755859375" text="correct" />
-                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="53.5999755859375" text="points" />
+                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="560.3333492279053" text="question" />
+                        <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="96.33331298828125" text="answer1" />
+                         <TableColumn fx:id="columnAnswer2" editable="false" minWidth="0.0" prefWidth="82.0" text="answer2" />
+                         <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="76.66668701171875" text="answer3" />
+                         <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="87.6666259765625" text="answer4" />
+                         <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="51.3333740234375" text="correct" />
+                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="43.0" text="points" />
                      </columns>
                   </TableView>
                </children>
             </HBox>
          </children>
       </VBox>
-      <Label layoutX="380.0" layoutY="20.0" prefHeight="50.0" prefWidth="142.0" text="Test Details" textFill="#143452">
+      <Label layoutX="503.0" layoutY="20.0" prefHeight="50.0" prefWidth="142.0" text="Test Details" textFill="#143452">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>

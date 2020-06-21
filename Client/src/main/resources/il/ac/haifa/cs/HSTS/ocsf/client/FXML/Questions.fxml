@@ -52,7 +52,7 @@
                         <TableColumn fx:id="columnId" prefWidth="52.0" text="id" />
                         <TableColumn fx:id="columnSubject" prefWidth="111.199951171875" text="subject" />
                         <TableColumn fx:id="columnQuestion" prefWidth="301.6000061035156" text="question" />
-                        <TableColumn fx:id="columnAuthor" prefWidth="128.7999267578125" text="author" />
+                        <TableColumn fx:id="columnAuthor" prefWidth="123.33331298828125" text="author" />
                     </columns>
                 </TableView>
             </children>
