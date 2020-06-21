@@ -292,7 +292,12 @@ public class TestCheckingController implements Initializable {
                 numberOfTestsToCheckButton.setText(String.valueOf(sumOfTestsNeededToCheck));
             else
             if (student != null)
-                gpaResultLabel.setText(String.format("%.2f", sumOfGrades / sumOfTestsNeededToCheck));
+            {
+                double gpa = sumOfGrades / sumOfTestsNeededToCheck;
+                if (gpa > 100)
+                    gpa = 100;
+                gpaResultLabel.setText(String.format("%.2f", gpa));
+            }
         });
         new Thread(task).start();
     }

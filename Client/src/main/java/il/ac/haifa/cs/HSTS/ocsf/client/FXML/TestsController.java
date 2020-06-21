@@ -100,16 +100,6 @@ public class TestsController implements Initializable {
     private Button MakeExecuteTestButton;
 
     @FXML
-    void about(ActionEvent event) {
-        Events.aboutWindowEvent();
-    }
-
-    @FXML
-    void goToCourses(ActionEvent event) throws IOException {
-
-    }
-
-    @FXML
     void goToAddTest(ActionEvent event) throws IOException {
         if(user instanceof Teacher)
             Events.navigateCreateTestEvent(addTestButton);
@@ -164,8 +154,7 @@ public class TestsController implements Initializable {
         if (user instanceof Principle){
             editTestButton.setVisible(false);
             addTestButton.setVisible(false);
-            MakeExecuteTestButton.setVisible(false);
-        }
+            MakeExecuteTestButton.setVisible(false); }
     }
 
     public void initializeUser() {

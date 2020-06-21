@@ -7,10 +7,7 @@ import il.ac.haifa.cs.HSTS.ocsf.client.Services.Events;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.CommandInterface;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.QuestionPushCommand;
 import il.ac.haifa.cs.HSTS.server.CommandInterface.Response;
-import il.ac.haifa.cs.HSTS.server.Entities.Question;
-import il.ac.haifa.cs.HSTS.server.Entities.Subject;
-import il.ac.haifa.cs.HSTS.server.Entities.Teacher;
-import il.ac.haifa.cs.HSTS.server.Entities.User;
+import il.ac.haifa.cs.HSTS.server.Entities.*;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,6 +15,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import org.apache.poi.ss.formula.functions.Even;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +27,7 @@ public class EditQuestionController implements Initializable {
 
     public User user;
     private Teacher teacher;
+    private Principle principle;
     public Question question;
     private Response responseFromServer = null;
     private static boolean thereIsAnError = false;
@@ -194,8 +193,18 @@ public class EditQuestionController implements Initializable {
         client.getHstsClientInterface().getGuiControllers().clear();
         client.getHstsClientInterface().addGUIController(this);
         user = (User) bundle.get("user");
-        if (user instanceof Teacher)
+        if (user instanceof Teacher) {
             teacher = (Teacher) user;
+            principle = null;
+            editQuestionButton.setVisible(true);
+            resetQuestionButton.setVisible(true);
+        }
+        if (user instanceof Principle){
+            teacher = null;
+            principle = (Principle) user;
+            editQuestionButton.setVisible(false);
+            resetQuestionButton.setVisible(false);
+        }
         initializeQuestionDetails();
     }
     @FXML
@@ -204,16 +213,6 @@ public class EditQuestionController implements Initializable {
         if (editQuestionButton.getText().equals("Confirm Changes"))
             editQuestionButton.setText("Edit Question");
         setDisableAndVisible(false);
-    }
-
-    @FXML
-    void about(ActionEvent event) {
-        Events.aboutWindowEvent();
-    }
-
-    @FXML
-    void goToCourses(ActionEvent event) {
-
     }
 
     @FXML
@@ -228,7 +227,7 @@ public class EditQuestionController implements Initializable {
 
     @FXML
     void goToTests(ActionEvent event) {
-
+        Events.navigateTestsEvent(goToTestsButton);
     }
 
     @FXML
