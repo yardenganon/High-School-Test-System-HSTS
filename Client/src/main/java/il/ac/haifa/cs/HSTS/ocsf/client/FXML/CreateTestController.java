@@ -127,9 +127,6 @@ public class CreateTestController implements Initializable {
     private Button goToTestsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Button logoutButton;
 
     @FXML
@@ -137,10 +134,6 @@ public class CreateTestController implements Initializable {
 
     @FXML
     private Label SumOfPointsLabel;
-
-    @FXML
-    void goToCourses(ActionEvent event) {
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -208,7 +201,7 @@ public class CreateTestController implements Initializable {
             if (Integer.parseInt(SumOfPointsLabel.getText()) < 100)
             {
                 errorLabel.setFill(Color.RED);
-                errorLabel.setText("No questions were selected and/or sum of test points is not 100");
+                errorLabel.setText("No subject/questions were selected and/or sum of test points is not 100");
                 thereIsAnError = true;
             }
 
@@ -252,11 +245,6 @@ public class CreateTestController implements Initializable {
                 new Thread(task).start();
             }
         }
-    }
-
-    @FXML
-    void about(ActionEvent event) {
-        Events.aboutWindowEvent();
     }
 
     @FXML
@@ -426,7 +414,7 @@ public class CreateTestController implements Initializable {
                     System.out.println("GOTCHA");
                 }
             test.getQuestionSet().add(questionChosenToAdd);
-            test.setPointsToQuestion(questionChosenToAdd, 0);
+            test.setPointsToQuestion(questionChosenToAdd, 1);
 
             questionsListView.getItems().remove(questionsListView.getSelectionModel().getSelectedItem());
             idColumn.setCellValueFactory(new PropertyValueFactory<QuestionOfTestTableView, String>("id"));
@@ -493,22 +481,29 @@ public class CreateTestController implements Initializable {
         }
     }
 
+    @FXML
     public void editPoints(TableColumn.CellEditEvent<QuestionOfTestTableView, String> questionsTableViewIntegerCellEditEvent) {
         QuestionOfTestTableView changedColumn = questionsTableView.getSelectionModel().getSelectedItem();
-        changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getNewValue());
 
-        for (Question quest : questionList){
-            if (quest.getId() == changedColumn.getId()) {
-                test.setPointsToQuestion(quest,Integer.parseInt(changedColumn.getPoints()));
-                break;
+        if (Integer.parseInt(questionsTableViewIntegerCellEditEvent.getNewValue()) > 0) {
+            changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getNewValue());
+            for (Question quest : questionList) {
+                if (quest.getId() == changedColumn.getId()) {
+                    test.setPointsToQuestion(quest, Integer.parseInt(changedColumn.getPoints()));
+                    break;
+                }
             }
-        }
 
-        sumOfPoints = 0;
-        for (QuestionOfTestTableView quest : questionsTableView.getItems()){
-            sumOfPoints += Integer.parseInt(quest.getPoints());
+            sumOfPoints = 0;
+            for (QuestionOfTestTableView quest : questionsTableView.getItems()) {
+                sumOfPoints += Integer.parseInt(quest.getPoints());
+            }
+            SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
         }
-        SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
+        else
+            changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getOldValue());
+        questionsTableView.refresh();
+
     }
 
     public void setIfEdit() {

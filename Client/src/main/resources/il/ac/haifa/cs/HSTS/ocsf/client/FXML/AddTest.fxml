@@ -248,11 +248,6 @@
                   <Font name="Calibri Bold" size="17.0" />
                </font>
             </Button>
-            <Button fx:id="aboutButton" blendMode="SCREEN" mnemonicParsing="false" onAction="#about" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="About" textFill="WHITE">
-               <font>
-                  <Font name="Calibri Bold" size="17.0" />
-               </font>
-            </Button>
             <Button fx:id="logoutButton" blendMode="SCREEN" mnemonicParsing="false" onAction="#logout" prefHeight="50.0" prefWidth="294.0" style="-fx-background-color: #143452;" text="Logout" textFill="WHITE">
                <font>
                   <Font name="Calibri Bold" size="17.0" />
