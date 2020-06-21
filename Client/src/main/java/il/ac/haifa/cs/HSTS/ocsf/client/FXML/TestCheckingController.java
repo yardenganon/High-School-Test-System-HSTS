@@ -68,9 +68,6 @@ public class TestCheckingController implements Initializable {
     private Button goToQuestionsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Text numberOfTestsLabel;
 
     @FXML
@@ -200,7 +197,6 @@ public class TestCheckingController implements Initializable {
             student = null;
             goToQuestionsButton.setText("Questions");
             logoutButton.setVisible(true);
-            aboutButton.setVisible(true);
             goToTestsButton.setVisible(true);
         }
         if (user instanceof Student) {
@@ -208,7 +204,6 @@ public class TestCheckingController implements Initializable {
             teacher = null;
             goToQuestionsButton.setText("Logout");
             logoutButton.setVisible(false);
-            aboutButton.setVisible(false);
             goToTestsButton.setVisible(false);
         }
         initializeCoursesComboBox();

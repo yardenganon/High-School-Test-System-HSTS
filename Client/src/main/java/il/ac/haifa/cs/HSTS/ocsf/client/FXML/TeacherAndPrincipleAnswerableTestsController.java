@@ -68,9 +68,6 @@ public class TeacherAndPrincipleAnswerableTestsController implements Initializab
     private Button goToTestsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private Button logoutButton;
 
     @FXML

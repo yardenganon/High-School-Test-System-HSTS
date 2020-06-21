@@ -64,9 +64,6 @@ public class MenuController implements Initializable {
     private Button goToTestsButton;
 
     @FXML
-    private Button aboutButton;
-
-    @FXML
     private AnchorPane studentMenu;
 
     @FXML
@@ -209,7 +206,6 @@ public class MenuController implements Initializable {
             showQuestionButton.setText("Questions");
             logoutButton.setVisible(true);
             goToTestsButton.setVisible(true);
-            aboutButton.setVisible(true);
         }
         else if (user instanceof Student) {
             initStudentMenu();
@@ -219,7 +215,6 @@ public class MenuController implements Initializable {
             showQuestionButton.setText("Logout");
             logoutButton.setVisible(false);
             goToTestsButton.setVisible(false);
-            aboutButton.setVisible(false);
         }
         else if (user instanceof Principle)
         {
@@ -231,7 +226,6 @@ public class MenuController implements Initializable {
             showQuestionButton.setText("Questions");
             logoutButton.setVisible(true);
             goToTestsButton.setVisible(true);
-            aboutButton.setVisible(true);
         }
     }
 
