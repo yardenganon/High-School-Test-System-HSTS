@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="1132.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestFullDetailsController">
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="647.0" prefWidth="1132.0" style="-fx-background-color: #DCDCDC;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.ac.haifa.cs.HSTS.ocsf.client.FXML.TestFullDetailsController">
    <children>
       <VBox layoutX="29.0" layoutY="83.0" prefHeight="538.0" prefWidth="1090.0">
          <children>
+            <HBox fx:id="codeHbox" prefHeight="43.0" prefWidth="476.0">
+               <children>
+                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Execution code" wrappingWidth="76.38309669494629">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="4.0" />
+                     </HBox.margin>
+                  </Text>
+                  <TextField fx:id="codeTextField" editable="false" prefHeight="26.0" prefWidth="1027" />
+               </children>
+            </HBox>
             <HBox prefHeight="43.0" prefWidth="476.0">
                <children>
                   <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="id" wrappingWidth="47.58310890197754">
@@ -28,7 +47,7 @@
             </HBox>
             <HBox prefHeight="43.0" prefWidth="476.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
+                  <Text fx:id="authorLabel" fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -45,7 +64,7 @@
             </HBox>
             <HBox prefHeight="43.0" prefWidth="476.0">
                <children>
-                  <Text fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
+                  <Text fx:id="subjectOrCourseLabel" fill="#1434529e" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject" wrappingWidth="47.58310890197754">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -151,16 +170,16 @@
                         <Insets top="4.0" />
                      </HBox.margin>
                   </Text>
-                  <TableView fx:id="questionsTableView" prefHeight="182.0" prefWidth="1070.0">
+                  <TableView fx:id="questionsTableView" prefHeight="182.0" prefWidth="1300.0">
                      <columns>
                         <TableColumn fx:id="columnId" editable="false" prefWidth="20" text="id" />
-                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="560.3333492279053" text="question" />
+                        <TableColumn fx:id="columnQuestion" editable="false" prefWidth="550.3333492279053" text="question" />
                         <TableColumn fx:id="columnAnswer1" editable="false" minWidth="0.0" prefWidth="96.33331298828125" text="answer1" />
                          <TableColumn fx:id="columnAnswer2" editable="false" minWidth="0.0" prefWidth="82.0" text="answer2" />
                          <TableColumn fx:id="columnAnswer3" editable="false" minWidth="0.0" prefWidth="76.66668701171875" text="answer3" />
                          <TableColumn fx:id="columnAnswer4" editable="false" minWidth="0.0" prefWidth="87.6666259765625" text="answer4" />
                          <TableColumn fx:id="columnCorrect" editable="false" minWidth="0.0" prefWidth="51.3333740234375" text="correct" />
-                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="43.0" text="points" />
+                         <TableColumn fx:id="columnPoints" editable="false" minWidth="0.0" prefWidth="50.0" text="points" />
                      </columns>
                   </TableView>
                </children>
