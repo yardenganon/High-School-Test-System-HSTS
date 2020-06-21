@@ -70,19 +70,17 @@
       </VBox>
       <VBox fx:id="logoVbox" alignment="CENTER" prefHeight="649.0" prefWidth="370.0" style="-fx-background-color: #143452;">
          <children>
-            <Label alignment="CENTER" layoutX="10.0" layoutY="431.0" prefHeight="75.0" prefWidth="371.0" text="High School Tests System" textFill="#f3f3f5">
-               <font>
-                  <Font name="Calibri Bold" size="30.0" />
-               </font>
-            </Label>
             <ImageView blendMode="SCREEN" fitHeight="325.0" fitWidth="370.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@Images/logo.jpg" />
+                  <Image url="@Images/bigLogo.png" />
                </image>
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin>
             </ImageView>
-            <Label alignment="CENTER" prefHeight="75.0" prefWidth="371.0" text="LONE OAK HIGH SCHOOL" textFill="#f3f3f5">
+            <Label alignment="TOP_LEFT" prefHeight="90.0" prefWidth="301.0" text="If you have any questions, please contact:&#10;support@lone.oak.org.il&#10;" textFill="#f3f3f5">
                <font>
-                  <Font name="Calibri Light" size="30.0" />
+                  <Font name="Calibri Light" size="18.0" />
                </font>
             </Label>
          </children>
