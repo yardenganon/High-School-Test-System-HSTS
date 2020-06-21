@@ -274,6 +274,7 @@ public class TestInProgressController implements Initializable {
 
     }
 
+
     public void timeExtensionThread() {
         client.getHstsClientInterface().addGUIController(this);
         Thread thread = new Thread(() ->{
@@ -604,13 +605,21 @@ public class TestInProgressController implements Initializable {
             }
         }
     }
-
-    public void initNumberOfQuestions() {
-        numberOfQuestionsAnswered = 0;
-        for (Question question : answerableTest.getQuestionsSet()){
-            if (answerableTest.getQuestionsSet().contains(question))
-                numberOfQuestionsAnswered++;
+    public int calculateQuestionsAnswered() {
+        int count = 0;
+        for (Question question : questionList)
+        {
+            if (answerableTest.getAnswers().get(question) !=null)
+              count++;
         }
+        return count;
+    }
+    public void initNumberOfQuestions() {
+        numberOfQuestionsAnswered = calculateQuestionsAnswered();
+//        for (Question question : answerableTest.getQuestionsSet()){
+//            if (answerableTest.getQuestionsSet().contains(question))
+//                numberOfQuestionsAnswered++;
+//        }
         numberOfQuestions = questionList.size();
         questionsAnsweredLabel.setText(numberOfQuestionsAnswered + "/" + numberOfQuestions);
     }
