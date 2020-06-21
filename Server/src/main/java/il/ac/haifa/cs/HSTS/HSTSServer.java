@@ -67,7 +67,8 @@ public class HSTSServer extends AbstractServer {
     }
 
     public static void main(String[] args) throws IOException {
-        HSTSServer server = new HSTSServer(3000);
+        Integer port = Integer.parseInt(args[0]);
+        HSTSServer server = new HSTSServer(port);
         server.listen();
 //        if (args.length != 1) {
 //            System.out.println("Required argument: <port>");

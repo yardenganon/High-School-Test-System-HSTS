@@ -20,6 +20,8 @@ public class MainClass extends Application {
 	private static Scene scene;
 	private HSTSClient client;
 	private Bundle bundle;
+	private static String ip;
+	private static int port;
 
     @Override
 	public void start(Stage stage) throws IOException {
@@ -55,7 +57,9 @@ public class MainClass extends Application {
     }
 
 	public static void main(String[] args) {
-		launch();
+		ip = args[0];
+		port = Integer.parseInt(args[1]);
+        launch();
 	}
     
 }
