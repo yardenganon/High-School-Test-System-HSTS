@@ -354,6 +354,17 @@ public class App {
             scienceADV.addStudent(chenBezinian);
             session.save(scienceADV);
 
+            physics.addStudent(yoavBenHaim);
+            physics.addStudent(danielLevi);
+            physics.addStudent(ohadFridman);
+            physics.addStudent(yardenGanon);
+            physics.addStudent(yakir);
+            physics.addStudent(barak);
+            physics.addStudent(opalSelek);
+            physics.addStudent(meshi);
+            physics.addStudent(shani);
+            physics.addStudent(gal);
+            session.save(physics);
 
             israelHistory.addStudent(yoavBenHaim);
             israelHistory.addStudent(danielLevi);
@@ -415,7 +426,6 @@ public class App {
             readyTest.setModifiedTime(30);
             session.save(readyTest);
 
-
             test = new Test(dannyKeren,math);
             test.addQuestion(mathQuestion5,25);
             test.addQuestion(mathQuestion6,25);
@@ -428,7 +438,6 @@ public class App {
             session.save(test);
             /*readyTest of the above test*/
             ReadyTest readyTest1 = new ReadyTest(test, "11BB", calculusB, dannyKeren);
-            readyTest.setActive(false);
             session.save(readyTest1);
 
 
@@ -441,6 +450,10 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(30);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest2 = new ReadyTest(test, "12CB", discreteMath, rachelKolodny);
+            readyTest2.setActive(true);
+            session.save(readyTest2);
 
             test = new Test(rachelKolodny,math);
             test.addQuestion(mathQuestion4,10);
@@ -454,6 +467,9 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(60);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest3 = new ReadyTest(test, "33CB", algebraA, rachelKolodny);
+            session.save(readyTest3);
 
             test = new Test(orenVaiman,math);
             test.addQuestion(mathQuestion3,10);
@@ -467,6 +483,10 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(60);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest4 = new ReadyTest(test, "22CB", algebraB, orenVaiman);
+            readyTest4.setActive(true);
+            session.save(readyTest4);
 
             test = new Test(orenVaiman,math);
             test.addQuestion(mathQuestion3,34);
@@ -477,6 +497,9 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(10);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest5 = new ReadyTest(test, "44CB", algebraB, orenVaiman);
+            session.save(readyTest5);
 
             test = new Test(dannyKeren,science);
             test.addQuestion(scienceQuestion1,33);
@@ -487,6 +510,10 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(20);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest6 = new ReadyTest(test, "66CB", physics, dannyKeren);
+            readyTest6.setActive(true);
+            session.save(readyTest6);
 
             test = new Test(dannyKeren,science);
             test.addQuestion(scienceQuestion4,20);
@@ -499,6 +526,9 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(15);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest7 = new ReadyTest(test, "77CB", physics, dannyKeren);
+            session.save(readyTest7);
 
             test = new Test(nogaRonTzvi,science);
             test.addQuestion(scienceQuestion4,20);
@@ -511,16 +541,24 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(90);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest8 = new ReadyTest(test, "88CB", computerScience, nogaRonTzvi);
+            readyTest8.setActive(true);
+            session.save(readyTest8);
 
             test = new Test(gadiLandau,history);
             test.addQuestion(historyQuestion3,33);
             test.addQuestion(historyQuestion4,33);
             test.addQuestion(historyQuestion5,34);
             test.setCommentForTeachers("I am the oldest in the Hug");
-            test.setEpilogue("You shell all fail");
+            test.setEpilogue("You shall all fail");
             test.setIntroduction("Please Answer the following questions");
             test.setTime(5);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest9 = new ReadyTest(test, "99CB", israelHistory, gadiLandau);
+            readyTest9.setActive(true);
+            session.save(readyTest9);
 
             test = new Test(gadiLandau,history);
             test.addQuestion(historyQuestion10,50);
@@ -528,10 +566,13 @@ public class App {
             test.addQuestion(historyQuestion2,20);
             test.addQuestion(historyQuestion1,25);
             test.setCommentForTeachers("I am the oldest in the Hug");
-            test.setEpilogue("You shell all fail");
+            test.setEpilogue("You shall all fail");
             test.setIntroduction("Please Answer the following questions");
             test.setTime(18);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest10 = new ReadyTest(test, "11KK", historyB, gadiLandau);
+            session.save(readyTest10);
 
             test = new Test(rachelKolodny,history);
             test.addQuestion(historyQuestion4,40);
@@ -539,10 +580,13 @@ public class App {
             test.addQuestion(historyQuestion2,25);
             test.addQuestion(historyQuestion7,25);
             test.setCommentForTeachers("I am from Haifa city");
-            test.setEpilogue("You shell all fail");
+            test.setEpilogue("You shall all fail");
             test.setIntroduction("Please Answer the following questions");
             test.setTime(18);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest11 = new ReadyTest(test, "22KK", israelHistory, rachelKolodny);
+            session.save(readyTest11);
 
             test = new Test(nogaRonTzvi,sport);
             test.addQuestion(sportQuestion1,40);
@@ -550,10 +594,14 @@ public class App {
             test.addQuestion(sportQuestion2,25);
             test.addQuestion(sportQuestion6,25);
             test.setCommentForTeachers("I am from Tivon");
-            test.setEpilogue("You shell all fail");
+            test.setEpilogue("You shall not pass!");
             test.setIntroduction("Please Answer the following questions");
             test.setTime(18);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest12 = new ReadyTest(test, "33KK", basketball, nogaRonTzvi);
+            readyTest12.setActive(true);
+            session.save(readyTest12);
 
             test = new Test(orenVaiman,sport);
             test.addQuestion(sportQuestion3,40);
@@ -566,6 +614,10 @@ public class App {
             test.setIntroduction("Please Answer the following questions");
             test.setTime(18);
             session.save(test);
+            /*readyTest of the above test*/
+            ReadyTest readyTest13 = new ReadyTest(test, "44KK", tennis, orenVaiman);
+            readyTest13.setActive(true);
+            session.save(readyTest13);
 
             SessionFactoryGlobal.closeTransaction(session);
         } catch (Exception exception) {
