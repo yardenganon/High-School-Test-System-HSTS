@@ -152,9 +152,9 @@ public class CreateTestController implements Initializable {
             subjectComboBox.getSelectionModel().select(subjectOfTest.getSubjectName());
         }
         else
-            subjectOfTest = teacher.getSubjects().get(0);
-        System.out.println(subjectOfTest);
-        System.out.println("print " + subjectOfTest);
+            subjectOfTest = null;
+        //System.out.println(subjectOfTest);
+        //System.out.println("print " + subjectOfTest);
         test = new Test(teacher, subjectOfTest);
 
         if (bundle.get("update") != null && (boolean) bundle.get("update")) {
@@ -213,6 +213,7 @@ public class CreateTestController implements Initializable {
             // If there are no input errors, request for creating test will be sent to the server
             if (!thereIsAnError) {
                 // setting the test data
+                test.setSubject(subjectSelected);
                 test.setCommentForTeachers(commentTextField.getText());
                 test.setEpilogue(epilogueTextField.getText());
                 test.setIntroduction(introductionTextField.getText());
@@ -603,6 +604,8 @@ public class CreateTestController implements Initializable {
                     }
                     SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
                 }
+                bundle.remove("test");
+                testForEdit = null;
             });
             new Thread(task).start();
         }
