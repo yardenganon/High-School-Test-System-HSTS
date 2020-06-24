@@ -366,11 +366,56 @@ public class MenuController implements Initializable {
     public void submitExtensionTimeRequestOfTeacher(ActionEvent actionEvent) {
         TimeExtensionRequestTableView timeExtensionRequest = activeTestsTebleView.getSelectionModel().getSelectedItem();
 
+        if (timeExtensionRequest.getStatus() == Status.OpenRequest || timeExtensionRequest.getStatus() == Status.Denied
+        || timeExtensionRequest.getStatus() == Status.Approved)
+        {
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("Extension request already submitted");
+            missingDetailsAlert.showAndWait();
+            activeTestsTebleView.getItems().clear();
+            InitTeacherMenu(teacher);
+            //activeTestsTebleView.refresh();
+            return;
+        }
         if (timeExtensionRequest == null) {
             Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
             missingDetailsAlert.setHeaderText("For submit time extension request you need to choose test and then press \"Submit Request\" button");
             missingDetailsAlert.showAndWait();
-        } else if (timeExtensionRequest.getTimeExtension().isEmpty() || timeExtensionRequest.getTimeExtensionReason().isEmpty()) {
+            return;
+        }
+
+        if (timeExtensionRequest.getTimeExtension().isEmpty() || timeExtensionRequest.getTimeExtensionReason().isEmpty())
+        {
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("Time extension or the reason is missing");
+            missingDetailsAlert.showAndWait();
+            return;
+        }
+        try {
+            int timeNumber = Integer.parseInt(timeExtensionRequest.getTimeExtension());
+            if (timeNumber <= 0)
+            {
+                {
+                    Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+                    missingDetailsAlert.setHeaderText("Invalid time extension, time need to be greater than 0");
+                    missingDetailsAlert.showAndWait();
+                    timeExtensionRequest.setTimeExtension("");
+                    activeTestsTebleView.refresh();
+                    return;
+                }
+            }
+        }
+        catch (NumberFormatException e) {
+            //Not an integer
+            Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
+            missingDetailsAlert.setHeaderText("Invalid time extension");
+            missingDetailsAlert.showAndWait();
+            timeExtensionRequest.setTimeExtension("");
+            activeTestsTebleView.refresh();
+            return;
+        }
+
+        if (timeExtensionRequest.getTimeExtension().isEmpty() || timeExtensionRequest.getTimeExtensionReason().isEmpty()) {
             Alert missingDetailsAlert = new Alert(Alert.AlertType.ERROR);
             missingDetailsAlert.setHeaderText("Time extension or the reason is missing");
             missingDetailsAlert.showAndWait();

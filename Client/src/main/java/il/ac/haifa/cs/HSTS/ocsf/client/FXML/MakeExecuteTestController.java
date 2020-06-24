@@ -195,8 +195,6 @@ public class MakeExecuteTestController implements Initializable {
             // Input checking
             thereIsAnError = false;
 
-            if (testTimeTextField.getText().isEmpty())
-                inputErrorTextField(testTimeTextField);
             if (executionCodeTextField.getText().isEmpty()) {
                 inputErrorTextField(executionCodeTextField);
                 executionCodeError = true;
@@ -208,6 +206,18 @@ public class MakeExecuteTestController implements Initializable {
             if (sumOfPoints < 100) {
                 thereIsAnError = true;
                 pointsSumError = true;
+            }
+
+            if (testTimeTextField.getText().isEmpty())
+                inputErrorTextField(testTimeTextField);
+            try {
+                int timeNumber = Integer.parseInt(testTimeTextField.getText());
+                if (timeNumber <= 0 || timeNumber > 180)
+                    inputErrorTextField(testTimeTextField);
+            }
+            catch (NumberFormatException e) {
+                //Not an integer
+                inputErrorTextField(testTimeTextField);
             }
 
             if (thereIsAnError) {
@@ -329,7 +339,32 @@ public class MakeExecuteTestController implements Initializable {
 
     public void changePoints(TableColumn.CellEditEvent<QuestionTableView, String> questionTableViewStringCellEditEvent) {
         QuestionTableView changedColumn = questionTableView.getSelectionModel().getSelectedItem();
+        sumOfPoints = 0;
 
+        try {
+            int pointsNumber = Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue());
+            if (pointsNumber <= 0)
+                changedColumn.setPoints(questionTableViewStringCellEditEvent.getOldValue());
+            else{
+                changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
+                for (Question quest : readyTest.getTest().getQuestionSet()) {
+                    if (quest.getQuestion() == changedColumn.getQuestion()) {
+                        readyTest.getTest().getPoints().remove(quest);
+                        readyTest.getTest().getPoints().put(quest, Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()));
+                    }
+                    sumOfPoints += readyTest.getTest().getPoints().get(quest);
+                }
+                pointsLabel.setText(String.valueOf(sumOfPoints));
+            }
+        }
+        catch (NumberFormatException e) {
+            //Not an integer
+            changedColumn.setPoints(questionTableViewStringCellEditEvent.getOldValue());
+        }
+        questionTableView.refresh();
+    }
+
+  /*
         sumOfPoints = 0;
         if (Integer.parseInt(questionTableViewStringCellEditEvent.getNewValue()) > 0) {
             changedColumn.setPoints(questionTableViewStringCellEditEvent.getNewValue());
@@ -348,4 +383,6 @@ public class MakeExecuteTestController implements Initializable {
 
         questionTableView.refresh();
     }
+
+   */
 }
