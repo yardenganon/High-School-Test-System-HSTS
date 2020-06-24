@@ -490,26 +490,31 @@ public class CreateTestController implements Initializable {
     @FXML
     public void editPoints(TableColumn.CellEditEvent<QuestionOfTestTableView, String> questionsTableViewIntegerCellEditEvent) {
         QuestionOfTestTableView changedColumn = questionsTableView.getSelectionModel().getSelectedItem();
-
-        if (Integer.parseInt(questionsTableViewIntegerCellEditEvent.getNewValue()) > 0) {
-            changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getNewValue());
-            for (Question quest : questionList) {
-                if (quest.getId() == changedColumn.getId()) {
-                    test.setPointsToQuestion(quest, Integer.parseInt(changedColumn.getPoints()));
-                    break;
+        try {
+            int pointsNumber = Integer.parseInt(questionsTableViewIntegerCellEditEvent.getNewValue());
+            if (pointsNumber <= 0)
+                changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getOldValue());
+            else{
+                changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getNewValue());
+                for (Question quest : questionList) {
+                    if (quest.getId() == changedColumn.getId()) {
+                        test.setPointsToQuestion(quest, Integer.parseInt(changedColumn.getPoints()));
+                        break;
+                    }
                 }
-            }
 
-            sumOfPoints = 0;
-            for (QuestionOfTestTableView quest : questionsTableView.getItems()) {
-                sumOfPoints += Integer.parseInt(quest.getPoints());
+                sumOfPoints = 0;
+                for (QuestionOfTestTableView quest : questionsTableView.getItems()) {
+                    sumOfPoints += Integer.parseInt(quest.getPoints());
+                }
+                SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
             }
-            SumOfPointsLabel.setText(String.valueOf(sumOfPoints));
         }
-        else
+        catch (NumberFormatException e) {
+            //Not an integer
             changedColumn.setPoints(questionsTableViewIntegerCellEditEvent.getOldValue());
+        }
         questionsTableView.refresh();
-
     }
 
     public void setIfEdit() {
