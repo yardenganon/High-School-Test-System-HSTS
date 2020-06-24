@@ -39,7 +39,7 @@ public class TestToWordUnit {
         run.setText("Test number:  " + readyTest.getId() +
                 "     Teacher:  " + readyTest.getModifierWriter().getFirst_name() +
                 " " + readyTest.getModifierWriter().getLast_name() +
-                "     Course number:  " + readyTest.getCourse().getId() +
+                "     Course:  " + readyTest.getCourse().getCourseName() +
                 "     Student:  " + student.getFirst_name() + " " + student.getLast_name());
         run.addBreak();
         run.addBreak();
