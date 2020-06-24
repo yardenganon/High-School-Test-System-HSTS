@@ -200,7 +200,7 @@ public class AnswerableTestDetailsController implements Initializable {
 
             if (answerableTest.getUrl() == null) {
                 Alert successMessageAlert = new Alert(Alert.AlertType.ERROR);
-                successMessageAlert.setHeaderText("The test has not been uploaded yet");
+                successMessageAlert.setHeaderText("File was not uploaded by student");
                 successMessageAlert.showAndWait();
             } else {
                 //constructor of file class having file as argument

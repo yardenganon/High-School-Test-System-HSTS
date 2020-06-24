@@ -245,20 +245,27 @@ public class CheckAnswerableTestController implements Initializable {
     @FXML
     public void openFileRequest(ActionEvent actionEvent) {
         // Open file here
-        try {
-            //constructor of file class having file as argument
-            System.out.println(answerableTest.getUrl());
-            File file = new File(String.valueOf(answerableTest.getUrl()));
-            System.out.println(file.getAbsolutePath());
-            if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
-            {
-                System.out.println("not supported");
-                return;
+        if (answerableTest.getUrl() != null) {
+            try {
+                //constructor of file class having file as argument
+                //System.out.println(answerableTest.getUrl());
+                File file = new File(String.valueOf(answerableTest.getUrl()));
+                System.out.println(file.getAbsolutePath());
+                if (!Desktop.isDesktopSupported())//check if Desktop is supported by Platform or not
+                {
+                    System.out.println("not supported");
+                    return;
+                }
+                Desktop desktop = Desktop.getDesktop();
+                desktop.browse(answerableTest.getUrl().toURI());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            Desktop desktop = Desktop.getDesktop();
-            desktop.browse(answerableTest.getUrl().toURI());
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        else{
+            Alert needChooseTestAlert = new Alert(Alert.AlertType.ERROR);
+            needChooseTestAlert.setHeaderText("File was not uploaded by student" );
+            Optional<ButtonType> result = needChooseTestAlert.showAndWait();
         }
     }
 }
