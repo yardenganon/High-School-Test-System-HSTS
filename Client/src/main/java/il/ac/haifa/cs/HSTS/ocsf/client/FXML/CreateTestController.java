@@ -411,6 +411,7 @@ public class CreateTestController implements Initializable {
 
     @FXML
     void addQuestion(MouseEvent event) {
+        //questionChosenToRemove = null;
         if (questionChosenToAdd != null) {
             System.out.println("test before add: " +test.getQuestionSet());
             for (Question q : test.getQuestionSet())
@@ -452,6 +453,7 @@ public class CreateTestController implements Initializable {
 
     @FXML
     void removeQuestion(MouseEvent event) {
+        questionChosenToAdd = null;
         if (questionChosenToRemove != null) {
             System.out.println("test before remove: " +test.getQuestionSet());
             System.out.println("question to remove now: " + questionChosenToRemove);
