@@ -4,10 +4,10 @@ High School Test System - Client-Server architecture.
 Server, Client and Entities (Server and Client has access to Entities classes).
 
 # Running the client
-Simply run <ip> <port> ``javafx:run``.
+Simply run -ip- -port- ``javafx:run``.
 
 # Running the server
-Simply run <port> ``exec:java``.
+Simply run -port- ``exec:java``.
 
 
 Basic data in App.java (Server side).
