@@ -7,7 +7,7 @@ Server, Client and Entities (Server and Client has access to Entities classes).
 Simply run ``IP PORT javafx:run``.
 
 # Running the server
-Simply run ``IP PORT exec:java``.
+Simply run ``PORT exec:java``.
 
 
 Basic data in App.java (Server side).
