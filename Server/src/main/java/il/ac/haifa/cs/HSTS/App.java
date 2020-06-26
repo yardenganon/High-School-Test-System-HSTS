@@ -250,7 +250,6 @@ public class App {
             calculusA.addStudent(yoavBenHaim);
             calculusA.addStudent(danielLevi);
             calculusA.addStudent(ohadFridman);
-            calculusA.addStudent(yardenGanon);
             calculusA.addStudent(yakir);
             calculusA.addStudent(barak);
             calculusA.addStudent(opalSelek);
@@ -268,7 +267,6 @@ public class App {
             calculusB.addStudent(yoavBenHaim);
             calculusB.addStudent(danielLevi);
             calculusB.addStudent(ohadFridman);
-            calculusB.addStudent(yardenGanon);
             calculusB.addStudent(yakir);
             calculusB.addStudent(barak);
             calculusB.addStudent(opalSelek);
@@ -285,7 +283,6 @@ public class App {
 
 
             discreteMath.addStudent(yoavBenHaim);
-            discreteMath.addStudent(yardenGanon);
             discreteMath.addStudent(danielLevi);
             discreteMath.addStudent(yakir);
             discreteMath.addStudent(ohadFridman);
@@ -334,6 +331,24 @@ public class App {
             biology.addStudent(galitOks);
             biology.addStudent(chenBezinian);
             session.save(biology);
+
+            computerScience.addStudent(yoavBenHaim);
+            computerScience.addStudent(danielLevi);
+            computerScience.addStudent(ohadFridman);
+            computerScience.addStudent(yardenGanon);
+            computerScience.addStudent(yakir);
+            computerScience.addStudent(barak);
+            computerScience.addStudent(opalSelek);
+            computerScience.addStudent(meshi);
+            computerScience.addStudent(shani);
+            computerScience.addStudent(gal);
+            computerScience.addStudent(orAshkenazy);
+            computerScience.addStudent(sagiShvili);
+            computerScience.addStudent(guyKigel);
+            computerScience.addStudent(yuvalTamir);
+            computerScience.addStudent(galitOks);
+            computerScience.addStudent(chenBezinian);
+            session.save(computerScience);
 
 
             scienceADV.addStudent(yoavBenHaim);
