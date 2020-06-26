@@ -22,7 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.converter.IntegerStringConverter;
-import org.greenrobot.eventbus.MainThreadSupport;
+
 
 import javax.crypto.spec.PSource;
 import java.io.IOException;

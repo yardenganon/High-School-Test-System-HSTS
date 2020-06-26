@@ -214,17 +214,18 @@ public class TestInProgressController implements Initializable {
                 try {
                     System.out.println(new File("").getAbsolutePath());
                     String path = new File(("")).getAbsolutePath();
-                    String suffixPath = "\\src\\main\\resources\\il\\ac\\haifa\\cs\\HSTS\\ocsf\\client\\FXML\\GoogleCloudCreds\\HSTS-aa9bed24b973.json";
-                    File fileNew = new File(path + suffixPath);
+                    //String suffixPath = "\\src\\main\\resources\\il\\ac\\haifa\\cs\\HSTS\\ocsf\\client\\FXML\\GoogleCloudCreds\\HSTS-aa9bed24b973.json";
+                    String suffixPath = MainClass.class.getResource("GoogleCloudCreds/HSTS-aa9bed24b973.json").getPath();
+                    File fileNew = new File(suffixPath);
                     if (fileNew.exists()) {
                         Credentials credentials = GoogleCredentials
-                                .fromStream(new FileInputStream(path + suffixPath));
+                                .fromStream(new FileInputStream(suffixPath));
                         storage = StorageOptions.newBuilder().setCredentials(credentials)
                                 .setProjectId("114618954393906762898").build().getService();
                     } else
                     {
                         Credentials credentials = GoogleCredentials
-                                .fromStream(new FileInputStream(path +"\\Client" +suffixPath));
+                                .fromStream(new FileInputStream("\\Client" +suffixPath));
                         storage = StorageOptions.newBuilder().setCredentials(credentials)
                                 .setProjectId("114618954393906762898").build().getService();
                     }
