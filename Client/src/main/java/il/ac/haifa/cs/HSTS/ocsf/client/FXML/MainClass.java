@@ -37,7 +37,7 @@ public class MainClass extends Application {
 	}
 
 	public void initConnection() {
-        this.client = new HSTSClient("localhost", 3000);
+        this.client = new HSTSClient(ip, port);
         try {
             client.openConnection();
         } catch (IOException e) {
